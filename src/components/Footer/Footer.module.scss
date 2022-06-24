@@ -1,0 +1,26 @@
+@use '../../styles/colors' as *;
+
+.footer {
+  grid-column-start: 2;
+  grid-column-end: span 12;
+  background-color: $grayCool-25;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footerLeft {
+  display: flex;
+  gap: 2rem;
+}
+
+.fullWidth2 {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+}
+
+.poweredBy {
+  height: 2rem;
+}

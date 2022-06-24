@@ -1,0 +1,85 @@
+@use '../../styles/colors' as *;
+.fullWidth {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.bgGray {
+  background-color: $grayCool-100;
+}
+
+.header {
+  grid-column-start: 2;
+  grid-column-end: span 12;
+  grid-row: 2/2;
+}
+
+.maxWidth {
+  grid-column: 2 / span 6;
+  grid-template-columns: repeat (6, 1fr);
+  gap: 1rem 1rem;
+  margin: 0;
+}
+
+.networkHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+.networkHeaderGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.networkHeaderGroup .badge {
+  border-radius: 4px;
+  background-color: $blue-600;
+  color: $white;
+  padding: 3px 12px;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchbar {
+  display: flex;
+  width: 70%;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.examples {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 25px;
+  gap: 25px;
+}
+
+.example {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.text {
+  color: $gray-600;
+  font-weight: 400;
+}
+
+.shape {
+  margin-right: 0.5rem;
+}

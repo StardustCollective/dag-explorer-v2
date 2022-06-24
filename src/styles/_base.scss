@@ -1,0 +1,70 @@
+@use './colors' as *;
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+.light {
+  .text {
+    color: $gray-900;
+  }
+  .background {
+    background-color: $grayCool-25;
+  }
+  .subheaderText {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+    color: $grayCool-800;
+    margin-left: 0.5rem;
+  }
+  .overviewText {
+    color: $grayCool-600;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    margin: 0;
+  }
+  .headerSubtitle {
+    font-family: 'Lausanne';
+    font-style: 'regular';
+    font-weight: 600;
+    font-size: 12px;
+    color: $grayCool-500;
+    margin: 0;
+  }
+  .networkName {
+    font-family: 'Lausanne';
+    font-style: 'regular';
+    font-weight: 500;
+    font-size: 36px;
+    color: $blue-700;
+    margin: 0;
+  }
+  .headerExamples {
+    font-family: 'Lausanne';
+    font-style: 'regular';
+    font-weight: 300;
+    font-size: 14px;
+    color: $gray-600;
+    margin: 0;
+  }
+}
+
+.dark {
+  .background {
+    background-color: $gray-900;
+  }
+  .text {
+    color: $blue-25;
+  }
+  .subheaderText {
+  }
+}

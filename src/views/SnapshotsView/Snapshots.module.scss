@@ -1,0 +1,15 @@
+.container {
+  grid-area: mainLeft / mainLeft / mainRight / mainRight;
+  background-color: white;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.snapshots {
+  background-color: white;
+  border: 1px solid black;
+  display: flex;
+  height: 99.7%;
+  align-items: center;
+  justify-content: center;
+}

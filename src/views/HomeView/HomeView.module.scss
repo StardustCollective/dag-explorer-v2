@@ -1,0 +1,53 @@
+@use '../../styles/colors' as *;
+
+.fullWidth {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.fullWidth2 {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+  grid-template-rows: 25% 65% 10%;
+}
+
+.fila1 {
+  grid-row: 1/2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fila2 {
+  grid-row: 2/2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(12, minmax(auto, 1fr));
+}
+
+.fila3 {
+  grid-row: 3/3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(12, minmax(auto, 1fr));
+}
+
+.subheader {
+  grid-row: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.section {
+  background-color: $grayCool-100;
+}
+
+.row {
+  grid-column-start: 2;
+  grid-column-end: span 12;
+}

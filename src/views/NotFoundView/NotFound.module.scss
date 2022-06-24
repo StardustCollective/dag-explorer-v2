@@ -1,0 +1,56 @@
+@use '../../styles/colors' as *;
+.content {
+  grid-column: 2 / span 12;
+  grid-row: 3 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.subContent {
+  grid-column: 2 / span 12;
+  grid-row: 4 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.notFound {
+  margin-top: 8rem;
+  margin-bottom: 8rem;
+  color: $blue-800;
+  font-family: 'Lausanne';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 192px;
+  line-height: 192px;
+}
+
+.homeButton {
+  background-color: $blue-700;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0 48px;
+  gap: 12px;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  border-radius: 48px;
+}
+
+.homeButton:hover {
+  background-color: $blue-600;
+  cursor: pointer;
+}
+
+.homeText {
+  color: $white;
+  letter-spacing: 0.002em;
+  font-family: 'Lausanne';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}

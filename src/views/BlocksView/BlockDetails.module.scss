@@ -1,0 +1,74 @@
+@use '../../styles/colors' as *;
+.fullWidth3 {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+  grid-template-rows: 10% 25% 6% 49% 10%;
+}
+
+.row1 {
+  grid-row: 1/1;
+  grid-column: 2 / span 12;
+  margin-bottom: 0.7rem;
+}
+
+%flexRow {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.flexRowBottom {
+  @extend %flexRow;
+  align-items: flex-end;
+}
+
+.flexRowTop {
+  @extend %flexRow;
+  align-items: flex-start;
+}
+
+.row2 {
+  grid-row: 2/2;
+  grid-column: 2 / span 12;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+}
+
+.spanContent {
+  grid-column: 2 / span 12;
+}
+
+.txGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  background-color: $white;
+  border: 1px solid $grayCool-200;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.arrows {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.row3 {
+  grid-row: 3/3;
+  grid-column: 2 / span 12;
+  margin-bottom: 0.7rem;
+}
+
+.row4 {
+  grid-row: 4/4;
+  grid-column: 2 / span 12;
+}
+
+.row5 {
+  grid-row: 5/5;
+  grid-column: 2 / span 12;
+}

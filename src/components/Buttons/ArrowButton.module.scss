@@ -1,0 +1,98 @@
+@use '../../styles/colors' as *;
+.forward {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 16px;
+
+  border: none;
+
+  background-color: $grayCool-200;
+  border-radius: 48px;
+}
+
+.iconRight {
+  width: 15px;
+  height: 2px;
+  background-color: $gray-900;
+  border-radius: 5px;
+  position: relative;
+}
+
+.iconRight:after {
+  content: '';
+
+  display: inline-block;
+  width: 9px;
+  height: 1.5px;
+  border-radius: 5px;
+  background-color: $gray-900;
+  transform: rotate(45deg);
+  position: absolute;
+  right: -2px;
+  bottom: 3px;
+}
+
+.iconRight:before {
+  content: '';
+
+  display: inline-block;
+  width: 10px;
+  height: 1.5px;
+  border-radius: 5px;
+  background-color: $gray-900;
+  transform: rotate(-45deg);
+  position: absolute;
+  right: -2px;
+  bottom: -3px;
+}
+
+.back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+
+  border: none;
+
+  background-color: $grayCool-200;
+  border-radius: 48px;
+}
+
+.iconLeft {
+  width: 15px;
+  height: 2px;
+  background-color: $gray-900;
+  border-radius: 5px;
+  position: relative;
+}
+
+.iconLeft:after {
+  content: '';
+
+  display: inline-block;
+  width: 9px;
+  height: 1.5px;
+  border-radius: 5px;
+  background-color: $gray-900;
+  transform: rotate(135deg);
+  position: absolute;
+  right: 7px;
+  bottom: 3px;
+}
+
+.iconLeft:before {
+  content: '';
+
+  display: inline-block;
+  width: 9px;
+  height: 1.5px;
+  border-radius: 5px;
+  background-color: $gray-900;
+  transform: rotate(-135deg);
+  position: absolute;
+  right: 7px;
+  bottom: -3px;
+}

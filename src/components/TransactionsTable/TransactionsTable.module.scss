@@ -1,0 +1,29 @@
+@use '../../styles/colors' as *;
+.container {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(auto, 20rem));
+  grid-auto-rows: 3.8rem;
+
+  background-color: $white;
+  border: 1px solid $grayCool-200;
+  border-radius: 8px;
+}
+
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: $grayCool-100;
+  }
+
+  100% {
+    background-color: $gray-300;
+  }
+}
+
+.skeleton.value {
+  width: 90%;
+  height: 1rem;
+}

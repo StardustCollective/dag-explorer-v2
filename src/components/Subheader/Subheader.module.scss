@@ -1,0 +1,29 @@
+@use '../../styles/colors' as *;
+.fullWidth {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.section {
+  background-color: $grayCool-50;
+  border-bottom: 1px solid $grayCool-200;
+}
+
+.icon {
+  height: 1rem;
+}
+
+.subheader {
+  grid-row: 2/2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.row {
+  grid-column-start: 2;
+  grid-column-end: span 12;
+}
