@@ -1,9 +1,9 @@
 import { useFetch } from '../../utils/reactQuery';
 import { Snapshot } from '../types';
 
-const { REACT_APP_L0_NODE_URL } = process.env;
+const { REACT_APP_TESTNET_L0_NODE_URL } = process.env;
 
-const URL = REACT_APP_L0_NODE_URL + '/global-snapshot';
+const URL = REACT_APP_TESTNET_L0_NODE_URL + '/global-snapshot';
 
 //returns binary file
 export const useGetLatestSnapshot = () => useFetch<Snapshot>(URL + '/latest');

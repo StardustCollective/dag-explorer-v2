@@ -1,9 +1,9 @@
 import { useFetch } from '../../utils/reactQuery';
 import { Balance, TotalSupply } from '../types';
 
-const { REACT_APP_L0_NODE_URL } = process.env;
+const { REACT_APP_TESTNET_L0_NODE_URL } = process.env;
 
-const URL = REACT_APP_L0_NODE_URL + '/dag';
+const URL = REACT_APP_TESTNET_L0_NODE_URL + '/dag';
 
 export const useGetLatestSnapshotTotalDagSupply = () => useFetch<TotalSupply>(URL + '/total-supply');
 
