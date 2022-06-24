@@ -1,15 +1,50 @@
-.container {
-  grid-area: mainLeft / mainLeft / mainRight / mainRight;
-  background-color: white;
-  padding-left: 5%;
-  padding-right: 5%;
+.fullWidth3 {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+  grid-template-rows: 10% 80% 10%;
 }
 
-.snapshots {
-  background-color: white;
-  border: 1px solid black;
+.row1 {
+  grid-row: 1/1;
+  grid-column: 2 / span 12;
+  margin-bottom: 0.7rem;
   display: flex;
-  height: 99.7%;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+}
+
+.row2 {
+  grid-row: 2/2;
+  grid-column: 2 / span 12;
+  display: flex;
+}
+
+.row3 {
+  grid-row: 3/3;
+  grid-column: 2 / span 12;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+
+%flexRow {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.flexRowBottom {
+  @extend %flexRow;
+  align-items: flex-end;
+}
+
+.flexRowTop {
+  @extend %flexRow;
+  align-items: flex-start;
+}
+
+.arrows {
+  display: flex;
+  gap: 0.5rem;
 }

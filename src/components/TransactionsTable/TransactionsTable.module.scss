@@ -2,8 +2,16 @@
 .container {
   display: grid;
   grid-template-columns: repeat(7, minmax(auto, 20rem));
-  grid-auto-rows: 3.8rem;
 
+  background-color: $white;
+  border: 1px solid $grayCool-200;
+  border-radius: 8px;
+}
+
+.homeContainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(auto, 20rem));
+  grid-auto-rows: 3.8rem;
   background-color: $white;
   border: 1px solid $grayCool-200;
   border-radius: 8px;
@@ -26,4 +34,21 @@
 .skeleton.value {
   width: 90%;
   height: 1rem;
+}
+
+.icon {
+  align-self: center;
+  justify-self: flex-end;
+  margin-right: 1rem;
+}
+
+.headerText {
+  align-self: center;
+  justify-self: flex-start;
+  margin-left: 1rem;
+  font-family: 'Lausanne';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  color: $grayCool-900;
 }

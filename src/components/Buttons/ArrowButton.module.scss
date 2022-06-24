@@ -12,6 +12,11 @@
   border-radius: 48px;
 }
 
+.forward:hover:enabled {
+  background-color: $grayCool-300;
+  cursor: pointer;
+}
+
 .iconRight {
   width: 15px;
   height: 2px;
@@ -59,6 +64,11 @@
 
   background-color: $grayCool-200;
   border-radius: 48px;
+}
+
+.back:hover:enabled {
+  background-color: $grayCool-300;
+  cursor: pointer;
 }
 
 .iconLeft {

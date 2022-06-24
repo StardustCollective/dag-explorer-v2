@@ -128,7 +128,7 @@ export const AddressDetails = () => {
             {addressInfo.isFetching ? (
               <SkeletonTransactionsTable rows={LIMIT} />
             ) : (
-              <TransactionsTable transactions={addressTxs} icon={AddressShape}></TransactionsTable>
+              <TransactionsTable transactions={addressTxs} icon={AddressShape} />
             )}
           </div>
           <div className={`${styles.row5}`}>

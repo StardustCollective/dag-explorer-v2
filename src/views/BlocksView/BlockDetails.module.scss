@@ -27,6 +27,7 @@
 .flexRowTop {
   @extend %flexRow;
   align-items: flex-start;
+  margin-top: 1rem;
 }
 
 .row2 {
@@ -66,6 +67,7 @@
 .row4 {
   grid-row: 4/4;
   grid-column: 2 / span 12;
+  display: flex;
 }
 
 .row5 {

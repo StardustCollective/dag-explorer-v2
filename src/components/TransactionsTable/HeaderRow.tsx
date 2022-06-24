@@ -1,7 +1,23 @@
+import { useLocation } from 'react-router-dom';
 import styles from './HeaderRow.module.scss';
 
 export const HeaderRow = () => {
-  return (
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
+  const columns = isHomePage ? (
+    <>
+      <div className={`${styles.headerColumn} ${styles.topLeftBorder}`}>
+        <p className={styles.headerText}>TXN HASH</p>
+      </div>
+      <div className={styles.headerColumn}>
+        <p className={styles.headerText}>TIMESTAMP</p>
+      </div>
+      <div className={`${styles.headerColumn} ${styles.topRightBorder}`}>
+        <p className={styles.headerText}>AMOUNT</p>
+      </div>
+    </>
+  ) : (
     <>
       <div className={`${styles.headerColumn} ${styles.topLeftBorder}`}>
         <p className={styles.headerText}>TXN HASH</p>
@@ -32,4 +48,6 @@ export const HeaderRow = () => {
       </div>
     </>
   );
+
+  return columns;
 };
