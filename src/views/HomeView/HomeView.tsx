@@ -1,16 +1,8 @@
-import { useGetLatestSnapshots, useGetLatestTransactions } from '../../api/mainnet_1/block-explorer';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import styles from './HomeView.module.scss';
 import StatsSection from './StatsSection/StatsSection';
 
 export const HomeView = () => {
-  const startAt = '0';
-  const endAt = '9';
-  const query = `?startAt="${startAt}"&endAt="${endAt}"&orderBy="$key"`;
-
-  const asd = useGetLatestSnapshots(query);
-  const asd2 = useGetLatestTransactions(query);
-
   return (
     <>
       <section className={`${styles.fullWidth} ${styles.section}`}>

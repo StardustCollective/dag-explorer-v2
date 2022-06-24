@@ -1,7 +1,5 @@
 import { MainnetOneSnapshot, MainnetOneTransaction } from '../types';
 import { useFetch } from '../../utils/reactQuery';
-import { useContext } from 'react';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 
 const { REACT_APP_FIREBASE_REST } = process.env;
 
@@ -12,7 +10,7 @@ const URL = REACT_APP_FIREBASE_REST;
 //const query = `?startAt="${startAt}"&endAt="${endAt}"&orderBy="$key"`;
 
 export const useGetLatestSnapshots = (query: string) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  //const { network } = useContext(NetworkContext) as NetworkContextType;
   useFetch<MainnetOneSnapshot[]>(URL + '/latest/snapshots.json' + query);
 };
 

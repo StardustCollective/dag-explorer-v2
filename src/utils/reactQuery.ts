@@ -11,7 +11,7 @@ export const fetcher = <T>({ queryKey }: QueryFunctionContext<QueryKeyT>): Promi
 
 export const useFetch = <T>(url: string | null, params?: object, config?: UseQueryOptions<T, Error, T, QueryKeyT>) => {
   const context = useQuery<T, Error, T, QueryKeyT>(
-    [url!, params],
+    [url, params],
     ({ queryKey }) => {
       return fetcher({ queryKey, meta: undefined });
     },
