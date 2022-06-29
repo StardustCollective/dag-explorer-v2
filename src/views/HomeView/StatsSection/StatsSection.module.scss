@@ -1,3 +1,5 @@
+@use '../../../styles/breakpoints' as *;
+
 .stats {
   display: flex;
   flex-direction: row;
@@ -8,4 +10,41 @@
 
 .stats > * {
   width: 20%;
+}
+
+@media screen and (max-width: $sm) {
+  .stats {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-left: 1rem;
+  }
+  .stats > * {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: $lg) {
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .stats > div {
+    flex: 50%;
+  }
+}
+
+@media screen and (max-width: $md) {
+  .stats {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  .stats > * {
+    width: 100%;
+  }
 }

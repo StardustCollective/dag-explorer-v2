@@ -1,5 +1,5 @@
 import { useFetch } from '../../utils/reactQuery';
-import { RewardTransaction, Snapshot, Transaction } from '../types';
+import { RewardTransaction, Snapshot, Transaction } from '../../types';
 
 const { REACT_APP_TESTNET_BLOCK_EXPLORER_URL } = process.env;
 
@@ -23,4 +23,6 @@ export const useGetSnapshotRewards = (hashOrOrdinal: string | number) =>
 export const useGetLatestSnapshotTransactions = () => useFetch<Transaction[]>(URL + '/latest/transactions');
 
 export const useGetSnapshotTransactions = (hashOrOrdinal: string | number, params?: any) =>
-  useFetch<Transaction[]>(URL + '/' + hashOrOrdinal + '/transactions', params, { keepPreviousData: true });
+  hashOrOrdinal
+    ? useFetch<Transaction[]>(URL + '/' + hashOrOrdinal + '/transactions', params, { keepPreviousData: true })
+    : null;

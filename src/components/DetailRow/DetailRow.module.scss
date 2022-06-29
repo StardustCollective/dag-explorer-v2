@@ -1,3 +1,4 @@
+@use '../../styles/breakpoints' as *;
 @use '../../styles/colors' as *;
 .txFlexRow {
   display: flex;
@@ -33,6 +34,8 @@
 
 .value {
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .skeleton.title {
@@ -44,7 +47,7 @@
 }
 
 .skeleton.value {
-  width: 70%;
+  width: 9rem;
   height: 1rem;
   border-radius: 0.15rem;
 }
@@ -53,4 +56,66 @@
   display: flex;
   justify-content: flex-start;
   gap: 1rem;
+  width: 100%;
+  align-items: center;
+}
+
+.copy {
+  margin-left: 0.7rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.fullDate {
+  color: $gray-300;
+  margin-left: 1rem;
+}
+
+.subValue {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: $gray-500;
+  margin-left: 1rem;
+}
+
+.mobile {
+  display: none;
+}
+
+@media screen and (max-width: $lg) {
+  .value {
+    flex-direction: column;
+  }
+}
+
+@media screen and(min-width: $sm) and (max-width: $md) {
+  .fullDate {
+    display: none;
+  }
+  .value {
+    width: auto;
+  }
+
+  .title {
+    width: 45%;
+    margin-right: 0;
+  }
+
+  .mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .desktop {
+    display: none;
+  }
+  .subValue {
+    margin-left: 0;
+  }
+  .txFlexRow {
+    height: 80px;
+  }
 }

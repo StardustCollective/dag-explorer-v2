@@ -1,4 +1,6 @@
 @use '../../styles/colors' as *;
+@use '../../styles/breakpoints' as *;
+
 .fullWidth {
   grid-column: 1 / span 14;
   display: grid;
@@ -82,4 +84,46 @@
 
 .shape {
   margin-right: 0.5rem;
+}
+
+@media screen and (max-width: $sm) {
+  .rightSide {
+    display: none;
+  }
+  .networkHeader {
+    margin-left: 1rem;
+  }
+
+  .headerSearchMobile {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $xlg) {
+  .fullWidth {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .header {
+    margin-right: 1rem;
+  }
+}
+
+@media screen and (max-width: $md) {
+  .rightSide {
+    display: none;
+  }
+  .networkHeader {
+    margin-left: 1rem;
+  }
+  .headerSearchMobile {
+    display: none;
+  }
+
+  .fullWidth {
+    display: flex;
+    height: 6rem;
+    padding-bottom: 1rem;
+  }
 }

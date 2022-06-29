@@ -4,7 +4,7 @@ import { useGetTransaction } from '../../api/block-explorer';
 import { Card } from '../../components/Card/Card';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import styles from './TransactionDetail.module.scss';
-import { Transaction } from '../../api/types';
+import { Transaction } from '../../types';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
@@ -15,6 +15,8 @@ import TransactionShape from '../../assets/icons/TransactionShape.svg';
 import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import Success from '../../assets/icons/Success.svg';
 import { NotFound } from '../NotFoundView/NotFound';
+import { formatAmount, formatDagPrice, formatTime } from '../../utils/numbers';
+import { SearchBar } from '../../components/SearchBar/SearchBar';
 
 export const TransactionDetail = () => {
   const { transactionHash } = useParams();
@@ -22,12 +24,14 @@ export const TransactionDetail = () => {
   const [data, setData] = useState<Transaction | undefined>(undefined);
 
   const [dagInfo, setDagInfo] = useState(null);
+  const [btcInfo, setBtcInfo] = useState(null);
   const prices = useGetPrices();
   const [error, setError] = useState<string>(undefined);
   const [date, setDate] = useState<Date>();
   useEffect(() => {
     if (!prices.isFetching && !prices.isError) {
       setDagInfo(prices.data['constellation-labs']);
+      setBtcInfo(prices.data['bitcoin']);
     }
   }, [prices.isFetching]);
 
@@ -49,6 +53,11 @@ export const TransactionDetail = () => {
   const skeleton = transaction.isFetching || !data;
   return (
     <>
+      <section className={`${styles.searchMobile}`}>
+        <div className={`${styles.row} ${styles.subheader}`}>
+          <SearchBar />
+        </div>
+      </section>
       <Subheader text={'Transaction details'} item={IconType.Transaction} />
       {error === '404' ? (
         <NotFound entire={false} />
@@ -58,7 +67,9 @@ export const TransactionDetail = () => {
             <>
               <div className={`${styles.row1}`}>
                 <div className={`${styles.flexRow1}`}>
-                  <p className="overviewText">Overview</p>
+                  <div className={styles.overView}>
+                    <p className="overviewText">Overview</p>
+                  </div>
                 </div>
               </div>
               <div className={`${styles.row2}`}>
@@ -68,7 +79,7 @@ export const TransactionDetail = () => {
                       <DetailRow
                         borderBottom
                         title={'AMOUNT'}
-                        value={!skeleton ? data.amount.toString() : ''}
+                        value={!skeleton ? formatAmount(data.amount, 8) : ''}
                         skeleton={skeleton}
                       />
                       <DetailRow
@@ -85,6 +96,8 @@ export const TransactionDetail = () => {
                         value={!skeleton ? data.source : ''}
                         skeleton={skeleton}
                         icon={AddressShape}
+                        copy
+                        isLong
                       />
                       <DetailRow
                         title={'TO'}
@@ -92,6 +105,8 @@ export const TransactionDetail = () => {
                         value={!skeleton ? data.destination : ''}
                         skeleton={skeleton}
                         icon={AddressShape}
+                        copy
+                        isLong
                       />
                     </div>
                     <div className={`${styles.txGroup}`}>
@@ -101,6 +116,8 @@ export const TransactionDetail = () => {
                         value={!skeleton ? data.hash : ''}
                         skeleton={skeleton}
                         icon={TransactionShape}
+                        copy
+                        isLong
                       />
                       <DetailRow
                         title={'BLOCK'}
@@ -109,6 +126,8 @@ export const TransactionDetail = () => {
                         value={!skeleton ? data.blockHash : ''}
                         skeleton={skeleton}
                         icon={BlockShape}
+                        copy
+                        isLong
                       />
                       <DetailRow
                         title={'SNAPSHOT HEIGHT'}
@@ -121,8 +140,10 @@ export const TransactionDetail = () => {
                       <DetailRow
                         title={'TIMESTAMP'}
                         borderBottom
-                        value={!skeleton ? date.toLocaleString() : ''}
+                        value={!skeleton ? formatTime(date) : ''}
                         skeleton={skeleton}
+                        isLong
+                        date={date}
                       />
                       <DetailRow title={'STATUS'} value={'Success'} skeleton={skeleton} icon={Success} />
                     </div>
@@ -136,8 +157,13 @@ export const TransactionDetail = () => {
                     </>
                   ) : (
                     <>
-                      <Card headerText={'DAG PRICE'} value={'$' + dagInfo.usd} info={'0.09 USD  0.00000285 BTC'} />
-                      <Card headerText={'NODE OPERATORS'} value={'100 validators'} info={'0.09 USD  0.00000285 BTC'} />
+                      <Card
+                        badge={dagInfo.usd_24h_change}
+                        headerText={'DAG PRICE'}
+                        value={'$' + dagInfo.usd}
+                        info={formatDagPrice(dagInfo, btcInfo)}
+                      />
+                      <Card headerText={'NODE OPERATORS'} value={'100 validators'} />
                     </>
                   )}
                 </div>

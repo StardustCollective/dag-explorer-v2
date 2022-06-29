@@ -1,7 +1,28 @@
 @use '../../styles/colors' as *;
+@use '../../styles/_breakpoints' as *;
 .container {
   display: grid;
-  grid-template-columns: repeat(7, minmax(auto, 20rem));
+  grid-template-columns: 1fr 1fr 0.5fr 0.5fr 1fr 1fr 1fr;
+  width: 100%;
+  background-color: $white;
+  border: 1px solid $grayCool-200;
+  border-radius: 8px;
+  grid-template-rows: min-content;
+}
+
+.containerSnap {
+  display: grid;
+  grid-template-columns: 2fr 0.5fr 0.5fr 0.5fr;
+  width: 100%;
+  background-color: $white;
+  border: 1px solid $grayCool-200;
+  border-radius: 8px;
+  grid-template-rows: min-content;
+}
+
+.containerSmall {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(auto, 20rem));
 
   background-color: $white;
   border: 1px solid $grayCool-200;
@@ -10,7 +31,7 @@
 
 .homeContainer {
   display: grid;
-  grid-template-columns: repeat(3, minmax(auto, 20rem));
+  grid-template-columns: 1fr 0.7fr 1.3fr;
   grid-auto-rows: 3.8rem;
   background-color: $white;
   border: 1px solid $grayCool-200;
@@ -51,4 +72,26 @@
   font-size: 20px;
   line-height: 30px;
   color: $grayCool-900;
+}
+.cards {
+  display: none;
+}
+
+@media screen and(min-width: $sm) and (max-width: $md) {
+  .table {
+    display: none;
+  }
+  .cards {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .headerCards {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #dcdfea;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    height: 3.5rem;
+  }
 }

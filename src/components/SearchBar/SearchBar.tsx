@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchableItem } from '../../constants';
 import { getSearchInputType } from '../../utils/search';
 import styles from './SearchBar.module.scss';
 
 export const SearchBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [searchText, setSearchText] = useState<string>('');
 
@@ -15,23 +16,33 @@ export const SearchBar = () => {
     }
   };
 
+  const isSameLocation = (url: string) => url === location.pathname;
+
+  const performAction = (url: string) => {
+    isSameLocation(url) ? window.location.reload() : navigate(url);
+  };
+
   const handleSearch = () => {
     const inputType = getSearchInputType(searchText);
     switch (inputType) {
       case SearchableItem.Address: {
-        navigate('/address/' + searchText);
+        const url = '/address/' + searchText;
+        performAction(url);
         break;
       }
       case SearchableItem.Snapshot: {
-        navigate('/snapshots/' + searchText);
+        const url = '/snapshots/' + searchText;
+        performAction(url);
         break;
       }
       case SearchableItem.Transaction: {
-        navigate('/transactions/' + searchText);
+        const url = '/transactions/' + searchText;
+        performAction(url);
         break;
       }
       default: {
-        navigate('/404');
+        const url = '/404';
+        performAction(url);
         break;
       }
     }
@@ -39,13 +50,20 @@ export const SearchBar = () => {
 
   return (
     <div className={styles.searchBar} onKeyDown={(e) => handleKey(e)}>
-      <div className={styles.searchLeft}>
-        <div className={styles.searchIcon} />
-        <input
-          onChange={(e) => setSearchText(e.target.value)}
-          className={styles.searchInput}
-          placeholder="Search by address, snapshot height, or transaction..."
-        ></input>
+      <div className={styles.searchBlock}>
+        <div className={styles.searchLeft}>
+          <div className={styles.searchIcon} />
+          <input
+            onChange={(e) => setSearchText(e.target.value)}
+            className={styles.searchInput}
+            placeholder="Search by address, snapshot height, or transaction..."
+          />
+          <input
+            onChange={(e) => setSearchText(e.target.value)}
+            className={styles.shortSearchInput}
+            placeholder="Search network"
+          />
+        </div>
       </div>
       <div
         className={styles.searchButton}

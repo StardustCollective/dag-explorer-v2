@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetAddressBalance, useGetAddressTransactions } from '../../api/block-explorer';
-import { Transaction } from '../../api/types';
+import { Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
-import { SkeletonTransactionsTable } from '../../components/TransactionsTable/SkeletonTransactionsTable';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType } from '../../constants';
 import styles from './AddressDetails.module.scss';
 import AddressShape from '../../assets/icons/AddressShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
+import { formatAmount } from '../../utils/numbers';
+import { SearchBar } from '../../components/SearchBar/SearchBar';
 
 const LIMIT = 10;
 
-const formater = new Intl.NumberFormat('en-US');
 type Params = {
   limit: number;
   search_after?: string;
@@ -46,7 +46,7 @@ export const AddressDetails = () => {
 
   useEffect(() => {
     if (!addressBalance.isFetching && !addressBalance.isError) {
-      setBalance(formater.format(addressBalance.data.balance));
+      setBalance(formatAmount(addressBalance.data.balance, 8));
     }
   }, [addressBalance.isFetching]);
 
@@ -86,6 +86,7 @@ export const AddressDetails = () => {
       });
       setIsPrev(true);
       setPage((p) => p - 1);
+      setLastPage(false);
     }
   };
 
@@ -93,6 +94,11 @@ export const AddressDetails = () => {
 
   return (
     <>
+      <section className={`${styles.searchMobile}`}>
+        <div className={`${styles.row} ${styles.subheader}`}>
+          <SearchBar />
+        </div>
+      </section>
       <Subheader text={'Address details'} item={IconType.Address} />
       {error === '404' ? (
         <NotFound entire={false} />
@@ -106,7 +112,13 @@ export const AddressDetails = () => {
           <div className={`${styles.row2}`}>
             <div className={styles.spanContent}>
               <div className={`${styles.txGroup}`}>
-                <DetailRow borderBottom title={'ADDRESS'} value={skeleton ? '' : addressId} skeleton={skeleton} />
+                <DetailRow
+                  borderBottom
+                  title={'ADDRESS'}
+                  value={skeleton ? '' : addressId}
+                  skeleton={skeleton}
+                  isLong
+                />
                 <DetailRow
                   title={'BALANCE'}
                   value={skeleton ? '' : balance ? balance + ' DAG' : ''}
@@ -125,11 +137,12 @@ export const AddressDetails = () => {
             </div>
           </div>
           <div className={`${styles.row4}`}>
-            {addressInfo.isFetching ? (
-              <SkeletonTransactionsTable rows={LIMIT} />
-            ) : (
-              <TransactionsTable transactions={addressTxs} icon={AddressShape} />
-            )}
+            <TransactionsTable
+              skeleton={{ showSkeleton: addressInfo.isFetching }}
+              limit={LIMIT}
+              transactions={addressTxs}
+              icon={AddressShape}
+            />
           </div>
           <div className={`${styles.row5}`}>
             <div className={`${styles.flexRowTop}`}>

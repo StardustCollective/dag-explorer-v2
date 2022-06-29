@@ -1,13 +1,8 @@
-import { Link } from 'react-router-dom';
 import styles from './DetailRow.module.scss';
+import { Content } from './Content';
 
 export const DetailRow = ({
-  borderBottom,
-  value,
-  title,
-  linkTo,
-  skeleton,
-  icon,
+  ...props
 }: {
   borderBottom?: boolean;
   value?: string;
@@ -15,20 +10,22 @@ export const DetailRow = ({
   linkTo?: string;
   skeleton?: boolean;
   icon?: string;
+  copy?: boolean;
+  date?: Date;
+  subValue?: string;
+  isLong?: boolean;
 }) => {
   return (
-    <div className={`${styles.txFlexRow} ${borderBottom ? styles.borderBottom : styles}`}>
+    <div className={`${styles.txFlexRow} ${props.borderBottom ? styles.borderBottom : styles}`}>
       <div className={styles.title}>
-        <p className={'headerSubtitle'}>{title}</p>
+        <p className={'headerSubtitle'}>{props.title}</p>
       </div>
-      {skeleton ? (
-        <div className={`${styles.skeleton} ${styles.value}`} />
-      ) : (
-        <div className={styles.content}>
-          {icon && <img src={icon} />}
-          <div className={styles.value}>{linkTo ? <Link to={linkTo + '/' + value}>{value}</Link> : <p>{value}</p>}</div>
-        </div>
-      )}
+      <div className={styles.mobile}>
+        <Content {...props} />
+      </div>
+      <div className={styles.desktop}>
+        <Content {...props} isLong={false} />
+      </div>
     </div>
   );
 };

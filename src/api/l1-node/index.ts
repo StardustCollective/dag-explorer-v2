@@ -1,5 +1,5 @@
 import { useFetch } from '../../utils/reactQuery';
-import { Peer } from '../types';
+import { Peer } from '../../types';
 
 export { useGetLastTransactionReference } from './dag';
 

@@ -1,4 +1,5 @@
 @use '../../styles/colors' as *;
+@use '../../styles/breakpoints' as *;
 
 .fullWidth {
   grid-column: 1 / span 14;
@@ -72,8 +73,129 @@
   color: $blue-600;
 }
 
+.viewAllMobile {
+  display: none;
+}
+
 .viewAll:hover {
   background-color: $grayCool-200;
   cursor: pointer;
   color: $blue-700;
+}
+
+@media screen and (max-width: $sm) {
+  .fullWidth2 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fila2 {
+    display: flex;
+    flex-direction: column;
+  }
+  .viewAll {
+    display: none;
+  }
+
+  .viewAllMobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 2.5rem;
+    background-color: $grayCool-100;
+    border: 1px solid $grayCool-200;
+    border-radius: 48px;
+    color: $blue-600;
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .fullWidth2 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fila1 {
+    margin-top: 2rem;
+    height: 20%;
+    margin-top: 4rem;
+  }
+
+  .fila2 {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+  .viewAll {
+    display: none;
+  }
+
+  .viewAllMobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 2.5rem;
+    background-color: $grayCool-100;
+    border: 1px solid $grayCool-200;
+    border-radius: 48px;
+    color: $blue-600;
+  }
+}
+
+@media screen and (max-width: $lg) {
+  .fullWidth2 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    grid-template-rows: 15% 85%;
+  }
+
+  .fila2 {
+    grid-template-columns: 1fr;
+  }
+
+  .viewAll {
+    display: none;
+  }
+
+  .viewAllMobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 2.5rem;
+    background-color: $grayCool-100;
+    border: 1px solid $grayCool-200;
+    border-radius: 48px;
+    color: $blue-600;
+  }
+}
+
+@media screen and (max-width: $md) {
+  .fullWidth2 {
+    display: flex;
+    flex-direction: column;
+    height: 98%;
+  }
+
+  .fila2 {
+    display: flex;
+    flex-direction: column;
+  }
+  .viewAll {
+    display: none;
+  }
+
+  .viewAllMobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 2.5rem;
+    background-color: $grayCool-100;
+    border: 1px solid $grayCool-200;
+    border-radius: 48px;
+    color: $blue-600;
+  }
 }

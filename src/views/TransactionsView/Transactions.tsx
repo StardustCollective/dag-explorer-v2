@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Transaction } from '../../api/types';
+import { Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { Subheader } from '../../components/Subheader/Subheader';
-import { SkeletonTransactionsTable } from '../../components/TransactionsTable/SkeletonTransactionsTable';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType } from '../../constants';
 import styles from './Transactions.module.scss';
@@ -24,14 +23,17 @@ export const Transactions = () => {
   const transactionsInfo = useGetAllTransactions(params);
   const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
-  //const [lastPage, setLastPage] = useState(false);
+  const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
-  const [skeleton, setSkeleton] = useState(true);
 
   useEffect(() => {
     if (!transactionsInfo.isFetching && !transactionsInfo.isError) {
-      setTransactions(transactionsInfo.data);
-      setSkeleton(false);
+      if (transactionsInfo.data.length > 0) {
+        setTransactions(transactionsInfo.data);
+      }
+      if (transactionsInfo.data.length < LIMIT) {
+        setLastPage(true);
+      }
     }
   }, [transactionsInfo.isFetching]);
 
@@ -40,6 +42,14 @@ export const Transactions = () => {
       setError(transactionsInfo.error.message);
     }
   }, [transactionsInfo.isError]);
+
+  useEffect(() => {
+    if (!transactionsInfo.isFetching) {
+      if (isPrev) {
+        setTransactions(transactionsInfo.data.reverse());
+      }
+    }
+  }, [transactionsInfo.isFetching]);
 
   const handleNextPage = () => {
     if (transactions) {
@@ -60,8 +70,11 @@ export const Transactions = () => {
       });
       setIsPrev(true);
       setPage((p) => p - 1);
+      setLastPage(false);
     }
   };
+
+  const skeleton = transactionsInfo.isFetching;
 
   return (
     <>
@@ -74,26 +87,32 @@ export const Transactions = () => {
             <div className={`${styles.flexRowBottom}`}>
               <span />
               <div className={styles.arrows}>
-                <ArrowButton handleClick={handlePrevPage} disabled />
-                <ArrowButton forward handleClick={handleNextPage} disabled />
+                <ArrowButton handleClick={handlePrevPage} disabled={page === 0 || transactionsInfo.isFetching} />
+                <ArrowButton forward handleClick={handleNextPage} disabled={transactionsInfo.isFetching || lastPage} />
               </div>
             </div>
           </div>
           <div className={`${styles.row2}`}>
-            {skeleton ? (
-              <SkeletonTransactionsTable rows={LIMIT} />
-            ) : (
-              <TransactionsTable transactions={transactions} icon={TransactionShape} />
-            )}
+            <TransactionsTable
+              skeleton={{ showSkeleton: skeleton }}
+              transactions={transactions}
+              icon={TransactionShape}
+            />
           </div>
           <div className={`${styles.row3}`}>
             <div className={`${styles.flexRowBottom}`}>
               <span />
 
               <div className={styles.arrows}>
-                {/*handlePagination*/}
-                <ArrowButton handleClick={() => handlePrevPage()} disabled={page < 0 || !isPrev} />
-                <ArrowButton forward handleClick={() => handleNextPage()} disabled={page < 0 || !isPrev} />
+                <ArrowButton
+                  handleClick={() => handlePrevPage()}
+                  disabled={page === 0 || transactionsInfo.isFetching}
+                />
+                <ArrowButton
+                  forward
+                  handleClick={() => handleNextPage()}
+                  disabled={transactionsInfo.isFetching || lastPage}
+                />
               </div>
             </div>
           </div>

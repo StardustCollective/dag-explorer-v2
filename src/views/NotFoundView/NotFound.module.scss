@@ -6,6 +6,8 @@
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
+  justify-self: center;
+  width: 40%;
 }
 
 .subContent {
@@ -19,13 +21,13 @@
 
 .notFound {
   margin-top: 8rem;
-  margin-bottom: 8rem;
-  color: $blue-800;
-  font-family: 'Lausanne';
+  margin-bottom: 4.5rem;
+  color: $blue-600;
+  font-family: 'IBM Plex Mono';
   font-style: normal;
   font-weight: 700;
   font-size: 192px;
-  line-height: 192px;
+  line-height: 168px;
 }
 
 .homeButton {
@@ -53,4 +55,25 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+}
+
+.sorry {
+  font-family: 'Lausanne';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  margin-bottom: 3rem;
+
+  color: $gray-500;
 }

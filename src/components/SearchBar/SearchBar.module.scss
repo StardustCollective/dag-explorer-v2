@@ -1,4 +1,5 @@
 @use '../../styles/colors' as *;
+@use '../../styles/breakpoints' as *;
 
 .searchBar {
   position: relative;
@@ -60,6 +61,10 @@
   font-size: 20px;
 }
 
+.shortSearchInput {
+  display: none;
+}
+
 .searchInput:focus {
   outline: none;
 }
@@ -76,4 +81,66 @@
   width: 12%;
   cursor: pointer;
   z-index: 2;
+}
+
+@media screen and (max-width: $sm) {
+  .searchBar {
+    flex-direction: column;
+    width: 90%;
+    align-items: flex-start;
+  }
+  .searchButton {
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .searchInput {
+    display: none;
+  }
+  .shortSearchInput {
+    display: block;
+    position: absolute;
+    left: 60px;
+    width: 80%;
+    height: 60%;
+    border: none;
+    font-size: 20px;
+  }
+
+  .searchBlock {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: $md) {
+  .searchBar {
+    flex-direction: column;
+    width: 90%;
+    align-items: flex-start;
+  }
+  .searchButton {
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .searchInput {
+    display: none;
+  }
+  .shortSearchInput {
+    display: block;
+    position: absolute;
+    left: 60px;
+    width: 80%;
+    height: 60%;
+    border: none;
+    font-size: 20px;
+  }
+
+  .shortSearchInput:focus {
+    outline: none;
+  }
+
+  .searchBlock {
+    display: flex;
+    flex-direction: column;
+  }
 }

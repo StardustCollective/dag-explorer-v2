@@ -1,4 +1,4 @@
-import { Balance, Transaction } from '../types';
+import { Balance, Transaction } from '../../types';
 import { useFetch } from '../../utils/reactQuery';
 
 const { REACT_APP_TESTNET_BLOCK_EXPLORER_URL } = process.env;
@@ -11,7 +11,6 @@ export const useGetAddressTransactions = (address: string, params?: any) =>
 export const useGetAddressSentTransactions = (address: string) =>
   useFetch<Transaction[]>(URL + '/' + address + '/transactions/sent');
 
-//add limit, search_after and search_before
 export const useGetAddressReceivedTransactions = (address: string) =>
   useFetch<Transaction[]>(URL + '/' + address + '/transactions/received');
 

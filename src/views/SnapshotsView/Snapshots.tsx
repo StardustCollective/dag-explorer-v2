@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Snapshot } from '../../api/types';
+import { Snapshot } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { SkeletonTransactionsTable } from '../../components/TransactionsTable/SkeletonTransactionsTable';
@@ -24,13 +24,15 @@ export const Snapshots = () => {
   const snapshotsInfo = useGetAllSnapshots(params);
   const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
-  //const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(true);
 
   useEffect(() => {
     if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
-      setSnapshots(snapshotsInfo.data);
+      if (snapshotsInfo.data.length > 0) {
+        setSnapshots(snapshotsInfo.data);
+      }
+
       setSkeleton(false);
     }
   }, [snapshotsInfo.isFetching]);
@@ -40,6 +42,14 @@ export const Snapshots = () => {
       setError(snapshotsInfo.error.message);
     }
   }, [snapshotsInfo.isError]);
+
+  useEffect(() => {
+    if (!snapshotsInfo.isFetching) {
+      if (isPrev) {
+        setSnapshots(snapshotsInfo.data.reverse());
+      }
+    }
+  }, [snapshotsInfo.isFetching]);
 
   const handleNextPage = () => {
     if (snapshots) {

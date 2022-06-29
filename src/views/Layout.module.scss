@@ -89,35 +89,6 @@
   grid-row: 2/2;
 }
 
-@media screen and (max-width: $md) {
-  .container {
-    background-color: lightgray;
-    grid-template-columns: 2rem repeat(6, 1fr) 2rem;
-  }
-  .fullWidth {
-    grid-column: 1 / span 8;
-    grid-template-columns: 2rem repeat(6, 1fr) 2rem;
-    gap: 1rem 1rem;
-    margin: 0;
-  }
-  .maxWidth {
-    grid-column: 2 / span 6;
-    grid-template-columns: repeat (6, 1fr);
-    gap: 1rem 1rem;
-    margin: 0;
-  }
-  .row {
-    grid-column-start: 2;
-    grid-column-end: 6;
-  }
-}
-
-@media screen and (max-width: $sm) {
-  .container {
-    grid-template-columns: 1rem repeat(6, 1fr) 1rem;
-  }
-}
-
 .text {
   color: $gray-600;
   font-weight: 400;
@@ -176,4 +147,75 @@
   background-color: $blue-600;
   color: $white;
   padding: 3px 12px;
+}
+
+@media screen and (min-width: $md) and (max-width: $lg) {
+  .container {
+    grid-template-columns: 1fr;
+    height: 2400px;
+    grid-template-rows: 4% 5% 5% 81% 5%;
+  }
+  .fullWidth {
+    grid-column: 1 / span 8;
+    grid-template-columns: 2rem repeat(6, 1fr) 2rem;
+    gap: 1rem 1rem;
+    margin: 0;
+  }
+  .maxWidth {
+    grid-column: 2 / span 6;
+    grid-template-columns: repeat (6, 1fr);
+    gap: 1rem 1rem;
+    margin: 0;
+  }
+  .row {
+    grid-column-start: 2;
+    grid-column-end: 6;
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  }
+  .fullWidth {
+    grid-column: 1 / span 8;
+    grid-template-columns: 2rem repeat(6, 1fr) 2rem;
+    gap: 1rem 1rem;
+    margin: 0;
+  }
+  .maxWidth {
+    grid-column: 2 / span 6;
+    grid-template-columns: repeat (6, 1fr);
+    gap: 1rem 1rem;
+    margin: 0;
+  }
+  .row {
+    grid-column-start: 2;
+    grid-column-end: 6;
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr !important;
+  }
+  .fullWidth {
+    grid-column: 1 / span 8;
+    grid-template-columns: 2rem repeat(6, 1fr) 2rem;
+    gap: 1rem 1rem;
+    margin: 0;
+  }
+  .maxWidth {
+    grid-column: 2 / span 6;
+    grid-template-columns: repeat (6, 1fr);
+    gap: 1rem 1rem;
+    margin: 0;
+  }
+  .row {
+    grid-column-start: 2;
+    grid-column-end: 6;
+  }
 }

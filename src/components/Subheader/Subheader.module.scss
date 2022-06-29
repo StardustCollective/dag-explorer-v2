@@ -1,4 +1,5 @@
 @use '../../styles/colors' as *;
+@use '../../styles/_breakpoints' as *;
 .fullWidth {
   grid-column: 1 / span 14;
   display: grid;
@@ -26,4 +27,20 @@
 .row {
   grid-column-start: 2;
   grid-column-end: span 12;
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .fullWidth {
+    display: flex;
+  }
+  .subheader {
+    margin-left: 1.5rem;
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .fullWidth {
+    grid-template-columns: none;
+    width: 100%;
+  }
 }

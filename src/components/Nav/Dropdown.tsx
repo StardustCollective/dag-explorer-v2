@@ -1,21 +1,23 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Network } from '../../constants';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useComponentVisible } from '../../utils/clickOutside';
 import styles from './Nav.module.scss';
 
 export const Dropdown = () => {
   const { network, changeNetwork } = useContext(NetworkContext) as NetworkContextType;
-  const [open, setOpen] = useState(false);
-  const options: Record<Network, string> = { mainnet1: 'Mainnet 1.0', mainnet2: 'Mainnet 2.0', testnet: 'Testnet' };
+
+  const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
+  const options: Record<Network, string> = { mainnet1: 'Mainnet 1.0', testnet: 'Testnet' };
   return (
-    <div className={`${styles.dropdown} ${styles.navSeparator}`}>
+    <div className={`${styles.dropdown} ${styles.navSeparator}`} ref={ref}>
       {
-        <button className={styles.network} onClick={() => setOpen(!open)}>
+        <button className={styles.network} onClick={() => setIsComponentVisible(!isComponentVisible)}>
           {options[network]} <i className={`${styles.arrow} ${styles.down}`}></i>
         </button>
       }
 
-      {open && (
+      {isComponentVisible && (
         <div className={styles.dropdownContent}>
           {Object.keys(options).map((option) =>
             option === network ? null : (
@@ -24,7 +26,7 @@ export const Dropdown = () => {
                 key={option}
                 onClick={() => {
                   changeNetwork(option as Network);
-                  setOpen(!open);
+                  setIsComponentVisible(!isComponentVisible);
                 }}
               >
                 {options[option]}

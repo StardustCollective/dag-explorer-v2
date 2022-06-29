@@ -1,9 +1,10 @@
 @use '../../styles/colors' as *;
+@use '../../styles/_breakpoints' as *;
 .fullWidth3 {
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
-  grid-template-rows: 10% 25% 6% 49% 10%;
+  grid-template-rows: 7% 20% 6% 60% 7%;
 }
 
 .row1 {
@@ -73,4 +74,50 @@
 .row5 {
   grid-row: 5/5;
   grid-column: 2 / span 12;
+}
+
+.searchMobile {
+  display: none;
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .searchMobile {
+    display: flex;
+    flex-direction: column;
+    background: $grayCool-100;
+  }
+  .subheader {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 10rem;
+  }
+  .flexRowBottom {
+    margin-left: 2rem;
+    width: 85%;
+  }
+  .flexRowTop {
+    width: 92%;
+  }
+  .fullWidth3 {
+    display: flex;
+    flex-direction: column;
+  }
+  .row1 {
+    height: 3.5rem;
+    margin-bottom: 1.7rem;
+  }
+  .row2 {
+    display: flex;
+  }
+  .row4 {
+    justify-content: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+  .spanContent {
+    width: 100%;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
 }

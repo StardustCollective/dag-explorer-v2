@@ -1,3 +1,4 @@
+@use '../../styles/breakpoints' as *;
 .fullWidth3 {
   grid-column: 1 / span 14;
   display: grid;
@@ -47,4 +48,25 @@
 .arrows {
   display: flex;
   gap: 0.5rem;
+}
+
+@media screen and(min-width: $sm) and (max-width: $md) {
+  .fullWidth3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .row1 {
+    align-self: flex-end;
+    margin-right: 1rem;
+    margin-top: 1rem;
+  }
+  .row2 {
+    display: flex;
+    width: 90%;
+  }
+  .row3 {
+    align-self: flex-end;
+    margin-right: 1rem;
+  }
 }

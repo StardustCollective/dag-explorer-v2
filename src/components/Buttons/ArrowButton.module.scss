@@ -106,3 +106,9 @@
   right: 7px;
   bottom: -3px;
 }
+
+button:disabled,
+button[disabled] {
+  background-color: $grayCool-200;
+  opacity: 0.5;
+}

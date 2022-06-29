@@ -20,12 +20,12 @@ export const Header = () => {
             <p className={'headerSubtitle'}>EXPLORE NETWORK</p>
             <div className={styles.networkHeaderGroup}>
               <p className={'networkName'}>{AVAILABLE_NETWORKS[network]}</p>
-              {network === 'mainnet2' && <p className={styles.badge}>2.0</p>}
+              {/*network === 'mainnet2' && <p className={styles.badge}>2.0</p>*/}
             </div>
           </div>
 
           {pathname !== '/' ? (
-            <div className={styles.searchbar}>
+            <div className={`${styles.searchbar} ${styles.headerSearchMobile}`}>
               <SearchBar />
             </div>
           ) : (

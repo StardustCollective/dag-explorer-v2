@@ -1,0 +1,32 @@
+@use '../../styles/colors' as *;
+.txnCell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+  border-bottom: 1px solid $gray-200;
+  overflow: hidden;
+  height: auto;
+  min-height: 3.5rem;
+}
+
+.txnCell > a {
+  color: $blue-700;
+}
+
+.txnEmptyRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+  border-bottom: 1px solid $gray-200;
+  overflow: hidden;
+  min-height: 2.5rem;
+}
+
+.txContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}

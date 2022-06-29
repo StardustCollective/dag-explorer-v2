@@ -1,5 +1,5 @@
 import { useFetch } from '../../utils/reactQuery';
-import { Snapshot } from '../types';
+import { Snapshot } from '../../types';
 
 const { REACT_APP_TESTNET_L0_NODE_URL } = process.env;
 

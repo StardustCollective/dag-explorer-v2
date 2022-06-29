@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetSnapshot, useGetSnapshotTransactions } from '../../api/block-explorer';
-import { Snapshot, Transaction } from '../../api/types';
+import { Snapshot, Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
-import { SkeletonTransactionsTable } from '../../components/TransactionsTable/SkeletonTransactionsTable';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType } from '../../constants';
 import styles from './SnapshotDetails.module.scss';
 import BlockShape from '../../assets/icons/BlockShape.svg';
 import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
+import { formatTime } from '../../utils/numbers';
+import { SearchBar } from '../../components/SearchBar/SearchBar';
 
 const LIMIT = 8;
 type Params = {
@@ -33,16 +34,17 @@ export const SnapshotDetails = () => {
   const [lastPage, setLastPage] = useState(false);
   const [date, setDate] = useState<Date>();
   const [error, setError] = useState<string>(undefined);
+
   useEffect(() => {
-    if (!snapshotTransactions.isLoading && !snapshotTransactions.isFetching && !snapshotTransactions.isError) {
-      if (snapshotTransactions.data.length > 0) {
+    if (!snapshotTransactions.isFetching && !snapshotTransactions.isError) {
+      if (snapshotTransactions.data) {
         setSnapshotTxs(snapshotTransactions.data);
       }
       if (snapshotTransactions.data.length < LIMIT) {
         setLastPage(true);
       }
     }
-  }, [snapshotTransactions.isLoading, snapshotTransactions.isFetching]);
+  }, [snapshotTransactions.isFetching]);
 
   useEffect(() => {
     if (!snapshotInfo.isLoading && !snapshotInfo.isFetching && !snapshotInfo.isError) {
@@ -62,7 +64,7 @@ export const SnapshotDetails = () => {
 
   useEffect(() => {
     if (snapshotInfo.status === 'error' || snapshotTransactions.status === 'error') {
-      setError(snapshotInfo.error.message);
+      setError(snapshotInfo.error && snapshotInfo.error.message);
     }
   }, [snapshotTransactions.status, snapshotInfo.status]);
 
@@ -85,12 +87,18 @@ export const SnapshotDetails = () => {
       });
       setIsPrev(true);
       setPage((p) => p - 1);
+      setLastPage(false);
     }
   };
 
   const skeleton = snapshotInfo.isLoading || !date;
   return (
     <>
+      <section className={`${styles.searchMobile}`}>
+        <div className={`${styles.row} ${styles.subheader}`}>
+          <SearchBar />
+        </div>
+      </section>
       <Subheader text={'Snapshot details'} item={IconType.Snapshot} />
       {error === '404' ? (
         <NotFound entire={false} />
@@ -110,14 +118,15 @@ export const SnapshotDetails = () => {
                       linkTo={'/snapshots'}
                       borderBottom
                       title={'SNAPSHOT HEIGHT'}
-                      value={snapshotHeight}
+                      value={snapshot && snapshot.ordinal.toString()}
                       skeleton={skeleton}
                       icon={SnapshotShape}
                     />
                     <DetailRow
                       borderBottom
                       title={'TIMESTAMP'}
-                      value={!skeleton ? date.toLocaleString() : ''}
+                      value={!skeleton ? formatTime(date) : ''}
+                      date={date}
                       skeleton={skeleton}
                     />
                     <DetailRow
@@ -127,50 +136,55 @@ export const SnapshotDetails = () => {
                       skeleton={skeleton}
                       icon={BlockShape}
                     />
-                    <DetailRow title={'TOTAL REWARDS'} value={''} />
                   </div>
                 </div>
               </div>
               <div className={`${styles.row3}`}>
                 <div className={`${styles.flexRowBottom}`}>
                   <p className="overviewText">Transactions</p>
-                  <div className={styles.arrows}>
-                    <ArrowButton
-                      handleClick={handlePrevPage}
-                      disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
-                    />
-                    <ArrowButton
-                      forward
-                      handleClick={handleNextPage}
-                      disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
-                    />
-                  </div>
+                  {!snapshotTransactions.isFetching && snapshotTxs && snapshotTxs.length > 0 && (
+                    <div className={styles.arrows}>
+                      <ArrowButton
+                        handleClick={handlePrevPage}
+                        disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
+                      />
+                      <ArrowButton
+                        forward
+                        handleClick={handleNextPage}
+                        disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
               <div className={`${styles.row4}`}>
-                {!error &&
-                  (snapshotTransactions.isFetching ? (
-                    <SkeletonTransactionsTable rows={LIMIT} />
-                  ) : (
-                    <TransactionsTable transactions={snapshotTxs} icon={SnapshotShape} />
-                  ))}
+                {!error && (
+                  <TransactionsTable
+                    skeleton={{ showSkeleton: snapshotTransactions.isFetching }}
+                    limit={LIMIT}
+                    transactions={snapshotTxs}
+                    icon={SnapshotShape}
+                  />
+                )}
               </div>
               <div className={`${styles.row5}`}>
-                <div className={`${styles.flexRowTop}`}>
-                  <span />
+                {!snapshotTransactions.isFetching && snapshotTxs && snapshotTxs.length > 0 && (
+                  <div className={`${styles.flexRowTop}`}>
+                    <span />
 
-                  <div className={styles.arrows}>
-                    <ArrowButton
-                      handleClick={handlePrevPage}
-                      disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
-                    />
-                    <ArrowButton
-                      forward
-                      handleClick={handleNextPage}
-                      disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
-                    />
+                    <div className={styles.arrows}>
+                      <ArrowButton
+                        handleClick={handlePrevPage}
+                        disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
+                      />
+                      <ArrowButton
+                        forward
+                        handleClick={handleNextPage}
+                        disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </>
           )}

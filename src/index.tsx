@@ -2,16 +2,16 @@ import ReactDOM from 'react-dom/client';
 import './styles/main.scss';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HomeView } from './views/HomeView/HomeView';
-import { Transactions } from './views/TransactionsView/Transactions';
 import { Layout } from './views/Layout';
-import { Snapshots } from './views/SnapshotsView/Snapshots';
 import { ThemeProvider } from './context/ThemeContext';
-import { TransactionDetail } from './views/TransactionDetailView/TransactionDetail';
-import { AddressDetails } from './views/AddressView/AddressDetails';
-import { SnapshotDetails } from './views/SnapshotsView/SnapshotDetails';
 import { NotFound } from './views/NotFoundView/NotFound';
-import { BlockDetails } from './views/BlocksView/BlockDetails';
 import { NetworkProvider } from './context/NetworkContext';
+import { SnapshotsWrapper } from './views/SnapshotsView/Wrappers/SnapshotsWrapper';
+import { SnapshotDetailsWrapper } from './views/SnapshotsView/Wrappers/SnapshotDetailsWrapper';
+import { TransactionsWrapper } from './views/TransactionsView/Wrappers/TransactionsWrapper';
+import { TransactionDetailsWrapper } from './views/TransactionsView/Wrappers/TransactionDetailsWrapper';
+import { BlockDetailsWrapper } from './views/BlocksView/Wrappers/BlockDetailsWrapper';
+import { AddressDetailsWrapper } from './views/AddressView/Wrappers/AddressDetailsWrapper';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -21,12 +21,12 @@ root.render(
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomeView />} />
-            <Route path="transactions" element={<Transactions />} />
-            <Route path="transactions/:transactionHash" element={<TransactionDetail />} />
-            <Route path="snapshots" element={<Snapshots />} />
-            <Route path="snapshots/:snapshotHeight" element={<SnapshotDetails />} />
-            <Route path="address/:addressId" element={<AddressDetails />} />
-            <Route path="blocks/:blockHash" element={<BlockDetails />} />
+            <Route path="transactions" element={<TransactionsWrapper />} />
+            <Route path="transactions/:transactionHash" element={<TransactionDetailsWrapper />} />
+            <Route path="snapshots" element={<SnapshotsWrapper />} />
+            <Route path="snapshots/:snapshotHeight" element={<SnapshotDetailsWrapper />} />
+            <Route path="address/:addressId" element={<AddressDetailsWrapper />} />
+            <Route path="blocks/:blockHash" element={<BlockDetailsWrapper />} />
             <Route path="*" element={<NotFound entire />} />
           </Route>
         </Routes>

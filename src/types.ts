@@ -11,18 +11,25 @@ export type Snapshot = {
 export type MainnetOneSnapshot = {
   dagAmount: number;
   feeAmount: number;
-  hash: string;
-  receiver: string;
-  sender: string;
-  snapshot: string;
-  timestamp: string;
+  height: number;
+  txCount: number;
+  snapshotHash?: string;
+  hash?: string;
+};
+
+export type MainnetOneAddressBalance = {
+  result: any;
 };
 
 export type MainnetOneTransaction = {
   amount: number;
   fee: number;
-  height: number;
-  txCount: number;
+  hash: string;
+  receiver: string;
+  sender: string;
+  snapshot: string;
+  timestamp: string;
+  snapshotHash?: string;
 };
 
 export type RewardTransaction = {
@@ -56,7 +63,7 @@ type BlockReference = {
 
 export type Block = {
   hash: string;
-  heigth: number;
+  height: number;
   transactions: string[];
   parent: BlockReference;
   snapshotHash: string;
@@ -100,4 +107,9 @@ export type Peer = {
 export type TotalSupply = {
   total: number;
   ordinal: number;
+};
+
+export type MainnetTotalSupply = {
+  height: number;
+  value: number;
 };
