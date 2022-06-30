@@ -1,3 +1,5 @@
+const formater = new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 });
+
 export const formatDagPrice = (dagInfo, btcInfo) => {
   const rounded = Math.round((dagInfo.usd + Number.EPSILON) * 100) / 100;
   const btcEquiv = (dagInfo.usd / btcInfo.usd).toFixed(8);
@@ -39,13 +41,13 @@ export const formatAmount = (amount: number, toFixed: number) => {
   let toReturn: string;
   if (regex) {
     const subString = regex[1].split('.')[1];
-    if (parseInt(subString) >= 2) {
+    if (subString && subString.length >= 2) {
       return regex[1];
     } else {
       toReturn = subString.length === 1 ? regex[1].concat('0') : regex[1].concat('00');
     }
   }
-  return toReturn ? toReturn : formatedValue;
+  return (toReturn ? toReturn : formater.format(parseFloat(formatedValue))) + ' DAG';
 };
 
 export const fitStringInCell = (value: string) => value.slice(0, 5) + '...' + value.slice(value.length - 5);

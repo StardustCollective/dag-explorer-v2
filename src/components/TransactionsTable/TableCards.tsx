@@ -24,7 +24,7 @@ export const TableCards = ({
   mainnetOneSnaps?: MainnetOneSnapshot[];
 }) => {
   const header = headerText && (
-    <div className={styles.headerCards}>
+    <div className={styles.headerCards} key={'headerText'}>
       <div className={styles.headerText}>{headerText}</div>
       <span />
       <img className={styles.icon} src={icon} height={'20px'} />
@@ -50,7 +50,7 @@ export const TableCards = ({
 
   if ((header && content.length === 1) || content.length === 0) {
     content.push(
-      <div className="overviewText">
+      <div className="overviewText" key={'noTxs'}>
         <p>There are no {txs ? 'transactions' : 'snapshots'}</p>
       </div>
     );

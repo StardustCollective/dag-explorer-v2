@@ -131,11 +131,7 @@ export const MainnetOneAddressDetails = () => {
                   skeleton={skeleton}
                   isLong
                 />
-                <DetailRow
-                  title={'BALANCE'}
-                  value={!skeleton ? formatAmount(balance, 8) + ' DAG' : ''}
-                  skeleton={skeleton}
-                />
+                <DetailRow title={'BALANCE'} value={!skeleton ? formatAmount(balance, 8) : ''} skeleton={skeleton} />
               </div>
             </div>
           </div>
