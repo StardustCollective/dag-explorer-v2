@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Snapshot } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { Subheader } from '../../components/Subheader/Subheader';
-import { SkeletonTransactionsTable } from '../../components/TransactionsTable/SkeletonTransactionsTable';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType } from '../../constants';
 import styles from './Snapshots.module.scss';

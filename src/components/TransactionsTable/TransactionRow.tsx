@@ -106,7 +106,7 @@ export const TransactionRow = ({
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
               {icon && <img src={icon} />}
-              <Link to={'/snapshots/' + snapshot.hash}>{snapshot.hash}</Link>
+              <Link to={'/snapshots/' + snapshot.hash}>{fitStringInCell(snapshot.hash)}</Link>
             </div>
           </div>
           <div className={`${styles.txnCell} ${styles.date}`}>
