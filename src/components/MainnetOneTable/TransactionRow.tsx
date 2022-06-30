@@ -45,7 +45,7 @@ export const TransactionRow = ({ icon, transaction }: { icon?: string; transacti
           <div className={styles.txnCell}>
             <Link to={'/snapshots/' + transaction.snapshot}>{fitStringInCell(transaction.snapshot)}</Link>
           </div>
-          <div className={styles.txnCell}>{transaction.fee}</div>
+          <div className={styles.txnCell}>{formatAmount(transaction.fee, 8)}</div>
           <div className={styles.txnCell}>
             {<Link to={'/address/' + transaction.sender}>{fitStringInCell(transaction.sender)}</Link>}
           </div>

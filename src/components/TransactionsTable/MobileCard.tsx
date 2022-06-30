@@ -80,7 +80,7 @@ const getTransactionElements = (transaction: Transaction) => {
   );
   content.push(
     <p className={styles.hash} key={6}>
-      {formatAmount(transaction.amount, 8) + ' DAG'}
+      {formatAmount(transaction.amount, 8)}
     </p>
   );
 
@@ -146,7 +146,7 @@ const getMainnetOneTxElements = (tx: MainnetOneTransaction) => {
   );
   content.push(
     <p className={styles.hash} key={6}>
-      {formatAmount(tx.amount, 8) + ' DAG'}
+      {formatAmount(tx.amount, 8)}
     </p>
   );
 

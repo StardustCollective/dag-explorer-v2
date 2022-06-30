@@ -84,7 +84,7 @@ export const TransactionDetail = () => {
                       />
                       <DetailRow
                         title={'TRANSACTION FEE'}
-                        value={!skeleton ? data.fee.toString() : ''}
+                        value={!skeleton ? formatAmount(data.fee, 8) : ''}
                         skeleton={skeleton}
                       />
                     </div>

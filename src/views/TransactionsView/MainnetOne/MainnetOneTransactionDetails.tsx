@@ -82,9 +82,7 @@ export const MainnetOneTransactionDetails = () => {
                       <DetailRow
                         borderBottom
                         title={'AMOUNT'}
-                        value={
-                          !skeleton ? formater.format(parseFloat(formatAmount(transaction.amount, 8))) + ' DAG' : ''
-                        }
+                        value={!skeleton ? formater.format(parseFloat(formatAmount(transaction.amount, 8))) : ''}
                         subValue={
                           !skeleton
                             ? '($' +
@@ -98,7 +96,7 @@ export const MainnetOneTransactionDetails = () => {
                       />
                       <DetailRow
                         title={'TRANSACTION FEE'}
-                        value={!skeleton ? transaction.fee.toString() : ''}
+                        value={!skeleton ? formatAmount(transaction.fee, 8) : ''}
                         skeleton={skeleton}
                       />
                     </div>
