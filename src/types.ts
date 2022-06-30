@@ -113,3 +113,21 @@ export type MainnetTotalSupply = {
   height: number;
   value: number;
 };
+
+export type Skeleton = {
+  headerCols?: string[];
+  forSnapshots?: boolean;
+  showSkeleton: boolean;
+};
+
+export type MainnetOneClusterInfo = {
+  id: {
+    hex: string;
+  };
+  ip: {
+    host: string;
+    port: number; //9001
+  };
+  status: 'Ready';
+  reputation: number;
+};

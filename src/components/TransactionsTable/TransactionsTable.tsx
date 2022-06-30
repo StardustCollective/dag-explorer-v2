@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { Snapshot, Transaction } from '../../types';
+import { Snapshot, Transaction, Skeleton } from '../../types';
 import { TableCards } from './TableCards';
 import { HeaderRow } from './HeaderRow';
 import { TransactionRow } from './TransactionRow';
@@ -7,12 +7,6 @@ import styles from './TransactionsTable.module.scss';
 import { SkeletonTransactionsTable } from './SkeletonTransactionsTable';
 import { useGetPrices } from '../../api/coingecko';
 import { useEffect, useState } from 'react';
-
-type Skeleton = {
-  headerCols?: string[];
-  forSnapshots?: boolean;
-  showSkeleton: boolean;
-};
 
 export const TransactionsTable = ({
   skeleton,

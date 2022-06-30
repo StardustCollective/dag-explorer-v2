@@ -1,16 +1,11 @@
 import { useLocation } from 'react-router-dom';
-import { MainnetOneSnapshot } from '../../types';
+import { MainnetOneSnapshot, Skeleton } from '../../types';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
 import { SkeletonTransactionsTable } from '../TransactionsTable/SkeletonTransactionsTable';
 import { TableCards } from '../TransactionsTable/TableCards';
 import styles from './MainnetOneTable.module.scss';
 import { SnapshotRow } from './SnapshotRow';
 
-type Skeleton = {
-  headerCols?: string[];
-  forSnapshots?: boolean;
-  showSkeleton: boolean;
-};
 export const MainnetOneSnapshotTable = ({
   skeleton,
   snapshots,

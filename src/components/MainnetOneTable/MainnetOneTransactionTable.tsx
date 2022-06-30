@@ -1,16 +1,10 @@
 import styles from './MainnetOneTable.module.scss';
 import { useLocation } from 'react-router-dom';
-import { MainnetOneTransaction } from '../../types';
+import { MainnetOneTransaction, Skeleton } from '../../types';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
 import { TransactionRow } from './TransactionRow';
 import { SkeletonTransactionsTable } from '../TransactionsTable/SkeletonTransactionsTable';
 import { TableCards } from '../TransactionsTable/TableCards';
-
-type Skeleton = {
-  headerCols?: string[];
-  forSnapshots?: boolean;
-  showSkeleton: boolean;
-};
 
 export const MainnetOneTransactionTable = ({
   skeleton,
