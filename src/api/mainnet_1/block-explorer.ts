@@ -15,7 +15,7 @@ export const useGetTransactionsBySnapshot = (hash: string) =>
   useFetch<MainnetOneTransaction[]>(REACT_APP_MAINNET_ONE_BE + '/snapshot/' + hash + '/transaction');
 
 export const useGetTransactionsByAddress = (hash: string) =>
-  useFetch<MainnetOneTransaction[]>(REACT_APP_MAINNET_ONE_BE + '/address/' + hash + '/transaction', { limit: 100 });
+  useFetch<MainnetOneTransaction[]>(REACT_APP_MAINNET_ONE_BE + '/address/' + hash + '/transaction', { limit: 500 });
 
 export const useGetTransaction = (hash: string) =>
   useFetch<MainnetOneTransaction>(REACT_APP_MAINNET_ONE_BE + '/transaction/' + hash);

@@ -9,7 +9,7 @@ import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetLatestTransactions } from '../../../api/mainnet_1/block-explorer';
 import { MainnetOneTransactionTable } from '../../../components/MainnetOneTable/MainnetOneTransactionTable';
 
-const LIMIT = 14;
+const LIMIT = 13;
 
 export const MainnetOneTransactions = () => {
   const [transactions, setTransactions] = useState<MainnetOneTransaction[] | undefined>(undefined);

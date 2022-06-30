@@ -21,6 +21,7 @@ export const Header = () => {
             <div className={styles.networkHeaderGroup}>
               <p className={'networkName'}>{AVAILABLE_NETWORKS[network]}</p>
               {/*network === 'mainnet2' && <p className={styles.badge}>2.0</p>*/}
+              {network === 'testnet' && <p className={styles.badge}>2.0</p>}
             </div>
           </div>
 

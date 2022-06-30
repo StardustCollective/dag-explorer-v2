@@ -37,9 +37,12 @@
 }
 
 .networkHeaderGroup .badge {
+  font-family: 'Lausane';
+  font-weight: 700;
+  font-style: normal;
   border-radius: 4px;
-  background-color: $blue-600;
-  color: $white;
+  background-color: $blue-100;
+  color: $blue-900;
   padding: 3px 12px;
 }
 

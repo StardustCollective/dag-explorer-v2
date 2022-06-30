@@ -8,7 +8,7 @@ export const Dropdown = () => {
   const { network, changeNetwork } = useContext(NetworkContext) as NetworkContextType;
 
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
-  const options: Record<Network, string> = { mainnet1: 'Mainnet 1.0', testnet: 'Testnet' };
+  const options: Record<Network, string> = { mainnet1: 'Mainnet 1.0', testnet: 'Testnet 2.0' };
   return (
     <div className={`${styles.dropdown} ${styles.navSeparator}`} ref={ref}>
       {
