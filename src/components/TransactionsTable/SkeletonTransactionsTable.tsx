@@ -40,13 +40,13 @@ export const SkeletonTransactionsTable = ({
       {headerText && <img className={styles.icon} src={icon} height={'20px'} />}{' '}
       <HeaderRow headerCols={headerCols} forSnapshots={forSnapshots} />
       {transactions.map((_, index) => (
-        <SkeletonTransactionRow isHomePage={isHomePage} key={index} />
+        <SkeletonTransactionRow forSnapshots={forSnapshots} isHomePage={isHomePage} key={index} />
       ))}
     </div>
   );
 };
 
-const SkeletonTransactionRow = ({ isHomePage }: { isHomePage: boolean }) => {
+const SkeletonTransactionRow = ({ isHomePage, forSnapshots }: { isHomePage: boolean; forSnapshots?: boolean }) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   return isHomePage ? (
     <>
@@ -60,7 +60,7 @@ const SkeletonTransactionRow = ({ isHomePage }: { isHomePage: boolean }) => {
         <div className={`${styles.skeleton} ${styles.value}`} />
       </div>
     </>
-  ) : network === 'mainnet1' ? (
+  ) : network === 'mainnet1' || forSnapshots ? (
     <>
       <div className={styles2.txnCell}>
         <div className={`${styles.skeleton} ${styles.value}`} />

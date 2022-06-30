@@ -90,11 +90,12 @@ export const Snapshots = () => {
             </div>
           </div>
           <div className={`${styles.row2}`}>
-            {skeleton ? (
-              <SkeletonTransactionsTable rows={LIMIT} />
-            ) : (
-              <TransactionsTable snapshots={snapshots} icon={SnapshotShape} />
-            )}
+            <TransactionsTable
+              skeleton={{ showSkeleton: skeleton, forSnapshots: true }}
+              limit={LIMIT}
+              snapshots={snapshots}
+              icon={SnapshotShape}
+            />
           </div>
           <div className={`${styles.row3}`}>
             <div className={`${styles.flexRowBottom}`}>
