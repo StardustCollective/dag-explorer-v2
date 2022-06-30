@@ -28,7 +28,7 @@ export const SkeletonTransactionsTable = ({
       className={
         isHomePage
           ? styles.homeContainer
-          : !transactions[0]
+          : location.pathname === '/snapshots'
           ? styles.containerSnap
           : network === 'testnet'
           ? styles.container
