@@ -21,11 +21,11 @@ const getSnapshotElements = (snapshot: Snapshot) => {
       <Link to={'/snapshots/' + snapshot.ordinal}>{snapshot.ordinal}</Link>
     </p>
   );
-  const date = new Date(snapshot.timestamp);
+
   content.push(
     <div key={1}>
-      <p className={styles.hash} data-tip={date.toUTCString()}>
-        {formatTime(date)}
+      <p className={styles.hash} data-tip={formatTime(snapshot.timestamp, 'full')}>
+        {formatTime(snapshot.timestamp, 'relative')}
       </p>
       <ReactTooltip />
     </div>
@@ -50,11 +50,11 @@ const getTransactionElements = (transaction: Transaction) => {
       {<img className={`${styles.copy}`} src={CopyIcon} onClick={() => handleCopyToClipboard(transaction.hash)} />}
     </p>
   );
-  const date = new Date(transaction.timestamp);
+
   content.push(
     <div key={2}>
-      <p className={styles.hash} data-tip={transaction.timestamp}>
-        {formatTime(date)}
+      <p className={styles.hash} data-tip={formatTime(transaction.timestamp, 'full')}>
+        {formatTime(transaction.timestamp, 'relative')}
       </p>
       <ReactTooltip />
     </div>
@@ -120,11 +120,11 @@ const getMainnetOneTxElements = (tx: MainnetOneTransaction) => {
       {<img className={`${styles.copy}`} src={CopyIcon} onClick={() => handleCopyToClipboard(tx.hash)} />}
     </p>
   );
-  const date = new Date(tx.timestamp);
+
   content.push(
     <div key={2}>
-      <p className={styles.hash} data-tip={tx.timestamp}>
-        {formatTime(date)}
+      <p className={styles.hash} data-tip={formatTime(tx.timestamp, 'full')}>
+        {formatTime(tx.timestamp, 'relative')}
       </p>
       <ReactTooltip />
     </div>

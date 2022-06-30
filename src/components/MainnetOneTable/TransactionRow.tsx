@@ -11,9 +11,10 @@ export const TransactionRow = ({ icon, transaction }: { icon?: string; transacti
   let snapRow = undefined;
   if (transaction) {
     const hash = fitStringInCell(transaction.hash);
-    const date = new Date(transaction.timestamp);
+    const date = formatTime(transaction.timestamp, 'relative');
+    const fullDate = formatTime(transaction.timestamp, 'full');
+
     if (isHomePage) {
-      const date = new Date(transaction.timestamp);
       snapRow = (
         <>
           <div className={styles.txnCell}>
@@ -23,7 +24,7 @@ export const TransactionRow = ({ icon, transaction }: { icon?: string; transacti
             </div>
           </div>
           <div className={styles.txnCell}>
-            <p data-tip={date.toUTCString()}>{formatTime(date)}</p>
+            <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
           <div className={styles.txnCell}>{formatAmount(transaction.amount, 8)}</div>
@@ -39,7 +40,7 @@ export const TransactionRow = ({ icon, transaction }: { icon?: string; transacti
             </div>
           </div>
           <div className={`${styles.txnCell} ${styles.date}`}>
-            <p data-tip={date.toUTCString()}>{formatTime(date)}</p>
+            <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
           <div className={styles.txnCell}>

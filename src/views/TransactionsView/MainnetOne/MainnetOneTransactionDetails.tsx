@@ -24,7 +24,6 @@ export const MainnetOneTransactionDetails = () => {
   const [transaction, setTransaction] = useState<MainnetOneTransaction | undefined>(undefined);
   const transactionInfo = useGetTransaction(transactionHash);
   const [error, setError] = useState<string>(undefined);
-  const [date, setDate] = useState<Date>();
 
   const [dagInfo, setDagInfo] = useState(null);
   const [btcInfo, setBtcInfo] = useState(null);
@@ -40,9 +39,7 @@ export const MainnetOneTransactionDetails = () => {
   useEffect(() => {
     if (!transactionInfo.isLoading && !transactionInfo.isFetching && !transactionInfo.isError) {
       if (transactionInfo.data) {
-        const timestamp = new Date(transactionInfo.data.timestamp);
         setTransaction(transactionInfo.data);
-        setDate(timestamp);
       }
     }
   }, [transactionInfo.isLoading, transactionInfo.isFetching]);
@@ -82,7 +79,7 @@ export const MainnetOneTransactionDetails = () => {
                       <DetailRow
                         borderBottom
                         title={'AMOUNT'}
-                        value={!skeleton ? formater.format(parseFloat(formatAmount(transaction.amount, 8))) : ''}
+                        value={!skeleton ? formatAmount(transaction.amount, 8) : ''}
                         subValue={
                           !skeleton
                             ? '($' +
@@ -144,10 +141,10 @@ export const MainnetOneTransactionDetails = () => {
                       <DetailRow
                         title={'TIMESTAMP'}
                         borderBottom
-                        value={!skeleton ? formatTime(date) : ''}
+                        value={!skeleton ? formatTime(transactionInfo.data.timestamp, 'relative') : ''}
                         skeleton={skeleton}
                         isLong
-                        date={date}
+                        date={!skeleton ? formatTime(transactionInfo.data.timestamp, 'full') : ''}
                       />
                       <DetailRow title={'STATUS'} value={'Success'} skeleton={skeleton} icon={Success} />
                     </div>

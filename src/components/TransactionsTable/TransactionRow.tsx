@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import { Snapshot, Transaction } from '../../types';
-import { formatTime, formatPrice, formatAmount, fitStringInCell } from '../../utils/numbers';
+import { formatPrice, formatAmount, fitStringInCell, formatTime } from '../../utils/numbers';
 import styles from './TransactionRow.module.scss';
 
 const formater = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 2 });
@@ -22,10 +22,10 @@ export const TransactionRow = ({
   let txRow = undefined;
 
   if (tx) {
+    const hash = fitStringInCell(tx.hash);
+    const date = formatTime(tx.timestamp, 'relative');
+    const fullDate = formatTime(tx.timestamp, 'full');
     if (isHomePage) {
-      const hash = fitStringInCell(tx.hash);
-      const date = new Date(tx.timestamp);
-
       txRow = (
         <>
           <div className={styles.txnCell}>
@@ -35,7 +35,7 @@ export const TransactionRow = ({
             </div>
           </div>
           <div className={styles.txnCell}>
-            <p data-tip={date.toUTCString()}>{formatTime(date)}</p>
+            <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
           <div className={`${styles.txnCell} ${styles.amount}`}>
@@ -47,8 +47,6 @@ export const TransactionRow = ({
         </>
       );
     } else {
-      const date = new Date(tx.timestamp);
-      const hash = fitStringInCell(tx.hash);
       const source = fitStringInCell(tx.source);
       const destination = fitStringInCell(tx.destination);
       txRow = (
@@ -60,7 +58,7 @@ export const TransactionRow = ({
             </div>
           </div>
           <div className={styles.txnCell}>
-            <p data-tip={date.toUTCString()}>{formatTime(date)}</p>
+            <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
           <div className={styles.txnCell}>
@@ -81,8 +79,9 @@ export const TransactionRow = ({
 
   let snapRow = undefined;
   if (snapshot) {
+    const date = formatTime(snapshot.timestamp, 'relative');
+    const fullDate = formatTime(snapshot.timestamp, 'full');
     if (isHomePage) {
-      const date = new Date(snapshot.timestamp);
       snapRow = (
         <>
           <div className={styles.txnCell}>
@@ -92,7 +91,7 @@ export const TransactionRow = ({
             </div>
           </div>
           <div className={styles.txnCell}>
-            <p data-tip={date.toUTCString()}>{formatTime(date)}</p>
+            <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
 
@@ -100,7 +99,6 @@ export const TransactionRow = ({
         </>
       );
     } else {
-      const date = new Date(snapshot.timestamp);
       snapRow = (
         <>
           <div className={styles.txnCell}>
@@ -110,7 +108,7 @@ export const TransactionRow = ({
             </div>
           </div>
           <div className={`${styles.txnCell} ${styles.date}`}>
-            <p data-tip={date.toUTCString()}>{formatTime(date)}</p>
+            <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
 

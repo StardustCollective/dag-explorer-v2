@@ -11,7 +11,7 @@ export const DetailRow = ({
   skeleton?: boolean;
   icon?: string;
   copy?: boolean;
-  date?: Date;
+  date?: string;
   subValue?: string;
   isLong?: boolean;
 }) => {

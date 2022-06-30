@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-import { fitStringInCell } from '../../utils/numbers';
+import { fitStringInCell, formatTime } from '../../utils/numbers';
 import styles from './DetailRow.module.scss';
 import CopyIcon from '../../assets/icons/Copy.svg';
 
@@ -15,7 +15,7 @@ export const Content = ({
   skeleton?: boolean;
   icon?: string;
   copy?: boolean;
-  date?: Date;
+  date?: string;
   subValue?: string;
   isLong?: boolean;
 }) => {
@@ -42,7 +42,7 @@ export const Content = ({
         ) : (
           <p>{isLong && !date ? fitStringInCell(value) : value}</p>
         )}
-        {date && !isLong && <p className={styles.fullDate}>{'(' + date.toUTCString() + ')'}</p>}
+        {date && !isLong && <p className={styles.fullDate}>{'(' + formatTime(date, 'full') + ')'}</p>}
         {copy && !copied && !isLong && (
           <img className={`${styles.copy}`} src={CopyIcon} onClick={() => handleCopyToClipboard(value)} />
         )}

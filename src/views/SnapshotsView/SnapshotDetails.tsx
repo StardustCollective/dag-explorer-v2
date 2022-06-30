@@ -11,8 +11,8 @@ import styles from './SnapshotDetails.module.scss';
 import BlockShape from '../../assets/icons/BlockShape.svg';
 import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatTime } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
+import { formatTime } from '../../utils/numbers';
 
 const LIMIT = 8;
 type Params = {
@@ -32,7 +32,6 @@ export const SnapshotDetails = () => {
   const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
-  const [date, setDate] = useState<Date>();
   const [error, setError] = useState<string>(undefined);
 
   useEffect(() => {
@@ -49,8 +48,6 @@ export const SnapshotDetails = () => {
   useEffect(() => {
     if (!snapshotInfo.isLoading && !snapshotInfo.isFetching && !snapshotInfo.isError) {
       setSnapshot(snapshotInfo.data);
-      const timestamp = new Date(snapshotInfo.data.timestamp);
-      setDate(timestamp);
     }
   }, [snapshotInfo.isLoading, snapshotInfo.isFetching]);
 
@@ -91,7 +88,7 @@ export const SnapshotDetails = () => {
     }
   };
 
-  const skeleton = snapshotInfo.isLoading || !date;
+  const skeleton = snapshotInfo.isLoading;
   return (
     <>
       <section className={`${styles.searchMobile}`}>
@@ -125,8 +122,8 @@ export const SnapshotDetails = () => {
                     <DetailRow
                       borderBottom
                       title={'TIMESTAMP'}
-                      value={!skeleton ? formatTime(date) : ''}
-                      date={date}
+                      value={!skeleton ? formatTime(snapshotInfo.data.timestamp, 'relative') : ''}
+                      date={!skeleton ? snapshotInfo.data.timestamp : ''}
                       skeleton={skeleton}
                     />
                     <DetailRow

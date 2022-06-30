@@ -1,3 +1,8 @@
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
 const formater = new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 });
 
 export const formatDagPrice = (dagInfo, btcInfo) => {
@@ -7,29 +12,6 @@ export const formatDagPrice = (dagInfo, btcInfo) => {
 };
 
 export const formatMarketVol = (formater, dagInfo) => '24h Trading Vol: $' + formater.format(dagInfo.usd_24h_vol);
-
-export const formatTime = (date: Date) => {
-  const actualDate = new Date();
-  const diff = actualDate.getTime() - date.getTime();
-  const secDiff = diff / 1000;
-  const minDiff = diff / 60 / 1000;
-  const hourDiff = diff / 3600 / 1000;
-  const dayDiff = diff / 86400 / 1000;
-
-  if (dayDiff > 1) {
-    return Math.floor(dayDiff) + ' days ago';
-  }
-
-  if (hourDiff > 1) {
-    return Math.floor(hourDiff) + ' hs ago';
-  }
-
-  if (minDiff < 60 && minDiff > 1) {
-    return Math.floor(minDiff) + ' mins ago';
-  }
-
-  return Math.floor(secDiff) + ' secs ago';
-};
 
 export const formatPrice = (amount: string, dagInfo: any, toFixed: number) => {
   return (parseFloat(amount) * dagInfo.usd).toFixed(toFixed);
@@ -51,3 +33,8 @@ export const formatAmount = (amount: number, toFixed: number) => {
 };
 
 export const fitStringInCell = (value: string) => value.slice(0, 5) + '...' + value.slice(value.length - 5);
+
+export const formatTotalSupply = () => 'Total Supply: 3,550,000,000';
+
+export const formatTime = (timestamp: string, format: 'full' | 'relative') =>
+  format === 'full' ? dayjs(timestamp)['$d'] : dayjs().to(dayjs(timestamp));

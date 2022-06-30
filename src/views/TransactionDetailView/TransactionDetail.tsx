@@ -27,7 +27,6 @@ export const TransactionDetail = () => {
   const [btcInfo, setBtcInfo] = useState(null);
   const prices = useGetPrices();
   const [error, setError] = useState<string>(undefined);
-  const [date, setDate] = useState<Date>();
   useEffect(() => {
     if (!prices.isFetching && !prices.isError) {
       setDagInfo(prices.data['constellation-labs']);
@@ -37,9 +36,7 @@ export const TransactionDetail = () => {
 
   useEffect(() => {
     if (!transaction.isFetching && !transaction.isError) {
-      const timestamp = new Date(transaction.data.timestamp);
       setData(transaction.data);
-      setDate(timestamp);
     }
   }, [transaction.isFetching]);
 
@@ -140,10 +137,10 @@ export const TransactionDetail = () => {
                       <DetailRow
                         title={'TIMESTAMP'}
                         borderBottom
-                        value={!skeleton ? formatTime(date) : ''}
+                        value={!skeleton ? formatTime(transaction.data.timestamp, 'relative') : ''}
                         skeleton={skeleton}
                         isLong
-                        date={date}
+                        date={!skeleton ? transaction.data.timestamp : ''}
                       />
                       <DetailRow title={'STATUS'} value={'Success'} skeleton={skeleton} icon={Success} />
                     </div>

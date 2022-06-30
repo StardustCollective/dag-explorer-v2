@@ -7,17 +7,16 @@ import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { IconType } from '../../constants';
-import { formatTime } from '../../utils/numbers';
 import { NotFound } from '../NotFoundView/NotFound';
 import styles from './BlockDetails.module.scss';
 import { BlockDetailsTableWrapper } from './BlockDetailsTableWrapper';
+import { formatTime } from '../../utils/numbers';
 
 const LIMIT = 10;
 export const BlockDetails = () => {
   const { blockHash } = useParams();
   const [blockData, setBlockData] = useState<Block | undefined>(undefined);
   const blockInfo = useGetBlock(blockHash);
-  const [date, setDate] = useState<Date>();
   const [page, setPage] = useState<number>(1);
   const [isLastPage, setIsLastPage] = useState(false);
   const [hasTx, setHasTx] = useState(false);
@@ -27,8 +26,6 @@ export const BlockDetails = () => {
     if (!blockInfo.isLoading && !blockInfo.isFetching) {
       if (blockInfo.data) {
         setBlockData(blockInfo.data);
-        const timestamp = new Date(blockInfo.data.timestamp);
-        setDate(timestamp);
       }
     }
   }, [blockInfo.isLoading, blockInfo.isFetching]);
@@ -95,9 +92,9 @@ export const BlockDetails = () => {
                 <DetailRow
                   borderBottom
                   title={'TIMESTAMP'}
-                  value={!skeleton ? formatTime(date) : ''}
+                  value={!skeleton ? formatTime(blockInfo.data.timestamp, 'relative') : ''}
                   skeleton={skeleton}
-                  date={date}
+                  date={!skeleton ? formatTime(blockInfo.data.timestamp, 'full') : ''}
                   isLong
                 />
               </div>
