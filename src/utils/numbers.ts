@@ -42,7 +42,7 @@ export const formatAmount = (amount: number, toFixed: number) => {
   if (regex) {
     const subString = regex[1].split('.')[1];
     if (subString && subString.length >= 2) {
-      return regex[1];
+      return regex[1] + ' DAG';
     } else {
       toReturn = subString.length === 1 ? regex[1].concat('0') : regex[1].concat('00');
     }
