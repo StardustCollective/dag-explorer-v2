@@ -84,7 +84,10 @@ export const MainnetOneSnapshots = () => {
           </div>
           <div className={`${styles.row2}`}>
             <MainnetOneSnapshotTable
-              skeleton={{ showSkeleton: skeleton }}
+              skeleton={{
+                showSkeleton: skeleton,
+                forSnapshots: true,
+              }}
               limit={LIMIT}
               snapshots={snapshots}
               icon={SnapshotShape}

@@ -28,10 +28,10 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
           <p className={styles.headerText}>{forSnapshots ? 'HEIGHT' : 'TXN HASH'}</p>
         </div>
         <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? 'DAG AMOUNT' : 'TIMESTAMP'}</p>
+          <p className={styles.headerText}>{forSnapshots ? 'TX COUNT' : 'TIMESTAMP'}</p>
         </div>
         <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? 'TX COUNT' : 'AMOUNT'}</p>
+          <p className={styles.headerText}>{'AMOUNT'}</p>
         </div>
       </>
     ) : (
@@ -54,15 +54,14 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
       </div>
 
       <div className={styles.headerColumn}>
-        <p className={styles.headerText}>DAG AMOUNT</p>
-      </div>
-
-      <div className={styles.headerColumn}>
-        <p className={styles.headerText}>FEE AMOUNT</p>
-      </div>
-
-      <div className={styles.headerColumn}>
         <p className={styles.headerText}>TRANSACTION COUNT</p>
+      </div>
+
+      <div className={styles.headerColumn}>
+        <p className={styles.headerText}>FEE</p>
+      </div>
+      <div className={styles.headerColumn}>
+        <p className={styles.headerText}>AMOUNT</p>
       </div>
     </>
   ) : (

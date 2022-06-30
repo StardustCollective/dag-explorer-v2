@@ -23,13 +23,12 @@ export const SkeletonTransactionsTable = ({
   const isHomePage = location.pathname === '/';
   const { network } = useContext(NetworkContext) as NetworkContextType;
   const transactions = Array.from({ length: rows });
-
   return (
     <div
       className={
         isHomePage
           ? styles.homeContainer
-          : !transactions
+          : !transactions[0]
           ? styles.containerSnap
           : network === 'testnet'
           ? styles.container

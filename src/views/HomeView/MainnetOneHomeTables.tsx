@@ -38,7 +38,7 @@ const MainnetOneHomeTables = () => {
   return (
     <>
       <MainnetOneSnapshotTable
-        skeleton={{ showSkeleton: !snapshots, forSnapshots: true, headerCols: ['HEIGHT', 'DAG AMOUNT', 'TX COUNT'] }}
+        skeleton={{ showSkeleton: !snapshots, forSnapshots: true, headerCols: ['HEIGHT', 'TX COUNT', 'AMOUNT'] }}
         limit={LIMIT}
         snapshots={snapshots}
         icon={SnapshotShape}

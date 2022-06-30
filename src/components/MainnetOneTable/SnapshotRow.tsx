@@ -19,8 +19,8 @@ export const SnapshotRow = ({ icon, snapshot }: { icon?: string; snapshot?: Main
               <Link to={'/snapshots/' + snapshot.height}>{snapshot.height}</Link>
             </div>
           </div>
-          <div className={styles.txnCell}>{formatAmount(snapshot.dagAmount, 8)}</div>
           <div className={styles.txnCell}>{snapshot.txCount}</div>
+          <div className={styles.txnCell}>{formatAmount(snapshot.dagAmount, 8)}</div>
         </>
       );
     } else {
@@ -32,9 +32,9 @@ export const SnapshotRow = ({ icon, snapshot }: { icon?: string; snapshot?: Main
               <Link to={'/snapshots/' + snapshot.height}>{snapshot.height}</Link>
             </div>
           </div>
-          <div className={`${styles.txnCell}`}>{snapshot.dagAmount}</div>
-          <div className={styles.txnCell}>{snapshot.feeAmount}</div>
           <div className={styles.txnCell}>{snapshot.txCount}</div>
+          <div className={styles.txnCell}>{formatAmount(snapshot.feeAmount, 8)}</div>
+          <div className={`${styles.txnCell}`}>{formatAmount(snapshot.dagAmount, 8)}</div>
         </>
       );
     }
