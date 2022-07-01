@@ -60,7 +60,7 @@ export const TransactionsTable = ({
   let txRows =
     transactions &&
     transactions.length > 0 &&
-    transactions.map((tx) => <TransactionRow dagAmount={dagInfo.usd} key={tx.hash} tx={tx} icon={icon} />);
+    transactions.map((tx) => <TransactionRow dagInfo={dagInfo} key={tx.hash} tx={tx} icon={icon} />);
 
   let snapRows =
     snapshots &&

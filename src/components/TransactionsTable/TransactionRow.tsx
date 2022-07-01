@@ -8,12 +8,12 @@ export const TransactionRow = ({
   tx,
   icon,
   snapshot,
-  dagAmount,
+  dagInfo,
 }: {
   tx?: Transaction;
   icon?: string;
   snapshot?: Snapshot;
-  dagAmount?: number;
+  dagInfo?: number;
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -38,7 +38,7 @@ export const TransactionRow = ({
             <ReactTooltip />
           </div>
           <div className={`${styles.txnCell} ${styles.amount}`}>
-            <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagAmount, 2) + ' USD)'}</div>
+            <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>
             <div className={styles.dag}>{formatAmount(tx.amount, 8)}</div>
           </div>
         </>
