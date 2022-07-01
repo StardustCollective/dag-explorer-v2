@@ -4,17 +4,37 @@ import { SearchableItem } from '../../constants';
 import { getSearchInputType } from '../../utils/search';
 import styles from './SearchBar.module.scss';
 
+export const handleSearch = (searchText: string, performAction: (url: string) => void) => {
+  const inputType = getSearchInputType(searchText);
+  switch (inputType) {
+    case SearchableItem.Address: {
+      const url = '/address/' + searchText;
+      performAction(url);
+      break;
+    }
+    case SearchableItem.Snapshot: {
+      const url = '/snapshots/' + searchText;
+      performAction(url);
+      break;
+    }
+    case SearchableItem.Transaction: {
+      const url = '/transactions/' + searchText;
+      performAction(url);
+      break;
+    }
+    default: {
+      const url = '/404';
+      performAction(url);
+      break;
+    }
+  }
+};
+
 export const SearchBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [searchText, setSearchText] = useState<string>('');
-
-  const handleKey = (e) => {
-    if (e.code === 'Enter' && searchText !== '') {
-      handleSearch();
-    }
-  };
 
   const isSameLocation = (url: string) => url === location.pathname;
 
@@ -22,29 +42,9 @@ export const SearchBar = () => {
     isSameLocation(url) ? window.location.reload() : navigate(url);
   };
 
-  const handleSearch = () => {
-    const inputType = getSearchInputType(searchText);
-    switch (inputType) {
-      case SearchableItem.Address: {
-        const url = '/address/' + searchText;
-        performAction(url);
-        break;
-      }
-      case SearchableItem.Snapshot: {
-        const url = '/snapshots/' + searchText;
-        performAction(url);
-        break;
-      }
-      case SearchableItem.Transaction: {
-        const url = '/transactions/' + searchText;
-        performAction(url);
-        break;
-      }
-      default: {
-        const url = '/404';
-        performAction(url);
-        break;
-      }
+  const handleKey = (e) => {
+    if (e.code === 'Enter' && searchText !== '') {
+      handleSearch(searchText, performAction);
     }
   };
 
@@ -68,7 +68,7 @@ export const SearchBar = () => {
       <div
         className={styles.searchButton}
         onClick={() => {
-          handleSearch();
+          handleSearch(searchText, performAction);
         }}
       >
         <p> Search </p>
