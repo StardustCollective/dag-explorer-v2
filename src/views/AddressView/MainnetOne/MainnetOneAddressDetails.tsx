@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MainnetOneTransaction } from '../../../types';
 import { ArrowButton } from '../../../components/Buttons/ArrowButton';
@@ -11,15 +11,17 @@ import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetTransactionsByAddress } from '../../../api/mainnet_1/block-explorer';
 import { useGetAddressBalance } from '../../../api/mainnet_1/load-balancer';
 import { MainnetOneTransactionTable } from '../../../components/MainnetOneTable/MainnetOneTransactionTable';
-import { formatAmount } from '../../../utils/numbers';
+import { formatAmount, formatPrice } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
+import { PricesContext, PricesContextType } from '../../../context/PricesContext';
 
 const LIMIT = 10;
 
 export const MainnetOneAddressDetails = () => {
   const { addressId } = useParams();
+  const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<MainnetOneTransaction[] | undefined>(undefined);
-  const [balance, setBalance] = useState<number | undefined>(undefined);
+  const [balance, setBalance] = useState(undefined);
   const addressInfo = useGetTransactionsByAddress(addressId);
   const addressBalance = useGetAddressBalance(addressId);
   const [isPrev, setIsPrev] = useState(false);
@@ -112,7 +114,7 @@ export const MainnetOneAddressDetails = () => {
         </div>
       </section>
       <Subheader text={'Address details'} item={IconType.Address} />
-      {error === '404' ? (
+      {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
@@ -130,8 +132,14 @@ export const MainnetOneAddressDetails = () => {
                   value={skeleton ? '' : addressId}
                   skeleton={skeleton}
                   isLong
+                  isMain
                 />
-                <DetailRow title={'BALANCE'} value={!skeleton ? formatAmount(balance, 8) : ''} skeleton={skeleton} />
+                <DetailRow
+                  title={'BALANCE'}
+                  value={!skeleton ? formatAmount(balance, 8) : ''}
+                  subValue={!skeleton ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
+                  skeleton={skeleton}
+                />
               </div>
             </div>
           </div>

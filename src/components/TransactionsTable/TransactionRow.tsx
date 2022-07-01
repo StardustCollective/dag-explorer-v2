@@ -4,7 +4,6 @@ import { Snapshot, Transaction } from '../../types';
 import { formatPrice, formatAmount, fitStringInCell, formatTime } from '../../utils/numbers';
 import styles from './TransactionRow.module.scss';
 
-const formater = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 2 });
 export const TransactionRow = ({
   tx,
   icon,
@@ -39,9 +38,7 @@ export const TransactionRow = ({
             <ReactTooltip />
           </div>
           <div className={`${styles.txnCell} ${styles.amount}`}>
-            <div className={styles.usd}>
-              {'($' + formater.format(parseFloat(formatPrice(formatAmount(tx.amount, 8), dagAmount, 8))) + ' USD)'}
-            </div>
+            <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagAmount, 2) + ' USD)'}</div>
             <div className={styles.dag}>{formatAmount(tx.amount, 8)}</div>
           </div>
         </>

@@ -71,6 +71,13 @@
   margin-left: 1rem;
 }
 
+.truncate {
+  width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .subValue {
   font-family: 'IBM Plex Mono';
   font-style: normal;
@@ -85,9 +92,18 @@
   display: none;
 }
 
+.status {
+  border-radius: 4px;
+  height: 35px;
+  padding: 0px 6px;
+  background: $green-50;
+  color: $green-700;
+}
+
 @media screen and (max-width: $lg) {
   .value {
     flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -100,7 +116,7 @@
   }
 
   .title {
-    width: 45%;
+    width: 40%;
     margin-right: 0;
   }
 

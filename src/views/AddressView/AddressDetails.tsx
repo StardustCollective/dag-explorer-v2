@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetAddressBalance, useGetAddressTransactions } from '../../api/block-explorer';
 import { Transaction } from '../../types';
@@ -10,8 +10,9 @@ import { IconType } from '../../constants';
 import styles from './AddressDetails.module.scss';
 import AddressShape from '../../assets/icons/AddressShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatAmount } from '../../utils/numbers';
+import { formatPrice } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
+import { PricesContext, PricesContextType } from '../../context/PricesContext';
 
 const LIMIT = 10;
 
@@ -23,8 +24,9 @@ type Params = {
 
 export const AddressDetails = () => {
   const { addressId } = useParams();
+  const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<Transaction[] | undefined>(undefined);
-  const [balance, setBalance] = useState<string | undefined>(undefined);
+  const [balance, setBalance] = useState<number | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const addressInfo = useGetAddressTransactions(addressId, params);
   const addressBalance = useGetAddressBalance(addressId);
@@ -46,7 +48,7 @@ export const AddressDetails = () => {
 
   useEffect(() => {
     if (!addressBalance.isFetching && !addressBalance.isError) {
-      setBalance(formatAmount(addressBalance.data.balance, 8));
+      setBalance(addressBalance.data.balance);
     }
   }, [addressBalance.isFetching]);
 
@@ -100,7 +102,7 @@ export const AddressDetails = () => {
         </div>
       </section>
       <Subheader text={'Address details'} item={IconType.Address} />
-      {error === '404' ? (
+      {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
@@ -118,10 +120,12 @@ export const AddressDetails = () => {
                   value={skeleton ? '' : addressId}
                   skeleton={skeleton}
                   isLong
+                  isMain
                 />
                 <DetailRow
                   title={'BALANCE'}
                   value={skeleton ? '' : balance ? balance + ' DAG' : ''}
+                  subValue={!skeleton ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
                   skeleton={skeleton}
                 />
               </div>

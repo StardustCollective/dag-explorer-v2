@@ -56,7 +56,7 @@ export const TransactionDetail = () => {
         </div>
       </section>
       <Subheader text={'Transaction details'} item={IconType.Transaction} />
-      {error === '404' ? (
+      {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
@@ -95,6 +95,7 @@ export const TransactionDetail = () => {
                         icon={AddressShape}
                         copy
                         isLong
+                        isMain
                       />
                       <DetailRow
                         title={'TO'}
@@ -104,6 +105,7 @@ export const TransactionDetail = () => {
                         icon={AddressShape}
                         copy
                         isLong
+                        isMain
                       />
                     </div>
                     <div className={`${styles.txGroup}`}>
@@ -115,6 +117,7 @@ export const TransactionDetail = () => {
                         icon={TransactionShape}
                         copy
                         isLong
+                        isMain
                       />
                       <DetailRow
                         title={'BLOCK'}
@@ -125,6 +128,7 @@ export const TransactionDetail = () => {
                         icon={BlockShape}
                         copy
                         isLong
+                        isMain
                       />
                       <DetailRow
                         title={'SNAPSHOT HEIGHT'}

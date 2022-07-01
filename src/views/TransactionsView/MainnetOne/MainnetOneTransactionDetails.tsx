@@ -17,8 +17,6 @@ import { Card } from '../../../components/Card/Card';
 import { formatAmount, formatDagPrice, formatPrice, formatTime } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 
-const formater = new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 });
-
 export const MainnetOneTransactionDetails = () => {
   const { transactionHash } = useParams();
   const [transaction, setTransaction] = useState<MainnetOneTransaction | undefined>(undefined);
@@ -59,7 +57,7 @@ export const MainnetOneTransactionDetails = () => {
         </div>
       </section>
       <Subheader text={'Transaction details'} item={IconType.Transaction} />
-      {error === '404' ? (
+      {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
@@ -80,15 +78,7 @@ export const MainnetOneTransactionDetails = () => {
                         borderBottom
                         title={'AMOUNT'}
                         value={!skeleton ? formatAmount(transaction.amount, 8) : ''}
-                        subValue={
-                          !skeleton
-                            ? '($' +
-                              formater.format(
-                                parseFloat(formatPrice(formatAmount(transaction.amount, 8), dagInfo, 2))
-                              ) +
-                              ' USD)'
-                            : ''
-                        }
+                        subValue={!skeleton ? '($' + formatPrice(transaction.amount, dagInfo, 2) + ' USD)' : ''}
                         skeleton={skeleton}
                       />
                       <DetailRow
@@ -107,6 +97,7 @@ export const MainnetOneTransactionDetails = () => {
                         icon={AddressShape}
                         copy
                         isLong
+                        isMain
                       />
                       <DetailRow
                         title={'TO'}
@@ -116,6 +107,7 @@ export const MainnetOneTransactionDetails = () => {
                         icon={AddressShape}
                         copy
                         isLong
+                        isMain
                       />
                     </div>
                     <div className={`${styles.txGroup}`}>
@@ -127,6 +119,7 @@ export const MainnetOneTransactionDetails = () => {
                         icon={TransactionShape}
                         copy
                         isLong
+                        isMain
                       />
                       <DetailRow
                         title={'SNAPSHOT HASH'}
@@ -137,6 +130,7 @@ export const MainnetOneTransactionDetails = () => {
                         icon={SnapshotShape}
                         copy
                         isLong
+                        isMain
                       />
                       <DetailRow
                         title={'TIMESTAMP'}
@@ -146,7 +140,7 @@ export const MainnetOneTransactionDetails = () => {
                         isLong
                         date={!skeleton ? formatTime(transactionInfo.data.timestamp, 'full') : ''}
                       />
-                      <DetailRow title={'STATUS'} value={'Success'} skeleton={skeleton} icon={Success} />
+                      <DetailRow title={'STATUS'} value={'Success'} skeleton={skeleton} icon={Success} isStatus />
                     </div>
                   </div>
                 </div>

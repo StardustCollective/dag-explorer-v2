@@ -62,7 +62,7 @@ export const BlockDetails = () => {
         </div>
       </section>
       <Subheader text={'Block details'} item={IconType.Block} />
-      {error === '404' ? (
+      {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (
         <main className={`${styles.fullWidth3}`}>

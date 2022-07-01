@@ -80,7 +80,7 @@ export const MainnetOneTransactions = () => {
   return (
     <>
       <Subheader text={'Transactions'} item={IconType.Transaction} />
-      {error === '404' ? (
+      {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (
         <main className={`${styles.fullWidth3}`}>

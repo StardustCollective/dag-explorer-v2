@@ -69,7 +69,7 @@ export const MainnetOneSnapshots = () => {
   return (
     <>
       <Subheader text={'Snapshots'} item={IconType.Snapshot} />
-      {error === '404' ? (
+      {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (
         <main className={`${styles.fullWidth3}`}>

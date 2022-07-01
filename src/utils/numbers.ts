@@ -13,8 +13,9 @@ export const formatDagPrice = (dagInfo, btcInfo) => {
 
 export const formatMarketVol = (formater, dagInfo) => '24h Trading Vol: $' + formater.format(dagInfo.usd_24h_vol);
 
-export const formatPrice = (amount: string, dagInfo: any, toFixed: number) => {
-  return (parseFloat(amount) * dagInfo.usd).toFixed(toFixed);
+export const formatPrice = (amount: number, dagInfo: any, toFixed: number) => {
+  const formatedValue = (amount / Math.pow(10, 8)).toFixed(8);
+  return (parseFloat(formatedValue) * dagInfo.usd).toFixed(toFixed);
 };
 
 export const formatAmount = (amount: number, toFixed: number) => {

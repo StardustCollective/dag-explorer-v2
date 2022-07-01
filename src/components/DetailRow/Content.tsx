@@ -18,6 +18,8 @@ export const Content = ({
   date?: string;
   subValue?: string;
   isLong?: boolean;
+  isMain?: boolean;
+  isStatus?: boolean;
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -29,18 +31,22 @@ export const Content = ({
     }, 2000);
   };
 
-  const { skeleton, icon, linkTo, value, isLong, date, copy, subValue } = props;
+  const { skeleton, icon, linkTo, value, isLong, date, copy, subValue, isMain, isStatus } = props;
 
   return skeleton ? (
     <div className={`${styles.skeleton} ${styles.value}`} />
   ) : (
-    <div className={styles.content}>
+    <div className={`${styles.content} ${isStatus && styles.status}`}>
       {icon && <img src={icon} />}
-      <div className={styles.value}>
+      <div className={`${styles.value}`}>
         {linkTo ? (
-          <Link to={linkTo + '/' + value}>{isLong && !date ? fitStringInCell(value) : value}</Link>
+          <Link to={linkTo + '/' + value} className={isMain ? styles.truncate : undefined}>
+            {isLong && !date && !isMain ? fitStringInCell(value) : value}
+          </Link>
         ) : (
-          <p>{isLong && !date ? fitStringInCell(value) : value}</p>
+          <p className={isMain ? styles.truncate : undefined}>
+            {isLong && !date && !isMain ? fitStringInCell(value) : value}
+          </p>
         )}
         {date && !isLong && <p className={styles.fullDate}>{'(' + formatTime(date, 'full') + ')'}</p>}
         {copy && !copied && !isLong && (

@@ -6,6 +6,7 @@ import { Nav } from '../components/Nav/Nav';
 import styles from './Layout.module.scss';
 import { useContext } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
+import { PricesProvider } from '../context/PricesContext';
 
 export const Layout = () => {
   const queryClient = new QueryClient({
@@ -19,12 +20,14 @@ export const Layout = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={`${styles.container} ${theme}`}>
-        <Nav />
-        <Header />
-        <Outlet />
-        <Footer />
-      </div>
+      <PricesProvider>
+        <div className={`${styles.container} ${theme}`}>
+          <Nav />
+          <Header />
+          <Outlet />
+          <Footer />
+        </div>
+      </PricesProvider>
     </QueryClientProvider>
   );
 };

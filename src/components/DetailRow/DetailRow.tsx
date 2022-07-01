@@ -14,6 +14,8 @@ export const DetailRow = ({
   date?: string;
   subValue?: string;
   isLong?: boolean;
+  isMain?: boolean;
+  isStatus?: boolean;
 }) => {
   return (
     <div className={`${styles.txFlexRow} ${props.borderBottom ? styles.borderBottom : styles}`}>
@@ -24,7 +26,7 @@ export const DetailRow = ({
         <Content {...props} />
       </div>
       <div className={styles.desktop}>
-        <Content {...props} isLong={false} />
+        <Content {...props} isLong={false} isMain={false} />
       </div>
     </div>
   );
