@@ -7,10 +7,7 @@ import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import CopyIcon from '../../assets/icons/Copy.svg';
 import ReactTooltip from 'react-tooltip';
 import { SkeletonMobileCard } from './SkeletonMobileCard';
-
-const handleCopyToClipboard = (value: string) => {
-  navigator.clipboard.writeText(value);
-};
+import React, { useState } from 'react';
 
 const getSnapshotElements = (snapshot: Snapshot) => {
   const content: JSX.Element[] = [];
@@ -40,7 +37,7 @@ const getSnapshotElements = (snapshot: Snapshot) => {
   return content;
 };
 
-const getTransactionElements = (transaction: Transaction) => {
+const getTransactionElements = (transaction: Transaction, handleCopyToClipboard: (value: string) => void) => {
   const content: JSX.Element[] = [];
 
   content.push(
@@ -110,7 +107,7 @@ const getMainnetOneSnapElements = (snap: MainnetOneSnapshot) => {
   return content;
 };
 
-const getMainnetOneTxElements = (tx: MainnetOneTransaction) => {
+const getMainnetOneTxElements = (tx: MainnetOneTransaction, handleCopyToClipboard: (value: string) => void) => {
   const content: JSX.Element[] = [];
 
   content.push(
@@ -168,6 +165,7 @@ export const MobileCard = ({
   mainnetOneSnap?: MainnetOneSnapshot;
   mainnetOneTx?: MainnetOneTransaction;
 }) => {
+  const [copied, setCopied] = useState<boolean>(false);
   const titleElements: JSX.Element[] = titles.map((t, index) => (
     <p className={styles.cardTitle} key={index}>
       {t}
@@ -178,18 +176,27 @@ export const MobileCard = ({
     return <SkeletonMobileCard titleElements={titleElements} />;
   }
 
+  const handleCopyToClipboard = (value: string) => {
+    navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+
   const infoElements: JSX.Element[] = snapshot
     ? getSnapshotElements(snapshot)
     : transaction
-    ? getTransactionElements(transaction)
+    ? getTransactionElements(transaction, handleCopyToClipboard)
     : mainnetOneSnap
     ? getMainnetOneSnapElements(mainnetOneSnap)
-    : getMainnetOneTxElements(mainnetOneTx);
+    : getMainnetOneTxElements(mainnetOneTx, handleCopyToClipboard);
 
   return (
     <div className={styles.cardContainer}>
       <div className={styles.titleContainer}>{titleElements}</div>
       <div className={styles.infoContainer}>{infoElements}</div>
+      {copied && <div className={`${styles.copied} ${styles.fade}`}>Value copied to clipboard!</div>}
     </div>
   );
 };

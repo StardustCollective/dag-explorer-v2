@@ -16,6 +16,7 @@ import { SkeletonCard } from '../../../components/Card/SkeletonCard';
 import { Card } from '../../../components/Card/Card';
 import { formatAmount, formatDagPrice, formatPrice, formatTime } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
+import { useGetClusterInfo } from '../../../api/mainnet_1/load-balancer';
 
 export const MainnetOneTransactionDetails = () => {
   const { transactionHash } = useParams();
@@ -26,6 +27,15 @@ export const MainnetOneTransactionDetails = () => {
   const [dagInfo, setDagInfo] = useState(null);
   const [btcInfo, setBtcInfo] = useState(null);
   const prices = useGetPrices();
+
+  const [clusterData, setClusterData] = useState(null);
+  const clusterInfo = useGetClusterInfo();
+
+  useEffect(() => {
+    if (!clusterInfo.isFetching) {
+      setClusterData(clusterInfo.data);
+    }
+  }, [clusterInfo.isFetching]);
 
   useEffect(() => {
     if (!prices.isFetching && !prices.isError) {
@@ -145,7 +155,7 @@ export const MainnetOneTransactionDetails = () => {
                   </div>
                 </div>
                 <div className={`${styles.column2}`}>
-                  {!dagInfo ? (
+                  {!dagInfo || !clusterData ? (
                     <>
                       <SkeletonCard />
                       <SkeletonCard />
@@ -158,7 +168,10 @@ export const MainnetOneTransactionDetails = () => {
                         value={'$' + dagInfo.usd}
                         info={formatDagPrice(dagInfo, btcInfo)}
                       />
-                      <Card headerText={'NODE OPERATORS'} value={'100 validators'} />
+                      <Card
+                        headerText={'NODE OPERATORS'}
+                        value={clusterData ? clusterData.length + ' validators' : ''}
+                      />
                     </>
                   )}
                 </div>
