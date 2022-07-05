@@ -17,6 +17,7 @@ import Success from '../../assets/icons/Success.svg';
 import { NotFound } from '../NotFoundView/NotFound';
 import { formatAmount, formatDagPrice, formatTime } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
+import { useGetClusterInfo } from '../../api/l0-node';
 
 export const TransactionDetail = () => {
   const { transactionHash } = useParams();
@@ -27,6 +28,16 @@ export const TransactionDetail = () => {
   const [btcInfo, setBtcInfo] = useState(null);
   const prices = useGetPrices();
   const [error, setError] = useState<string>(undefined);
+
+  const [clusterData, setClusterData] = useState(null);
+  const clusterInfo = useGetClusterInfo();
+
+  useEffect(() => {
+    if (!clusterInfo.isFetching) {
+      setClusterData(clusterInfo.data);
+    }
+  }, [clusterInfo.isFetching]);
+
   useEffect(() => {
     if (!prices.isFetching && !prices.isError) {
       setDagInfo(prices.data['constellation-labs']);
@@ -151,7 +162,7 @@ export const TransactionDetail = () => {
                   </div>
                 </div>
                 <div className={`${styles.column2}`}>
-                  {!dagInfo ? (
+                  {!dagInfo || !clusterData ? (
                     <>
                       <SkeletonCard />
                       <SkeletonCard />
@@ -164,7 +175,10 @@ export const TransactionDetail = () => {
                         value={'$' + dagInfo.usd}
                         info={formatDagPrice(dagInfo, btcInfo)}
                       />
-                      <Card headerText={'NODE OPERATORS'} value={'100 validators'} />
+                      <Card
+                        headerText={'NODE OPERATORS'}
+                        value={clusterData ? clusterData.length + ' validators' : ''}
+                      />
                     </>
                   )}
                 </div>
