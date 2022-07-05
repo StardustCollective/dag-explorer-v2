@@ -4,7 +4,6 @@ import { AVAILABLE_NETWORKS } from '../../constants';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import { SearchBar } from '../SearchBar/SearchBar';
 import styles from './Header.module.scss';
-import { Triangle, Circle, Square } from 'phosphor-react';
 import { AddressShape } from '../Shapes/AddressShape';
 import { SnapshotShape } from '../Shapes/SnapshotShape';
 import { TransactionShape } from '../Shapes/TransactionShape';
