@@ -13,7 +13,7 @@ export const TransactionRow = ({
   tx?: Transaction;
   icon?: string;
   snapshot?: Snapshot;
-  dagInfo?: number;
+  dagInfo?: any;
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';

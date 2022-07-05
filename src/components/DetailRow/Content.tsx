@@ -44,12 +44,12 @@ export const Content = ({
             {isLong && !date && !isMain ? fitStringInCell(value) : value}
           </Link>
         ) : (
-          <p className={isMain ? styles.truncate : undefined}>
+          <div className={isMain ? styles.truncate : undefined}>
             {isLong && !date && !isMain ? fitStringInCell(value) : value}
-          </p>
+          </div>
         )}
         {date && !isLong && <p className={styles.fullDate}>{'(' + formatTime(date, 'full') + ')'}</p>}
-        {copy && !copied && !isLong && (
+        {copy && !copied && (
           <img className={`${styles.copy}`} src={CopyIcon} onClick={() => handleCopyToClipboard(value)} />
         )}
         {subValue && !isLong && <div className={styles.subValue}>{subValue}</div>}

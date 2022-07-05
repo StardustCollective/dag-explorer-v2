@@ -1,10 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import { MainnetOneTransaction } from '../../types';
-import { fitStringInCell, formatAmount, formatTime } from '../../utils/numbers';
+import { fitStringInCell, formatAmount, formatPrice, formatTime } from '../../utils/numbers';
 import styles from './SnapshotRow.module.scss';
 
-export const TransactionRow = ({ icon, transaction }: { icon?: string; transaction?: MainnetOneTransaction }) => {
+export const TransactionRow = ({
+  icon,
+  transaction,
+  dagInfo,
+}: {
+  icon?: string;
+  transaction?: MainnetOneTransaction;
+  dagInfo?: any;
+}) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -27,7 +35,10 @@ export const TransactionRow = ({ icon, transaction }: { icon?: string; transacti
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
-          <div className={styles.txnCell}>{formatAmount(transaction.amount, 8)}</div>
+          <div className={`${styles.txnCell} ${styles.amount}`}>
+            <div className={styles.usd}>{'($' + formatPrice(transaction.amount, dagInfo, 2) + ' USD)'}</div>
+            <div className={styles.dag}>{formatAmount(transaction.amount, 8)}</div>
+          </div>
         </>
       );
     } else {

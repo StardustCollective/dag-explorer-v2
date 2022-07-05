@@ -72,7 +72,7 @@
 }
 
 .truncate {
-  width: 190px;
+  width: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -100,10 +100,27 @@
   color: $green-700;
 }
 
-@media screen and (max-width: $lg) {
+@media screen and (max-width: $xlg) {
   .value {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+  }
+  .truncate {
+    width: auto;
+  }
+}
+
+@media screen and (max-width: 984px) {
+  .value {
+    flex-direction: row;
+  }
+  .truncate {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .truncate {
+    width: 300px;
   }
 }
 
@@ -113,11 +130,18 @@
   }
   .value {
     width: auto;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .title {
     width: 40%;
     margin-right: 0;
+  }
+
+  .truncate {
+    width: 150px;
   }
 
   .mobile {

@@ -14,6 +14,7 @@ import { MainnetOneTransactionTable } from '../../../components/MainnetOneTable/
 import { formatAmount, formatPrice } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../../context/PricesContext';
+import { ExportModal } from '../../../components/Modals/ExportModal';
 
 const LIMIT = 10;
 
@@ -30,6 +31,7 @@ export const MainnetOneAddressDetails = () => {
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (!addressInfo.isLoading && !addressInfo.isFetching && !addressInfo.isError) {
@@ -105,6 +107,10 @@ export const MainnetOneAddressDetails = () => {
     }
   };
 
+  const handleExport = () => {
+    setModalOpen(!modalOpen);
+  };
+
   const skeleton = addressInfo.isFetching || !addressTxs || addressBalance.isFetching;
   return (
     <>
@@ -113,7 +119,8 @@ export const MainnetOneAddressDetails = () => {
           <SearchBar />
         </div>
       </section>
-      <Subheader text={'Address details'} item={IconType.Address} />
+      <Subheader text={'Address details'} item={IconType.Address} hasExport handleExport={handleExport} />
+      <ExportModal open={modalOpen} onClose={handleExport} address={addressId} />
       {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (

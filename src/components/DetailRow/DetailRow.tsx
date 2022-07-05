@@ -26,7 +26,7 @@ export const DetailRow = ({
         <Content {...props} />
       </div>
       <div className={styles.desktop}>
-        <Content {...props} isLong={false} isMain={false} />
+        <Content {...props} isLong={false} />
       </div>
     </div>
   );

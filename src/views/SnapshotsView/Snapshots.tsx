@@ -21,12 +21,14 @@ export const Snapshots = () => {
   const [snapshots, setSnapshots] = useState<Snapshot[] | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const snapshotsInfo = useGetAllSnapshots(params);
+  const [lastPage, setLastPage] = useState(false);
   const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
   const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(true);
 
   useEffect(() => {
+    setSkeleton(true);
     if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
       if (snapshotsInfo.data.length > 0) {
         setSnapshots(snapshotsInfo.data);
@@ -54,7 +56,7 @@ export const Snapshots = () => {
     if (snapshots) {
       setParams({
         limit: LIMIT,
-        search_before: snapshots[LIMIT - 1].hash,
+        search_before: snapshots[LIMIT - 1].ordinal.toString(),
       });
       setIsPrev(false);
       setPage((p) => p + 1);
@@ -65,10 +67,11 @@ export const Snapshots = () => {
     if (snapshots) {
       setParams({
         limit: LIMIT,
-        search_after: snapshots[0].hash,
+        search_after: snapshots[0].ordinal.toString(),
       });
       setIsPrev(true);
       setPage((p) => p - 1);
+      setLastPage(false);
     }
   };
 
@@ -83,8 +86,12 @@ export const Snapshots = () => {
             <div className={`${styles.flexRowBottom}`}>
               <span />
               <div className={styles.arrows}>
-                <ArrowButton handleClick={handlePrevPage} disabled />
-                <ArrowButton forward handleClick={handleNextPage} disabled />
+                <ArrowButton handleClick={() => handlePrevPage()} disabled={snapshotsInfo.isFetching || page === 0} />
+                <ArrowButton
+                  forward
+                  handleClick={() => handleNextPage()}
+                  disabled={snapshotsInfo.isFetching || lastPage}
+                />
               </div>
             </div>
           </div>
@@ -101,9 +108,12 @@ export const Snapshots = () => {
               <span />
 
               <div className={styles.arrows}>
-                {/*handlePagination*/}
-                <ArrowButton handleClick={() => handlePrevPage()} disabled={page < 0 || !isPrev} />
-                <ArrowButton forward handleClick={() => handleNextPage()} disabled={page < 0 || !isPrev} />
+                <ArrowButton handleClick={() => handlePrevPage()} disabled={snapshotsInfo.isFetching || page === 0} />
+                <ArrowButton
+                  forward
+                  handleClick={() => handleNextPage()}
+                  disabled={snapshotsInfo.isFetching || lastPage}
+                />
               </div>
             </div>
           </div>

@@ -48,7 +48,7 @@ export const MainnetOneTransactionDetails = () => {
     }
   }, [transactionInfo.status]);
 
-  const skeleton = transactionInfo.isLoading || !transaction;
+  const skeleton = transactionInfo.isLoading || !transaction || !dagInfo;
   return (
     <>
       <section className={`${styles.searchMobile}`}>

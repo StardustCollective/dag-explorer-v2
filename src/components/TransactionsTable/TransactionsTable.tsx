@@ -5,8 +5,8 @@ import { HeaderRow } from './HeaderRow';
 import { TransactionRow } from './TransactionRow';
 import styles from './TransactionsTable.module.scss';
 import { SkeletonTransactionsTable } from './SkeletonTransactionsTable';
-import { useGetPrices } from '../../api/coingecko';
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { PricesContext, PricesContextType } from '../../context/PricesContext';
 
 export const TransactionsTable = ({
   skeleton,
@@ -25,15 +25,7 @@ export const TransactionsTable = ({
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  const [dagInfo, setDagInfo] = useState(null);
-
-  const prices = useGetPrices();
-
-  useEffect(() => {
-    if (!prices.isFetching) {
-      setDagInfo(prices.data['constellation-labs']);
-    }
-  }, [prices.isFetching]);
+  const { dagInfo } = useContext(PricesContext) as PricesContextType;
 
   const titles = transactions
     ? ['TXN HASH', 'TIMESTAMP', 'SNAPSHOT', 'FROM', 'TO', 'AMOUNT']

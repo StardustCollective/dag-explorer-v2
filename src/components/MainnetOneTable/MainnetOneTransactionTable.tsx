@@ -5,6 +5,8 @@ import { HeaderRow } from '../TransactionsTable/HeaderRow';
 import { TransactionRow } from './TransactionRow';
 import { SkeletonTransactionsTable } from '../TransactionsTable/SkeletonTransactionsTable';
 import { TableCards } from '../TransactionsTable/TableCards';
+import { useContext } from 'react';
+import { PricesContext, PricesContextType } from '../../context/PricesContext';
 
 export const MainnetOneTransactionTable = ({
   skeleton,
@@ -21,6 +23,7 @@ export const MainnetOneTransactionTable = ({
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const mql = window.matchMedia('(max-width: 580px)');
   const titles = ['TXN HASH', 'TIMESTAMP', 'FROM', 'TO', 'AMOUNT'];
 
@@ -43,7 +46,7 @@ export const MainnetOneTransactionTable = ({
   const txRows =
     transactions &&
     transactions.length > 0 &&
-    transactions.map((tx) => <TransactionRow key={tx.hash} transaction={tx} icon={icon} />);
+    transactions.map((tx) => <TransactionRow dagInfo={dagInfo} key={tx.hash} transaction={tx} icon={icon} />);
 
   const emptyRows = [];
   for (let i = 0; i < 10; i++) {
@@ -62,7 +65,6 @@ export const MainnetOneTransactionTable = ({
     <>
       <div className={`${styles.table} ${isHomePage ? styles.homeContainer : styles.container}`}>
         {headerText && <div className={styles.headerText}>{headerText}</div>}
-        {headerText && <span />}
         {headerText && <img className={styles.icon} src={icon} height={'20px'} />}
         <HeaderRow />
         {transactions && txRows}

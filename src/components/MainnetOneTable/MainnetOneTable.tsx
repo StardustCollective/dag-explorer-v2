@@ -54,7 +54,6 @@ export const MainnetOneSnapshotTable = ({
     <>
       <div className={`${styles.table} ${isHomePage ? styles.homeContainer : styles.containerSnap}`}>
         {headerText && <div className={styles.headerText}>{headerText}</div>}
-        {headerText && <span />}
         {headerText && <img className={styles.icon} src={icon} height={'20px'} />}
         <HeaderRow forSnapshots={true} />
         {snapshots && snapRows}

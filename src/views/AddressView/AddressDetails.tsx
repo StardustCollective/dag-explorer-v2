@@ -10,9 +10,10 @@ import { IconType } from '../../constants';
 import styles from './AddressDetails.module.scss';
 import AddressShape from '../../assets/icons/AddressShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatPrice } from '../../utils/numbers';
+import { formatAmount, formatPrice } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
+import { ExportModal } from '../../components/Modals/ExportModal';
 
 const LIMIT = 10;
 
@@ -34,6 +35,7 @@ export const AddressDetails = () => {
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (!addressInfo.isLoading && !addressInfo.isFetching && !addressInfo.isError) {
@@ -92,6 +94,10 @@ export const AddressDetails = () => {
     }
   };
 
+  const handleExport = () => {
+    setModalOpen(!modalOpen);
+  };
+
   const skeleton = addressBalance.isFetching;
 
   return (
@@ -101,7 +107,8 @@ export const AddressDetails = () => {
           <SearchBar />
         </div>
       </section>
-      <Subheader text={'Address details'} item={IconType.Address} />
+      <Subheader text={'Address details'} item={IconType.Address} hasExport handleExport={handleExport} />
+      <ExportModal open={modalOpen} onClose={handleExport} address={addressId} />
       {error === '404' || error === '500' ? (
         <NotFound entire={false} />
       ) : (
@@ -124,7 +131,7 @@ export const AddressDetails = () => {
                 />
                 <DetailRow
                   title={'BALANCE'}
-                  value={skeleton ? '' : balance ? balance + ' DAG' : ''}
+                  value={skeleton ? '' : balance ? formatAmount(balance, 8) : ''}
                   subValue={!skeleton ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
                   skeleton={skeleton}
                 />

@@ -25,8 +25,10 @@ export const Transactions = () => {
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
+  const [skeleton, setSkeleton] = useState(false);
 
   useEffect(() => {
+    setSkeleton(true);
     if (!transactionsInfo.isFetching && !transactionsInfo.isError) {
       if (transactionsInfo.data.length > 0) {
         setTransactions(transactionsInfo.data);
@@ -34,6 +36,7 @@ export const Transactions = () => {
       if (transactionsInfo.data.length < LIMIT) {
         setLastPage(true);
       }
+      setSkeleton(false);
     }
   }, [transactionsInfo.isFetching]);
 
@@ -74,8 +77,6 @@ export const Transactions = () => {
     }
   };
 
-  const skeleton = transactionsInfo.isFetching;
-
   return (
     <>
       <Subheader text={'Transactions'} item={IconType.Transaction} />
@@ -97,6 +98,7 @@ export const Transactions = () => {
               skeleton={{ showSkeleton: skeleton }}
               transactions={transactions}
               icon={TransactionShape}
+              limit={LIMIT}
             />
           </div>
           <div className={`${styles.row3}`}>
