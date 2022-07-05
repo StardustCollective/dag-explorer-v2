@@ -51,9 +51,3 @@
   font-family: 'IBM Plex Mono';
   color: $grayCool-900;
 }
-
-@media screen and (min-width: $md) and (max-width: $lg) {
-  .txnCell {
-    flex-direction: column-reverse;
-  }
-}

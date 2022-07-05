@@ -37,5 +37,16 @@ export const fitStringInCell = (value: string) => value.slice(0, 5) + '...' + va
 
 export const formatTotalSupply = () => 'Total Supply: 3,550,000,000';
 
+const formatRelativeString = (date: string) => {
+  let formatedDate = date;
+  if (date.indexOf('minutes') !== -1) {
+    formatedDate = date.replace('minutes', 'mins');
+  }
+  if (date.indexOf('seconds') !== -1) {
+    formatedDate = date.replace('seconds', 'secs');
+  }
+  return formatedDate;
+};
+
 export const formatTime = (timestamp: string, format: 'full' | 'relative') =>
-  format === 'full' ? dayjs(timestamp)['$d'] : dayjs().to(dayjs(timestamp));
+  format === 'full' ? dayjs(timestamp)['$d'] : formatRelativeString(dayjs().to(dayjs(timestamp)));

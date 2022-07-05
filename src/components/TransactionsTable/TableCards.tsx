@@ -33,11 +33,17 @@ export const TableCards = ({
   const content: JSX.Element[] = [];
   header && content.push(header);
 
-  snapshots && snapshots.map((snap, index) => content.push(<MobileCard titles={titles} snapshot={snap} key={index} />));
-  txs && txs.map((tx, index) => content.push(<MobileCard titles={titles} transaction={tx} key={index} />));
+  snapshots &&
+    snapshots.length > 0 &&
+    snapshots.map((snap, index) => content.push(<MobileCard titles={titles} snapshot={snap} key={index} />));
+  txs &&
+    txs.length > 0 &&
+    txs.map((tx, index) => content.push(<MobileCard titles={titles} transaction={tx} key={index} />));
   mainnetOneTxs &&
+    mainnetOneTxs.length > 0 &&
     mainnetOneTxs.map((tx, index) => content.push(<MobileCard titles={titles} mainnetOneTx={tx} key={index} />));
   mainnetOneSnaps &&
+    mainnetOneSnaps.length > 0 &&
     mainnetOneSnaps.map((snap, index) =>
       content.push(<MobileCard titles={titles} mainnetOneSnap={snap} key={index} />)
     );

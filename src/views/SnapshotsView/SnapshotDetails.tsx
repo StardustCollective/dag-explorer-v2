@@ -87,8 +87,7 @@ export const SnapshotDetails = () => {
       setLastPage(false);
     }
   };
-
-  const skeleton = snapshotInfo.isLoading;
+  const skeleton = snapshotInfo.isLoading || !snapshotTxs;
   return (
     <>
       <section className={`${styles.searchMobile}`}>
@@ -129,7 +128,7 @@ export const SnapshotDetails = () => {
                     <DetailRow
                       borderBottom
                       title={'BLOCKS'}
-                      value={!skeleton ? snapshot.blocks.length.toString() : ''}
+                      value={!skeleton && snapshot ? snapshot.blocks.length.toString() : ''}
                       skeleton={skeleton}
                       icon={BlockShape}
                     />
@@ -157,7 +156,7 @@ export const SnapshotDetails = () => {
               <div className={`${styles.row4}`}>
                 {!error && (
                   <TransactionsTable
-                    skeleton={{ showSkeleton: snapshotTransactions.isFetching }}
+                    skeleton={{ showSkeleton: skeleton }}
                     limit={LIMIT}
                     transactions={snapshotTxs}
                     icon={SnapshotShape}
