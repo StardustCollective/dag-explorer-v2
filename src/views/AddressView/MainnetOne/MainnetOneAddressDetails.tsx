@@ -144,7 +144,7 @@ export const MainnetOneAddressDetails = () => {
                 <DetailRow
                   title={'BALANCE'}
                   value={!skeleton ? formatAmount(balance, 8) : ''}
-                  subValue={!skeleton ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
+                  subValue={!skeleton && dagInfo ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
                   skeleton={skeleton}
                 />
               </div>

@@ -132,7 +132,7 @@ export const AddressDetails = () => {
                 <DetailRow
                   title={'BALANCE'}
                   value={skeleton ? '' : balance ? formatAmount(balance, 8) : ''}
-                  subValue={!skeleton ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
+                  subValue={!skeleton && dagInfo ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
                   skeleton={skeleton}
                 />
               </div>

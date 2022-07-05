@@ -1,11 +1,14 @@
+import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { MainnetOneSnapshot } from '../../types';
-import { formatAmount } from '../../utils/numbers';
+import { formatAmount, formatPrice } from '../../utils/numbers';
 import styles from './SnapshotRow.module.scss';
 
 export const SnapshotRow = ({ icon, snapshot }: { icon?: string; snapshot?: MainnetOneSnapshot }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const { dagInfo } = useContext(PricesContext) as PricesContextType;
 
   let snapRow = undefined;
 
@@ -20,7 +23,12 @@ export const SnapshotRow = ({ icon, snapshot }: { icon?: string; snapshot?: Main
             </div>
           </div>
           <div className={styles.txnCell}>{snapshot.txCount}</div>
-          <div className={styles.txnCell}>{formatAmount(snapshot.dagAmount, 8)}</div>
+          <div className={`${styles.txnCell} ${styles.amount}`}>
+            {dagInfo && (
+              <div className={styles.usd}>{'($' + formatPrice(snapshot.dagAmount, dagInfo, 2) + ' USD)'}</div>
+            )}
+            <div className={styles.dag}>{formatAmount(snapshot.dagAmount, 8)}</div>
+          </div>
         </>
       );
     } else {

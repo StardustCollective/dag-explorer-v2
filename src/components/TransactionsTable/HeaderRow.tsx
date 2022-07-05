@@ -30,7 +30,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <div className={styles.headerColumn}>
           <p className={styles.headerText}>{forSnapshots ? 'TX COUNT' : 'TIMESTAMP'}</p>
         </div>
-        <div className={styles.headerColumn}>
+        <div className={`${styles.headerColumn} ${styles.rightAligned}`}>
           <p className={styles.headerText}>{'AMOUNT'}</p>
         </div>
       </>
@@ -42,7 +42,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <div className={styles.headerColumn}>
           <p className={styles.headerText}>{'TIMESTAMP'}</p>
         </div>
-        <div className={styles.headerColumn}>
+        <div className={`${styles.headerColumn} ${styles.rightAligned}`}>
           <p className={styles.headerText}>{'AMOUNT'}</p>
         </div>
       </>

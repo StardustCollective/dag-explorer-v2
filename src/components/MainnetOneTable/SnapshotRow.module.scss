@@ -15,6 +15,13 @@
   color: $blue-700;
 }
 
+.amount {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1.5rem;
+}
+
 .txnEmptyRow {
   display: flex;
   align-items: center;
@@ -39,5 +46,5 @@
   font-size: 14px;
   line-height: 16px;
   color: $gray-500;
-  margin-right: 1rem;
+  margin-right: 0.1rem;
 }

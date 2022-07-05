@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-import { Snapshot, Transaction } from '../../types';
+import { Snapshot, TotalSupply, Transaction } from '../../types';
 import { formatPrice, formatAmount, fitStringInCell, formatTime } from '../../utils/numbers';
 import styles from './TransactionRow.module.scss';
 
+const { REACT_APP_TESTNET_L0_NODE_URL } = process.env;
+const URL = REACT_APP_TESTNET_L0_NODE_URL + '/dag';
 export const TransactionRow = ({
   tx,
   icon,
@@ -19,6 +22,18 @@ export const TransactionRow = ({
   const isHomePage = location.pathname === '/';
 
   let txRow = undefined;
+  const [snapshotDag, setSnapshotDag] = useState<TotalSupply>(null);
+  useEffect(() => {
+    const fetchDagSupply = async (ordinal: number) => {
+      const data = await fetch(URL + '/' + ordinal + '/total-supply');
+      const json = await data.json();
+      setSnapshotDag(json);
+    };
+
+    if (snapshot) {
+      fetchDagSupply(snapshot.ordinal).catch((e) => console.log(e));
+    }
+  }, []);
 
   if (tx) {
     const hash = fitStringInCell(tx.hash);
@@ -38,7 +53,7 @@ export const TransactionRow = ({
             <ReactTooltip />
           </div>
           <div className={`${styles.txnCell} ${styles.amount}`}>
-            <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>
+            {dagInfo && <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>}
             <div className={styles.dag}>{formatAmount(tx.amount, 8)}</div>
           </div>
         </>
@@ -92,7 +107,16 @@ export const TransactionRow = ({
             <ReactTooltip />
           </div>
 
-          <div className={styles.txnCell}>{snapshot.height}</div>
+          {snapshotDag ? (
+            <div className={`${styles.txnCell} ${styles.amount}`}>
+              {dagInfo && (
+                <div className={styles.usd}>{'($' + formatPrice(snapshotDag.total, dagInfo, 2) + ' USD)'}</div>
+              )}
+              <div className={styles.dag}>{formatAmount(snapshotDag.total, 8)}</div>
+            </div>
+          ) : (
+            <span />
+          )}
         </>
       );
     } else {

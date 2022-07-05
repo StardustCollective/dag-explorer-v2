@@ -88,7 +88,9 @@ export const MainnetOneTransactionDetails = () => {
                         borderBottom
                         title={'AMOUNT'}
                         value={!skeleton ? formatAmount(transaction.amount, 8) : ''}
-                        subValue={!skeleton ? '($' + formatPrice(transaction.amount, dagInfo, 2) + ' USD)' : ''}
+                        subValue={
+                          !skeleton && dagInfo ? '($' + formatPrice(transaction.amount, dagInfo, 2) + ' USD)' : ''
+                        }
                         skeleton={skeleton}
                       />
                       <DetailRow
