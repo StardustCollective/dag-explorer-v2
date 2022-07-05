@@ -1,6 +1,7 @@
-@use './base' as *;
-@use './breakpoints' as *;
-@use './fonts' as *;
+@use './_base' as *;
+@use './_breakpoints' as *;
+@use './_fonts' as *;
+@use './_colors' as *;
 
 body,
 html {

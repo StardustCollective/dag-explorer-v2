@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useGetSnapshotTransactions } from '../../api/block-explorer';
 import { Transaction } from '../../types';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
-import BlockShape from '../../assets/icons/BlockShape.svg';
+import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 
 export const BlockDetailsTableWrapper = ({
   snapshotOrdinal,
@@ -52,7 +52,7 @@ export const BlockDetailsTableWrapper = ({
       skeleton={{ showSkeleton: !transactionsToShow }}
       limit={limit}
       transactions={transactionsToShow}
-      icon={BlockShape}
+      icon={<SnapshotShape />}
     />
   );
 };

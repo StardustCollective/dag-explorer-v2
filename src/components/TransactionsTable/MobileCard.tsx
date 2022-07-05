@@ -2,19 +2,19 @@ import { Link } from 'react-router-dom';
 import { MainnetOneSnapshot, MainnetOneTransaction, Snapshot, Transaction } from '../../types';
 import { fitStringInCell, formatAmount, formatTime } from '../../utils/numbers';
 import styles from './MobileCard.module.scss';
-import TransactionShape from '../../assets/icons/TransactionShape.svg';
-import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import CopyIcon from '../../assets/icons/Copy.svg';
 import ReactTooltip from 'react-tooltip';
 import { SkeletonMobileCard } from './SkeletonMobileCard';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { SnapshotShape } from '../Shapes/SnapshotShape';
+import { TransactionShape } from '../Shapes/TransactionShape';
 
 const getSnapshotElements = (snapshot: Snapshot) => {
   const content: JSX.Element[] = [];
 
   content.push(
     <p key={0} className={styles.hash}>
-      <img src={SnapshotShape} />
+      <SnapshotShape />
       <Link to={'/snapshots/' + snapshot.ordinal}>{snapshot.ordinal}</Link>
     </p>
   );
@@ -42,7 +42,7 @@ const getTransactionElements = (transaction: Transaction, handleCopyToClipboard:
 
   content.push(
     <p className={styles.hash} key={1}>
-      <img src={TransactionShape} />
+      <TransactionShape />
       <Link to={'/transactions/' + transaction.hash}>{fitStringInCell(transaction.hash)}</Link>
       {<img className={`${styles.copy}`} src={CopyIcon} onClick={() => handleCopyToClipboard(transaction.hash)} />}
     </p>
@@ -88,7 +88,7 @@ const getMainnetOneSnapElements = (snap: MainnetOneSnapshot) => {
   const content: JSX.Element[] = [];
   content.push(
     <p key={0} className={styles.hash}>
-      <img src={SnapshotShape} />
+      <SnapshotShape />
       <Link to={'/snapshots/' + snap.height}>{snap.height}</Link>
     </p>
   );
@@ -112,7 +112,7 @@ const getMainnetOneTxElements = (tx: MainnetOneTransaction, handleCopyToClipboar
 
   content.push(
     <p className={styles.hash} key={1}>
-      <img src={TransactionShape} />
+      <TransactionShape />
       <Link to={'/transactions/' + tx.hash}>{fitStringInCell(tx.hash)}</Link>
       {<img className={`${styles.copy}`} src={CopyIcon} onClick={() => handleCopyToClipboard(tx.hash)} />}
     </p>

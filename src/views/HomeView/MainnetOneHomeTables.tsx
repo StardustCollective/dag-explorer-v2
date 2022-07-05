@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetLatestSnapshots, useGetLatestTransactions } from '../../api/mainnet_1/block-explorer';
 import { MainnetOneSnapshot, MainnetOneTransaction } from '../../types';
-import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
-import TransactionShape from '../../assets/icons/TransactionShape.svg';
 import { MainnetOneSnapshotTable } from '../../components/MainnetOneTable/MainnetOneTable';
 import { MainnetOneTransactionTable } from '../../components/MainnetOneTable/MainnetOneTransactionTable';
 import styles from './HomeView.module.scss';
+import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
+import { TransactionShape } from '../../components/Shapes/TransactionShape';
 
 const LIMIT = 10;
 const MainnetOneHomeTables = () => {
@@ -41,7 +41,7 @@ const MainnetOneHomeTables = () => {
         skeleton={{ showSkeleton: !snapshots, forSnapshots: true, headerCols: ['HEIGHT', 'TX COUNT', 'AMOUNT'] }}
         limit={LIMIT}
         snapshots={snapshots}
-        icon={SnapshotShape}
+        icon={<SnapshotShape />}
         headerText={'Latest snapshots'}
       />
 
@@ -53,7 +53,7 @@ const MainnetOneHomeTables = () => {
         skeleton={{ showSkeleton: !transactions }}
         limit={LIMIT}
         transactions={transactions}
-        icon={TransactionShape}
+        icon={<TransactionShape />}
         headerText={'Latest transactions'}
       />
 

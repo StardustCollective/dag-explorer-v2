@@ -4,9 +4,10 @@ import { AVAILABLE_NETWORKS } from '../../constants';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import { SearchBar } from '../SearchBar/SearchBar';
 import styles from './Header.module.scss';
-import addressShape from '../../assets/icons/AddressShape.svg';
-import transactionShape from '../../assets/icons/TransactionShape.svg';
-import snapshotShape from '../../assets/icons/SnapshotShape.svg';
+import { Triangle, Circle, Square } from 'phosphor-react';
+import { AddressShape } from '../Shapes/AddressShape';
+import { SnapshotShape } from '../Shapes/SnapshotShape';
+import { TransactionShape } from '../Shapes/TransactionShape';
 
 export const Header = () => {
   const { pathname } = useLocation();
@@ -34,15 +35,15 @@ export const Header = () => {
               <p className={`${styles.text} headerExamples`}>Search examples:</p>
               <div className={styles.examples}>
                 <div className={styles.example}>
-                  <img className={styles.shape} src={addressShape} />
+                  <AddressShape classname={styles.shape} />
                   <p className={`${styles.text} headerExamples`}> address</p>
                 </div>
                 <div className={styles.example}>
-                  <img className={styles.shape} src={snapshotShape} />
+                  <SnapshotShape classname={styles.shape} />
                   <p className={`${styles.text} headerExamples`}> snapshot</p>
                 </div>
                 <div className={styles.example}>
-                  <img className={styles.shape} src={transactionShape} />
+                  <TransactionShape classname={styles.shape} />
                   <p className={`${styles.text} headerExamples`}> transaction</p>
                 </div>
               </div>

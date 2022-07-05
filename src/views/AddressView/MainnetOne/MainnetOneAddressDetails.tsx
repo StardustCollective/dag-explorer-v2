@@ -6,7 +6,6 @@ import { DetailRow } from '../../../components/DetailRow/DetailRow';
 import { Subheader } from '../../../components/Subheader/Subheader';
 import { IconType } from '../../../constants';
 import styles from '.././AddressDetails.module.scss';
-import AddressShape from '../../../assets/icons/AddressShape.svg';
 import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetTransactionsByAddress } from '../../../api/mainnet_1/block-explorer';
 import { useGetAddressBalance } from '../../../api/mainnet_1/load-balancer';
@@ -15,6 +14,7 @@ import { formatAmount, formatPrice } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../../context/PricesContext';
 import { ExportModal } from '../../../components/Modals/ExportModal';
+import { AddressDetails } from '../AddressDetails';
 
 const LIMIT = 10;
 
@@ -164,7 +164,7 @@ export const MainnetOneAddressDetails = () => {
               skeleton={{ showSkeleton: skeleton }}
               limit={LIMIT}
               transactions={addressTxs ? addressTxs.slice(startAt, endAt) : null}
-              icon={AddressShape}
+              icon={<AddressDetails />}
             />
           </div>
           <div className={`${styles.row5}`}>

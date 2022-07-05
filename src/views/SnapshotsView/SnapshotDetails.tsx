@@ -8,11 +8,10 @@ import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType } from '../../constants';
 import styles from './SnapshotDetails.module.scss';
-import BlockShape from '../../assets/icons/BlockShape.svg';
-import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { formatTime } from '../../utils/numbers';
+import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 
 const LIMIT = 8;
 type Params = {
@@ -116,7 +115,7 @@ export const SnapshotDetails = () => {
                       title={'SNAPSHOT HEIGHT'}
                       value={snapshot && snapshot.ordinal.toString()}
                       skeleton={skeleton}
-                      icon={SnapshotShape}
+                      icon={<SnapshotShape size={'1.5rem'} />}
                     />
                     <DetailRow
                       borderBottom
@@ -130,7 +129,7 @@ export const SnapshotDetails = () => {
                       title={'BLOCKS'}
                       value={!skeleton && snapshot ? snapshot.blocks.length.toString() : ''}
                       skeleton={skeleton}
-                      icon={BlockShape}
+                      icon={<SnapshotShape size={'2rem'} />}
                     />
                   </div>
                 </div>
@@ -159,7 +158,7 @@ export const SnapshotDetails = () => {
                     skeleton={{ showSkeleton: skeleton }}
                     limit={LIMIT}
                     transactions={snapshotTxs}
-                    icon={SnapshotShape}
+                    icon={<SnapshotShape />}
                   />
                 )}
               </div>

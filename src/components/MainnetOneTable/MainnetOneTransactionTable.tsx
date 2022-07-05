@@ -5,7 +5,7 @@ import { HeaderRow } from '../TransactionsTable/HeaderRow';
 import { TransactionRow } from './TransactionRow';
 import { SkeletonTransactionsTable } from '../TransactionsTable/SkeletonTransactionsTable';
 import { TableCards } from '../TransactionsTable/TableCards';
-import { useContext } from 'react';
+import { cloneElement, useContext } from 'react';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 
 export const MainnetOneTransactionTable = ({
@@ -17,7 +17,7 @@ export const MainnetOneTransactionTable = ({
 }: {
   skeleton?: Skeleton;
   transactions: MainnetOneTransaction[];
-  icon: string;
+  icon?: JSX.Element;
   headerText?: string;
   limit?: number;
 }) => {
@@ -65,7 +65,7 @@ export const MainnetOneTransactionTable = ({
     <>
       <div className={`${styles.table} ${isHomePage ? styles.homeContainer : styles.container}`}>
         {headerText && <div className={styles.headerText}>{headerText}</div>}
-        {headerText && <img className={styles.icon} src={icon} height={'20px'} />}
+        {headerText && cloneElement(icon, { classname: styles.icon, size: '20px' })}
         <HeaderRow />
         {transactions && txRows}
         {transactions && transactions.length === 0 && emptyRows}

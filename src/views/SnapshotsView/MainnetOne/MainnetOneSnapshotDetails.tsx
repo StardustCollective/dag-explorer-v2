@@ -6,11 +6,11 @@ import { DetailRow } from '../../../components/DetailRow/DetailRow';
 import { Subheader } from '../../../components/Subheader/Subheader';
 import { IconType } from '../../../constants';
 import styles from '../SnapshotDetails.module.scss';
-import SnapshotShape from '../../../assets/icons/SnapshotShape.svg';
 import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetSnapshot, useGetTransactionsBySnapshot } from '../../../api/mainnet_1/block-explorer';
 import { MainnetOneTransactionTable } from '../../../components/MainnetOneTable/MainnetOneTransactionTable';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
+import { SnapshotShape } from '../../../components/Shapes/SnapshotShape';
 
 const LIMIT = 8;
 
@@ -148,7 +148,7 @@ export const MainnetOneSnapshotDetails = () => {
                           title={'SNAPSHOT HEIGHT'}
                           value={realHeight}
                           skeleton={skeleton}
-                          icon={SnapshotShape}
+                          icon={<SnapshotShape size={'1.5rem'} />}
                         />
                         <DetailRow
                           borderBottom
@@ -187,7 +187,7 @@ export const MainnetOneSnapshotDetails = () => {
                     skeleton={{ showSkeleton: snapshotTransactions.isFetching || !snapshot }}
                     limit={LIMIT}
                     transactions={snapshotTxs ? snapshotTxs.slice(startAt, endAt) : null}
-                    icon={SnapshotShape}
+                    icon={<SnapshotShape />}
                   />
                 )}
               </div>

@@ -5,12 +5,12 @@ import { Snapshot, Transaction } from '../../types';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import styles from './HomeView.module.scss';
 import StatsSection from './StatsSection/StatsSection';
-import TransactionShape from '../../assets/icons/TransactionShape.svg';
-import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { useNavigate } from 'react-router-dom';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import MainnetOneHomeTables from './MainnetOneHomeTables';
+import { TransactionShape } from '../../components/Shapes/TransactionShape';
+import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 
 const LIMIT = 10;
 
@@ -54,7 +54,7 @@ export const HomeView = () => {
                 skeleton={{ showSkeleton: !snapshots }}
                 limit={LIMIT}
                 snapshots={snapshots}
-                icon={SnapshotShape}
+                icon={<SnapshotShape />}
                 headerText={snapshots ? 'Latest snapshots' : null}
               />
 
@@ -68,7 +68,7 @@ export const HomeView = () => {
                 skeleton={{ showSkeleton: !transactions }}
                 limit={LIMIT}
                 transactions={transactions}
-                icon={TransactionShape}
+                icon={<TransactionShape />}
                 headerText={transactions ? 'Latest transactions' : null}
               />
 

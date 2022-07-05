@@ -14,7 +14,7 @@ export const TransactionRow = ({
   dagInfo,
 }: {
   tx?: Transaction;
-  icon?: string;
+  icon?: JSX.Element;
   snapshot?: Snapshot;
   dagInfo?: any;
 }) => {
@@ -44,7 +44,7 @@ export const TransactionRow = ({
         <>
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
-              {icon && <img src={icon} />}
+              {icon && icon}
               <Link to={'/transactions/' + tx.hash}>{hash}</Link>
             </div>
           </div>
@@ -65,7 +65,7 @@ export const TransactionRow = ({
         <>
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
-              {icon && <img src={icon} />}
+              {icon && icon}
               <Link to={'/transactions/' + tx.hash}>{hash}</Link>
             </div>
           </div>
@@ -98,7 +98,7 @@ export const TransactionRow = ({
         <>
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
-              {icon && <img src={icon} />}
+              {icon && icon}
               <Link to={'/snapshots/' + snapshot.ordinal}>{snapshot.ordinal}</Link>
             </div>
           </div>
@@ -124,7 +124,7 @@ export const TransactionRow = ({
         <>
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
-              {icon && <img src={icon} />}
+              {icon && icon}
               <Link to={'/snapshots/' + snapshot.hash}>{fitStringInCell(snapshot.hash)}</Link>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import { cloneElement } from 'react';
 import { MainnetOneSnapshot, MainnetOneTransaction, Snapshot, Transaction } from '../../types';
 import { MobileCard } from './MobileCard';
 import styles from './TransactionsTable.module.scss';
@@ -19,7 +20,7 @@ export const TableCards = ({
   txs?: Transaction[];
   limit?: number;
   headerText?: string;
-  icon?: string;
+  icon?: JSX.Element;
   mainnetOneTxs?: MainnetOneTransaction[];
   mainnetOneSnaps?: MainnetOneSnapshot[];
 }) => {
@@ -27,7 +28,7 @@ export const TableCards = ({
     <div className={styles.headerCards} key={'headerText'}>
       <div className={styles.headerText}>{headerText}</div>
       <span />
-      <img className={styles.icon} src={icon} height={'20px'} />
+      {icon && cloneElement(icon, { classname: styles.icon, size: '20px' })}
     </div>
   );
   const content: JSX.Element[] = [];

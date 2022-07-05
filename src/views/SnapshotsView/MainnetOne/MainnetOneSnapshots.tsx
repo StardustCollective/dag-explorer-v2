@@ -4,10 +4,10 @@ import { ArrowButton } from '../../../components/Buttons/ArrowButton';
 import { Subheader } from '../../../components/Subheader/Subheader';
 import { IconType } from '../../../constants';
 import styles from '../Snapshots.module.scss';
-import SnapshotShape from '../../../assets/icons/SnapshotShape.svg';
 import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetLatestSnapshots } from '../../../api/mainnet_1/block-explorer';
 import { MainnetOneSnapshotTable } from '../../../components/MainnetOneTable/MainnetOneTable';
+import { SnapshotShape } from '../../../components/Shapes/SnapshotShape';
 
 const LIMIT = 14;
 
@@ -90,7 +90,7 @@ export const MainnetOneSnapshots = () => {
               }}
               limit={LIMIT}
               snapshots={snapshots}
-              icon={SnapshotShape}
+              icon={<SnapshotShape />}
             />
           </div>
           <div className={`${styles.row3}`}>

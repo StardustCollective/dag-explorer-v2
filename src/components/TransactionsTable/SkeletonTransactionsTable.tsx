@@ -2,7 +2,7 @@ import { HeaderRow } from './HeaderRow';
 import styles from './TransactionsTable.module.scss';
 import styles2 from './TransactionRow.module.scss';
 import styles3 from '../MainnetOneTable/MainnetOneTable.module.scss';
-import { useContext } from 'react';
+import { cloneElement, useContext } from 'react';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import { useLocation } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ export const SkeletonTransactionsTable = ({
   rows: number;
   forSnapshots?: boolean;
   headerText?: string;
-  icon?: string;
+  icon?: JSX.Element;
   headerCols?: string[];
 }) => {
   const location = useLocation();
@@ -37,7 +37,7 @@ export const SkeletonTransactionsTable = ({
     >
       {headerText && <div className={styles.headerText}>{headerText}</div>}
       {headerText && <span />}
-      {headerText && <img className={styles.icon} src={icon} height={'20px'} />}{' '}
+      {headerText && cloneElement(icon, { classname: styles3.icon, size: '20px' })}
       <HeaderRow headerCols={headerCols} forSnapshots={forSnapshots} />
       {transactions.map((_, index) => (
         <SkeletonTransactionRow forSnapshots={forSnapshots} isHomePage={isHomePage} key={index} />

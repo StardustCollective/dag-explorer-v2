@@ -5,9 +5,9 @@ import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType } from '../../constants';
 import styles from './Transactions.module.scss';
-import TransactionShape from '../../assets/icons/TransactionShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
 import { useGetAllTransactions } from '../../api/block-explorer/transaction';
+import { TransactionShape } from '../../components/Shapes/TransactionShape';
 
 const LIMIT = 14;
 
@@ -97,7 +97,7 @@ export const Transactions = () => {
             <TransactionsTable
               skeleton={{ showSkeleton: skeleton }}
               transactions={transactions}
-              icon={TransactionShape}
+              icon={<TransactionShape />}
               limit={LIMIT}
             />
           </div>

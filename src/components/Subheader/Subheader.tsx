@@ -1,10 +1,9 @@
 import { IconType } from '../../constants';
 import styles from './Subheader.module.scss';
-import AddressShape from '../../assets/icons/AddressShape.svg';
-import BlockShape from '../../assets/icons/BlockShape.svg';
-import TransactionShape from '../../assets/icons/TransactionShape.svg';
-import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import { Export } from 'phosphor-react';
+import { SnapshotShape } from '../Shapes/SnapshotShape';
+import { TransactionShape } from '../Shapes/TransactionShape';
+import { AddressShape } from '../Shapes/AddressShape';
 
 export const Subheader = ({
   text,
@@ -21,10 +20,10 @@ export const Subheader = ({
     <section className={`${styles.fullWidth} ${styles.section}`}>
       <div className={`${styles.row} ${styles.subheader}`}>
         <div className={styles.subheaderItem}>
-          {IconType.Address === item && <img className={styles.icon} src={AddressShape} />}
-          {IconType.Block === item && <img className={styles.icon} src={BlockShape} height="1rem" />}
-          {IconType.Transaction === item && <img className={styles.icon} src={TransactionShape} height="1rem" />}
-          {IconType.Snapshot === item && <img className={styles.icon} src={SnapshotShape} height="1rem" />}
+          {IconType.Address === item && <AddressShape size={'1.5rem'} />}
+          {IconType.Block === item && <SnapshotShape size={'1.5rem'} />}
+          {IconType.Transaction === item && <TransactionShape size={'1.5rem'} />}
+          {IconType.Snapshot === item && <SnapshotShape size={'1.5rem'} />}
           <p className="subheaderText">{text}</p>
         </div>
         {hasExport && (

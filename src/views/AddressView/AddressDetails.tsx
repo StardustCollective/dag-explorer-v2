@@ -8,12 +8,12 @@ import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType } from '../../constants';
 import styles from './AddressDetails.module.scss';
-import AddressShape from '../../assets/icons/AddressShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
 import { formatAmount, formatPrice } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { ExportModal } from '../../components/Modals/ExportModal';
+import { AddressShape } from '../../components/Shapes/AddressShape';
 
 const LIMIT = 10;
 
@@ -152,7 +152,7 @@ export const AddressDetails = () => {
               skeleton={{ showSkeleton: addressInfo.isFetching }}
               limit={LIMIT}
               transactions={addressTxs}
-              icon={AddressShape}
+              icon={<AddressShape />}
             />
           </div>
           <div className={`${styles.row5}`}>

@@ -4,10 +4,10 @@ import { ArrowButton } from '../../../components/Buttons/ArrowButton';
 import { Subheader } from '../../../components/Subheader/Subheader';
 import { IconType } from '../../../constants';
 import styles from '../Transactions.module.scss';
-import TransactionShape from '../../../assets/icons/TransactionShape.svg';
 import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetLatestTransactions } from '../../../api/mainnet_1/block-explorer';
 import { MainnetOneTransactionTable } from '../../../components/MainnetOneTable/MainnetOneTransactionTable';
+import { TransactionShape } from '../../../components/Shapes/TransactionShape';
 
 const LIMIT = 13;
 
@@ -98,7 +98,7 @@ export const MainnetOneTransactions = () => {
               skeleton={{ showSkeleton: skeleton }}
               limit={LIMIT}
               transactions={transactions}
-              icon={TransactionShape}
+              icon={<TransactionShape />}
             />
           </div>
           <div className={`${styles.row3}`}>

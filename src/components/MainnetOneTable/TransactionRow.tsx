@@ -5,17 +5,16 @@ import { fitStringInCell, formatAmount, formatPrice, formatTime } from '../../ut
 import styles from './SnapshotRow.module.scss';
 
 export const TransactionRow = ({
-  icon,
   transaction,
   dagInfo,
+  icon,
 }: {
-  icon?: string;
+  icon?: JSX.Element;
   transaction?: MainnetOneTransaction;
   dagInfo?: any;
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-
   let snapRow = undefined;
   if (transaction) {
     const hash = fitStringInCell(transaction.hash);
@@ -27,7 +26,7 @@ export const TransactionRow = ({
         <>
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
-              {icon && <img src={icon} />}
+              {icon && icon}
               <Link to={'/transactions/' + transaction.hash}>{hash}</Link>
             </div>
           </div>
@@ -48,7 +47,7 @@ export const TransactionRow = ({
         <>
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
-              {icon && <img src={icon} />}
+              {icon && icon}
               <Link to={'/transactions/' + transaction.hash}>{hash}</Link>
             </div>
           </div>

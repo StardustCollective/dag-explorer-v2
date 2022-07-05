@@ -5,7 +5,7 @@ import { HeaderRow } from './HeaderRow';
 import { TransactionRow } from './TransactionRow';
 import styles from './TransactionsTable.module.scss';
 import { SkeletonTransactionsTable } from './SkeletonTransactionsTable';
-import { useContext } from 'react';
+import { useContext, cloneElement } from 'react';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 
 export const TransactionsTable = ({
@@ -18,7 +18,7 @@ export const TransactionsTable = ({
 }: {
   skeleton?: Skeleton;
   transactions?: Transaction[];
-  icon?: string;
+  icon?: JSX.Element;
   snapshots?: Snapshot[];
   headerText?: string;
   limit?: number;
@@ -95,7 +95,7 @@ export const TransactionsTable = ({
       >
         {headerText && <div className={styles.headerText}>{headerText}</div>}
         {headerText && <span />}
-        {headerText && <img className={styles.icon} src={icon} height={'20px'} />}
+        {headerText && cloneElement(icon, { classname: styles.icon, size: '20px' })}
         <HeaderRow forSnapshots={snapshots && !transactions} />
         {transactions && txRows}
         {snapshots && snapRows}

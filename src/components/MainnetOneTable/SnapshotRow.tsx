@@ -5,20 +5,19 @@ import { MainnetOneSnapshot } from '../../types';
 import { formatAmount, formatPrice } from '../../utils/numbers';
 import styles from './SnapshotRow.module.scss';
 
-export const SnapshotRow = ({ icon, snapshot }: { icon?: string; snapshot?: MainnetOneSnapshot }) => {
+export const SnapshotRow = ({ icon, snapshot }: { icon?: JSX.Element; snapshot?: MainnetOneSnapshot }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
 
   let snapRow = undefined;
-
   if (snapshot) {
     if (isHomePage) {
       snapRow = (
         <>
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
-              {icon && <img src={icon} />}
+              {icon && icon}
               <Link to={'/snapshots/' + snapshot.height}>{snapshot.height}</Link>
             </div>
           </div>
@@ -36,7 +35,7 @@ export const SnapshotRow = ({ icon, snapshot }: { icon?: string; snapshot?: Main
         <>
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
-              {icon && <img src={icon} />}
+              {icon && icon}
               <Link to={'/snapshots/' + snapshot.height}>{snapshot.height}</Link>
             </div>
           </div>

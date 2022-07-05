@@ -9,13 +9,13 @@ export const DetailRow = ({
   title: string;
   linkTo?: string;
   skeleton?: boolean;
-  icon?: string;
   copy?: boolean;
   date?: string;
   subValue?: string;
   isLong?: boolean;
   isMain?: boolean;
   isStatus?: boolean;
+  icon?: JSX.Element;
 }) => {
   return (
     <div className={`${styles.txFlexRow} ${props.borderBottom ? styles.borderBottom : styles}`}>

@@ -13,7 +13,7 @@ export const Content = ({
   title: string;
   linkTo?: string;
   skeleton?: boolean;
-  icon?: string;
+  icon?: JSX.Element;
   copy?: boolean;
   date?: string;
   subValue?: string;
@@ -37,7 +37,7 @@ export const Content = ({
     <div className={`${styles.skeleton} ${styles.value}`} />
   ) : (
     <div className={`${styles.content} ${isStatus && styles.status}`}>
-      {icon && <img src={icon} />}
+      {icon && icon}
       <div className={`${styles.value}`}>
         {linkTo ? (
           <Link to={linkTo + '/' + value} className={isMain ? styles.truncate : undefined}>

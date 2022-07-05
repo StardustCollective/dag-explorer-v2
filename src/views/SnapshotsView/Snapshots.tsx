@@ -5,9 +5,9 @@ import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType } from '../../constants';
 import styles from './Snapshots.module.scss';
-import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
 import { NotFound } from '../NotFoundView/NotFound';
 import { useGetAllSnapshots } from '../../api/block-explorer/global-snapshot';
+import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 
 const LIMIT = 14;
 
@@ -100,7 +100,7 @@ export const Snapshots = () => {
               skeleton={{ showSkeleton: skeleton, forSnapshots: true }}
               limit={LIMIT}
               snapshots={snapshots}
-              icon={SnapshotShape}
+              icon={<SnapshotShape />}
             />
           </div>
           <div className={`${styles.row3}`}>

@@ -9,6 +9,7 @@
   border-bottom: 1px solid $gray-200;
   overflow: hidden;
   height: auto;
+  max-height: 3.5rem;
   font-family: 'IBM Plex Mono', sans-serif;
 }
 
@@ -37,6 +38,9 @@
   align-items: center;
   justify-content: flex-end;
   padding-right: 1.5rem;
+  padding-left: 0;
+  flex-wrap: wrap-reverse;
+  gap: 0.5rem;
 }
 
 .usd {
@@ -46,7 +50,6 @@
   font-size: 14px;
   line-height: 16px;
   color: $gray-500;
-  margin-right: 0.1rem;
 }
 
 .date {

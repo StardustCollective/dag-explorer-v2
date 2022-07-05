@@ -1,3 +1,4 @@
+import { cloneElement } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MainnetOneSnapshot, Skeleton } from '../../types';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
@@ -15,7 +16,7 @@ export const MainnetOneSnapshotTable = ({
 }: {
   skeleton?: Skeleton;
   snapshots: MainnetOneSnapshot[];
-  icon: string;
+  icon?: JSX.Element;
   headerText?: string;
   limit: number;
 }) => {
@@ -54,7 +55,7 @@ export const MainnetOneSnapshotTable = ({
     <>
       <div className={`${styles.table} ${isHomePage ? styles.homeContainer : styles.containerSnap}`}>
         {headerText && <div className={styles.headerText}>{headerText}</div>}
-        {headerText && <img className={styles.icon} src={icon} height={'20px'} />}
+        {headerText && cloneElement(icon, { classname: styles.icon, size: '20px' })}
         <HeaderRow forSnapshots={true} />
         {snapshots && snapRows}
         {snapshots && snapshots.length === 0 && emptyRows}

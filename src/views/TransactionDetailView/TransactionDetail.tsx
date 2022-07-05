@@ -9,15 +9,14 @@ import { Subheader } from '../../components/Subheader/Subheader';
 import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
 import { IconType } from '../../constants';
-import AddressShape from '../../assets/icons/AddressShape.svg';
-import BlockShape from '../../assets/icons/BlockShape.svg';
-import TransactionShape from '../../assets/icons/TransactionShape.svg';
-import SnapshotShape from '../../assets/icons/SnapshotShape.svg';
-import Success from '../../assets/icons/Success.svg';
 import { NotFound } from '../NotFoundView/NotFound';
 import { formatAmount, formatDagPrice, formatTime } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { useGetClusterInfo } from '../../api/l0-node';
+import { AddressShape } from '../../components/Shapes/AddressShape';
+import { TransactionShape } from '../../components/Shapes/TransactionShape';
+import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
+import { CheckCircleShape } from '../../components/Shapes/CheckCircle';
 
 export const TransactionDetail = () => {
   const { transactionHash } = useParams();
@@ -103,7 +102,7 @@ export const TransactionDetail = () => {
                         borderBottom
                         value={!skeleton ? data.source : ''}
                         skeleton={skeleton}
-                        icon={AddressShape}
+                        icon={<AddressShape />}
                         copy
                         isLong
                         isMain
@@ -113,7 +112,7 @@ export const TransactionDetail = () => {
                         linkTo={'/address'}
                         value={!skeleton ? data.destination : ''}
                         skeleton={skeleton}
-                        icon={AddressShape}
+                        icon={<AddressShape />}
                         copy
                         isLong
                         isMain
@@ -125,7 +124,7 @@ export const TransactionDetail = () => {
                         borderBottom
                         value={!skeleton ? data.hash : ''}
                         skeleton={skeleton}
-                        icon={TransactionShape}
+                        icon={<TransactionShape />}
                         copy
                         isLong
                         isMain
@@ -136,7 +135,7 @@ export const TransactionDetail = () => {
                         borderBottom
                         value={!skeleton ? data.blockHash : ''}
                         skeleton={skeleton}
-                        icon={BlockShape}
+                        icon={<SnapshotShape />}
                         copy
                         isLong
                         isMain
@@ -147,7 +146,7 @@ export const TransactionDetail = () => {
                         borderBottom
                         value={!skeleton ? data.snapshotOrdinal.toString() : ''}
                         skeleton={skeleton}
-                        icon={SnapshotShape}
+                        icon={<SnapshotShape size={'1.8rem'} />}
                       />
                       <DetailRow
                         title={'TIMESTAMP'}
@@ -157,7 +156,13 @@ export const TransactionDetail = () => {
                         isLong
                         date={!skeleton ? transaction.data.timestamp : ''}
                       />
-                      <DetailRow title={'STATUS'} value={'Success'} skeleton={skeleton} icon={Success} />
+                      <DetailRow
+                        title={'STATUS'}
+                        value={'Success'}
+                        skeleton={skeleton}
+                        icon={<CheckCircleShape size={'2rem'} />}
+                        isStatus
+                      />
                     </div>
                   </div>
                 </div>

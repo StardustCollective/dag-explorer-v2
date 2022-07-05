@@ -69,7 +69,6 @@
 
 .fullDate {
   color: $gray-300;
-  margin-left: 1rem;
 }
 
 .truncate {
@@ -77,6 +76,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 15px;
 }
 
 .subValue {

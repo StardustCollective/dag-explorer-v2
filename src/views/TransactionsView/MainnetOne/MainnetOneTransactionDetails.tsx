@@ -5,10 +5,6 @@ import { DetailRow } from '../../../components/DetailRow/DetailRow';
 import { Subheader } from '../../../components/Subheader/Subheader';
 import { IconType } from '../../../constants';
 import styles from '../../TransactionDetailView/TransactionDetail.module.scss';
-import AddressShape from '../../../assets/icons/AddressShape.svg';
-import SnapshotShape from '../../../assets/icons/SnapshotShape.svg';
-import TransactionShape from '../../../assets/icons/TransactionShape.svg';
-import Success from '../../../assets/icons/Success.svg';
 import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetTransaction } from '../../../api/mainnet_1/block-explorer';
 import { useGetPrices } from '../../../api/coingecko';
@@ -17,6 +13,10 @@ import { Card } from '../../../components/Card/Card';
 import { formatAmount, formatDagPrice, formatPrice, formatTime } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { useGetClusterInfo } from '../../../api/mainnet_1/load-balancer';
+import { AddressShape } from '../../../components/Shapes/AddressShape';
+import { TransactionShape } from '../../../components/Shapes/TransactionShape';
+import { SnapshotShape } from '../../../components/Shapes/SnapshotShape';
+import { CheckCircleShape } from '../../../components/Shapes/CheckCircle';
 
 export const MainnetOneTransactionDetails = () => {
   const { transactionHash } = useParams();
@@ -106,7 +106,7 @@ export const MainnetOneTransactionDetails = () => {
                         borderBottom
                         value={!skeleton ? transaction.sender : ''}
                         skeleton={skeleton}
-                        icon={AddressShape}
+                        icon={<AddressShape />}
                         copy
                         isLong
                         isMain
@@ -116,7 +116,7 @@ export const MainnetOneTransactionDetails = () => {
                         linkTo={'/address'}
                         value={!skeleton ? transaction.receiver : ''}
                         skeleton={skeleton}
-                        icon={AddressShape}
+                        icon={<AddressShape />}
                         copy
                         isLong
                         isMain
@@ -128,7 +128,7 @@ export const MainnetOneTransactionDetails = () => {
                         borderBottom
                         value={!skeleton ? transaction.hash : ''}
                         skeleton={skeleton}
-                        icon={TransactionShape}
+                        icon={<TransactionShape />}
                         copy
                         isLong
                         isMain
@@ -139,7 +139,7 @@ export const MainnetOneTransactionDetails = () => {
                         borderBottom
                         value={!skeleton ? transaction.snapshotHash : ''}
                         skeleton={skeleton}
-                        icon={SnapshotShape}
+                        icon={<SnapshotShape />}
                         copy
                         isLong
                         isMain
@@ -152,7 +152,13 @@ export const MainnetOneTransactionDetails = () => {
                         isLong
                         date={!skeleton ? formatTime(transactionInfo.data.timestamp, 'full') : ''}
                       />
-                      <DetailRow title={'STATUS'} value={'Success'} skeleton={skeleton} icon={Success} isStatus />
+                      <DetailRow
+                        title={'STATUS'}
+                        value={'Success'}
+                        skeleton={skeleton}
+                        icon={<CheckCircleShape size={'2rem'} />}
+                        isStatus
+                      />
                     </div>
                   </div>
                 </div>
