@@ -81,6 +81,7 @@ export const BlockDetails = () => {
                   value={!skeleton ? blockHash : ''}
                   skeleton={skeleton}
                   isLong
+                  isMain
                 />
                 <DetailRow
                   linkTo={'/snapshots'}

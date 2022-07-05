@@ -121,3 +121,21 @@
     margin-right: 2rem;
   }
 }
+
+@media screen and (max-width: $xlg) {
+  .fullWidth3 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row1 {
+    height: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .row2 {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

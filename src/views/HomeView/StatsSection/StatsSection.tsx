@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useGetPrices } from '../../../api/coingecko';
+import { useGetClusterInfo } from '../../../api/l0-node';
 import { Card } from '../../../components/Card/Card';
 import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
 import { formatDagPrice, formatMarketVol, formatTotalSupply } from '../../../utils/numbers';
@@ -11,6 +12,15 @@ const StatsSection = () => {
 
   const [dagInfo, setDagInfo] = useState(null);
   const [btcInfo, setBtcInfo] = useState(null);
+
+  const [clusterData, setClusterData] = useState(null);
+  const clusterInfo = useGetClusterInfo();
+
+  useEffect(() => {
+    if (!clusterInfo.isFetching) {
+      setClusterData(clusterInfo.data);
+    }
+  }, [clusterInfo.isFetching]);
 
   const prices = useGetPrices();
 
@@ -34,25 +44,30 @@ const StatsSection = () => {
   return (
     <div className={styles.stats}>
       <Card
-        skeleton={{ showSkeleton: !dagInfo }}
+        skeleton={{ showSkeleton: !dagInfo || !clusterData }}
         badge={dagInfo ? dagInfo.usd_24h_change : ''}
         headerText={'DAG PRICE'}
         value={dagInfo ? '$' + dagInfo.usd : ''}
         info={dagInfo ? formatDagPrice(dagInfo, btcInfo) : ''}
       />
       <Card
-        skeleton={{ showSkeleton: !dagInfo }}
+        skeleton={{ showSkeleton: !dagInfo || !clusterData }}
         headerText={'MARKET CAP'}
         value={dagInfo ? '$' + formater.format(dagInfo.usd_market_cap) : ''}
         info={dagInfo ? formatMarketVol(formater, dagInfo) : ''}
       />
       <Card
-        skeleton={{ showSkeleton: !dagInfo }}
+        skeleton={{ showSkeleton: !dagInfo || !clusterData }}
         headerText={'CIRCULATING SUPPLY'}
         value={'2,575,620,108'}
         info={formatTotalSupply()}
       />
-      <Card skeleton={{ showSkeleton: !dagInfo }} headerText={'NODE OPERATORS'} info={''} value={'100 validators'} />
+      <Card
+        skeleton={{ showSkeleton: !dagInfo || !clusterData }}
+        headerText={'NODE OPERATORS'}
+        info={''}
+        value={clusterData ? clusterData.length + ' validators' : ''}
+      />
     </div>
   );
 };
