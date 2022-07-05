@@ -18,19 +18,23 @@ export const formatPrice = (amount: number, dagInfo: any, toFixed: number) => {
   return (parseFloat(formatedValue) * dagInfo.usd).toFixed(toFixed);
 };
 
-export const formatAmount = (amount: number, toFixed: number) => {
+export const formatAmount = (amount: number, toFixed: number, forExport?: boolean) => {
   const formatedValue = (amount / Math.pow(10, 8)).toFixed(toFixed);
   const regex = formatedValue.match('^(\\d+\\.\\d*?)(0+)$');
   let toReturn: string;
   if (regex) {
     const subString = regex[1].split('.')[1];
     if (subString && subString.length >= 2) {
-      return regex[1] + ' DAG';
+      return forExport ? regex[1] : regex[1] + ' DAG';
     } else {
       toReturn = subString.length === 1 ? regex[1].concat('0') : regex[1].concat('00');
     }
   }
-  return (toReturn ? toReturn : formater.format(parseFloat(formatedValue))) + ' DAG';
+  return forExport
+    ? toReturn
+      ? toReturn
+      : formater.format(parseFloat(formatedValue))
+    : (toReturn ? toReturn : formater.format(parseFloat(formatedValue))) + ' DAG';
 };
 
 export const fitStringInCell = (value: string) => value.slice(0, 5) + '...' + value.slice(value.length - 5);

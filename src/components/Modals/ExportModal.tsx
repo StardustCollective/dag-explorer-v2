@@ -46,7 +46,7 @@ export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose
             return isWithinInterval(date, { start: range[0].startDate, end: range[0].endDate });
           })
           .map((tx) => {
-            return { ...tx, amount: formatAmount(tx.amount, 8), fee: formatAmount(tx.fee, 8) };
+            return { ...tx, amount: formatAmount(tx.amount, 8, true), fee: formatAmount(tx.fee, 8, true) };
           });
         setData(transformed);
       })

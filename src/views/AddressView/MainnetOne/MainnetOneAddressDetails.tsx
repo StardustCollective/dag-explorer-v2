@@ -111,7 +111,7 @@ export const MainnetOneAddressDetails = () => {
     setModalOpen(!modalOpen);
   };
 
-  const skeleton = addressInfo.isFetching || !addressTxs || addressBalance.isFetching;
+  const skeleton = addressInfo.isFetching || !addressTxs || addressBalance.isFetching || !dagInfo;
   return (
     <>
       <section className={`${styles.searchMobile}`}>

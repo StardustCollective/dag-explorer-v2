@@ -98,7 +98,7 @@ export const AddressDetails = () => {
     setModalOpen(!modalOpen);
   };
 
-  const skeleton = addressBalance.isFetching;
+  const skeleton = addressBalance.isFetching || !dagInfo;
 
   return (
     <>
