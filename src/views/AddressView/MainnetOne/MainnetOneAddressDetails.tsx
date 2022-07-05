@@ -14,7 +14,7 @@ import { formatAmount, formatPrice } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../../context/PricesContext';
 import { ExportModal } from '../../../components/Modals/ExportModal';
-import { AddressDetails } from '../AddressDetails';
+import { TransactionShape } from '../../../components/Shapes/TransactionShape';
 
 const LIMIT = 10;
 
@@ -164,7 +164,7 @@ export const MainnetOneAddressDetails = () => {
               skeleton={{ showSkeleton: skeleton }}
               limit={LIMIT}
               transactions={addressTxs ? addressTxs.slice(startAt, endAt) : null}
-              icon={<AddressDetails />}
+              icon={<TransactionShape />}
             />
           </div>
           <div className={`${styles.row5}`}>
