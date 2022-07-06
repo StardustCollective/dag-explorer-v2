@@ -33,7 +33,7 @@ export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose
       URL = REACT_APP_MAINNET_ONE_BE + '/address/' + address + '/transaction';
       setHeaders(['amount', 'checkpointBlock', 'fee', 'hash', 'receiver', 'sender', 'snapshotHash', 'timestamp']);
     } else {
-      URL = REACT_APP_TESTNET_BLOCK_EXPLORER_URL + '/address/' + address + '/transactions';
+      URL = REACT_APP_TESTNET_BLOCK_EXPLORER_URL + '/addresses/' + address + '/transactions';
       setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
     }
 
