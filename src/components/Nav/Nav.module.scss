@@ -105,6 +105,7 @@
 .dropdown > .network:focus + .dropdownContent {
   opacity: 1;
   transform: translateY(0);
+  z-index: 3;
 }
 
 @media screen and (max-width: $md) {
