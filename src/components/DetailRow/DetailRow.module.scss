@@ -68,7 +68,12 @@
 }
 
 .fullDate {
-  color: $gray-300;
+  color: $gray-500;
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  margin-left: 1rem;
+  font-size: 14px;
 }
 
 .truncate {
