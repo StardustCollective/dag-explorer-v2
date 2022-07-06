@@ -20,7 +20,8 @@ export const NotFound = ({ entire, errorCode, notRow }: { entire: boolean; error
         <div className={styles.sorry}>
           {errorCode === '500'
             ? 'Sorry, there was a problem in the server and we were not able to process your request'
-            : 'Sorry, the page you are looking for doesn&apos;t exist. Please check back soon.'}
+            : // eslint-disable-next-line quotes
+              "Sorry, the page you are looking for doesn't exist. Please check back soon."}
         </div>
         <div
           className={styles.homeButton}
