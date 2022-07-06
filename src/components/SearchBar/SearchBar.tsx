@@ -50,19 +50,19 @@ export const SearchBar = () => {
 
   return (
     <div className={styles.searchBar} onKeyDown={(e) => handleKey(e)}>
+      <input
+        onChange={(e) => setSearchText(e.target.value)}
+        className={styles.searchInput}
+        placeholder="Search by address, snapshot height, or transaction..."
+      />
+      <input
+        onChange={(e) => setSearchText(e.target.value)}
+        className={styles.shortSearchInput}
+        placeholder="Search network"
+      />
       <div className={styles.searchBlock}>
         <div className={styles.searchLeft}>
           <div className={styles.searchIcon} />
-          <input
-            onChange={(e) => setSearchText(e.target.value)}
-            className={styles.searchInput}
-            placeholder="Search by address, snapshot height, or transaction..."
-          />
-          <input
-            onChange={(e) => setSearchText(e.target.value)}
-            className={styles.shortSearchInput}
-            placeholder="Search network"
-          />
         </div>
       </div>
       <div
