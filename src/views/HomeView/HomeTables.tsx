@@ -40,7 +40,9 @@ const HomeTables = ({ limit, handleError }: { limit: number; handleError: () => 
   }, [snapshotsInfo.isFetching]);
 
   useEffect(() => {
-    handleError();
+    if (error) {
+      handleError();
+    }
   }, [error]);
 
   return error ? (

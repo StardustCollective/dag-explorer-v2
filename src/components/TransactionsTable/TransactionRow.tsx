@@ -109,17 +109,9 @@ export const TransactionRow = ({
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
-
-          {snapshotDag ? (
-            <div className={`${styles.txnCell} ${styles.amount}`}>
-              {dagInfo && (
-                <div className={styles.usd}>{'($' + formatPrice(snapshotDag.total, dagInfo, 2) + ' USD)'}</div>
-              )}
-              <div className={styles.dag}>{formatAmount(snapshotDag.total, 8)}</div>
-            </div>
-          ) : (
-            <span />
-          )}
+          <div className={`${styles.txnCell}`}>
+            <div className={styles.dag}>{snapshot.blocks.length}</div>
+          </div>
         </>
       );
     } else {

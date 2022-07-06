@@ -42,8 +42,8 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <div className={styles.headerColumn}>
           <p className={styles.headerText}>{'TIMESTAMP'}</p>
         </div>
-        <div className={`${styles.headerColumn} ${styles.rightAligned}`}>
-          <p className={styles.headerText}>{'AMOUNT'}</p>
+        <div className={`${styles.headerColumn} ${!forSnapshots ? styles.rightAligned : undefined}`}>
+          <p className={styles.headerText}>{forSnapshots ? 'BLOCKS' : 'AMOUNT'}</p>
         </div>
       </>
     )

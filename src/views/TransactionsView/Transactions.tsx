@@ -91,7 +91,11 @@ export const Transactions = () => {
               <span />
               <div className={styles.arrows}>
                 <ArrowButton handleClick={handlePrevPage} disabled={page === 0 || transactionsInfo.isFetching} />
-                <ArrowButton forward handleClick={handleNextPage} disabled={transactionsInfo.isFetching || lastPage} />
+                <ArrowButton
+                  forward
+                  handleClick={handleNextPage}
+                  disabled={transactionsInfo.isFetching || lastPage || !transactions}
+                />
               </div>
             </div>
           </div>
@@ -115,7 +119,7 @@ export const Transactions = () => {
                 <ArrowButton
                   forward
                   handleClick={() => handleNextPage()}
-                  disabled={transactionsInfo.isFetching || lastPage}
+                  disabled={transactionsInfo.isFetching || lastPage || !transactions}
                 />
               </div>
             </div>

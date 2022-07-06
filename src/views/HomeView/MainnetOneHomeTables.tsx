@@ -46,7 +46,9 @@ const MainnetOneHomeTables = ({ limit, handleError }: { limit: number; handleErr
   }, [transactionsInfo.isFetching]);
 
   useEffect(() => {
-    handleError();
+    if (error) {
+      handleError();
+    }
   }, [error]);
 
   return error ? (
