@@ -11,6 +11,7 @@ import { NotFound } from '../NotFoundView/NotFound';
 import styles from './BlockDetails.module.scss';
 import { BlockDetailsTableWrapper } from './BlockDetailsTableWrapper';
 import { formatTime } from '../../utils/numbers';
+import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 
 const LIMIT = 10;
 export const BlockDetails = () => {
@@ -62,8 +63,8 @@ export const BlockDetails = () => {
         </div>
       </section>
       <Subheader text={'Block details'} item={IconType.Block} />
-      {error === '404' || error === '500' ? (
-        <NotFound entire={false} />
+      {error ? (
+        <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
           <div className={`${styles.row1}`}>
@@ -82,6 +83,7 @@ export const BlockDetails = () => {
                   skeleton={skeleton}
                   isLong
                   isMain
+                  icon={<SnapshotShape />}
                 />
                 <DetailRow
                   linkTo={'/snapshots'}
@@ -89,6 +91,7 @@ export const BlockDetails = () => {
                   title={'SNAPSHOT HEIGHT'}
                   value={!skeleton ? blockData.snapshotOrdinal.toString() : ''}
                   skeleton={skeleton}
+                  icon={<SnapshotShape size={'2rem'} />}
                 />
                 <DetailRow
                   borderBottom

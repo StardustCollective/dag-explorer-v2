@@ -66,8 +66,8 @@ export const TransactionDetail = () => {
         </div>
       </section>
       <Subheader text={'Transaction details'} item={IconType.Transaction} />
-      {error === '404' || error === '500' ? (
-        <NotFound entire={false} />
+      {error ? (
+        <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
           {!error && (

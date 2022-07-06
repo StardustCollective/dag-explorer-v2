@@ -9,7 +9,10 @@ export const Nav = () => {
     <>
       <nav className={styles.fullWidth}>
         <div className={styles.maxWidth}>
-          <div className={styles.leftSide} onClick={() => navigate('/')}>
+          <div
+            className={styles.leftSide}
+            onClick={() => (location.pathname === '/' ? window.location.reload() : navigate('/'))}
+          >
             <img className={styles.navSeparator} src={Logo} />
             <p className={styles.title}>DAG Explorer</p>
           </div>

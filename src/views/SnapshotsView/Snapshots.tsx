@@ -78,8 +78,8 @@ export const Snapshots = () => {
   return (
     <>
       <Subheader text={'Snapshots'} item={IconType.Snapshot} />
-      {error === '404' || error === '500' ? (
-        <NotFound entire={false} />
+      {error ? (
+        <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
           <div className={`${styles.row1}`}>

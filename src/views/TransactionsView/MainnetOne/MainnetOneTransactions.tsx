@@ -32,6 +32,8 @@ export const MainnetOneTransactions = () => {
 
         if (arrTxs.length < LIMIT) {
           setLastPage(true);
+        } else {
+          setLastPage(false);
         }
         setSkeleton(false);
       }
@@ -80,8 +82,8 @@ export const MainnetOneTransactions = () => {
   return (
     <>
       <Subheader text={'Transactions'} item={IconType.Transaction} />
-      {error === '404' || error === '500' ? (
-        <NotFound entire={false} />
+      {error ? (
+        <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
           <div className={`${styles.row1}`}>

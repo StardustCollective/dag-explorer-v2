@@ -40,6 +40,8 @@ export const SnapshotDetails = () => {
       }
       if (snapshotTransactions.data.length < LIMIT) {
         setLastPage(true);
+      } else {
+        setLastPage(false);
       }
     }
   }, [snapshotTransactions.isFetching]);
@@ -95,8 +97,8 @@ export const SnapshotDetails = () => {
         </div>
       </section>
       <Subheader text={'Snapshot details'} item={IconType.Snapshot} />
-      {error === '404' || error === '500' ? (
-        <NotFound entire={false} />
+      {error ? (
+        <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
           {!error && (
@@ -119,17 +121,17 @@ export const SnapshotDetails = () => {
                     />
                     <DetailRow
                       borderBottom
+                      title={'BLOCKS'}
+                      value={!skeleton && snapshot ? snapshot.blocks.length.toString() : ''}
+                      skeleton={skeleton}
+                      icon={<SnapshotShape size={'1.5rem'} />}
+                    />
+                    <DetailRow
+                      borderBottom
                       title={'TIMESTAMP'}
                       value={!skeleton ? formatTime(snapshotInfo.data.timestamp, 'relative') : ''}
                       date={!skeleton ? snapshotInfo.data.timestamp : ''}
                       skeleton={skeleton}
-                    />
-                    <DetailRow
-                      borderBottom
-                      title={'BLOCKS'}
-                      value={!skeleton && snapshot ? snapshot.blocks.length.toString() : ''}
-                      skeleton={skeleton}
-                      icon={<SnapshotShape size={'2rem'} />}
                     />
                   </div>
                 </div>

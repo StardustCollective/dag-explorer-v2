@@ -53,6 +53,8 @@ export const MainnetOneAddressDetails = () => {
       }
       if (addressInfo.data.length < LIMIT) {
         setLastPage(true);
+      } else {
+        setLastPage(false);
       }
     }
   }, [addressInfo.isLoading, addressInfo.isFetching]);
@@ -121,8 +123,8 @@ export const MainnetOneAddressDetails = () => {
       </section>
       <Subheader text={'Address details'} item={IconType.Address} hasExport handleExport={handleExport} />
       <ExportModal open={modalOpen} onClose={handleExport} address={addressId} />
-      {error === '404' || error === '500' ? (
-        <NotFound entire={false} />
+      {error ? (
+        <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
           <div className={`${styles.row1}`}>

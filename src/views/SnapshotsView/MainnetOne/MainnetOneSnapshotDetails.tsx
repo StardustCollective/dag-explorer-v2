@@ -60,6 +60,8 @@ export const MainnetOneSnapshotDetails = () => {
       }
       if (snapshotTransactions.data.length < LIMIT) {
         setLastPage(true);
+      } else {
+        setLastPage(false);
       }
     }
   }, [snapshotTransactions.isLoading, snapshotTransactions.isFetching]);
@@ -114,6 +116,11 @@ export const MainnetOneSnapshotDetails = () => {
     }
   };
 
+  console.log(page);
+  console.log(snapshotTransactions);
+  console.log(error);
+  console.log(lastPage);
+
   const skeleton = snapshotTransactions.isLoading || !snapshot || !realHeight;
   return (
     <>
@@ -123,8 +130,8 @@ export const MainnetOneSnapshotDetails = () => {
         </div>
       </section>
       <Subheader text={'Snapshot details'} item={IconType.Snapshot} />
-      {error === '404' || error === '500' ? (
-        <NotFound entire={false} />
+      {error ? (
+        <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
           {!error && (

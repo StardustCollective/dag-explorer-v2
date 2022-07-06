@@ -83,6 +83,17 @@
   display: none;
 }
 
+.notRow {
+  grid-row: unset;
+  grid-column: 1 / span 2;
+}
+
+@media screen and (max-width: $lg) {
+  .content {
+    grid-column: unset;
+  }
+}
+
 @media screen and (max-width: $md) {
   .content {
     width: 100%;

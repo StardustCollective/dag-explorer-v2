@@ -7,9 +7,9 @@ import { MainnetOneTransactionTable } from '../../components/MainnetOneTable/Mai
 import styles from './HomeView.module.scss';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 import { TransactionShape } from '../../components/Shapes/TransactionShape';
+import { NotFound } from '../NotFoundView/NotFound';
 
-const LIMIT = 10;
-const MainnetOneHomeTables = () => {
+const MainnetOneHomeTables = ({ limit, handleError }: { limit: number; handleError: () => void }) => {
   const navigate = useNavigate();
   const startAt = '0';
   const endAt = '9';
@@ -18,6 +18,16 @@ const MainnetOneHomeTables = () => {
   const transactionsInfo = useGetLatestTransactions(query);
   const [snapshots, setSnapshots] = useState<MainnetOneSnapshot[]>();
   const [transactions, setTransactions] = useState<MainnetOneTransaction[]>();
+  const [error, setError] = useState<string>(undefined);
+
+  useEffect(() => {
+    if (snapshotsInfo.isError) {
+      setError(snapshotsInfo.error.message);
+    }
+    if (transactionsInfo.isError) {
+      setError(transactionsInfo.error.message);
+    }
+  }, [snapshotsInfo.isError, transactionsInfo.isError]);
 
   useEffect(() => {
     if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
@@ -35,11 +45,17 @@ const MainnetOneHomeTables = () => {
     }
   }, [transactionsInfo.isFetching]);
 
-  return (
+  useEffect(() => {
+    handleError();
+  }, [error]);
+
+  return error ? (
+    <NotFound entire={false} errorCode={error} />
+  ) : (
     <>
       <MainnetOneSnapshotTable
         skeleton={{ showSkeleton: !snapshots, forSnapshots: true, headerCols: ['HEIGHT', 'TX COUNT', 'AMOUNT'] }}
-        limit={LIMIT}
+        limit={limit}
         snapshots={snapshots}
         icon={<SnapshotShape />}
         headerText={'Latest snapshots'}
@@ -51,7 +67,7 @@ const MainnetOneHomeTables = () => {
 
       <MainnetOneTransactionTable
         skeleton={{ showSkeleton: !transactions }}
-        limit={LIMIT}
+        limit={limit}
         transactions={transactions}
         icon={<TransactionShape />}
         headerText={'Latest transactions'}

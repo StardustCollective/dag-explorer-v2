@@ -29,7 +29,7 @@ root.render(
             <Route path="address/:addressId" element={<AddressDetailsWrapper />} />
             <Route path="blocks/:blockHash" element={<BlockDetailsWrapper />} />
             <Route path="search" element={<Search />} />
-            <Route path="*" element={<NotFound entire />} />
+            <Route path="*" element={<NotFound entire errorCode={'404'} />} />
           </Route>
         </Routes>
       </NetworkProvider>
