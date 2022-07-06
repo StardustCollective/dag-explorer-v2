@@ -65,7 +65,12 @@ export const TransactionRow = ({
           <div className={styles.txnCell}>
             {<Link to={'/address/' + transaction.receiver}>{fitStringInCell(transaction.receiver)}</Link>}
           </div>
-          <div className={styles.txnCell}>{formatAmount(transaction.amount, 8)}</div>
+          <div className={`${styles.txnCell} ${styles.amount}`}>
+            {dagInfo && (
+              <div className={styles.usd}>{'($' + formatPrice(transaction.amount, dagInfo, 2) + ' USD)'}</div>
+            )}
+            <div className={styles.dag}>{formatAmount(transaction.amount, 8)}</div>
+          </div>
         </>
       );
     }
