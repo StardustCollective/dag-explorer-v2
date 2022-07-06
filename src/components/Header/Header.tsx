@@ -22,6 +22,7 @@ export const Header = () => {
               <p className={'networkName'}>{AVAILABLE_NETWORKS[network]}</p>
               {/*network === 'mainnet2' && <p className={styles.badge}>2.0</p>*/}
               {network === 'testnet' && <p className={styles.badge}>2.0</p>}
+              {network === 'mainnet1' && <div className={styles.badge}>1.0</div>}
             </div>
           </div>
 
