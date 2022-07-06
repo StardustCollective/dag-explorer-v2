@@ -14,3 +14,6 @@ const { REACT_APP_TESTNET_L0_NODE_URL } = process.env;
 export const useGetClusterInfo = () => useFetch<Peer[]>(REACT_APP_TESTNET_L0_NODE_URL + '/cluster/info');
 
 export const useGetMetric = () => useFetch<string>(REACT_APP_TESTNET_L0_NODE_URL + '/metric');
+
+export const useGetProxyClusterInfo = () =>
+  useFetch<string>('https://proxy.constellationnetwork.io/api/l0/cluster/info');
