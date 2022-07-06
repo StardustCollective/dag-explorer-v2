@@ -143,3 +143,9 @@
     flex-direction: column;
   }
 }
+
+@supports (-webkit-touch-callout: none) {
+  .shortSearchInput {
+    height: 80%;
+  }
+}

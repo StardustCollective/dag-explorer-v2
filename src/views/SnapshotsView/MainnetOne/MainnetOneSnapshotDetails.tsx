@@ -116,11 +116,6 @@ export const MainnetOneSnapshotDetails = () => {
     }
   };
 
-  console.log(page);
-  console.log(snapshotTransactions);
-  console.log(error);
-  console.log(lastPage);
-
   const skeleton = snapshotTransactions.isLoading || !snapshot || !realHeight;
   return (
     <>
