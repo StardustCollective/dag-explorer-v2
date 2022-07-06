@@ -17,7 +17,7 @@ export const Header = () => {
       <div className={styles.header}>
         <div className={`${styles.maxWidth} ${styles.center}`}>
           <div className={styles.networkHeader}>
-            <p className={'headerSubtitle'}>EXPLORE NETWORK</p>
+            <p className={'headerSubtitle'}>CONSTELLATION NETWORK</p>
             <div className={styles.networkHeaderGroup}>
               <p className={'networkName'}>{AVAILABLE_NETWORKS[network]}</p>
               {/*network === 'mainnet2' && <p className={styles.badge}>2.0</p>*/}

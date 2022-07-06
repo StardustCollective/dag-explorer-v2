@@ -142,13 +142,14 @@
   }
 
   .truncate {
-    width: 150px;
+    width: 200px;
   }
 
   .mobile {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    margin-left: 1rem;
   }
   .desktop {
     display: none;
@@ -158,5 +159,15 @@
   }
   .txFlexRow {
     height: 80px;
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .value {
+    flex-wrap: wrap;
+  }
+  .truncate {
+    width: 140px;
   }
 }

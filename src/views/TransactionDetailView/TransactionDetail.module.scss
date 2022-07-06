@@ -176,3 +176,20 @@
     flex-direction: column-reverse;
   }
 }
+
+@media screen and (min-device-width: 414px) {
+  .flexRow1 {
+    margin-left: 1rem;
+  }
+  .column2 {
+    margin-left: 2rem;
+  }
+}
+@media screen and (max-width: 320px) {
+  .flexRow1 {
+    margin-left: 0;
+  }
+  .column2 {
+    margin-left: 0;
+  }
+}

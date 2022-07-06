@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { MainnetOneSnapshot } from '../../../types';
-import { ArrowButton } from '../../../components/Buttons/ArrowButton';
 import { Subheader } from '../../../components/Subheader/Subheader';
 import { IconType } from '../../../constants';
 import styles from '../Snapshots.module.scss';

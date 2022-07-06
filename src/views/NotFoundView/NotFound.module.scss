@@ -103,3 +103,9 @@
     height: 10rem;
   }
 }
+
+@media screen and (min-width: $sm) {
+  .notFound {
+    font-size: 150px;
+  }
+}

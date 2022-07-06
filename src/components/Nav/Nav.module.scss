@@ -122,3 +122,15 @@
     padding-right: 1rem;
   }
 }
+
+@media screen and (min-width: $sm) {
+  .rightSide {
+    flex-wrap: wrap-reverse;
+  }
+  .maxWidth {
+    gap: 1rem;
+  }
+  .dropdown {
+    min-width: unset;
+  }
+}

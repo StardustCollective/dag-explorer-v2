@@ -171,17 +171,19 @@ export const MainnetOneSnapshotDetails = () => {
                 <div className={`${styles.flexRowBottom}`}>
                   <p className="overviewText">Transactions</p>
 
-                  <div className={styles.arrows}>
-                    <ArrowButton
-                      handleClick={handlePrevPage}
-                      disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
-                    />
-                    <ArrowButton
-                      forward
-                      handleClick={handleNextPage}
-                      disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
-                    />
-                  </div>
+                  {!snapshotTransactions.isFetching && snapshotTxs && snapshotTxs.length > 0 && (
+                    <div className={styles.arrows}>
+                      <ArrowButton
+                        handleClick={handlePrevPage}
+                        disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
+                      />
+                      <ArrowButton
+                        forward
+                        handleClick={handleNextPage}
+                        disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
               <div className={`${styles.row4}`}>
@@ -198,17 +200,19 @@ export const MainnetOneSnapshotDetails = () => {
                 <div className={`${styles.flexRowTop}`}>
                   <span />
 
-                  <div className={styles.arrows}>
-                    <ArrowButton
-                      handleClick={handlePrevPage}
-                      disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
-                    />
-                    <ArrowButton
-                      forward
-                      handleClick={handleNextPage}
-                      disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
-                    />
-                  </div>
+                  {!snapshotTransactions.isFetching && snapshotTxs && snapshotTxs.length > 0 && (
+                    <div className={styles.arrows}>
+                      <ArrowButton
+                        handleClick={handlePrevPage}
+                        disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
+                      />
+                      <ArrowButton
+                        forward
+                        handleClick={handleNextPage}
+                        disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </>
