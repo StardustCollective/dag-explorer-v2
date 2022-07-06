@@ -12,9 +12,9 @@ export const Dropdown = () => {
   return (
     <div className={`${styles.dropdown} ${styles.navSeparator}`} ref={ref}>
       {
-        <button className={styles.network} onClick={() => setIsComponentVisible(!isComponentVisible)}>
+        <div className={styles.network} tabIndex={0} onClick={() => setIsComponentVisible(!isComponentVisible)}>
           {options[network]} <i className={`${styles.arrow} ${styles.down}`}></i>
-        </button>
+        </div>
       }
 
       {isComponentVisible && (
