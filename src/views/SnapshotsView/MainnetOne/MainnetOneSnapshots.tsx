@@ -13,12 +13,10 @@ const LIMIT = 14;
 
 export const MainnetOneSnapshots = () => {
   const [snapshots, setSnapshots] = useState<MainnetOneSnapshot[] | undefined>(undefined);
-  const [startAt, setStartAt] = useState(0);
-  const [endAt, setEndAt] = useState(LIMIT);
+  const startAt = 0;
+  const endAt = LIMIT;
   const query = `?startAt="${startAt.toString()}"&endAt="${endAt.toString()}"&orderBy="$key"`;
   const snapshotsInfo = useGetLatestSnapshots(query);
-  const [isPrev, setIsPrev] = useState(false);
-  const [page, setPage] = useState(0);
   const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(true);
 
@@ -40,32 +38,6 @@ export const MainnetOneSnapshots = () => {
     }
   }, [snapshotsInfo.isError]);
 
-  useEffect(() => {
-    if (!snapshotsInfo.isFetching) {
-      if (isPrev) {
-        setSnapshots(snapshotsInfo.data.reverse());
-      }
-    }
-  }, [snapshotsInfo.isFetching]);
-
-  const handleNextPage = () => {
-    if (snapshots) {
-      setStartAt((s) => s + LIMIT);
-      setEndAt((e) => e + LIMIT);
-      setIsPrev(false);
-      setPage((p) => p + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (snapshots) {
-      setStartAt((s) => s - LIMIT);
-      setEndAt((e) => e - LIMIT);
-      setIsPrev(true);
-      setPage((p) => p - 1);
-    }
-  };
-
   return (
     <>
       <Subheader text={'Snapshots'} item={IconType.Snapshot} />
@@ -73,15 +45,6 @@ export const MainnetOneSnapshots = () => {
         <NotFound entire={false} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
-          <div className={`${styles.row1}`}>
-            <div className={`${styles.flexRowBottom}`}>
-              <span />
-              <div className={styles.arrows}>
-                <ArrowButton handleClick={handlePrevPage} disabled />
-                <ArrowButton forward handleClick={handleNextPage} disabled />
-              </div>
-            </div>
-          </div>
           <div className={`${styles.row2}`}>
             <MainnetOneSnapshotTable
               skeleton={{
@@ -92,17 +55,6 @@ export const MainnetOneSnapshots = () => {
               snapshots={snapshots}
               icon={<SnapshotShape />}
             />
-          </div>
-          <div className={`${styles.row3}`}>
-            <div className={`${styles.flexRowBottom}`}>
-              <span />
-
-              <div className={styles.arrows}>
-                {/*handlePagination*/}
-                <ArrowButton handleClick={() => handlePrevPage()} disabled={page < 0 || !isPrev} />
-                <ArrowButton forward handleClick={() => handleNextPage()} disabled={page < 0 || !isPrev} />
-              </div>
-            </div>
           </div>
         </main>
       )}

@@ -79,8 +79,27 @@
   color: $gray-500;
 }
 
+.searchMobile {
+  display: none;
+}
+
 @media screen and (max-width: $md) {
   .content {
     width: 100%;
+  }
+}
+
+@media screen and (min-width: $sm) and (max-width: $md) {
+  .searchMobile {
+    display: flex;
+    flex-direction: column;
+    background: $grayCool-100;
+  }
+  .subheader {
+    display: flex;
+
+    justify-content: center;
+    width: 100%;
+    height: 10rem;
   }
 }

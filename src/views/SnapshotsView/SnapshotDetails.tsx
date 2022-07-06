@@ -90,7 +90,7 @@ export const SnapshotDetails = () => {
   return (
     <>
       <section className={`${styles.searchMobile}`}>
-        <div className={`${styles.row} ${styles.subheader}`}>
+        <div className={`${styles.subheader}`}>
           <SearchBar />
         </div>
       </section>
