@@ -83,7 +83,10 @@ export const TransactionRow = ({
           <div className={styles.txnCell}>
             <Link to={'/address/' + tx.destination}>{destination}</Link>
           </div>
-          <div className={styles.txnCell}>{formatAmount(tx.amount, 8)}</div>
+          <div className={`${styles.txnCell} ${styles.amount}`}>
+            {dagInfo && <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>}
+            <div className={styles.dag}>{formatAmount(tx.amount, 8)}</div>
+          </div>
         </>
       );
     }

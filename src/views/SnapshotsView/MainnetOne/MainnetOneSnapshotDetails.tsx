@@ -80,13 +80,16 @@ export const MainnetOneSnapshotDetails = () => {
   }, [snapshotTransactions.isFetching]);
 
   useEffect(() => {
-    if (
-      !snapshotTransactions.isFetching &&
-      (snapshotTransactions.status === 'error' || snapshotInfo.status === 'error')
-    ) {
+    if (!snapshotTransactions.isFetching && snapshotTransactions.status === 'error') {
       setError(snapshotTransactions.error.message);
     }
-  }, [snapshotTransactions.status, snapshotInfo.status]);
+  }, [snapshotTransactions.status]);
+
+  useEffect(() => {
+    if (!snapshotInfo.isFetching && snapshotInfo.status === 'error') {
+      setError(snapshotInfo.error.message);
+    }
+  }, [snapshotInfo.status]);
 
   const handleNextPage = () => {
     if (snapshotTxs) {

@@ -57,7 +57,7 @@ export const TransactionsTable = ({
   let snapRows =
     snapshots &&
     snapshots.length > 0 &&
-    snapshots.map((snap) => <TransactionRow key={snap.hash} snapshot={snap} icon={icon} />);
+    snapshots.map((snap) => <TransactionRow dagInfo={dagInfo} key={snap.hash} snapshot={snap} icon={icon} />);
 
   const emptyRows = [];
   for (let i = 0; i < limit; i++) {

@@ -58,7 +58,7 @@ export const TableCards = ({
   if ((header && content.length === 1) || content.length === 0) {
     content.push(
       <div className="overviewText" key={'noTxs'}>
-        <p>There are no {txs ? 'transactions' : 'snapshots'}</p>
+        <p>There are no transactions</p>
       </div>
     );
   }
