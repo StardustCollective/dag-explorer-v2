@@ -18,11 +18,11 @@
 
 .amount {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  justify-content: center;
   padding-right: 1.5rem;
   padding-left: 0;
-  flex-wrap: wrap-reverse;
   gap: 0.5rem;
 }
 
