@@ -9,13 +9,21 @@ import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 import { TransactionShape } from '../../components/Shapes/TransactionShape';
 import { NotFound } from '../NotFoundView/NotFound';
 
-const MainnetOneHomeTables = ({ limit, handleError }: { limit: number; handleError: () => void }) => {
+const MainnetOneHomeTables = ({
+  limit,
+  handleError,
+  refetchEvery,
+}: {
+  limit: number;
+  handleError: () => void;
+  refetchEvery: number;
+}) => {
   const navigate = useNavigate();
   const startAt = '0';
   const endAt = '9';
   const query = `?startAt="${startAt}"&endAt="${endAt}"&orderBy="$key"`;
-  const snapshotsInfo = useGetLatestSnapshots(query);
-  const transactionsInfo = useGetLatestTransactions(query);
+  const snapshotsInfo = useGetLatestSnapshots(query, refetchEvery);
+  const transactionsInfo = useGetLatestTransactions(query, refetchEvery);
   const [snapshots, setSnapshots] = useState<MainnetOneSnapshot[]>();
   const [transactions, setTransactions] = useState<MainnetOneTransaction[]>();
   const [error, setError] = useState<string>(undefined);

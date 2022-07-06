@@ -8,6 +8,7 @@ import MainnetOneHomeTables from './MainnetOneHomeTables';
 import HomeTables from './HomeTables';
 
 const LIMIT = 10;
+const REFETCH_EVERY = 15000;
 
 export const HomeView = () => {
   const navigate = useNavigate();
@@ -30,8 +31,10 @@ export const HomeView = () => {
           <StatsSection />
         </div>
         <div className={`${styles.row} ${styles.fila2}`}>
-          {network === 'mainnet1' && <MainnetOneHomeTables limit={LIMIT} handleError={handleError} />}
-          {network === 'testnet' && <HomeTables limit={LIMIT} handleError={handleError} />}
+          {network === 'mainnet1' && (
+            <MainnetOneHomeTables limit={LIMIT} refetchEvery={REFETCH_EVERY} handleError={handleError} />
+          )}
+          {network === 'testnet' && <HomeTables limit={LIMIT} refetchEvery={REFETCH_EVERY} handleError={handleError} />}
           {!error && (
             <>
               <div className={styles.viewAll} onClick={() => navigate('/snapshots')}>

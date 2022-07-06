@@ -5,11 +5,15 @@ const { REACT_APP_FIREBASE_REST, REACT_APP_MAINNET_ONE_BE } = process.env;
 
 const URL = REACT_APP_FIREBASE_REST;
 
-export const useGetLatestSnapshots = (query: string) =>
-  useFetch<MainnetOneSnapshot[]>(URL + '/latest/snapshots.json' + query);
+export const useGetLatestSnapshots = (query: string, refetchInterval?: number) =>
+  useFetch<MainnetOneSnapshot[]>(URL + '/latest/snapshots.json' + query, undefined, {
+    refetchInterval: refetchInterval,
+  });
 
-export const useGetLatestTransactions = (query: string) =>
-  useFetch<MainnetOneTransaction[]>(URL + '/latest/transactions.json' + query);
+export const useGetLatestTransactions = (query: string, refetchInterval?: number) =>
+  useFetch<MainnetOneTransaction[]>(URL + '/latest/transactions.json' + query, undefined, {
+    refetchInterval: refetchInterval,
+  });
 
 export const useGetTransactionsBySnapshot = (hash: string) =>
   useFetch<MainnetOneTransaction[]>(REACT_APP_MAINNET_ONE_BE + '/snapshot/' + hash + '/transaction');

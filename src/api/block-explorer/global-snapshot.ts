@@ -11,8 +11,8 @@ export const useGetSnapshot = (hashOrOrdinal: string | number) => {
   return useFetch<Snapshot>(URL + '/' + hashOrOrdinal);
 };
 
-export const useGetAllSnapshots = (params?: any) => {
-  return useFetch<Snapshot[]>(URL, params, { keepPreviousData: true });
+export const useGetAllSnapshots = (params?: any, refetchInterval?: number) => {
+  return useFetch<Snapshot[]>(URL, params, { keepPreviousData: true, refetchInterval: refetchInterval });
 };
 
 export const useGetLatestSnapshotRewards = () => useFetch<RewardTransaction[]>(URL + '/latest/rewards');

@@ -6,4 +6,9 @@ const URL = REACT_APP_TESTNET_BLOCK_EXPLORER_URL + '/transactions';
 
 export const useGetTransaction = (hash: string) => useFetch<Transaction>(URL + '/' + hash);
 
-export const useGetAllTransactions = (params?: any) => useFetch<Transaction[]>(URL, params, { keepPreviousData: true });
+export const useGetAllTransactions = (params?: any, refetchInterval?: number) => {
+  return useFetch<Transaction[]>(URL, params, {
+    keepPreviousData: true,
+    refetchInterval: refetchInterval,
+  });
+};

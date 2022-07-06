@@ -9,10 +9,18 @@ import { Snapshot, Transaction } from '../../types';
 import { NotFound } from '../NotFoundView/NotFound';
 import styles from './HomeView.module.scss';
 
-const HomeTables = ({ limit, handleError }: { limit: number; handleError: () => void }) => {
+const HomeTables = ({
+  limit,
+  handleError,
+  refetchEvery,
+}: {
+  limit: number;
+  handleError: () => void;
+  refetchEvery: number;
+}) => {
   const navigate = useNavigate();
-  const snapshotsInfo = useGetAllSnapshots({ limit: limit });
-  const transactionsInfo = useGetAllTransactions({ limit: limit });
+  const snapshotsInfo = useGetAllSnapshots({ limit: limit }, refetchEvery);
+  const transactionsInfo = useGetAllTransactions({ limit: limit }, refetchEvery);
 
   const [transactions, setTransactions] = useState<Transaction[]>(null);
   const [snapshots, setSnapshots] = useState<Snapshot[]>(null);
