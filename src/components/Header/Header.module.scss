@@ -146,6 +146,7 @@
 
   .fullWidth {
     display: flex;
+    flex-direction: column;
     height: 6rem;
     padding-bottom: 1rem;
   }
