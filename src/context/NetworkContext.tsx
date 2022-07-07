@@ -13,13 +13,14 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [network, setNetwork] = useState<Network>('mainnet1');
 
   const handleChange = (toNetwork: Network) => {
+    console.log('toNetwork', toNetwork);
     const environment = process.env.REACT_APP_ENVIRONMENT;
-    console.log('env: ', environment);
+    console.log('env: ', environment); //staging
     let switchToNetwork = toNetwork;
     if (environment === 'staging') {
       switchToNetwork += '-staging';
     }
-    console.log('switchTo: ', switchToNetwork);
+    console.log('switchTo: ', switchToNetwork); //mainnet1-staging ??
     if (!window.location.href.includes(switchToNetwork)) {
       let domain = window.location.href.split('.').slice(1);
       if (domain.length === 0 && window.location.href === 'http://localhost:3000/') {
