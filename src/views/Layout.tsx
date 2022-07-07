@@ -23,12 +23,12 @@ export const Layout = () => {
 
   useEffect(() => {
     const detectedSubdomain = detectSubdomain();
-
+    console.log('subdomain detected: ', detectedSubdomain);
     switch (detectedSubdomain) {
-      case 'testnet':
+      case 'testnet' || 'testnet-staging':
         changeNetwork('testnet');
         break;
-      case 'mainnet1':
+      case 'mainnet1' || 'mainnet1-staging':
       default:
         changeNetwork('mainnet1');
         break;
