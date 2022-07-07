@@ -26,10 +26,12 @@ export const Layout = () => {
     console.log('subdomain detected: ', detectedSubdomain);
     switch (detectedSubdomain) {
       case 'testnet' || 'testnet-staging':
+        console.log('changeNetwork with testnet');
         changeNetwork('testnet');
         break;
       case 'mainnet1' || 'mainnet1-staging':
       default:
+        console.log('changeNetwork with mainnet1');
         changeNetwork('mainnet1');
         break;
     }

@@ -10,7 +10,7 @@ export type NetworkContextType = {
 export const NetworkContext = createContext<NetworkContextType | null>(null);
 
 export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [network, setNetwork] = useState<Network>('mainnet1');
+  const [network, setNetwork] = useState<Network>(null);
 
   const handleChange = (toNetwork: Network) => {
     console.log('toNetwork', toNetwork);
