@@ -15,8 +15,6 @@
 .testnetWarningContainer {
   grid-row: 1/1;
   grid-column: 1 / span 14;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
 }
 
 .testnetWarning {
@@ -26,9 +24,12 @@
   align-items: center;
   justify-content: center;
   background-color: $warning-50;
-  width: 100%;
   height: 100%;
   gap: 1rem;
+}
+
+.testnetWarningText {
+  padding: 1rem;
 }
 
 .header {
@@ -109,19 +110,6 @@
   margin-right: 0.5rem;
 }
 
-@media screen and (max-width: $sm) {
-  .rightSide {
-    display: none;
-  }
-  .networkHeader {
-    margin-left: 1rem;
-  }
-
-  .headerSearchMobile {
-    display: none;
-  }
-}
-
 @media screen and (max-width: $xlg) {
   .fullWidth {
     padding-left: 1rem;
@@ -130,6 +118,8 @@
 
   .header {
     margin-right: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
@@ -144,10 +134,41 @@
     display: none;
   }
 
+  .header {
+    padding-left: 1rem;
+  }
+
   .fullWidth {
     display: flex;
     flex-direction: column;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+  }
+  .testnetWarning {
+    padding-left: 1rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .rightSide {
+    display: none;
+  }
+  .networkHeader {
+    margin-left: 1rem;
+  }
+
+  .headerSearchMobile {
+    display: none;
+  }
+}
+
+@media screen and (min-width: $sm) {
+  .fullWidth {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .maxWidth {
+    min-height: 7rem;
+  }
+  .iconWidth {
+    width: 3rem;
   }
 }

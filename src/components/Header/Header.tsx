@@ -18,8 +18,10 @@ export const Header = () => {
       <div className={styles.testnetWarningContainer}>
         {network === 'testnet' && (
           <div className={styles.testnetWarning}>
-            <Warning color={'#f79009'} weight="fill" size={'1.5rem'} />
-            <div>Note: Constellation Testnet is different than the Mainnet and is unstable. </div>
+            <Warning className={styles.iconWidth} color={'#f79009'} weight="fill" size={'1.5rem'} />
+            <div className={styles.testnetWarningText}>
+              Note: Constellation Testnet is an experimental environment and should be considered unstable.{' '}
+            </div>
           </div>
         )}
       </div>
