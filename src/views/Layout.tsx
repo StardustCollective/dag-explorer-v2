@@ -4,9 +4,11 @@ import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
 import { Nav } from '../components/Nav/Nav';
 import styles from './Layout.module.scss';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
 import { PricesProvider } from '../context/PricesContext';
+import { detectSubdomain } from '../utils/network';
+import { NetworkContext, NetworkContextType } from '../context/NetworkContext';
 
 export const Layout = () => {
   const queryClient = new QueryClient({
@@ -17,6 +19,21 @@ export const Layout = () => {
     },
   });
   const { theme } = useContext(ThemeContext);
+  const { changeNetwork } = useContext(NetworkContext) as NetworkContextType;
+
+  useEffect(() => {
+    const detectedSubdomain = detectSubdomain();
+
+    switch (detectedSubdomain) {
+      case 'testnet':
+        changeNetwork('testnet');
+        break;
+      case 'mainnet1':
+      default:
+        changeNetwork('mainnet1');
+        break;
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -10,8 +10,10 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "commander": "^9.3.0",
     "date-fns": "^2.28.0",
     "dayjs": "^1.11.3",
+    "dotenv": "^16.0.1",
     "phosphor-react": "^1.4.1",
     "react": "^18.1.0",
     "react-csv": "^2.2.2",
@@ -29,7 +31,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "use:development": "node scripts/use-envs.js base",
+    "use:staging": "node scripts/use-envs.js base staging",
+    "use:production": "node scripts/use-envs.js base production"
   },
   "eslintConfig": {
     "extends": [

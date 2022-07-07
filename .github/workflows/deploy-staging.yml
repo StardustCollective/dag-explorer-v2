@@ -20,6 +20,13 @@ jobs:
       - name: Yarn Install
         run: |
           yarn install
+      - name: Use env
+        run: |
+          yarn use:staging
+      - name: Move env config
+        run: |
+          rm ./.env.production;
+          mv ./.env ./.env.production;
       - name: Build
         run: |
           yarn build;

@@ -12,8 +12,27 @@ export const NetworkContext = createContext<NetworkContextType | null>(null);
 export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [network, setNetwork] = useState<Network>('mainnet1');
 
+  const handleChange = (toNetwork: Network) => {
+    const environment = process.env.REACT_APP_ENVIRONMENT;
+
+    let switchToNetwork = toNetwork;
+    if (environment === 'staging') {
+      switchToNetwork += '-staging';
+    }
+
+    if (!window.location.href.includes(switchToNetwork)) {
+      let domain = window.location.href.split('.').slice(1);
+      if (domain.length === 0 && window.location.href === 'http://localhost:3000/') {
+        domain = ['localhost:3000'];
+      }
+      const navigateTo = (window.location.protocol + '//' + switchToNetwork + '.' + domain).replaceAll(',', '.');
+      window.location.href = navigateTo;
+    }
+    setNetwork(toNetwork);
+  };
+
   return (
-    <NetworkContext.Provider value={{ network: network, changeNetwork: setNetwork }}>
+    <NetworkContext.Provider value={{ network: network, changeNetwork: handleChange }}>
       {children}
     </NetworkContext.Provider>
   );
