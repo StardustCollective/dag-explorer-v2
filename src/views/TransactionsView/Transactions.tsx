@@ -48,14 +48,6 @@ export const Transactions = () => {
     }
   }, [transactionsInfo.isError]);
 
-  useEffect(() => {
-    if (!transactionsInfo.isFetching) {
-      if (isPrev) {
-        setTransactions(transactionsInfo.data.reverse());
-      }
-    }
-  }, [transactionsInfo.isFetching]);
-
   const handleNextPage = () => {
     if (transactions) {
       setParams({

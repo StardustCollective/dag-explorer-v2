@@ -55,14 +55,6 @@ export const SnapshotDetails = () => {
   }, [snapshotInfo.isLoading, snapshotInfo.isFetching]);
 
   useEffect(() => {
-    if (!snapshotTransactions.isFetching && !snapshotTransactions.isError) {
-      if (isPrev) {
-        setSnapshotTxs(snapshotTransactions.data.reverse());
-      }
-    }
-  }, [snapshotTransactions.isFetching]);
-
-  useEffect(() => {
     if (snapshotInfo.status === 'error' || snapshotTransactions.status === 'error') {
       setError(snapshotInfo.error && snapshotInfo.error.message);
     }

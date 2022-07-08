@@ -74,14 +74,6 @@ export const MainnetOneSnapshotDetails = () => {
   }, [snapshotInfo.isFetching]);
 
   useEffect(() => {
-    if (!snapshotTransactions.isFetching && !snapshotTransactions.isError) {
-      if (isPrev) {
-        setSnapshotTxs(snapshotTransactions.data.reverse());
-      }
-    }
-  }, [snapshotTransactions.isFetching]);
-
-  useEffect(() => {
     if (!snapshotTransactions.isFetching && snapshotTransactions.status === 'error') {
       setError(snapshotTransactions.error.message);
     }

@@ -57,14 +57,6 @@ export const AddressDetails = () => {
   }, [addressBalance.isFetching]);
 
   useEffect(() => {
-    if (!addressInfo.isFetching) {
-      if (isPrev) {
-        setAddressTxs(addressInfo.data.reverse());
-      }
-    }
-  }, [addressInfo.isFetching]);
-
-  useEffect(() => {
     if (addressInfo.isError) {
       setError(addressInfo.error.message);
     }

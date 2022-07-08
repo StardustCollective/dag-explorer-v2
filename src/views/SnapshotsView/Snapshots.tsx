@@ -44,14 +44,6 @@ export const Snapshots = () => {
     }
   }, [snapshotsInfo.isError]);
 
-  useEffect(() => {
-    if (!snapshotsInfo.isFetching) {
-      if (isPrev) {
-        setSnapshots(snapshotsInfo.data.reverse());
-      }
-    }
-  }, [snapshotsInfo.isFetching]);
-
   const handleNextPage = () => {
     if (snapshots) {
       setParams({
