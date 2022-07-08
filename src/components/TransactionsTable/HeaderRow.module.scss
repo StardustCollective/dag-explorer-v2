@@ -1,4 +1,5 @@
 @use '../../styles/colors' as *;
+@use '../../styles/breakpoints' as *;
 .headerColumn {
   background-color: $grayCool-100;
   display: flex;
@@ -31,4 +32,10 @@
 .rightAligned {
   justify-content: flex-end;
   padding-right: 1.5rem;
+}
+
+@media screen and(min-width: $md) and (max-width: 780px) {
+  .enoughSpace {
+    display: none;
+  }
 }

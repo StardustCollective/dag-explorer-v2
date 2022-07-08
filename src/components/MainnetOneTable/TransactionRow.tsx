@@ -55,10 +55,10 @@ export const TransactionRow = ({
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
-          <div className={styles.txnCell}>
+          <div className={`${styles.txnCell} ${styles.enoughSpace}`}>
             <Link to={'/snapshots/' + transaction.snapshot}>{fitStringInCell(transaction.snapshot)}</Link>
           </div>
-          <div className={styles.txnCell}>{formatAmount(transaction.fee, 8)}</div>
+          <div className={`${styles.txnCell} ${styles.enoughSpace}`}>{formatAmount(transaction.fee, 8)}</div>
           <div className={styles.txnCell}>
             {<Link to={'/address/' + transaction.sender}>{fitStringInCell(transaction.sender)}</Link>}
           </div>

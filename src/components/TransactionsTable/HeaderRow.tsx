@@ -74,12 +74,20 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <p className={styles.headerText}>TIMESTAMP</p>
       </div>
 
-      <div className={styles.headerColumn}>
-        <p className={styles.headerText}>{forSnapshots ? 'HEIGHT' : 'SNAPSHOT'}</p>
-      </div>
+      {!forSnapshots && (
+        <div className={`${styles.headerColumn} ${styles.enoughSpace}`}>
+          <p className={styles.headerText}>{'SNAPSHOT'}</p>
+        </div>
+      )}
+
+      {forSnapshots && (
+        <div className={`${styles.headerColumn}`}>
+          <p className={styles.headerText}>HEIGHT</p>
+        </div>
+      )}
 
       {!forSnapshots && (
-        <div className={styles.headerColumn}>
+        <div className={`${styles.headerColumn} ${styles.enoughSpace}`}>
           <p className={styles.headerText}>FEE</p>
         </div>
       )}

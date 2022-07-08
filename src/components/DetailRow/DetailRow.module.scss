@@ -59,6 +59,8 @@
   width: 100%;
   align-items: center;
   font-family: 'IBM Plex Mono', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .copy {
@@ -81,7 +83,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .subValue {

@@ -35,10 +35,12 @@ export const SnapshotDetails = () => {
 
   useEffect(() => {
     if (!snapshotTransactions.isFetching && !snapshotTransactions.isError) {
-      if (snapshotTransactions.data) {
+      if (snapshotTransactions.data && snapshotTransactions.data.length) {
         setSnapshotTxs(snapshotTransactions.data);
+      } else {
+        setPage((p) => p - 1);
       }
-      if (snapshotTransactions.data.length < LIMIT) {
+      if (!snapshotTransactions.data.length || snapshotTransactions.data.length < LIMIT) {
         setLastPage(true);
       } else {
         setLastPage(false);
@@ -88,7 +90,7 @@ export const SnapshotDetails = () => {
       setLastPage(false);
     }
   };
-  const skeleton = snapshotInfo.isLoading || !snapshotTxs;
+  const skeleton = snapshotInfo.isLoading;
   return (
     <>
       <section className={`${styles.searchMobile}`}>
@@ -139,7 +141,7 @@ export const SnapshotDetails = () => {
               <div className={`${styles.row3}`}>
                 <div className={`${styles.flexRowBottom}`}>
                   <p className="overviewText">Transactions</p>
-                  {!snapshotTransactions.isFetching && snapshotTxs && snapshotTxs.length > 0 && (
+                  {!snapshotTransactions.isFetching && snapshotTxs && (
                     <div className={styles.arrows}>
                       <ArrowButton
                         handleClick={handlePrevPage}

@@ -70,3 +70,15 @@
     margin-right: 1rem;
   }
 }
+
+@media screen and(min-width: $md) and (max-width: 805px) {
+  .fullWidth3 {
+    grid-template-rows: 10% 62% 10%;
+  }
+}
+
+@media screen and(min-width: 805px) and (max-width: $lg) {
+  .fullWidth3 {
+    grid-template-rows: 10% 49% 10%;
+  }
+}

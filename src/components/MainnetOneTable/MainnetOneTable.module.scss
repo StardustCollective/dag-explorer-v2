@@ -74,3 +74,9 @@
     height: 3.5rem;
   }
 }
+
+@media screen and(min-width: $md) and (max-width: 780px) {
+  .container {
+    grid-template-columns: 1.2fr 0.5fr 1fr 1.1fr 1.1fr;
+  }
+}

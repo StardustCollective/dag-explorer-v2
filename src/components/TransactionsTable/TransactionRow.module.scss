@@ -12,6 +12,8 @@
   min-height: 3rem;
   max-height: 3.5rem;
   font-family: 'IBM Plex Mono', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .txnCell > a {
@@ -49,12 +51,24 @@
   font-family: 'IBM Plex Mono';
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 12px;
+  line-height: 18px;
   color: $gray-500;
 }
 
 .date {
   font-family: 'IBM Plex Mono';
   color: $grayCool-900;
+}
+
+@media screen and(min-width: $md) and (max-width: $lg) {
+  .txnCell {
+    max-height: unset;
+  }
+}
+
+@media screen and(min-width: $md) and (max-width: 780px) {
+  .enoughSpace {
+    display: none;
+  }
 }
