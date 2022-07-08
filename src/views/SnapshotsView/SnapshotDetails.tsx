@@ -28,7 +28,6 @@ export const SnapshotDetails = () => {
   const snapshotTransactions = useGetSnapshotTransactions(snapshotHeight, params);
   //const snapshotRewards = useGetSnapshotRewards(snapshotHeight);
   const snapshotInfo = useGetSnapshot(snapshotHeight);
-  const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
@@ -66,7 +65,6 @@ export const SnapshotDetails = () => {
         limit: LIMIT,
         search_before: snapshotTxs[LIMIT - 1].hash,
       });
-      setIsPrev(false);
       setPage((p) => p + 1);
     }
   };
@@ -77,7 +75,6 @@ export const SnapshotDetails = () => {
         limit: LIMIT,
         search_after: snapshotTxs[0].hash,
       });
-      setIsPrev(true);
       setPage((p) => p - 1);
       setLastPage(false);
     }

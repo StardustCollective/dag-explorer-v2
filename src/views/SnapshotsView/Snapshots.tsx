@@ -22,7 +22,6 @@ export const Snapshots = () => {
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const snapshotsInfo = useGetAllSnapshots(params);
   const [lastPage, setLastPage] = useState(false);
-  const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
   const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(true);
@@ -50,7 +49,6 @@ export const Snapshots = () => {
         limit: LIMIT,
         search_before: snapshots[LIMIT - 1].ordinal.toString(),
       });
-      setIsPrev(false);
       setPage((p) => p + 1);
     }
   };
@@ -61,7 +59,6 @@ export const Snapshots = () => {
         limit: LIMIT,
         search_after: snapshots[0].ordinal.toString(),
       });
-      setIsPrev(true);
       setPage((p) => p - 1);
       setLastPage(false);
     }

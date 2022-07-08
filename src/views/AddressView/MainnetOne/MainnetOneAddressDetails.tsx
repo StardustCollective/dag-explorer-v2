@@ -25,7 +25,6 @@ export const MainnetOneAddressDetails = () => {
   const [balance, setBalance] = useState(undefined);
   const addressInfo = useGetTransactionsByAddress(addressId);
   const addressBalance = useGetAddressBalance(addressId);
-  const [isPrev, setIsPrev] = useState(false);
   const [startAt, setStartAt] = useState(0);
   const [endAt, setEndAt] = useState(LIMIT);
   const [page, setPage] = useState(0);
@@ -82,7 +81,6 @@ export const MainnetOneAddressDetails = () => {
     if (addressTxs) {
       setStartAt((s) => s + LIMIT);
       setEndAt((e) => e + LIMIT);
-      setIsPrev(false);
       setPage((p) => p + 1);
 
       if ((page + 1) * LIMIT < addressTxs.length && (page + 1) * LIMIT + LIMIT >= addressTxs.length) {
@@ -95,7 +93,6 @@ export const MainnetOneAddressDetails = () => {
     if (addressTxs) {
       setStartAt((s) => s - LIMIT);
       setEndAt((e) => e - LIMIT);
-      setIsPrev(true);
       setPage((p) => p - 1);
       setLastPage(false);
     }

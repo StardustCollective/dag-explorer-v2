@@ -31,7 +31,6 @@ export const AddressDetails = () => {
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const addressInfo = useGetAddressTransactions(addressId, params);
   const addressBalance = useGetAddressBalance(addressId);
-  const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
@@ -71,7 +70,6 @@ export const AddressDetails = () => {
         limit: LIMIT,
         search_before: addressTxs[LIMIT - 1].hash,
       });
-      setIsPrev(false);
       setPage((p) => p + 1);
     }
   };
@@ -82,7 +80,6 @@ export const AddressDetails = () => {
         limit: LIMIT,
         search_after: addressTxs[0].hash,
       });
-      setIsPrev(true);
       setPage((p) => p - 1);
       setLastPage(false);
     }

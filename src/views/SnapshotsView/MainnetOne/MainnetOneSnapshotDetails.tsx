@@ -24,7 +24,6 @@ export const MainnetOneSnapshotDetails = () => {
   const [realHash, setRealHash] = useState(null);
   const snapshotTransactions = useGetTransactionsBySnapshot(snapshotHeight);
   const snapshotInfo = useGetSnapshot(snapshotHeight);
-  const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
@@ -89,7 +88,6 @@ export const MainnetOneSnapshotDetails = () => {
     if (snapshotTxs) {
       setStartAt((s) => s + LIMIT);
       setEndAt((e) => e + LIMIT);
-      setIsPrev(false);
       setPage((p) => p + 1);
 
       if ((page + 1) * LIMIT < snapshotTxs.length && (page + 1) * LIMIT + LIMIT >= snapshotTxs.length) {
@@ -102,7 +100,6 @@ export const MainnetOneSnapshotDetails = () => {
     if (snapshotTxs) {
       setStartAt((s) => s - LIMIT);
       setEndAt((e) => e - LIMIT);
-      setIsPrev(true);
       setPage((p) => p - 1);
       setLastPage(false);
     }

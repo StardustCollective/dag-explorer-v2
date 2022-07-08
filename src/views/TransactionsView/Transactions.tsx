@@ -21,7 +21,6 @@ export const Transactions = () => {
   const [transactions, setTransactions] = useState<Transaction[] | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const transactionsInfo = useGetAllTransactions(params);
-  const [isPrev, setIsPrev] = useState(false);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
@@ -54,7 +53,6 @@ export const Transactions = () => {
         limit: LIMIT,
         search_before: transactions[LIMIT - 1].hash,
       });
-      setIsPrev(false);
       setPage((p) => p + 1);
     }
   };
@@ -65,7 +63,6 @@ export const Transactions = () => {
         limit: LIMIT,
         search_after: transactions[0].hash,
       });
-      setIsPrev(true);
       setPage((p) => p - 1);
       setLastPage(false);
     }
