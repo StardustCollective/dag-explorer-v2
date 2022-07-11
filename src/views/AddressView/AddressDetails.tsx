@@ -89,7 +89,7 @@ export const AddressDetails = () => {
     setModalOpen(!modalOpen);
   };
 
-  const skeleton = addressBalance.isFetching || !dagInfo;
+  const skeleton = addressInfo.isLoading || addressBalance.isLoading || !dagInfo;
 
   return (
     <>

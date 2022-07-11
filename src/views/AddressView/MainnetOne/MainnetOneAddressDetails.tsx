@@ -69,6 +69,9 @@ export const MainnetOneAddressDetails = () => {
 
   useEffect(() => {
     if (!addressBalance.isFetching && !addressBalance.isError) {
+      if (addressBalance.data.result.txs.length === 0 && addressBalance.data.result.balance === null) {
+        setError('404');
+      }
       if (addressBalance.data.result.balance) {
         setBalance(addressBalance.data.result.balance.balance);
       } else {

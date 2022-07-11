@@ -79,7 +79,8 @@ export const SnapshotDetails = () => {
       setLastPage(false);
     }
   };
-  const skeleton = snapshotInfo.isLoading;
+
+  const skeleton = snapshotInfo.isLoading || !snapshotInfo.data;
   return (
     <>
       <section className={`${styles.searchMobile}`}>
