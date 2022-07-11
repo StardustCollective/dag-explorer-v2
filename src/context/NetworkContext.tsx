@@ -19,7 +19,14 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
       switchToNetwork += '-staging';
     }
     if (!window.location.href.includes(switchToNetwork)) {
-      let domain = window.location.href.split('.').slice(1);
+      let domain;
+      if (!window.location.href.includes('www')) {
+        domain = window.location.href.split('.').slice(0) + '';
+        domain = domain.replaceAll('http://', '');
+        domain = domain.replaceAll('https://', '');
+      } else {
+        domain = window.location.href.split('.').slice(1);
+      }
       if (domain.length === 0 && window.location.href === 'http://localhost:3000/') {
         domain = ['localhost:3000'];
       }
