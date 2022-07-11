@@ -34,7 +34,7 @@ export const formatAmount = (amount: number, toFixed: number, forExport?: boolea
     ? toReturn
       ? toReturn
       : formater.format(parseFloat(formatedValue))
-    : (toReturn ? toReturn : formater.format(parseFloat(formatedValue))) + ' DAG';
+    : (toReturn ? formater.format(parseFloat(toReturn)) : formater.format(parseFloat(formatedValue))) + ' DAG';
 };
 
 export const fitStringInCell = (value: string) => value.slice(0, 5) + '...' + value.slice(value.length - 5);
