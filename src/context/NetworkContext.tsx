@@ -18,6 +18,11 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (environment === 'staging') {
       switchToNetwork += '-staging';
     }
+
+    if (window.location.href === 'https://dagexplorer.io/') {
+      window.location.href = 'https://' + switchToNetwork + '.dagexplorer.io/';
+    }
+
     if (!window.location.href.includes(switchToNetwork)) {
       let domain = window.location.href.split('.').slice(1);
       if (domain.length === 0 && window.location.href === 'http://localhost:3000/') {
