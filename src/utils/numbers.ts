@@ -15,7 +15,7 @@ export const formatMarketVol = (formater, dagInfo) => '24h Trading Vol: $' + for
 
 export const formatPrice = (amount: number, dagInfo: any, toFixed: number) => {
   const formatedValue = (amount / Math.pow(10, 8)).toFixed(8);
-  return (parseFloat(formatedValue) * dagInfo.usd).toFixed(toFixed);
+  return formater.format(parseFloat((parseFloat(formatedValue) * dagInfo.usd).toFixed(toFixed)));
 };
 
 export const formatAmount = (amount: number, toFixed: number, forExport?: boolean) => {
@@ -25,7 +25,7 @@ export const formatAmount = (amount: number, toFixed: number, forExport?: boolea
   if (regex) {
     const subString = regex[1].split('.')[1];
     if (subString && subString.length >= 2) {
-      return forExport ? regex[1] : regex[1] + ' DAG';
+      return forExport ? regex[1] : formater.format(parseFloat(regex[1])) + ' DAG';
     } else {
       toReturn = subString.length === 1 ? regex[1].concat('0') : regex[1].concat('00');
     }
