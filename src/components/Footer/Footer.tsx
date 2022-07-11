@@ -6,8 +6,8 @@ export const Footer = () => {
     <footer className={`${styles.fullWidth2} background`}>
       <div className={`${styles.footer}`}>
         <div className={`${styles.footerLeft} text`}>
-          <div>© 2021 Constellation Network</div>
-          <div>DAG Explorer v2.0</div>
+          <div className={styles.footerText}>© 2022 CONSTELLATION NETWORK</div>
+          <div className={styles.footerText}>DAG EXPLORER V2.0</div>
         </div>
         <img className={styles.poweredBy} src={FooterText} />
       </div>

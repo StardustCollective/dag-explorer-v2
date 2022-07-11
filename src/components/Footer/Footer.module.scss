@@ -16,6 +16,15 @@
   gap: 2rem;
 }
 
+.footerText {
+  color: $gray-500;
+  font-family: 'Lausanne';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
 .fullWidth2 {
   grid-column: 1 / span 14;
   display: grid;
