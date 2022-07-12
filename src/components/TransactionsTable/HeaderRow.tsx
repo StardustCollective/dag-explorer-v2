@@ -70,12 +70,12 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <p className={styles.headerText}>{forSnapshots ? 'HASH' : 'TXN HASH'}</p>
       </div>
 
-      <div className={styles.headerColumn}>
+      <div className={`${styles.headerColumn} ${styles.timestamp}`}>
         <p className={styles.headerText}>TIMESTAMP</p>
       </div>
 
       {!forSnapshots && (
-        <div className={`${styles.headerColumn} ${styles.enoughSpace}`}>
+        <div className={`${styles.headerColumn}`}>
           <p className={styles.headerText}>{'SNAPSHOT'}</p>
         </div>
       )}
@@ -91,13 +91,16 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
           <p className={styles.headerText}>FEE</p>
         </div>
       )}
-      <div className={styles.headerColumn}>
-        <p className={styles.headerText}>{forSnapshots ? 'BLOCK COUNT' : 'FROM'}</p>
-      </div>
+
+      {forSnapshots && (
+        <div className={`${styles.headerColumn}`}>
+          <p className={styles.headerText}>{'BLOCK COUNT'}</p>
+        </div>
+      )}
 
       {!forSnapshots && (
-        <div className={styles.headerColumn}>
-          <p className={styles.headerText}>TO</p>
+        <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
+          <p className={styles.headerText}>FROM / TO</p>
         </div>
       )}
 

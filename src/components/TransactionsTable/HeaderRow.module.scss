@@ -34,7 +34,21 @@
   padding-right: 1.5rem;
 }
 
-@media screen and(min-width: $md) and (max-width: 780px) {
+.stackFromTo {
+  display: flex;
+}
+
+@media screen and (max-width: $lg) {
+  .timestamp {
+    display: none;
+  }
+
+  .stackFromTo {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 780px) {
   .enoughSpace {
     display: none;
   }
