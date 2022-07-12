@@ -2,7 +2,7 @@
 @use '../../styles/_breakpoints' as *;
 .container {
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr 0.4fr 1fr 1.3fr 1.3fr 1fr;
+  grid-template-columns: 1fr 0.7fr 0.6fr 1fr 1fr 1fr;
   width: 100%;
   background-color: $white;
   border: 1px solid $grayCool-200;
@@ -77,7 +77,19 @@
   display: none;
 }
 
-@media screen and(min-width: $sm) and (max-width: $md) {
+@media screen and (max-width: $lg) {
+  .container {
+    grid-template-columns: 1.2fr 0.6fr 0.9fr 1.3fr 1.1fr;
+  }
+}
+
+@media screen and(min-width: $md) and (max-width: 780px) {
+  .container {
+    grid-template-columns: 1.1fr 0.5fr 1.2fr 1fr;
+  }
+}
+
+@media screen and (max-width: $md) {
   .table {
     display: none;
   }
@@ -99,11 +111,5 @@
 @media screen and(min-width: $md) and (max-width: $lg) {
   .container {
     grid-auto-rows: max-content;
-  }
-}
-
-@media screen and(min-width: $md) and (max-width: 780px) {
-  .container {
-    grid-template-columns: 1.2fr 0.5fr 1fr 1.1fr 1.1fr;
   }
 }

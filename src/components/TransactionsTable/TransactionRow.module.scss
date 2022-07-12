@@ -12,7 +12,7 @@
   min-height: 3rem;
   max-height: 3.5rem;
   font-family: 'IBM Plex Mono', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 18px;
 }
 
@@ -61,14 +61,71 @@
   color: $grayCool-900;
 }
 
-@media screen and(min-width: $md) and (max-width: $lg) {
-  .txnCell {
-    max-height: unset;
+.stackFromTo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: flex-start;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.stackRow {
+  display: flex;
+}
+.alignItemsLeft {
+  align-items: flex-start;
+  padding-left: 1.5rem;
+}
+
+.alignLeft {
+  align-self: flex-start;
+  width: 45px;
+}
+.alignRight {
+  align-self: flex-end;
+}
+.subTimestamp {
+  display: none;
+}
+
+@media screen and (max-width: $lg) {
+  .timestamp {
+    display: none;
+  }
+  .subTimestamp {
+    display: flex;
+    align-items: flex-start;
+    color: $gray-500;
+  }
+  .stackedIcon {
+    align-self: center;
+  }
+  .hashWithDate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .amount {
+    padding-right: 0.5rem;
+  }
+
+  .hashWithDate > p {
+    margin-block-start: 0;
+    margin-block-end: 0;
   }
 }
 
-@media screen and(min-width: $md) and (max-width: 780px) {
+@media screen and (max-width: 780px) {
   .enoughSpace {
     display: none;
+  }
+}
+
+@media screen and(min-width: $md) and (max-width: $lg) {
+  .txnCell {
+    max-height: unset;
   }
 }
