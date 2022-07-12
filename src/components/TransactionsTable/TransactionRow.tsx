@@ -44,8 +44,6 @@ export const TransactionRow = ({
         </>
       );
     } else {
-      const source = fitStringInCell(tx.source);
-      const destination = fitStringInCell(tx.destination);
       txRow = (
         <>
           <div className={styles.txnCell}>
