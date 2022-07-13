@@ -82,6 +82,9 @@
   cursor: pointer;
   z-index: 2;
 }
+.oldIos {
+  display: none;
+}
 
 @media screen and (max-width: $sm) {
   .searchBar {
@@ -141,6 +144,19 @@
   .searchBlock {
     display: flex;
     flex-direction: column;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    .searchButton {
+      width: 91%;
+    }
+    .normal {
+      display: none;
+    }
+    .oldIos {
+      display: flex;
+      height: 40%;
+    }
   }
 }
 

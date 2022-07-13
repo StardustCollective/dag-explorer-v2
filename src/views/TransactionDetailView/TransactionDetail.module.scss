@@ -157,6 +157,15 @@
   .flexRow1 {
     margin-left: 1.5rem;
   }
+
+  @supports (-webkit-touch-callout: none) {
+    .subheader {
+      flex-direction: column;
+      padding-left: 1rem;
+      padding-bottom: 1rem;
+      height: auto;
+    }
+  }
 }
 
 @media screen and (max-width: $xlg) {

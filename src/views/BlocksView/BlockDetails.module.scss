@@ -119,6 +119,14 @@
     margin-left: 2rem;
     margin-right: 2rem;
   }
+  @supports (-webkit-touch-callout: none) {
+    .subheader {
+      flex-direction: column;
+      padding-left: 1rem;
+      padding-bottom: 1rem;
+      height: auto;
+    }
+  }
 }
 
 @media screen and (max-width: $xlg) {

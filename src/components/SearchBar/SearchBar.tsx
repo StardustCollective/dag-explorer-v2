@@ -49,30 +49,40 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className={styles.searchBar} onKeyDown={(e) => handleKey(e)}>
-      <input
-        onChange={(e) => setSearchText(e.target.value)}
-        className={styles.searchInput}
-        placeholder="Search by address, snapshot height, or transaction..."
-      />
-      <input
-        onChange={(e) => setSearchText(e.target.value)}
-        className={styles.shortSearchInput}
-        placeholder="Search network"
-      />
-      <div className={styles.searchBlock}>
-        <div className={styles.searchLeft}>
-          <div className={styles.searchIcon} />
+    <>
+      <div className={styles.searchBar} onKeyDown={(e) => handleKey(e)}>
+        <input
+          onChange={(e) => setSearchText(e.target.value)}
+          className={styles.searchInput}
+          placeholder="Search by address, snapshot height, or transaction..."
+        />
+        <input
+          onChange={(e) => setSearchText(e.target.value)}
+          className={styles.shortSearchInput}
+          placeholder="Search network"
+        />
+        <div className={styles.searchBlock}>
+          <div className={styles.searchLeft}>
+            <div className={styles.searchIcon} />
+          </div>
+        </div>
+        <div
+          className={`${styles.searchButton} ${styles.normal}`}
+          onClick={() => {
+            handleSearch(searchText, performAction);
+          }}
+        >
+          <p> Search </p>
         </div>
       </div>
       <div
-        className={styles.searchButton}
+        className={`${styles.searchButton} ${styles.oldIos}`}
         onClick={() => {
           handleSearch(searchText, performAction);
         }}
       >
         <p> Search </p>
       </div>
-    </div>
+    </>
   );
 };
