@@ -25,8 +25,8 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     if (!window.location.href.includes(switchToNetwork) && window.location.href !== 'https://dagexplorer.io/') {
       let domain = window.location.href.split('.').slice(1);
-      if (domain.length === 0 && window.location.href === 'http://localhost:3000/') {
-        domain = ['localhost:3000'];
+      if (domain.length === 0 && window.location.href.includes('http://localhost:')) {
+        domain = [window.location.href.replace('http://', '')];
       }
       const navigateTo = (window.location.protocol + '//' + switchToNetwork + '.' + domain).replaceAll(',', '.');
       window.location.href = navigateTo;
