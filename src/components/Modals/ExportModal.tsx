@@ -38,9 +38,10 @@ export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose
     }
 
     await api
-      .get<Transaction[]>(URL, { limit: 3370 })
+      .get<any>(URL, { limit: 3370 })
       .then((r) => {
-        const transformed = r
+        const data = r.data as Transaction[];
+        const transformed = data
           .filter((tx) => {
             const date = new Date(tx.timestamp);
             return isWithinInterval(date, { start: range[0].startDate, end: range[0].endDate });
