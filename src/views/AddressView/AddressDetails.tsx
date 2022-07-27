@@ -57,7 +57,10 @@ export const AddressDetails = () => {
 
   useEffect(() => {
     if (addressInfo.isError) {
-      setError(addressInfo.error.message);
+      if (addressInfo.error.message !== '404') {
+        setError(addressInfo.error.message);
+      }
+      setLastPage(true);
     }
     if (addressBalance.isError) {
       setError(addressBalance.error.message);
@@ -89,7 +92,7 @@ export const AddressDetails = () => {
     setModalOpen(!modalOpen);
   };
 
-  const skeleton = addressInfo.isLoading || addressBalance.isLoading || !dagInfo;
+  const skeleton = addressBalance.isLoading || !dagInfo;
 
   return (
     <>
@@ -122,7 +125,7 @@ export const AddressDetails = () => {
                 />
                 <DetailRow
                   title={'BALANCE'}
-                  value={skeleton ? '' : balance ? formatAmount(balance, 8) : ''}
+                  value={skeleton ? '' : balance ? formatAmount(balance, 8) : '0 DAG'}
                   subValue={!skeleton && dagInfo ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
                   skeleton={skeleton}
                 />
