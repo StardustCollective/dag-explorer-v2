@@ -31,7 +31,9 @@ const HomeTables = ({
       setError(snapshotsInfo.error.message);
     }
     if (transactionsInfo.isError) {
-      setError(transactionsInfo.error.message);
+      if (transactionsInfo.error.message !== '404') {
+        setError(transactionsInfo.error.message);
+      }
     }
   }, [snapshotsInfo.isError, transactionsInfo.isError]);
 
@@ -58,11 +60,11 @@ const HomeTables = ({
   ) : (
     <>
       <TransactionsTable
-        skeleton={{ showSkeleton: !snapshots }}
+        skeleton={{ showSkeleton: !snapshots, headerCols: ['HEIGHT', 'TIMESTAMP', 'BLOCKS'] }}
         limit={limit}
         snapshots={snapshots}
         icon={<SnapshotShape />}
-        headerText={snapshots ? 'Latest snapshots' : null}
+        headerText={'Latest snapshots'}
       />
 
       {snapshots && snapshots.length > 0 && (
@@ -72,11 +74,11 @@ const HomeTables = ({
       )}
 
       <TransactionsTable
-        skeleton={{ showSkeleton: !transactions }}
+        skeleton={{ showSkeleton: !transactions && transactionsInfo.isLoading && !transactionsInfo.isError }}
         limit={limit}
         transactions={transactions}
         icon={<TransactionShape />}
-        headerText={transactions ? 'Latest transactions' : null}
+        headerText={'Latest transactions'}
       />
 
       {transactions && transactions.length > 0 && (
