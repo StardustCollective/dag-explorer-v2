@@ -14,6 +14,7 @@ import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { ExportModal } from '../../components/Modals/ExportModal';
 import { AddressShape } from '../../components/Shapes/AddressShape';
+import { isValidAddress } from '../../utils/search';
 
 const LIMIT = 10;
 
@@ -35,6 +36,12 @@ export const AddressDetails = () => {
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
   const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isValidAddress.test(addressId)) {
+      setError('404');
+    }
+  }, []);
 
   useEffect(() => {
     if (!addressInfo.isLoading && !addressInfo.isFetching && !addressInfo.isError) {
