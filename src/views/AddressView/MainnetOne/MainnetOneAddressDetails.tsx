@@ -33,7 +33,7 @@ export const MainnetOneAddressDetails = () => {
 
   useEffect(() => {
     if (!isValidAddress.test(addressId)) {
-      setError('Invalid address');
+      setError('404');
     }
   }, []);
 

@@ -39,7 +39,7 @@ export const AddressDetails = () => {
 
   useEffect(() => {
     if (!isValidAddress.test(addressId)) {
-      setError('Invalid address');
+      setError('404');
     }
   }, []);
 
