@@ -10,5 +10,6 @@ export const useGetAllTransactions = (params?: any, refetchInterval?: number) =>
   return useFetch<Transaction[]>(URL, params, {
     keepPreviousData: true,
     refetchInterval: refetchInterval,
+    retry: false,
   });
 };

@@ -32,7 +32,6 @@ export const MainnetOneSnapshotTable = ({
       </div>
     ) : (
       <SkeletonTransactionsTable
-        headerCols={skeleton.headerCols}
         forSnapshots={skeleton.forSnapshots}
         rows={limit}
         headerText={headerText}
