@@ -6,7 +6,7 @@ const { REACT_APP_TESTNET_BLOCK_EXPLORER_URL } = process.env;
 const URL = REACT_APP_TESTNET_BLOCK_EXPLORER_URL + '/addresses';
 
 export const useGetAddressTransactions = (address: string, params?: any) =>
-  useFetch<Transaction[]>(URL + '/' + address + '/transactions', params, { keepPreviousData: true });
+  useFetch<Transaction[]>(URL + '/' + address + '/transactions', params, { keepPreviousData: true, retry: false });
 
 export const useGetAddressSentTransactions = (address: string) =>
   useFetch<Transaction[]>(URL + '/' + address + '/transactions/sent');
