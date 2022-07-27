@@ -14,6 +14,7 @@ import { formatAmount, formatPrice } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../../context/PricesContext';
 import { TransactionShape } from '../../../components/Shapes/TransactionShape';
+import { isValidAddress } from '../../../utils/search';
 
 const LIMIT = 10;
 
@@ -29,6 +30,12 @@ export const MainnetOneAddressDetails = () => {
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
+
+  useEffect(() => {
+    if (!isValidAddress.test(addressId)) {
+      setError('Invalid address');
+    }
+  }, []);
 
   useEffect(() => {
     if (!addressInfo.isLoading && !addressInfo.isFetching && !addressInfo.isError) {
