@@ -55,7 +55,12 @@ export const MainnetOneAddressDetails = () => {
         });
         setAddressTxs(arrTxs);
       }
-      if (addressInfo.data.length < LIMIT) {
+      
+      if(addressInfo.data.length === 0){
+        setAddressTxs(undefined);
+      }
+
+      if (addressInfo.data.length <= LIMIT) {
         setLastPage(true);
       } else {
         setLastPage(false);

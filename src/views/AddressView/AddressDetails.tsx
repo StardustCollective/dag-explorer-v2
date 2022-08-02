@@ -48,7 +48,7 @@ export const AddressDetails = () => {
       if (addressInfo.data.length > 0) {
         setAddressTxs(addressInfo.data);
       }
-      if (addressInfo.data.length < LIMIT) {
+      if (addressInfo.data.length <= LIMIT) {
         setLastPage(true);
       } else {
         setLastPage(false);
@@ -67,6 +67,7 @@ export const AddressDetails = () => {
       if (addressInfo.error.message !== '404') {
         setError(addressInfo.error.message);
       }
+      setAddressTxs(undefined);
       setLastPage(true);
     }
     if (addressBalance.isError) {
@@ -99,7 +100,7 @@ export const AddressDetails = () => {
     setModalOpen(!modalOpen);
   };
 
-  const skeleton = addressBalance.isLoading || !dagInfo;
+  const skeleton = addressInfo.isLoading || addressBalance.isLoading || !dagInfo;
 
   return (
     <>
