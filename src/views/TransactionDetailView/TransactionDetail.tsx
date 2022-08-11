@@ -141,7 +141,7 @@ export const TransactionDetail = () => {
                         isMain
                       />
                       <DetailRow
-                        title={'SNAPSHOT HEIGHT'}
+                        title={'SNAPSHOT ORDINAL'}
                         linkTo={'/snapshots'}
                         borderBottom
                         value={!skeleton ? data.snapshotOrdinal.toString() : ''}

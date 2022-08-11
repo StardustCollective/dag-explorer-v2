@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import styles from './HeaderRow.module.scss';
+import clsx from 'clsx';
 
 export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean; headerCols?: string[] }) => {
   const location = useLocation();
@@ -37,7 +38,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
     ) : (
       <>
         <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? 'HEIGHT' : 'TXN HASH'}</p>
+          <p className={styles.headerText}>{forSnapshots ? 'ORDINAL' : 'TXN HASH'}</p>
         </div>
         <div className={styles.headerColumn}>
           <p className={styles.headerText}>{'TIMESTAMP'}</p>
@@ -57,10 +58,10 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <p className={styles.headerText}>TRANSACTION COUNT</p>
       </div>
 
-      <div className={styles.headerColumn}>
+      <div className={clsx(styles.headerColumn, styles.rightAligned)}>
         <p className={styles.headerText}>FEE</p>
       </div>
-      <div className={styles.headerColumn}>
+      <div className={clsx(styles.headerColumn, styles.topRightBorder, styles.rightAligned)}>
         <p className={styles.headerText}>AMOUNT</p>
       </div>
     </>
@@ -82,7 +83,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
 
       {forSnapshots && (
         <div className={`${styles.headerColumn}`}>
-          <p className={styles.headerText}>HEIGHT</p>
+          <p className={styles.headerText}>ORDINAL</p>
         </div>
       )}
 
@@ -105,7 +106,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
       )}
 
       {!forSnapshots && (
-        <div className={`${styles.headerColumn} ${styles.topRightBorder}`}>
+        <div className={clsx(styles.headerColumn, styles.topRightBorder, styles.rightAligned)}>
           <p className={styles.headerText}>AMOUNT</p>
         </div>
       )}

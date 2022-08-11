@@ -29,7 +29,7 @@ export const TransactionsTable = ({
 
   const titles = transactions
     ? ['TXN HASH', 'TIMESTAMP', 'SNAPSHOT', 'FROM', 'TO', 'AMOUNT']
-    : ['HEIGHT', 'TIMESTAMP', 'BLOCKS COUNT'];
+    : ['ORDINAL', 'TIMESTAMP', 'BLOCKS COUNT'];
   const needDagInfo = transactions && transactions.length > 0;
   const mql = window.matchMedia('(max-width: 580px)');
 
