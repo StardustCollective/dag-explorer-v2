@@ -57,10 +57,10 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <p className={styles.headerText}>TRANSACTION COUNT</p>
       </div>
 
-      <div className={styles.headerColumn}>
+      <div className={`${styles.headerColumn} ${styles.rightAligned}`}>
         <p className={styles.headerText}>FEE</p>
       </div>
-      <div className={styles.headerColumn}>
+      <div className={`${styles.headerColumn} ${styles.topRightBorder} ${styles.rightAligned}`}>
         <p className={styles.headerText}>AMOUNT</p>
       </div>
     </>
@@ -105,7 +105,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
       )}
 
       {!forSnapshots && (
-        <div className={`${styles.headerColumn} ${styles.topRightBorder}`}>
+        <div className={`${styles.headerColumn} ${styles.topRightBorder} ${styles.rightAligned}`}>
           <p className={styles.headerText}>AMOUNT</p>
         </div>
       )}
