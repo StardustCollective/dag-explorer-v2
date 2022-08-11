@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import styles from './HeaderRow.module.scss';
+import clsx from 'clsx';
 
 export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean; headerCols?: string[] }) => {
   const location = useLocation();
@@ -57,10 +58,10 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <p className={styles.headerText}>TRANSACTION COUNT</p>
       </div>
 
-      <div className={`${styles.headerColumn} ${styles.rightAligned}`}>
+      <div className={clsx(styles.headerColumn, styles.rightAligned)}>
         <p className={styles.headerText}>FEE</p>
       </div>
-      <div className={`${styles.headerColumn} ${styles.topRightBorder} ${styles.rightAligned}`}>
+      <div className={clsx(styles.headerColumn, styles.topRightBorder, styles.rightAligned)}>
         <p className={styles.headerText}>AMOUNT</p>
       </div>
     </>
@@ -105,7 +106,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
       )}
 
       {!forSnapshots && (
-        <div className={`${styles.headerColumn} ${styles.topRightBorder} ${styles.rightAligned}`}>
+        <div className={clsx(styles.headerColumn, styles.topRightBorder, styles.rightAligned)}>
           <p className={styles.headerText}>AMOUNT</p>
         </div>
       )}
