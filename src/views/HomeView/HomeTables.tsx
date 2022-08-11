@@ -60,7 +60,7 @@ const HomeTables = ({
   ) : (
     <>
       <TransactionsTable
-        skeleton={{ showSkeleton: !snapshots, headerCols: ['HEIGHT', 'TIMESTAMP', 'BLOCKS'] }}
+        skeleton={{ showSkeleton: !snapshots, headerCols: ['ORDINAL', 'TIMESTAMP', 'BLOCKS'] }}
         limit={limit}
         snapshots={snapshots}
         icon={<SnapshotShape />}

@@ -37,7 +37,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
     ) : (
       <>
         <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? 'HEIGHT' : 'TXN HASH'}</p>
+          <p className={styles.headerText}>{forSnapshots ? 'ORDINAL' : 'TXN HASH'}</p>
         </div>
         <div className={styles.headerColumn}>
           <p className={styles.headerText}>{'TIMESTAMP'}</p>
@@ -82,7 +82,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
 
       {forSnapshots && (
         <div className={`${styles.headerColumn}`}>
-          <p className={styles.headerText}>HEIGHT</p>
+          <p className={styles.headerText}>ORDINAL</p>
         </div>
       )}
 

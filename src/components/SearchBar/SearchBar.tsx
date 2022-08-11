@@ -54,7 +54,7 @@ export const SearchBar = () => {
         <input
           onChange={(e) => setSearchText(e.target.value)}
           className={styles.searchInput}
-          placeholder="Search by address, snapshot height, or transaction..."
+          placeholder="Search by address, snapshot, or transaction..."
         />
         <input
           onChange={(e) => setSearchText(e.target.value)}

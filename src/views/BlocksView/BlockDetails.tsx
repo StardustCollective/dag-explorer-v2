@@ -88,7 +88,7 @@ export const BlockDetails = () => {
                 <DetailRow
                   linkTo={'/snapshots'}
                   borderBottom
-                  title={'SNAPSHOT HEIGHT'}
+                  title={'SNAPSHOT ORDINAL'}
                   value={!skeleton ? blockData.snapshotOrdinal.toString() : ''}
                   skeleton={skeleton}
                   icon={<SnapshotShape size={'2rem'} />}

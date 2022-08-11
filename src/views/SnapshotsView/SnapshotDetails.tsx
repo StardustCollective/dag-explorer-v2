@@ -106,7 +106,7 @@ export const SnapshotDetails = () => {
                     <DetailRow
                       linkTo={'/snapshots'}
                       borderBottom
-                      title={'SNAPSHOT HEIGHT'}
+                      title={'SNAPSHOT ORDINAL'}
                       value={snapshot && snapshot.ordinal.toString()}
                       skeleton={skeleton}
                       icon={<SnapshotShape size={'1.5rem'} />}
