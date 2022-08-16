@@ -52,7 +52,7 @@ const formatRelativeString = (date: string) => {
   return formatedDate;
 };
 
-export const formatTime = (timestamp: string, format: 'full' | 'relative') => {
+export const formatTime = (timestamp: string | number, format: 'full' | 'relative') => {
   return format === 'full'
     ? dayjs(timestamp).format('MMM D, YYYY h:mm A Z')
     : formatRelativeString(dayjs().to(dayjs(timestamp)));

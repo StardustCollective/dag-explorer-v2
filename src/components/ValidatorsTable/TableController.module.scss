@@ -1,0 +1,10 @@
+.controllerRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  grid-column: 1 / span 5;
+}
+.arrows {
+  display: flex;
+  gap: 0.5rem;
+}

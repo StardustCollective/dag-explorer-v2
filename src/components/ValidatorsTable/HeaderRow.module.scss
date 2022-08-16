@@ -1,0 +1,22 @@
+@use '../../styles/colors' as *;
+@use '../../styles/_breakpoints' as *;
+.headerRow {
+  grid-column: 1 / span 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: $grayCool-100;
+}
+
+.headerCell {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.headerText {
+  font-size: 12px;
+  color: $grayCool-500;
+  padding-left: 1rem;
+}

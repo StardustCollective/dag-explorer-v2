@@ -1,0 +1,34 @@
+@use '../../styles/colors' as *;
+@use '../../styles/_breakpoints' as *;
+.validatorRow {
+  grid-column: 1 / span 5;
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
+  width: 100%;
+  background-color: $grayCool-25;
+}
+.black {
+  color: $black;
+}
+.gray {
+  color: $gray-900;
+}
+
+.validatorCell {
+  display: flex;
+  align-items: center;
+}
+
+.validatorCell.skeleton {
+  width: 97%;
+  height: 30%;
+  align-self: center;
+  justify-self: center;
+  border-radius: 0.3rem 0.3rem;
+  grid-column: 1 / span 5;
+}
+
+.normalText {
+  padding-left: 1rem;
+  font-size: 14px;
+}

@@ -85,6 +85,7 @@ enum NodeState {
   'Ready',
   'Initial',
   'ReadyToJoin',
+  'Observing',
   'LoadingGenesis',
   'GenesisReady',
   'StartingSession',
@@ -102,6 +103,15 @@ export type Peer = {
   p2pPort: number;
   session: string;
   state: NodeState;
+};
+
+export type ValidatorNode = {
+  ip: string;
+  id: string;
+  upTime: string;
+  status: NodeState;
+  latency: number | null;
+  address: string;
 };
 
 export type TotalSupply = {
