@@ -31,3 +31,17 @@
   grid-template-columns: repeat(5, 20%);
   width: 100%;
 }
+.tableCards {
+  display: none;
+}
+
+@media screen and (max-width: 725px) {
+  .tableContainer {
+    display: none;
+  }
+  .tableCards {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem 0 1rem 0;
+  }
+}

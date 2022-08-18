@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MainnetOneSnapshot, MainnetOneTransaction, Snapshot, Transaction } from '../../types';
+import { MainnetOneSnapshot, MainnetOneTransaction, Snapshot, Transaction, ValidatorNode } from '../../types';
 import { fitStringInCell, formatAmount, formatTime } from '../../utils/numbers';
 import styles from './MobileCard.module.scss';
 import CopyIcon from '../../assets/icons/Copy.svg';
@@ -150,10 +150,49 @@ const getMainnetOneTxElements = (tx: MainnetOneTransaction, handleCopyToClipboar
   return content;
 };
 
+const getValidatorNodeElements = (node: ValidatorNode) => {
+  const content: JSX.Element[] = [];
+
+  content.push(
+    <div key={1}>
+      <p className={styles.hash}>{node.ip}</p>
+    </div>
+  );
+
+  content.push(
+    <div key={2}>
+      <p className={styles.hash}>{node.upTime}</p>
+    </div>
+  );
+
+  content.push(
+    <div key={3}>
+      <p className={styles.hash}>{node.status}</p>
+    </div>
+  );
+
+  content.push(
+    <div key={4}>
+      <p className={styles.hash}>{node.latency ? node.latency : 'Unknown'}</p>
+    </div>
+  );
+
+  content.push(
+    <div className={styles.hash} key={5}>
+      <p>
+        <Link to={'/address/' + node.address}>{fitStringInCell(node.address)}</Link>
+      </p>
+    </div>
+  );
+
+  return content;
+};
+
 export const MobileCard = ({
   titles,
   snapshot,
   transaction,
+  validatorNode,
   isSkeleton,
   mainnetOneSnap,
   mainnetOneTx,
@@ -161,6 +200,7 @@ export const MobileCard = ({
   titles: string[];
   snapshot?: Snapshot;
   transaction?: Transaction;
+  validatorNode?: ValidatorNode;
   isSkeleton?: boolean;
   mainnetOneSnap?: MainnetOneSnapshot;
   mainnetOneTx?: MainnetOneTransaction;
@@ -190,7 +230,11 @@ export const MobileCard = ({
     ? getTransactionElements(transaction, handleCopyToClipboard)
     : mainnetOneSnap
     ? getMainnetOneSnapElements(mainnetOneSnap)
-    : getMainnetOneTxElements(mainnetOneTx, handleCopyToClipboard);
+    : mainnetOneTx
+    ? getMainnetOneTxElements(mainnetOneTx, handleCopyToClipboard)
+    : validatorNode
+    ? getValidatorNodeElements(validatorNode)
+    : null;
 
   return (
     <div className={styles.cardContainer}>

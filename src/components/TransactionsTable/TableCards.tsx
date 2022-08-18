@@ -1,5 +1,5 @@
 import { cloneElement } from 'react';
-import { MainnetOneSnapshot, MainnetOneTransaction, Snapshot, Transaction } from '../../types';
+import { MainnetOneSnapshot, MainnetOneTransaction, Snapshot, Transaction, ValidatorNode } from '../../types';
 import { MobileCard } from './MobileCard';
 import styles from './TransactionsTable.module.scss';
 
@@ -7,6 +7,7 @@ export const TableCards = ({
   showSkeleton,
   titles,
   snapshots,
+  validatorNodes,
   txs,
   limit,
   headerText,
@@ -17,6 +18,7 @@ export const TableCards = ({
   showSkeleton?: boolean;
   titles?: string[];
   snapshots?: Snapshot[];
+  validatorNodes?: ValidatorNode[];
   txs?: Transaction[];
   limit?: number;
   headerText?: string;
@@ -48,10 +50,15 @@ export const TableCards = ({
     mainnetOneSnaps.map((snap, index) =>
       content.push(<MobileCard titles={titles} mainnetOneSnap={snap} key={index} />)
     );
+  validatorNodes &&
+    validatorNodes.length > 0 &&
+    validatorNodes.map((node, idx) =>
+      node !== undefined ? content.push(<MobileCard titles={titles} key={idx} validatorNode={node} />) : null
+    );
 
   if (showSkeleton) {
     for (let i = 0; i < limit; i++) {
-      content.push(<MobileCard titles={titles} isSkeleton />);
+      content.push(<MobileCard titles={titles} key={i} isSkeleton />);
     }
   }
 

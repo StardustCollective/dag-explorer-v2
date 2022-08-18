@@ -32,3 +32,13 @@
 .line {
   display: flex;
 }
+
+@media screen and (min-width: 300px) and (max-width: 580px) {
+  .tableContainer {
+    height: 250px;
+  }
+
+  .cardsContainer {
+    gap: 0;
+  }
+}

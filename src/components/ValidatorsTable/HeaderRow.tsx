@@ -1,25 +1,15 @@
 import clsx from 'clsx';
 import styles from './HeaderRow.module.scss';
 
-export const HeaderRow = () => {
+export const HeaderRow = ({ headers }: { headers: string[] }) => {
   const cellClass = clsx(styles.headerText, 'normalLausanne');
   return (
     <div className={styles.headerRow}>
-      <div className={styles.headerCell}>
-        <p className={cellClass}>NODE</p>
-      </div>
-      <div className={styles.headerCell}>
-        <p className={cellClass}>UP TIME</p>
-      </div>
-      <div className={styles.headerCell}>
-        <p className={cellClass}>STATUS</p>
-      </div>
-      <div className={styles.headerCell}>
-        <p className={cellClass}>LATENCY</p>
-      </div>
-      <div className={styles.headerCell}>
-        <p className={cellClass}>ADDRESS</p>
-      </div>
+      {headers.map((header, idx) => (
+        <div className={styles.headerCell} key={idx}>
+          <p className={cellClass}>{header}</p>
+        </div>
+      ))}
     </div>
   );
 };
