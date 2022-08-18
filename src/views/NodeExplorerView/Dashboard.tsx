@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { useGetClusterInfo, useGetValidatorNodes } from '../../api/l0-node';
+import { useGetClusterInfo, useGetClusterRewards, useGetValidatorNodes } from '../../api/l0-node';
 import { InfoTable } from '../../components/InfoTable/InfoTable';
 import TableController from '../../components/ValidatorsTable/TableController';
 import { ValidatorsTable } from '../../components/ValidatorsTable/ValidatorsTable';
@@ -16,14 +16,20 @@ export const Dashboard = ({ network }: { network: 'testnet' | 'mainnet' | 'mainn
   const [pages, setPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const clusterData = useGetClusterInfo();
+  const clusterRewards = useGetClusterRewards(network);
   const [validatorsAmount, setValidatorsAmount] = useState(0);
   const [lastUpdatedAt, setLastUpdatedAt] = useState(0);
+  const [totalRewards, setTotalRewards] = useState(0);
   const [skeleton, setSkeleton] = useState(true);
   const [error, setError] = useState<string>(undefined);
 
   useEffect(() => {
-    setError(validatorNodes.error?.message ?? clusterData.error?.message);
-  }, [clusterData.isError, validatorNodes.isError]);
+    clusterData.isError
+      ? setError(clusterData.error.message)
+      : validatorNodes.isError
+      ? setError(validatorNodes.error.message)
+      : setError(clusterRewards.error?.message);
+  }, [clusterData.isError, validatorNodes.isError, clusterRewards.isError]);
 
   useEffect(() => {
     if (!validatorNodes.isFetching && !validatorNodes.isError) {
@@ -32,10 +38,14 @@ export const Dashboard = ({ network }: { network: 'testnet' | 'mainnet' | 'mainn
     }
     if (!clusterData.isError && !clusterData.isFetching) {
       setValidatorsAmount(clusterData.data.length);
-      setLastUpdatedAt(clusterData.dataUpdatedAt);
     }
-    if (!clusterData.isFetching && !validatorNodes.isFetching) {
+    if (!clusterRewards.isError && !clusterRewards.isFetching) {
+      setTotalRewards(clusterRewards.data.totalRewards);
+    }
+
+    if (!clusterData.isFetching && !validatorNodes.isFetching && !clusterRewards.isFetching) {
       setSkeleton(false);
+      setLastUpdatedAt(clusterData.dataUpdatedAt);
     }
   }, [validatorNodes.isFetching, clusterData.isFetching]);
 
@@ -64,6 +74,7 @@ export const Dashboard = ({ network }: { network: 'testnet' | 'mainnet' | 'mainn
                 title={'Cluster Metrics'}
                 loading={skeleton}
                 validatorsAmount={validatorsAmount}
+                totalRewards={totalRewards}
                 lastUpdatedAt={lastUpdatedAt}
               />
               <ValidatorsTable

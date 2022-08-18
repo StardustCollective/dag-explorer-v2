@@ -20,3 +20,6 @@ export const useGetProxyClusterInfo = () =>
 
 export const useGetValidatorNodes = (network: 'testnet' | 'mainnet' | 'mainnet1') =>
   useFetch<ValidatorNode[]>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes');
+
+export const useGetClusterRewards = (network: 'testnet' | 'mainnet' | 'mainnet1') =>
+  useFetch<{ totalRewards: number }>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes/rewards');
