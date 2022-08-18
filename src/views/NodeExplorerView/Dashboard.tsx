@@ -8,7 +8,7 @@ import { ValidatorNode } from '../../types';
 import { NotFound } from '../NotFoundView/NotFound';
 import styles from './Dashboard.module.scss';
 
-const NODES_AMOUNT = 10;
+const NODES_AMOUNT = 100;
 
 export const Dashboard = ({ network }: { network: 'testnet' | 'mainnet' | 'mainnet1' }) => {
   const validatorNodes = useGetValidatorNodes(network);
@@ -34,7 +34,7 @@ export const Dashboard = ({ network }: { network: 'testnet' | 'mainnet' | 'mainn
   useEffect(() => {
     if (!validatorNodes.isFetching && !validatorNodes.isError) {
       setNodes(validatorNodes.data);
-      setPages(Math.ceil(validatorNodes.data.length / 10));
+      setPages(Math.ceil(validatorNodes.data.length / NODES_AMOUNT));
     }
     if (!clusterData.isError && !clusterData.isFetching) {
       setValidatorsAmount(clusterData.data.length);

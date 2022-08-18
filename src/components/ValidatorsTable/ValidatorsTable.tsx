@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { ValidatorNode } from '../../types';
 import { InfoHeader } from '../InfoHeader/InfoHeader';
 import { TableCards } from '../TransactionsTable/TableCards';
-import { HeaderRow } from './HeaderRow';
 import { SkeletonValidatorRows } from './SkeletonValidatorRows';
 import { ValidatorRow } from './ValidatorRow';
+import { HeaderRow } from '../TransactionsTable/HeaderRow';
 import styles from './ValidatorsTable.module.scss';
 
 const HEADERS = ['NODE', 'UP TIME', 'STATUS', 'LATENCY', 'ADDRESS'];
@@ -33,7 +33,7 @@ export const ValidatorsTable = ({
       <div className={styles.tableContainer}>
         <InfoHeader title={'Node Validators'} />
         <div className={styles.table}>
-          <HeaderRow headers={HEADERS} />
+          <HeaderRow headerCols={HEADERS} />
           {!loading ? (
             rows.map((node, idx) => (
               <ValidatorRow
@@ -43,7 +43,7 @@ export const ValidatorsTable = ({
               />
             ))
           ) : (
-            <SkeletonValidatorRows variant={styles.rowVariantWhite} />
+            <SkeletonValidatorRows amountRows={rows.length} variant={styles.rowVariantWhite} />
           )}
         </div>
       </div>

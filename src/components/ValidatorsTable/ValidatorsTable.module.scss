@@ -13,8 +13,8 @@
 
 .table {
   display: grid;
-  grid-template-columns: 35% 10% 10% 10% 35%;
-  grid-template-rows: 44px; /* first one 30px */
+  grid-template-columns: repeat(5, 20%);
+  grid-template-rows: 56px; /* first one 56px */
   grid-auto-rows: 64px;
 }
 

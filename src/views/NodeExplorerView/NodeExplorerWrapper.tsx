@@ -6,5 +6,5 @@ import { Dashboard } from './Dashboard';
 export const NodeExplorerWrapper = () => {
   const { network } = useContext(NetworkContext);
 
-  return network && network !== 'mainnet1' ? <Dashboard network={network} /> : <NotFound entire errorCode={'400'} />;
+  return network && network !== 'mainnet1' ? <Dashboard network={network} /> : <NotFound entire errorCode={'404'} />;
 };

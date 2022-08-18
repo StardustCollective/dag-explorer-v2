@@ -1,9 +1,7 @@
 import clsx from 'clsx';
 import styles from './ValidatorRow.module.scss';
 
-export const SkeletonValidatorRows = ({ variant }: { variant: string }) => {
-  const amountRows = 10;
-
+export const SkeletonValidatorRows = ({ variant, amountRows }: { variant: string; amountRows: number }) => {
   return (
     <>
       {[...Array(amountRows)].map((_, idx) => (
