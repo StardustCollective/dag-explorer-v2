@@ -9,9 +9,9 @@ import { CardDataRow } from './TableCards';
 const getElementContent = (dataRows: CardDataRow[], handleCopyToClipboard: (value: string) => void) => {
   const card: JSX.Element[] = [];
 
-  dataRows.forEach((rowData) => {
+  dataRows.forEach((rowData, idx) => {
     card.push(
-      <div>
+      <div key={idx}>
         <p className={styles.hash} data-tip={rowData.dataTip ? rowData.dataTip : null}>
           {rowData.element && rowData.element}
           {rowData.value && !rowData.linkTo && rowData.value}

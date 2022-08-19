@@ -19,6 +19,6 @@ export const useGetAddressReceivedTransactions = (address: string) =>
 export const useGetAddressBalance = (address: string) => useFetch<Balance>(URL + '/' + address + '/balance');
 
 export const useGetAddressTotalRewards = (address: string, network: Exclude<Network, 'mainnet1'>) =>
-  useFetch<{ totalAmount: number }>(
+  useFetch<{ totalAmount: number; isValidator: boolean }>(
     REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewards'
   );

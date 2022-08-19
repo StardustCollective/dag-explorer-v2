@@ -37,7 +37,7 @@ export const TableCards = ({
 
   elements &&
     elements.size > 0 &&
-    elements.forEach((elem) => content.push(<MobileCard titles={titles} cardData={elem} />));
+    elements.forEach((elem) => content.push(<MobileCard titles={titles} cardData={elem} key={Math.random()} />));
 
   if (showSkeleton) {
     for (let i = 0; i < limit; i++) {

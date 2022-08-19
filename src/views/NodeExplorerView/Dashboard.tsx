@@ -48,7 +48,7 @@ export const Dashboard = ({ network }: { network: Exclude<Network, 'mainnet1'> }
       setSkeleton(false);
       setLastUpdatedAt(clusterData.dataUpdatedAt);
     }
-  }, [validatorNodes.isFetching, clusterData.isFetching]);
+  }, [validatorNodes.isFetching, clusterData.isFetching, clusterRewards.isFetching]);
 
   const handlePrevPage = () => {
     if (currentPage === 1) {

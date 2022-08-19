@@ -67,7 +67,9 @@ export const AddressDetails = () => {
 
   useEffect(() => {
     if (!totalRewards.isFetching && !totalRewards.isError) {
-      setAllTimeRewards(totalRewards.data.totalAmount);
+      if (totalRewards.data.isValidator) {
+        setAllTimeRewards(totalRewards.data.totalAmount ?? 0);
+      }
     }
   }, [totalRewards.isFetching]);
 
@@ -109,7 +111,7 @@ export const AddressDetails = () => {
     setModalOpen(!modalOpen);
   };
 
-  const skeleton = addressInfo.isLoading || addressBalance.isLoading || !dagInfo;
+  const skeleton = addressInfo.isLoading || addressBalance.isLoading || totalRewards.isLoading || !dagInfo;
 
   return (
     <>
@@ -147,18 +149,20 @@ export const AddressDetails = () => {
                   subValue={skeleton ? '' : balance ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : '($0 USD)'}
                   skeleton={skeleton}
                 />
-                <DetailRow
-                  title={'ALL-TIME REWARDS RECEIVED'}
-                  value={skeleton ? '' : allTimeRewards ? formatAmount(allTimeRewards, 8) : '0 DAG'}
-                  subValue={
-                    skeleton
-                      ? ''
-                      : allTimeRewards
-                      ? '($' + formatPrice(allTimeRewards, dagInfo, 2) + ' USD)'
-                      : '($0 USD)'
-                  }
-                  skeleton={totalRewards.isLoading || !dagInfo}
-                />
+                {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
+                  <DetailRow
+                    title={'ALL-TIME REWARDS RECEIVED'}
+                    value={skeleton ? '' : allTimeRewards ? formatAmount(allTimeRewards, 8) : '0 DAG'}
+                    subValue={
+                      skeleton
+                        ? ''
+                        : allTimeRewards
+                        ? '($' + formatPrice(allTimeRewards, dagInfo, 2) + ' USD)'
+                        : '($0 USD)'
+                    }
+                    skeleton={totalRewards.isLoading || !dagInfo}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -173,7 +177,7 @@ export const AddressDetails = () => {
           </div>
           <div className={`${styles.row4}`}>
             <TransactionsTable
-              skeleton={{ showSkeleton: addressInfo.isFetching }}
+              skeleton={{ showSkeleton: skeleton }}
               limit={LIMIT}
               transactions={addressTxs}
               icon={<AddressShape />}
