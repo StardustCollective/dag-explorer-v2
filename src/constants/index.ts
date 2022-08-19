@@ -16,8 +16,9 @@ export enum IconType {
   Block = 'BlockShape',
 }
 
-export type Network = 'testnet' | 'mainnet1';
+export type Network = 'testnet' | 'mainnet1' | 'mainnet';
 export const AVAILABLE_NETWORKS: Record<Network, string> = {
-  mainnet1: 'Mainnet',
+  mainnet1: 'Mainnet 1',
   testnet: 'Testnet',
+  mainnet: 'Mainnet',
 };

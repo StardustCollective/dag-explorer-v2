@@ -4,13 +4,14 @@ import { useGetClusterInfo, useGetClusterRewards, useGetValidatorNodes } from '.
 import { InfoTable } from '../../components/InfoTable/InfoTable';
 import TableController from '../../components/ValidatorsTable/TableController';
 import { ValidatorsTable } from '../../components/ValidatorsTable/ValidatorsTable';
+import { Network } from '../../constants';
 import { ValidatorNode } from '../../types';
 import { NotFound } from '../NotFoundView/NotFound';
 import styles from './Dashboard.module.scss';
 
 const NODES_AMOUNT = 100;
 
-export const Dashboard = ({ network }: { network: 'testnet' | 'mainnet' | 'mainnet1' }) => {
+export const Dashboard = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const validatorNodes = useGetValidatorNodes(network);
   const [nodes, setNodes] = useState<ValidatorNode[]>([]);
   const [pages, setPages] = useState(1);
@@ -65,33 +66,29 @@ export const Dashboard = ({ network }: { network: 'testnet' | 'mainnet' | 'mainn
   return error ? (
     <NotFound entire={true} errorCode={error} />
   ) : (
-    <>
-      <main className={clsx(styles.unifiedRow, 'background')}>
-        <div className={'row'}>
-          {network === 'testnet' && (
-            <>
-              <InfoTable
-                title={'Cluster Metrics'}
-                loading={skeleton}
-                validatorsAmount={validatorsAmount}
-                totalRewards={totalRewards}
-                lastUpdatedAt={lastUpdatedAt}
-              />
-              <ValidatorsTable
-                nodes={nodes.slice(currentPage * NODES_AMOUNT - NODES_AMOUNT, currentPage * NODES_AMOUNT)}
-                amount={NODES_AMOUNT}
-                loading={skeleton}
-              />
-              <TableController
-                handlePrevPage={handlePrevPage}
-                handleNextPage={handleNextPage}
-                firstPage={currentPage === 1}
-                lastPage={currentPage === pages}
-              />
-            </>
-          )}
-        </div>
-      </main>
-    </>
+    <main className={clsx(styles.unifiedRow, 'background')}>
+      <div className={'row'}>
+        <>
+          <InfoTable
+            title={'Cluster Metrics'}
+            loading={skeleton}
+            validatorsAmount={validatorsAmount}
+            totalRewards={totalRewards}
+            lastUpdatedAt={lastUpdatedAt}
+          />
+          <ValidatorsTable
+            nodes={nodes.slice(currentPage * NODES_AMOUNT - NODES_AMOUNT, currentPage * NODES_AMOUNT)}
+            amount={NODES_AMOUNT}
+            loading={skeleton}
+          />
+          <TableController
+            handlePrevPage={handlePrevPage}
+            handleNextPage={handleNextPage}
+            firstPage={currentPage === 1}
+            lastPage={currentPage === pages}
+          />
+        </>
+      </div>
+    </main>
   );
 };

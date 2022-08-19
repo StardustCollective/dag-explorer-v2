@@ -1,3 +1,4 @@
+import { Network } from '../../constants';
 import { Balance, Transaction } from '../../types';
 import { useFetch } from '../../utils/reactQuery';
 
@@ -17,7 +18,7 @@ export const useGetAddressReceivedTransactions = (address: string) =>
 
 export const useGetAddressBalance = (address: string) => useFetch<Balance>(URL + '/' + address + '/balance');
 
-export const useGetAddressTotalRewards = (address: string, network: 'testnet' | 'mainnet') =>
+export const useGetAddressTotalRewards = (address: string, network: Exclude<Network, 'mainnet1'>) =>
   useFetch<{ totalAmount: number }>(
     REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewards'
   );
