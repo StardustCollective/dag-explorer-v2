@@ -1,9 +1,11 @@
 import { cloneElement } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MainnetOneSnapshot, Skeleton } from '../../types';
+import { formatAmount } from '../../utils/numbers';
+import { SnapshotShape } from '../Shapes/SnapshotShape';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
 import { SkeletonTransactionsTable } from '../TransactionsTable/SkeletonTransactionsTable';
-import { TableCards } from '../TransactionsTable/TableCards';
+import { CardDataRow, TableCards } from '../TransactionsTable/TableCards';
 import styles from './MainnetOneTable.module.scss';
 import { SnapshotRow } from './SnapshotRow';
 
@@ -50,6 +52,15 @@ export const MainnetOneSnapshotTable = ({
     emptyRows.push(<SnapshotRow key={i} snapshot={null} />);
   }
 
+  const snapshotCards = new Set<CardDataRow[]>();
+  snapshots.forEach((snap) => {
+    const card: CardDataRow[] = [];
+    card.push({ value: snap.height, linkTo: '/snapshots/' + snap.height, element: <SnapshotShape /> });
+    card.push({ value: formatAmount(snap.dagAmount, 8) });
+    card.push({ value: snap.txCount });
+    snapshotCards.add(card);
+  });
+
   return (
     <>
       <div className={`${styles.table} ${isHomePage ? styles.homeContainer : styles.containerSnap}`}>
@@ -60,7 +71,7 @@ export const MainnetOneSnapshotTable = ({
         {snapshots && snapshots.length === 0 && emptyRows}
       </div>
       <div className={styles.cards}>
-        <TableCards titles={titles} mainnetOneSnaps={snapshots} headerText={headerText} icon={icon} />
+        <TableCards titles={titles} elements={snapshotCards} headerText={headerText} icon={icon} />
       </div>
     </>
   );

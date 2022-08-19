@@ -4,9 +4,11 @@ import { MainnetOneTransaction, Skeleton } from '../../types';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
 import { TransactionRow } from './TransactionRow';
 import { SkeletonTransactionsTable } from '../TransactionsTable/SkeletonTransactionsTable';
-import { TableCards } from '../TransactionsTable/TableCards';
 import { cloneElement, useContext } from 'react';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
+import { CardDataRow, TableCards } from '../TransactionsTable/TableCards';
+import { TransactionShape } from '../Shapes/TransactionShape';
+import { fitStringInCell, formatAmount, formatTime } from '../../utils/numbers';
 
 export const MainnetOneTransactionTable = ({
   skeleton,
@@ -61,6 +63,26 @@ export const MainnetOneTransactionTable = ({
     }
   }
 
+  const transactionCards = new Set<CardDataRow[]>();
+  transactions.forEach((tx) => {
+    const txCard: CardDataRow[] = [];
+    txCard.push({
+      value: fitStringInCell(tx.hash),
+      linkTo: '/transactions/' + tx.hash,
+      toCopy: tx.hash,
+      element: <TransactionShape />,
+    });
+    txCard.push({ value: formatTime(tx.timestamp, 'relative'), dataTip: formatTime(tx.timestamp, 'full') });
+    txCard.push({ value: fitStringInCell(tx.sender), linkTo: '/address/' + tx.sender, toCopy: tx.sender });
+    txCard.push({
+      value: fitStringInCell(tx.receiver),
+      linkTo: '/address/' + tx.receiver,
+      toCopy: tx.receiver,
+    });
+    txCard.push({ value: formatAmount(tx.amount, 8) });
+    transactionCards.add(txCard);
+  });
+
   return (
     <>
       <div className={`${styles.table} ${isHomePage ? styles.homeContainer : styles.container}`}>
@@ -72,7 +94,7 @@ export const MainnetOneTransactionTable = ({
       </div>
 
       <div className={styles.cards}>
-        <TableCards titles={titles} mainnetOneTxs={transactions} headerText={headerText} icon={icon} />
+        <TableCards titles={titles} elements={transactionCards} headerText={headerText} icon={icon} />
       </div>
     </>
   );

@@ -1,30 +1,29 @@
 import { cloneElement } from 'react';
-import { MainnetOneSnapshot, MainnetOneTransaction, Snapshot, Transaction, ValidatorNode } from '../../types';
 import { MobileCard } from './MobileCard';
 import styles from './TransactionsTable.module.scss';
+
+export type CardDataRow = {
+  value?: string | number;
+  linkTo?: string;
+  toCopy?: string;
+  dataTip?: string;
+  element?: JSX.Element;
+};
 
 export const TableCards = ({
   showSkeleton,
   titles,
-  snapshots,
-  validatorNodes,
-  txs,
   limit,
   headerText,
   icon,
-  mainnetOneTxs,
-  mainnetOneSnaps,
+  elements,
 }: {
   showSkeleton?: boolean;
   titles?: string[];
-  snapshots?: Snapshot[];
-  validatorNodes?: ValidatorNode[];
-  txs?: Transaction[];
   limit?: number;
   headerText?: string;
   icon?: JSX.Element;
-  mainnetOneTxs?: MainnetOneTransaction[];
-  mainnetOneSnaps?: MainnetOneSnapshot[];
+  elements?: Set<CardDataRow[]>;
 }) => {
   const header = headerText && (
     <div className={styles.headerCards} key={'headerText'}>
@@ -36,29 +35,13 @@ export const TableCards = ({
   const content: JSX.Element[] = [];
   header && content.push(header);
 
-  snapshots &&
-    snapshots.length > 0 &&
-    snapshots.map((snap, index) => content.push(<MobileCard titles={titles} snapshot={snap} key={index} />));
-  txs &&
-    txs.length > 0 &&
-    txs.map((tx, index) => content.push(<MobileCard titles={titles} transaction={tx} key={index} />));
-  mainnetOneTxs &&
-    mainnetOneTxs.length > 0 &&
-    mainnetOneTxs.map((tx, index) => content.push(<MobileCard titles={titles} mainnetOneTx={tx} key={index} />));
-  mainnetOneSnaps &&
-    mainnetOneSnaps.length > 0 &&
-    mainnetOneSnaps.map((snap, index) =>
-      content.push(<MobileCard titles={titles} mainnetOneSnap={snap} key={index} />)
-    );
-  validatorNodes &&
-    validatorNodes.length > 0 &&
-    validatorNodes.map((node, idx) =>
-      node !== undefined ? content.push(<MobileCard titles={titles} key={idx} validatorNode={node} />) : null
-    );
+  elements &&
+    elements.size > 0 &&
+    elements.forEach((elem) => content.push(<MobileCard titles={titles} cardData={elem} />));
 
   if (showSkeleton) {
     for (let i = 0; i < limit; i++) {
-      content.push(<MobileCard titles={titles} key={i} isSkeleton />);
+      content.push(<MobileCard titles={titles} key={i} cardData={[]} isSkeleton />);
     }
   }
 
