@@ -13,6 +13,7 @@ import { TransactionDetailsWrapper } from './views/TransactionsView/Wrappers/Tra
 import { BlockDetailsWrapper } from './views/BlocksView/Wrappers/BlockDetailsWrapper';
 import { AddressDetailsWrapper } from './views/AddressView/Wrappers/AddressDetailsWrapper';
 import { Search } from './components/Search/Search';
+import { NodeExplorerWrapper } from './views/NodeExplorerView/NodeExplorerWrapper';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -28,6 +29,7 @@ root.render(
             <Route path="snapshots/:snapshotHeight" element={<SnapshotDetailsWrapper />} />
             <Route path="address/:addressId" element={<AddressDetailsWrapper />} />
             <Route path="blocks/:blockHash" element={<BlockDetailsWrapper />} />
+            <Route path="node-explorer" element={<NodeExplorerWrapper />} />
             <Route path="search" element={<Search />} />
             <Route path="*" element={<NotFound entire errorCode={'404'} />} />
           </Route>

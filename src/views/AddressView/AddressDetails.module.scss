@@ -13,14 +13,14 @@
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
   grid-template-rows: 10% 12% 8% 60% 10%;
 }
-.row1 {
-  grid-row: 1/1;
+.subTitle {
   grid-column: 2 / span 12;
+  margin-top: 2rem;
   margin-bottom: 0.7rem;
 }
 
-.row2 {
-  grid-row: 2/2;
+.addressOverview {
+  grid-row: 1/2;
   grid-column: 2 / span 12;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
@@ -156,7 +156,6 @@
     margin-right: 2rem;
   }
   .spanContent {
-    width: 100%;
     margin-left: 2rem;
     margin-right: 2rem;
   }

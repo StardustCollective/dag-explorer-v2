@@ -6,4 +6,30 @@
 body,
 html {
   font-family: 'Lausanne', sans-serif;
+  background-color: $grayCool-25;
+}
+
+.fullWidth2 {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+}
+
+.row {
+  grid-column-start: 2;
+  grid-column-end: span 12;
+}
+
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: $grayCool-100;
+  }
+
+  100% {
+    background-color: $grayCool-200;
+  }
 }

@@ -77,6 +77,15 @@
   display: none;
 }
 
+.headerCards {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #dcdfea;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  height: 3.5rem;
+}
+
 @media screen and (max-width: $lg) {
   .container {
     grid-template-columns: 1.2fr 0.6fr 0.9fr 1.3fr 1.1fr;
@@ -97,14 +106,6 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-  }
-  .headerCards {
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid #dcdfea;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    height: 3.5rem;
   }
 }
 

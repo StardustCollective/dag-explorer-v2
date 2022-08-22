@@ -1,12 +1,15 @@
 import { useLocation } from 'react-router-dom';
 import { Snapshot, Transaction, Skeleton } from '../../types';
-import { TableCards } from './TableCards';
 import { HeaderRow } from './HeaderRow';
 import { TransactionRow } from './TransactionRow';
 import styles from './TransactionsTable.module.scss';
 import { SkeletonTransactionsTable } from './SkeletonTransactionsTable';
 import { useContext, cloneElement } from 'react';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
+import { CardDataRow, TableCards } from './TableCards';
+import { fitStringInCell, formatAmount, formatTime } from '../../utils/numbers';
+import { TransactionShape } from '../Shapes/TransactionShape';
+import { SnapshotShape } from '../Shapes/SnapshotShape';
 
 export const TransactionsTable = ({
   skeleton,
@@ -86,6 +89,38 @@ export const TransactionsTable = ({
       i++;
     }
   }
+  const cardsSet = new Set<CardDataRow[]>();
+  if (transactions) {
+    transactions.forEach((tx) => {
+      const txCard: CardDataRow[] = [];
+      txCard.push({
+        value: fitStringInCell(tx.hash),
+        linkTo: '/transactions/' + tx.hash,
+        toCopy: tx.hash,
+        element: <TransactionShape />,
+      });
+      txCard.push({ value: formatTime(tx.timestamp, 'relative'), dataTip: formatTime(tx.timestamp, 'full') });
+      txCard.push({ value: tx.snapshotOrdinal, linkTo: '/snapshots/' + tx.snapshotOrdinal });
+      txCard.push({ value: fitStringInCell(tx.source), linkTo: '/address/' + tx.source, toCopy: tx.source });
+      txCard.push({
+        value: fitStringInCell(tx.destination),
+        linkTo: '/address/' + tx.destination,
+        toCopy: tx.destination,
+      });
+      txCard.push({ value: formatAmount(tx.amount, 8) });
+      cardsSet.add(txCard);
+    });
+  }
+
+  if (snapshots) {
+    snapshots.forEach((snap) => {
+      const snapshotCard: CardDataRow[] = [];
+      snapshotCard.push({ value: snap.ordinal, linkTo: '/snapshots/' + snap.ordinal, element: <SnapshotShape /> });
+      snapshotCard.push({ value: formatTime(snap.timestamp, 'relative'), dataTip: formatTime(snap.timestamp, 'full') });
+      snapshotCard.push({ value: snap.blocks.length });
+      cardsSet.add(snapshotCard);
+    });
+  }
 
   return (
     <>
@@ -102,7 +137,7 @@ export const TransactionsTable = ({
         {!transactions && !snapshots && emptyRows}
       </div>
       <div className={styles.cards}>
-        <TableCards titles={titles} txs={transactions} snapshots={snapshots} headerText={headerText} icon={icon} />
+        <TableCards titles={titles} elements={cardsSet} headerText={headerText} icon={icon} />
       </div>
     </>
   );

@@ -1,0 +1,24 @@
+.unifiedRow {
+  grid-row: 3 / span 4;
+  grid-column: 2 / span 12;
+}
+
+@media screen and (max-width: 1400px) {
+  .unifiedRow {
+    padding: 0 1rem 0 1rem;
+  }
+}
+
+@media screen and (min-width: 580px) and (max-width: 1070px) {
+  .unifiedRow {
+    grid-column: 1 / span 1;
+  }
+}
+
+@media screen and (min-width: 300px) and (max-width: 580px) {
+  .unifiedRow {
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem 0 1rem;
+  }
+}

@@ -15,6 +15,7 @@ import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { ExportModal } from '../../components/Modals/ExportModal';
 import { AddressShape } from '../../components/Shapes/AddressShape';
 import { isValidAddress } from '../../utils/search';
+import { useGetAddressTotalRewards } from '../../api/block-explorer/address';
 
 const LIMIT = 10;
 
@@ -29,9 +30,11 @@ export const AddressDetails = () => {
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<Transaction[] | undefined>(undefined);
   const [balance, setBalance] = useState<number | undefined>(undefined);
+  const [allTimeRewards, setAllTimeRewards] = useState<number | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const addressInfo = useGetAddressTransactions(addressId, params);
   const addressBalance = useGetAddressBalance(addressId);
+  const totalRewards = useGetAddressTotalRewards(addressId, 'testnet');
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
@@ -61,6 +64,14 @@ export const AddressDetails = () => {
       setBalance(addressBalance.data.balance);
     }
   }, [addressBalance.isFetching]);
+
+  useEffect(() => {
+    if (!totalRewards.isFetching && !totalRewards.isError) {
+      if (totalRewards.data.isValidator) {
+        setAllTimeRewards(totalRewards.data.totalAmount ?? 0);
+      }
+    }
+  }, [totalRewards.isFetching]);
 
   useEffect(() => {
     if (addressInfo.isError) {
@@ -100,7 +111,7 @@ export const AddressDetails = () => {
     setModalOpen(!modalOpen);
   };
 
-  const skeleton = addressInfo.isLoading || addressBalance.isLoading || !dagInfo;
+  const skeleton = addressInfo.isLoading || addressBalance.isLoading || totalRewards.isLoading || !dagInfo;
 
   return (
     <>
@@ -115,12 +126,12 @@ export const AddressDetails = () => {
         <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
-          <div className={`${styles.row1}`}>
-            <div className={`${styles.flexRowBottom}`}>
-              <p className="overviewText">Overview</p>
+          <div className={`${styles.addressOverview}`}>
+            <div className={`${styles.subTitle}`}>
+              <div className={`${styles.flexRowBottom}`}>
+                <p className="overviewText">Overview</p>
+              </div>
             </div>
-          </div>
-          <div className={`${styles.row2}`}>
             <div className={styles.spanContent}>
               <div className={`${styles.txGroup}`}>
                 <DetailRow
@@ -132,11 +143,26 @@ export const AddressDetails = () => {
                   isMain
                 />
                 <DetailRow
+                  borderBottom
                   title={'BALANCE'}
                   value={skeleton ? '' : balance ? formatAmount(balance, 8) : '0 DAG'}
-                  subValue={!skeleton && dagInfo ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
+                  subValue={skeleton ? '' : balance ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : '($0 USD)'}
                   skeleton={skeleton}
                 />
+                {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
+                  <DetailRow
+                    title={'ALL-TIME REWARDS RECEIVED'}
+                    value={skeleton ? '' : allTimeRewards ? formatAmount(allTimeRewards, 8) : '0 DAG'}
+                    subValue={
+                      skeleton
+                        ? ''
+                        : allTimeRewards
+                        ? '($' + formatPrice(allTimeRewards, dagInfo, 2) + ' USD)'
+                        : '($0 USD)'
+                    }
+                    skeleton={totalRewards.isLoading || !dagInfo}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -151,7 +177,7 @@ export const AddressDetails = () => {
           </div>
           <div className={`${styles.row4}`}>
             <TransactionsTable
-              skeleton={{ showSkeleton: addressInfo.isFetching }}
+              skeleton={{ showSkeleton: skeleton }}
               limit={LIMIT}
               transactions={addressTxs}
               icon={<AddressShape />}
