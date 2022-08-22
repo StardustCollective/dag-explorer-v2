@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useGetPrices } from '../../../api/coingecko';
-import { useGetProxyClusterInfo } from '../../../api/l0-node';
+import { useGetClusterInfo } from '../../../api/l0-node';
 import { Card } from '../../../components/Card/Card';
 import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
 import { formatDagPrice, formatMarketVol, formatTotalSupply } from '../../../utils/numbers';
@@ -14,7 +14,7 @@ const StatsSection = () => {
   const [btcInfo, setBtcInfo] = useState(null);
 
   const [clusterData, setClusterData] = useState(null);
-  const clusterInfo = useGetProxyClusterInfo();
+  const clusterInfo = useGetClusterInfo();
 
   useEffect(() => {
     if (!clusterInfo.isFetching) {

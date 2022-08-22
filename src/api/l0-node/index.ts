@@ -16,9 +16,6 @@ export const useGetClusterInfo = () => useFetch<Peer[]>(REACT_APP_TESTNET_L0_NOD
 
 export const useGetMetric = () => useFetch<string>(REACT_APP_TESTNET_L0_NODE_URL + '/metric');
 
-export const useGetProxyClusterInfo = () =>
-  useFetch<string>('https://proxy.constellationnetwork.io/api/l0/cluster/info');
-
 export const useGetValidatorNodes = (network: Exclude<Network, 'mainnet1'>) =>
   useFetch<ValidatorNode[]>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes');
 

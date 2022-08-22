@@ -12,7 +12,7 @@ import { IconType } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
 import { formatAmount, formatDagPrice, formatTime } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
-import { useGetProxyClusterInfo } from '../../api/l0-node';
+import { useGetClusterInfo } from '../../api/l0-node';
 import { AddressShape } from '../../components/Shapes/AddressShape';
 import { TransactionShape } from '../../components/Shapes/TransactionShape';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
@@ -29,7 +29,7 @@ export const TransactionDetail = () => {
   const [error, setError] = useState<string>(undefined);
 
   const [clusterData, setClusterData] = useState(null);
-  const clusterInfo = useGetProxyClusterInfo();
+  const clusterInfo = useGetClusterInfo();
 
   useEffect(() => {
     if (!clusterInfo.isFetching) {
