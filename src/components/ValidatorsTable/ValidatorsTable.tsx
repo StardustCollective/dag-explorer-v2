@@ -9,7 +9,7 @@ import { CardDataRow, TableCards } from '../TransactionsTable/TableCards';
 import { fitStringInCell } from '../../utils/numbers';
 
 const HEADERS = ['NODE', 'UP TIME', 'STATUS', 'LATENCY', 'ADDRESS'];
-
+const MINIMUM_TABLE_LENGTH = 5;
 export const ValidatorsTable = ({
   nodes,
   amount,
@@ -23,7 +23,7 @@ export const ValidatorsTable = ({
   const [elements, setElements] = useState<Set<CardDataRow[]>>(new Set<[]>);
 
   useEffect(() => {
-    if (nodes.length < amount) {
+    if (nodes.length < MINIMUM_TABLE_LENGTH) {
       setRows(nodes.concat(...new Array<ValidatorNode>(amount - nodes.length).fill(undefined)));
     } else {
       setRows(nodes);
