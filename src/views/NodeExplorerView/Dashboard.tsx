@@ -11,6 +11,11 @@ import styles from './Dashboard.module.scss';
 
 const NODES_AMOUNT = 100;
 
+const orderNodes = (nodes: ValidatorNode[]) => {
+  const ordered = nodes.filter((node) => node.status !== 'Offline');
+  return ordered.concat(nodes.filter((node) => node.status === 'Offline'));
+};
+
 export const Dashboard = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const validatorNodes = useGetValidatorNodes(network);
   const [nodes, setNodes] = useState<ValidatorNode[]>([]);
@@ -34,7 +39,7 @@ export const Dashboard = ({ network }: { network: Exclude<Network, 'mainnet1'> }
 
   useEffect(() => {
     if (!validatorNodes.isFetching && !validatorNodes.isError) {
-      setNodes(validatorNodes.data);
+      setNodes(orderNodes(validatorNodes.data));
       setPages(Math.ceil(validatorNodes.data.length / NODES_AMOUNT));
     }
     if (!clusterData.isError && !clusterData.isFetching) {

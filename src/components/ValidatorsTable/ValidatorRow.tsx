@@ -20,7 +20,7 @@ export const ValidatorRow = ({ node, variant }: { node: ValidatorNode | undefine
             <p className={clsx(classCell, styles.gray)}>{node.status}</p>
           </div>
           <div className={styles.validatorCell}>
-            <p className={clsx(classCell, styles.gray)}>{node.latency ? node.latency : 'Unknown'}</p>
+            <p className={clsx(classCell, styles.gray)}>{node.latency ? node.latency : 'N/A'}</p>
           </div>
           <div className={styles.validatorCell}>
             <Link to={'/address/' + node.address} className={classCell}>
