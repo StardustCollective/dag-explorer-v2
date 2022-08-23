@@ -82,18 +82,18 @@ export type Balance = {
 };
 
 enum NodeState {
-  'Ready',
-  'Initial',
-  'ReadyToJoin',
-  'Observing',
-  'LoadingGenesis',
-  'GenesisReady',
-  'StartingSession',
-  'SessionStarted',
-  'WaitingForDownload',
-  'DownloadInProgress',
-  'Leaving',
-  'Offline',
+  Ready = 'Ready',
+  Initial = 'Initial',
+  ReadyToJoin = 'ReadyToJoin',
+  Observing = 'Observing',
+  LoadingGenesis = 'LoadingGenesis',
+  GenesisReady = 'GenesisReady',
+  StartingSession = 'StartingSession',
+  SessionStarted = 'SessionStarted',
+  WaitingForDownload = 'WaitingForDownload',
+  DownloadInProgress = 'DownloadInProgress',
+  Leaving = 'Leaving',
+  Offline = 'Offline',
 }
 
 export type Peer = {
