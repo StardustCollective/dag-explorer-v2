@@ -55,8 +55,8 @@ export const MainnetOneAddressDetails = () => {
         });
         setAddressTxs(arrTxs);
       }
-      
-      if(addressInfo.data.length === 0){
+
+      if (addressInfo.data.length === 0) {
         setAddressTxs(undefined);
       }
 
@@ -121,12 +121,12 @@ export const MainnetOneAddressDetails = () => {
         <NotFound entire={false} errorCode={error} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
-          <div className={`${styles.row1}`}>
-            <div className={`${styles.flexRowBottom}`}>
-              <p className="overviewText">Overview</p>
+          <div className={`${styles.addressOverview}`}>
+            <div className={`${styles.subTitle}`}>
+              <div className={`${styles.flexRowBottom}`}>
+                <p className="overviewText">Overview</p>
+              </div>
             </div>
-          </div>
-          <div className={`${styles.row2}`}>
             <div className={styles.spanContent}>
               <div className={`${styles.txGroup}`}>
                 <DetailRow
