@@ -64,24 +64,26 @@ export const MainnetOneTransactionTable = ({
   }
 
   const transactionCards = new Set<CardDataRow[]>();
-  transactions.forEach((tx) => {
-    const txCard: CardDataRow[] = [];
-    txCard.push({
-      value: fitStringInCell(tx.hash),
-      linkTo: '/transactions/' + tx.hash,
-      toCopy: tx.hash,
-      element: <TransactionShape />,
+  if (transactions) {
+    transactions.forEach((tx) => {
+      const txCard: CardDataRow[] = [];
+      txCard.push({
+        value: fitStringInCell(tx.hash),
+        linkTo: '/transactions/' + tx.hash,
+        toCopy: tx.hash,
+        element: <TransactionShape />,
+      });
+      txCard.push({ value: formatTime(tx.timestamp, 'relative'), dataTip: formatTime(tx.timestamp, 'full') });
+      txCard.push({ value: fitStringInCell(tx.sender), linkTo: '/address/' + tx.sender, toCopy: tx.sender });
+      txCard.push({
+        value: fitStringInCell(tx.receiver),
+        linkTo: '/address/' + tx.receiver,
+        toCopy: tx.receiver,
+      });
+      txCard.push({ value: formatAmount(tx.amount, 8) });
+      transactionCards.add(txCard);
     });
-    txCard.push({ value: formatTime(tx.timestamp, 'relative'), dataTip: formatTime(tx.timestamp, 'full') });
-    txCard.push({ value: fitStringInCell(tx.sender), linkTo: '/address/' + tx.sender, toCopy: tx.sender });
-    txCard.push({
-      value: fitStringInCell(tx.receiver),
-      linkTo: '/address/' + tx.receiver,
-      toCopy: tx.receiver,
-    });
-    txCard.push({ value: formatAmount(tx.amount, 8) });
-    transactionCards.add(txCard);
-  });
+  }
 
   return (
     <>
