@@ -12,7 +12,7 @@ import { Network } from '../../constants';
 import { Transaction } from '../../types';
 import { formatAmount } from '../../utils/numbers';
 
-const { REACT_APP_TESTNET_BLOCK_EXPLORER_URL, REACT_APP_MAINNET_ONE_BE } = process.env;
+const { REACT_APP_TESTNET_BE_URL, REACT_APP_MAINNET_ONE_BE_URL } = process.env;
 
 export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose: () => void; address: string }) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
@@ -30,10 +30,10 @@ export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose
     let URL = '';
 
     if (network === 'mainnet1') {
-      URL = REACT_APP_MAINNET_ONE_BE + '/address/' + address + '/transaction';
+      URL = REACT_APP_MAINNET_ONE_BE_URL + '/address/' + address + '/transaction';
       setHeaders(['amount', 'checkpointBlock', 'fee', 'hash', 'receiver', 'sender', 'snapshotHash', 'timestamp']);
     } else {
-      URL = REACT_APP_TESTNET_BLOCK_EXPLORER_URL + '/addresses/' + address + '/transactions';
+      URL = REACT_APP_TESTNET_BE_URL + '/addresses/' + address + '/transactions';
       setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
     }
 

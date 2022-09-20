@@ -1,9 +1,9 @@
 import { useFetch } from '../../utils/reactQuery';
 import { RewardTransaction, Snapshot, Transaction } from '../../types';
 
-const { REACT_APP_TESTNET_BLOCK_EXPLORER_URL } = process.env;
+const { REACT_APP_TESTNET_BE_URL } = process.env;
 
-const URL = REACT_APP_TESTNET_BLOCK_EXPLORER_URL + '/global-snapshots';
+const URL = REACT_APP_TESTNET_BE_URL + '/global-snapshots';
 
 export const useGetLatestSnapshot = () => useFetch<Snapshot>(URL + '/latest');
 

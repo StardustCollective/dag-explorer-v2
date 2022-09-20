@@ -2,10 +2,10 @@ import { Network } from '../../constants';
 import { Balance, Transaction } from '../../types';
 import { useFetch } from '../../utils/reactQuery';
 
-const { REACT_APP_TESTNET_BLOCK_EXPLORER_URL } = process.env;
+const { REACT_APP_TESTNET_BE_URL } = process.env;
 const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
-const URL = REACT_APP_TESTNET_BLOCK_EXPLORER_URL + '/addresses';
+const URL = REACT_APP_TESTNET_BE_URL + '/addresses';
 
 export const useGetAddressTransactions = (address: string, params?: any) =>
   useFetch<Transaction[]>(URL + '/' + address + '/transactions', params, { keepPreviousData: true, retry: false });
