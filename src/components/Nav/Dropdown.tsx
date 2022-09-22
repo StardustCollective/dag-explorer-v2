@@ -8,7 +8,7 @@ export const Dropdown = () => {
   const { network, changeNetwork } = useContext(NetworkContext) as NetworkContextType;
 
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
-  const options: Partial<Record<Network, string>> = { mainnet1: 'Mainnet 1.0', testnet: 'Testnet 2.0' };
+  const options: Partial<Record<Network, string>> = { mainnet: 'Mainnet 2.0', mainnet1: 'Mainnet 1.0', testnet: 'Testnet 2.0' };
   return (
     <div className={`${styles.dropdown} ${styles.navSeparator}`} ref={ref}>
       {

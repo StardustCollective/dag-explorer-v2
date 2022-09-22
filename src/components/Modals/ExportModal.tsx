@@ -12,7 +12,11 @@ import { Network } from '../../constants';
 import { Transaction } from '../../types';
 import { formatAmount } from '../../utils/numbers';
 
-const { REACT_APP_TESTNET_BE_URL, REACT_APP_MAINNET_ONE_BE_URL } = process.env;
+const { 
+  REACT_APP_TESTNET_BE_URL, 
+  REACT_APP_MAINNET_ONE_BE_URL, 
+  REACT_APP_MAINNET_TWO_BE_URL  
+} = process.env;
 
 export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose: () => void; address: string }) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
@@ -27,13 +31,14 @@ export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose
   const csvLink = useRef<HTMLButtonElement>();
 
   const getTransactionData = async (network: Network) => {
-    let URL = '';
+    let URL: string;
 
     if (network === 'mainnet1') {
       URL = REACT_APP_MAINNET_ONE_BE_URL + '/address/' + address + '/transaction';
       setHeaders(['amount', 'checkpointBlock', 'fee', 'hash', 'receiver', 'sender', 'snapshotHash', 'timestamp']);
     } else {
-      URL = REACT_APP_TESTNET_BE_URL + '/addresses/' + address + '/transactions';
+      const base = network === 'testnet' ? REACT_APP_TESTNET_BE_URL : REACT_APP_MAINNET_TWO_BE_URL;
+      URL = base + '/addresses/' + address + '/transactions';
       setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
     }
 

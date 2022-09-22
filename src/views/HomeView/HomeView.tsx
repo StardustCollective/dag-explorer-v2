@@ -12,7 +12,7 @@ const REFETCH_EVERY = 15000;
 
 export const HomeView = () => {
   const navigate = useNavigate();
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { networkVersion } = useContext(NetworkContext) as NetworkContextType;
 
   const [error, setError] = useState(false);
 
@@ -31,10 +31,10 @@ export const HomeView = () => {
           <StatsSection />
         </div>
         <div className={`${styles.row} ${styles.fila2}`}>
-          {network === 'mainnet1' && (
+          {networkVersion === '1.0' && (
             <MainnetOneHomeTables limit={LIMIT} refetchEvery={REFETCH_EVERY} handleError={handleError} />
           )}
-          {network === 'testnet' && <HomeTables limit={LIMIT} refetchEvery={REFETCH_EVERY} handleError={handleError} />}
+          {networkVersion === '2.0' && <HomeTables limit={LIMIT} refetchEvery={REFETCH_EVERY} handleError={handleError} />}
           {!error && (
             <>
               <div className={styles.viewAll} onClick={() => navigate('/snapshots')}>
