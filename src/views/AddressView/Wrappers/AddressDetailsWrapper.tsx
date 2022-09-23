@@ -4,7 +4,7 @@ import { AddressDetails } from '../AddressDetails';
 import { MainnetOneAddressDetails } from '../MainnetOne/MainnetOneAddressDetails';
 
 export const AddressDetailsWrapper = () => {
-  const { network } = useContext(NetworkContext);
+  const { networkVersion } = useContext(NetworkContext);
 
-  return network === 'testnet' ? <AddressDetails /> : <MainnetOneAddressDetails />;
+  return networkVersion === '2.0' ? <AddressDetails /> : <MainnetOneAddressDetails />;
 };

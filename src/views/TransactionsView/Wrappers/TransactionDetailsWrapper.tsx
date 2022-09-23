@@ -4,7 +4,7 @@ import { TransactionDetail } from '../../TransactionDetailView/TransactionDetail
 import { MainnetOneTransactionDetails } from '../MainnetOne/MainnetOneTransactionDetails';
 
 export const TransactionDetailsWrapper = () => {
-  const { network } = useContext(NetworkContext);
+  const { networkVersion } = useContext(NetworkContext);
 
-  return network === 'testnet' ? <TransactionDetail /> : <MainnetOneTransactionDetails />;
+  return networkVersion === '2.0' ? <TransactionDetail /> : <MainnetOneTransactionDetails />;
 };

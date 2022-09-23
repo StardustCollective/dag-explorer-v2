@@ -4,6 +4,6 @@ import { BlockDetails } from '../BlockDetails';
 import { NotFound } from '../../NotFoundView/NotFound';
 
 export const BlockDetailsWrapper = () => {
-  const { network } = useContext(NetworkContext);
-  return network === 'testnet' ? <BlockDetails /> : <NotFound entire errorCode={'404'} />;
+  const { networkVersion } = useContext(NetworkContext);
+  return networkVersion === '2.0' ? <BlockDetails /> : <NotFound entire errorCode={'404'} />;
 };

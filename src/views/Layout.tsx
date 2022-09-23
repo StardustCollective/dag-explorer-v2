@@ -28,6 +28,10 @@ export const Layout = () => {
       case 'testnet':
         changeNetwork('testnet');
         break;
+      case 'mainnet-staging':
+      case 'mainnet':
+        changeNetwork('mainnet');
+        break;
       case 'mainnet1-staging':
       case 'mainnet1':
       default:

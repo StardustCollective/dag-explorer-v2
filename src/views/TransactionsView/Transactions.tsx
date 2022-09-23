@@ -67,7 +67,7 @@ export const Transactions = () => {
       setLastPage(false);
     }
   };
-
+  
   return (
     <>
       <Subheader text={'Transactions'} item={IconType.Transaction} />

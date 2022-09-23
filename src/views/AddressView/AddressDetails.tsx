@@ -34,7 +34,7 @@ export const AddressDetails = () => {
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const addressInfo = useGetAddressTransactions(addressId, params);
   const addressBalance = useGetAddressBalance(addressId);
-  const totalRewards = useGetAddressTotalRewards(addressId, 'testnet');
+  const totalRewards = useGetAddressTotalRewards(addressId);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);

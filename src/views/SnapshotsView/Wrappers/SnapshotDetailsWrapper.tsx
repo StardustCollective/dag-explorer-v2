@@ -4,7 +4,7 @@ import { MainnetOneSnapshotDetails } from '../MainnetOne/MainnetOneSnapshotDetai
 import { SnapshotDetails } from '../SnapshotDetails';
 
 export const SnapshotDetailsWrapper = () => {
-  const { network } = useContext(NetworkContext);
+  const { networkVersion } = useContext(NetworkContext);
 
-  return network === 'testnet' ? <SnapshotDetails /> : <MainnetOneSnapshotDetails />;
+  return networkVersion === '2.0' ? <SnapshotDetails /> : <MainnetOneSnapshotDetails />;
 };

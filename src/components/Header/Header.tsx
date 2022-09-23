@@ -11,7 +11,7 @@ import { Warning } from 'phosphor-react';
 
 export const Header = () => {
   const { pathname } = useLocation();
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network, networkVersion } = useContext(NetworkContext) as NetworkContextType;
 
   return (
     <header className={`${styles.fullWidth} ${styles.bgGray}`}>
@@ -24,6 +24,14 @@ export const Header = () => {
             </div>
           </div>
         )}
+        {network === 'mainnet' && (new Date().getUTCDate() < 29) && (
+          <div className={styles.testnetWarning}>
+            <Warning className={styles.iconWidth} color={'#f79009'} weight="fill" size={'1.5rem'} />
+            <div className={styles.testnetWarningText}>
+              Note: Constellation Mainnet 2.0 goes live on September 28th.
+            </div>
+          </div>
+        )}
       </div>
       <div className={styles.header}>
         <div className={`${styles.maxWidth} ${styles.center}`}>
@@ -31,8 +39,7 @@ export const Header = () => {
             <p className={'headerSubtitle'}>CONSTELLATION NETWORK</p>
             <div className={styles.networkHeaderGroup}>
               <p className={'networkName'}>{AVAILABLE_NETWORKS[network]}</p>
-              {/*network === 'mainnet2' && <p className={styles.badge}>2.0</p>*/}
-              {network === 'testnet' && <p className={styles.badge}>2.0</p>}
+              {networkVersion === '2.0' && <p className={styles.badge}>2.0</p>}
               {network === 'mainnet1' && <div className={styles.badge}>1.0</div>}
             </div>
           </div>

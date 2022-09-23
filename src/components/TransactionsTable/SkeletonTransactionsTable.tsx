@@ -21,7 +21,7 @@ export const SkeletonTransactionsTable = ({
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { networkVersion } = useContext(NetworkContext) as NetworkContextType;
   const transactions = Array.from({ length: rows });
   return (
     <div
@@ -30,7 +30,7 @@ export const SkeletonTransactionsTable = ({
           ? styles.homeContainer
           : location.pathname === '/snapshots'
           ? styles.containerSnap
-          : network === 'testnet'
+          : networkVersion === '2.0'
           ? styles.container
           : styles3.container
       }
