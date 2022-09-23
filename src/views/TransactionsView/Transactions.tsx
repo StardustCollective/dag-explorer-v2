@@ -67,11 +67,7 @@ export const Transactions = () => {
       setLastPage(false);
     }
   };
-
-  // console.log('isFetching:', transactionsInfo.isFetching);
-  // console.log('lastPage: ', lastPage);
-  // console.log('!transactions:', !transactions);
-
+  
   return (
     <>
       <Subheader text={'Transactions'} item={IconType.Transaction} />
