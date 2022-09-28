@@ -1,6 +1,6 @@
 import { Card } from '../../../components/Card/Card';
 import { Skeleton } from '../../../types';
-import { formatAmount, formatDagPrice, formatMarketVol } from '../../../utils/numbers';
+import { formatAmount, formatDagPrice, formatMarketVol, formatTotalSupply } from '../../../utils/numbers';
 
 const formater = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 export const MainnetStats = ({
@@ -33,6 +33,7 @@ export const MainnetStats = ({
         skeleton={{ showSkeleton: skeleton.showSkeleton }}
         headerText={'CIRCULATING SUPPLY'}
         value={formatAmount(dagSupply, 0).replace('DAG', '')}
+        info={formatTotalSupply()}
       />
     </>
   );
