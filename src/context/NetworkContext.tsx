@@ -28,7 +28,7 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
       window.location.href = 'https://' + switchToNetwork + '.dagexplorer.io/' + urlTail;
     }
 
-    if (!window.location.href.includes(switchToNetwork) && !window.location.href.startsWith(PROD_BASE_URL)) {
+    if (!window.location.href.includes(switchToNetwork + '.') && !window.location.href.startsWith(PROD_BASE_URL)) {
       let domain = window.location.href.split('.').slice(1);
       if (domain.length === 0 && window.location.href.includes('http://localhost:')) {
         domain = [window.location.href.replace('http://', '')];
