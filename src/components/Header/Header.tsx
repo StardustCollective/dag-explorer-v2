@@ -28,7 +28,7 @@ export const Header = () => {
           <div className={styles.testnetWarning}>
             <Warning className={styles.iconWidth} color={'#f79009'} weight="fill" size={'1.5rem'} />
             <div className={styles.testnetWarningText}>
-              Note: Constellation Mainnet 2.0 goes live on September 28th.
+              Attention: the transition from Mainnet 1.0 to 2.0 has begun and is expected to take up to 8 hours. During this time the DAG explorer will be unstable. An update will be posted here once the process is complete. 
             </div>
           </div>
         )}
