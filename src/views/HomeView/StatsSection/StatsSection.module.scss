@@ -12,6 +12,12 @@
   width: 20%;
 }
 
+.mainnetStats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 @media screen and (max-width: $sm) {
   .stats {
     flex-direction: column;
@@ -23,6 +29,15 @@
   .stats > * {
     width: 100%;
   }
+
+  .mainnetStats {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-left: 1rem;
+    gap: 98px;
+  }
 }
 
 @media screen and (max-width: $lg) {
@@ -32,6 +47,11 @@
   }
   .stats > div {
     flex: 50%;
+  }
+
+  .mainnetStats {
+    flex-wrap: wrap;
+    gap: 20px;
   }
 }
 
@@ -45,6 +65,17 @@
     margin-bottom: 1rem;
   }
   .stats > * {
+    width: 100%;
+  }
+  .mainnetStats {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  .mainnetStats > * {
     width: 100%;
   }
 }

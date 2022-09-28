@@ -12,6 +12,7 @@ export const Content = ({
   value?: string;
   title: string;
   linkTo?: string;
+  onlyLink?: React.ReactNode;
   skeleton?: boolean;
   icon?: JSX.Element;
   copy?: boolean;
@@ -31,7 +32,7 @@ export const Content = ({
     }, 2000);
   };
 
-  const { skeleton, icon, linkTo, value, isLong, date, copy, subValue, isMain, isStatus } = props;
+  const { skeleton, icon, linkTo, onlyLink, value, isLong, date, copy, subValue, isMain, isStatus } = props;
 
   return skeleton ? (
     <div className={`${styles.skeleton} ${styles.value}`} />
@@ -46,6 +47,7 @@ export const Content = ({
         ) : (
           <div className={isMain ? styles.truncate : undefined}>
             {isLong && !date && !isMain ? fitStringInCell(value) : value}
+            {onlyLink}
           </div>
         )}
         {date && !isLong && <p className={styles.fullDate}>{'(' + formatTime(date, 'full') + ')'}</p>}

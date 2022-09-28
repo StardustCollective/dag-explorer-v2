@@ -8,23 +8,21 @@ import { IconType } from '../../../constants';
 import styles from '.././AddressDetails.module.scss';
 import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetTransactionsByAddress } from '../../../api/mainnet_1/block-explorer';
-import { useGetAddressBalance } from '../../../api/mainnet_1/load-balancer';
 import { MainnetOneTransactionTable } from '../../../components/MainnetOneTable/MainnetOneTransactionTable';
-import { formatAmount, formatPrice } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../../context/PricesContext';
 import { TransactionShape } from '../../../components/Shapes/TransactionShape';
 import { isValidAddress } from '../../../utils/search';
+import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
 
 const LIMIT = 10;
 
 export const MainnetOneAddressDetails = () => {
+  const { changeNetwork } = useContext(NetworkContext) as NetworkContextType;
   const { addressId } = useParams();
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<MainnetOneTransaction[] | undefined>(undefined);
-  const [balance, setBalance] = useState(undefined);
   const addressInfo = useGetTransactionsByAddress(addressId);
-  const addressBalance = useGetAddressBalance(addressId);
   const [startAt, setStartAt] = useState(0);
   const [endAt, setEndAt] = useState(LIMIT);
   const [page, setPage] = useState(0);
@@ -72,20 +70,7 @@ export const MainnetOneAddressDetails = () => {
     if (addressInfo.isError) {
       setError(addressInfo.error.message);
     }
-    if (!error && addressBalance.isError) {
-      setError(addressBalance.error.message);
-    }
-  }, [addressInfo.isError, addressBalance.isError]);
-
-  useEffect(() => {
-    if (!addressBalance.isFetching && !addressBalance.isError) {
-      if (addressBalance.data.result.balance) {
-        setBalance(addressBalance.data.result.balance.balance);
-      } else {
-        setBalance(0);
-      }
-    }
-  }, [addressBalance.isFetching]);
+  }, [addressInfo.isError]);
 
   const handleNextPage = () => {
     if (addressTxs) {
@@ -108,7 +93,7 @@ export const MainnetOneAddressDetails = () => {
     }
   };
 
-  const skeleton = addressInfo.isFetching || addressBalance.isFetching || !dagInfo;
+  const skeleton = addressInfo.isFetching || !dagInfo;
   return (
     <>
       <section className={`${styles.searchMobile}`}>
@@ -139,8 +124,12 @@ export const MainnetOneAddressDetails = () => {
                 />
                 <DetailRow
                   title={'BALANCE'}
-                  value={!skeleton ? formatAmount(balance, 8) : ''}
-                  subValue={!skeleton && dagInfo ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : ''}
+                  value={!skeleton ? 'Transferred to ' : ''}
+                  onlyLink={
+                    <span className={styles.spanLink} onClick={() => changeNetwork('mainnet')}>
+                      Mainnet 2.0
+                    </span>
+                  }
                   skeleton={skeleton}
                 />
               </div>

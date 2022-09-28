@@ -1,5 +1,6 @@
 import styles from './DetailRow.module.scss';
 import { Content } from './Content';
+import React from 'react';
 
 export const DetailRow = ({
   ...props
@@ -8,6 +9,7 @@ export const DetailRow = ({
   value?: string;
   title: string;
   linkTo?: string;
+  onlyLink?: React.ReactNode;
   skeleton?: boolean;
   copy?: boolean;
   date?: string;
