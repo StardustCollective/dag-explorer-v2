@@ -10,6 +10,8 @@ export type NetworkContextType = {
 
 export const NetworkContext = createContext<NetworkContextType | null>(null);
 
+const PROD_BASE_URL = 'https://dagexplorer.io/';
+
 export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [network, setNetwork] = useState<Network>(null);
   const [networkVersion, setNetworkVersion] = useState<NetworkVersion>(null);
@@ -21,11 +23,12 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
       switchToNetwork += '-staging';
     }
 
-    if (window.location.href === 'https://dagexplorer.io/') {
-      window.location.href = 'https://' + switchToNetwork + '.dagexplorer.io/';
+    if (window.location.href.startsWith(PROD_BASE_URL)) {
+      const urlTail = window.location.href.substring(PROD_BASE_URL.length);
+      window.location.href = 'https://' + switchToNetwork + '.dagexplorer.io/' + urlTail;
     }
 
-    if (!window.location.href.includes(switchToNetwork) && window.location.href !== 'https://dagexplorer.io/') {
+    if (!window.location.href.includes(switchToNetwork) && window.location.href !== PROD_BASE_URL) {
       let domain = window.location.href.split('.').slice(1);
       if (domain.length === 0 && window.location.href.includes('http://localhost:')) {
         domain = [window.location.href.replace('http://', '')];
