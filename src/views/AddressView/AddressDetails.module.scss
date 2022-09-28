@@ -74,6 +74,11 @@
   grid-column: 2 / span 12;
 }
 
+.spanLink {
+  color: blue;
+  cursor: pointer;
+}
+
 .txGroup {
   display: flex;
   flex-direction: column;

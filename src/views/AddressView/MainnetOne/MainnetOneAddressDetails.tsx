@@ -13,10 +13,12 @@ import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../../context/PricesContext';
 import { TransactionShape } from '../../../components/Shapes/TransactionShape';
 import { isValidAddress } from '../../../utils/search';
+import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
 
 const LIMIT = 10;
 
 export const MainnetOneAddressDetails = () => {
+  const { changeNetwork } = useContext(NetworkContext) as NetworkContextType;
   const { addressId } = useParams();
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<MainnetOneTransaction[] | undefined>(undefined);
@@ -122,7 +124,12 @@ export const MainnetOneAddressDetails = () => {
                 />
                 <DetailRow
                   title={'BALANCE'}
-                  value={!skeleton ? 'Balances transferred to Mainnet 2.0' : ''}
+                  value={!skeleton ? 'Transferred to ' : ''}
+                  onlyLink={
+                    <span className={styles.spanLink} onClick={() => changeNetwork('mainnet')}>
+                      Mainnet 2.0
+                    </span>
+                  }
                   skeleton={skeleton}
                 />
               </div>

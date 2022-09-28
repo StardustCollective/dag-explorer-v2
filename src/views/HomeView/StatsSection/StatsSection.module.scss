@@ -14,9 +14,8 @@
 
 .mainnetStats {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 100%;
-  gap: 98px;
 }
 
 @media screen and (max-width: $sm) {
