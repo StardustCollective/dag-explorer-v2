@@ -12,7 +12,6 @@ import { SkeletonCard } from '../../../components/Card/SkeletonCard';
 import { Card } from '../../../components/Card/Card';
 import { formatAmount, formatDagPrice, formatPrice, formatTime } from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
-import { useGetClusterInfo } from '../../../api/mainnet_1/load-balancer';
 import { AddressShape } from '../../../components/Shapes/AddressShape';
 import { TransactionShape } from '../../../components/Shapes/TransactionShape';
 import { SnapshotShape } from '../../../components/Shapes/SnapshotShape';
@@ -27,15 +26,6 @@ export const MainnetOneTransactionDetails = () => {
   const [dagInfo, setDagInfo] = useState(null);
   const [btcInfo, setBtcInfo] = useState(null);
   const prices = useGetPrices();
-
-  const [clusterData, setClusterData] = useState(null);
-  const clusterInfo = useGetClusterInfo();
-
-  useEffect(() => {
-    if (!clusterInfo.isFetching) {
-      setClusterData(clusterInfo.data);
-    }
-  }, [clusterInfo.isFetching]);
 
   useEffect(() => {
     if (!prices.isFetching && !prices.isError) {
@@ -163,24 +153,17 @@ export const MainnetOneTransactionDetails = () => {
                   </div>
                 </div>
                 <div className={`${styles.column2}`}>
-                  {!dagInfo || !clusterData ? (
+                  {!dagInfo ? (
                     <>
-                      <SkeletonCard />
                       <SkeletonCard />
                     </>
                   ) : (
-                    <>
-                      <Card
-                        badge={dagInfo.usd_24h_change}
-                        headerText={'DAG PRICE'}
-                        value={'$' + dagInfo.usd}
-                        info={formatDagPrice(dagInfo, btcInfo)}
-                      />
-                      <Card
-                        headerText={'NODE OPERATORS'}
-                        value={clusterData ? clusterData.length + ' validators' : ''}
-                      />
-                    </>
+                    <Card
+                      badge={dagInfo.usd_24h_change}
+                      headerText={'DAG PRICE'}
+                      value={'$' + dagInfo.usd}
+                      info={formatDagPrice(dagInfo, btcInfo)}
+                    />
                   )}
                 </div>
               </div>

@@ -35,7 +35,7 @@ const StatsSection = () => {
 
   if (network === 'mainnet1') {
     return (
-      <div className={styles.stats}>
+      <div className={styles.mainnetStats}>
         <MainnetStats skeleton={{ showSkeleton: !dagInfo }} dagInfo={dagInfo} btcInfo={btcInfo} />
       </div>
     );
