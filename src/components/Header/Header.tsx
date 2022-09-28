@@ -24,12 +24,11 @@ export const Header = () => {
             </div>
           </div>
         )}
-        {(network === 'mainnet' || network === 'mainnet1') && (
+        {(network === 'mainnet1') && (
           <div className={styles.testnetWarning}>
             <Warning className={styles.iconWidth} color={'#f79009'} weight="fill" size={'1.5rem'} />
             <div className={styles.testnetWarningText}>
-              Attention: the transition from Mainnet 1.0 to 2.0 has begun and is expected to take up to 8 hours. During this time the DAG explorer will be unstable. <br/>
-              An update will be posted here once the process is complete. 
+              Attention: The Mainnet 1.0 network transitioned to Mainnet 2.0 on 2022-09-28. Switch to Mainnet 2.0 to view current activity.
             </div>
           </div>
         )}
