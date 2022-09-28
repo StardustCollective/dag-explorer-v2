@@ -39,7 +39,7 @@ export const formatAmount = (amount: number, toFixed: number, forExport?: boolea
 
 export const fitStringInCell = (value: string) => value.slice(0, 5) + '...' + value.slice(value.length - 5);
 
-export const formatTotalSupply = () => 'Total Supply: 3,550,000,000';
+export const formatTotalSupply = () => 'Total Supply: 4,000,000,000';
 
 const formatRelativeString = (date: string) => {
   let formatedDate = date;

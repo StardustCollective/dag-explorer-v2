@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { useGetPrices } from '../../../api/coingecko';
-import { useGetClusterInfo } from '../../../api/l0-node';
+import { useGetClusterInfo, useGetLatestSnapshotTotalDagSupply } from '../../../api/l0-node';
 import { Card } from '../../../components/Card/Card';
 import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
-import { formatDagPrice, formatMarketVol, formatTotalSupply } from '../../../utils/numbers';
+import { formatAmount, formatDagPrice, formatMarketVol, formatTotalSupply } from '../../../utils/numbers';
 import { MainnetStats } from './MainnetStats';
 import styles from './StatsSection.module.scss';
 
@@ -12,9 +12,11 @@ const StatsSection = () => {
 
   const [dagInfo, setDagInfo] = useState(null);
   const [btcInfo, setBtcInfo] = useState(null);
+  const [dagTotalSupply, setDagTotalSupply] = useState(null);
 
   const [clusterData, setClusterData] = useState(null);
   const clusterInfo = useGetClusterInfo();
+  const totalSupplyInfo = useGetLatestSnapshotTotalDagSupply();
 
   useEffect(() => {
     if (!clusterInfo.isFetching) {
@@ -33,10 +35,21 @@ const StatsSection = () => {
     }
   }, [prices.isFetching]);
 
+  useEffect(() => {
+    if (!totalSupplyInfo.isFetching) {
+      setDagTotalSupply(totalSupplyInfo.data.total);
+    }
+  }, [totalSupplyInfo.isFetching]);
+
   if (network === 'mainnet1') {
     return (
       <div className={styles.mainnetStats}>
-        <MainnetStats skeleton={{ showSkeleton: !dagInfo }} dagInfo={dagInfo} btcInfo={btcInfo} />
+        <MainnetStats
+          skeleton={{ showSkeleton: !dagInfo || !dagTotalSupply }}
+          dagInfo={dagInfo}
+          btcInfo={btcInfo}
+          dagSupply={dagTotalSupply}
+        />
       </div>
     );
   }
@@ -44,26 +57,26 @@ const StatsSection = () => {
   return (
     <div className={styles.stats}>
       <Card
-        skeleton={{ showSkeleton: !dagInfo || !clusterData }}
+        skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
         badge={dagInfo ? dagInfo.usd_24h_change : ''}
         headerText={'DAG PRICE'}
         value={dagInfo ? '$' + dagInfo.usd : ''}
         info={dagInfo ? formatDagPrice(dagInfo, btcInfo) : ''}
       />
       <Card
-        skeleton={{ showSkeleton: !dagInfo || !clusterData }}
+        skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
         headerText={'MARKET CAP'}
         value={dagInfo ? '$' + formater.format(dagInfo.usd_market_cap) : ''}
         info={dagInfo ? formatMarketVol(formater, dagInfo) : ''}
       />
       <Card
-        skeleton={{ showSkeleton: !dagInfo || !clusterData }}
+        skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
         headerText={'CIRCULATING SUPPLY'}
-        value={'2,575,620,108'}
+        value={formatAmount(dagTotalSupply, 0).replace('DAG', '')}
         info={formatTotalSupply()}
       />
       <Card
-        skeleton={{ showSkeleton: !dagInfo || !clusterData }}
+        skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
         headerText={'NODE OPERATORS'}
         info={'View Node Explorer'}
         value={clusterData ? clusterData.length + ' validators' : ''}
