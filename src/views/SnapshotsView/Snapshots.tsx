@@ -25,12 +25,17 @@ export const Snapshots = () => {
   const [page, setPage] = useState(0);
   const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(true);
+  const [wentBack, setWentBack] = useState(false);
 
   useEffect(() => {
     setSkeleton(true);
     if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
       if (snapshotsInfo.data.length > 0) {
-        setSnapshots(snapshotsInfo.data);
+        if (wentBack) {
+          setSnapshots(snapshotsInfo.data.reverse());
+        } else {
+          setSnapshots(snapshotsInfo.data);
+        }
       }
 
       setSkeleton(false);
@@ -45,6 +50,7 @@ export const Snapshots = () => {
 
   const handleNextPage = () => {
     if (snapshots) {
+      setWentBack(false);
       setParams({
         limit: LIMIT,
         search_before: snapshots[LIMIT - 1].ordinal.toString(),
@@ -55,6 +61,7 @@ export const Snapshots = () => {
 
   const handlePrevPage = () => {
     if (snapshots) {
+      setWentBack(true);
       setParams({
         limit: LIMIT,
         search_after: snapshots[0].ordinal.toString(),

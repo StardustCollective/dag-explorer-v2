@@ -25,12 +25,17 @@ export const Transactions = () => {
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(false);
+  const [wentBack, setWentBack] = useState(false);
 
   useEffect(() => {
     setSkeleton(true);
     if (!transactionsInfo.isFetching && !transactionsInfo.isError) {
       if (transactionsInfo.data.length > 0) {
-        setTransactions(transactionsInfo.data);
+        if (wentBack) {
+          setTransactions(transactionsInfo.data.reverse());
+        } else {
+          setTransactions(transactionsInfo.data);
+        }
       }
       if (transactionsInfo.data.length < LIMIT) {
         setLastPage(true);
@@ -49,6 +54,7 @@ export const Transactions = () => {
 
   const handleNextPage = () => {
     if (transactions) {
+      setWentBack(false);
       setParams({
         limit: LIMIT,
         search_before: transactions[LIMIT - 1].hash,
@@ -59,6 +65,7 @@ export const Transactions = () => {
 
   const handlePrevPage = () => {
     if (transactions) {
+      setWentBack(true);
       setParams({
         limit: LIMIT,
         search_after: transactions[0].hash,
@@ -67,7 +74,7 @@ export const Transactions = () => {
       setLastPage(false);
     }
   };
-  
+
   return (
     <>
       <Subheader text={'Transactions'} item={IconType.Transaction} />
