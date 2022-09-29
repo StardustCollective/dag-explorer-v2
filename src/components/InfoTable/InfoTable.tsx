@@ -1,3 +1,4 @@
+import { formatNumber, NumberFormat } from '../../utils/numbers';
 import { InfoHeader } from '../InfoHeader/InfoHeader';
 import { SkeletonInfoHeader } from '../InfoHeader/SkeletonInfoHeader';
 import { SimpleCard } from '../SimpleCard/SimpleCard';
@@ -18,14 +19,14 @@ export const InfoTable = ({
   lastUpdatedAt: number;
 }) => {
   const transformedDagAmount = (totalRewards / Math.pow(10, 8)).toFixed(8);
-  const formattedAmount = Math.round(Number.parseFloat(transformedDagAmount) / 1000000);
+  const formattedAmount = formatNumber(transformedDagAmount, NumberFormat.MILLIFY);
   return (
     <div className={styles.tableContainer}>
       {loading ? <SkeletonInfoHeader /> : <InfoHeader title={title} lastUpdatedAt={lastUpdatedAt} />}
       <div className={styles.cardsContainer}>
         {loading ? <SkeletonSimpleCard /> : <SimpleCard title={validatorsAmount.toString()} subTitle={'VALIDATORS'} />}
         <div className={styles.verticalLine} />
-        {loading ? <SkeletonSimpleCard /> : <SimpleCard title={formattedAmount + 'M'} subTitle={'TOTAL REWARDS'} />}
+        {loading ? <SkeletonSimpleCard /> : <SimpleCard title={formattedAmount} subTitle={'TOTAL REWARDS'} />}
       </div>
     </div>
   );

@@ -1,7 +1,17 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import millify from 'millify';
 
 dayjs.extend(relativeTime);
+
+export enum NumberFormat {
+  MILLIFY,
+  WHOLE,
+  DECIMALS,
+  DECIMALS_TRIMMED,
+  MILLIFY_WHOLE,
+  MILLIFY_EXPANDED,
+}
 
 const formater = new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 });
 
@@ -56,4 +66,46 @@ export const formatTime = (timestamp: string | number, format: 'full' | 'relativ
   return format === 'full'
     ? dayjs(timestamp).format('MMM D, YYYY h:mm A Z')
     : formatRelativeString(dayjs().to(dayjs(timestamp)));
+};
+
+export const formatNumber = (number: number | string | undefined | null, format: NumberFormat): string => {
+  if (number === '' || number === undefined || number === null || isNaN(<number>number)) {
+    return '';
+  }
+
+  if (format === NumberFormat.MILLIFY) {
+    return millify(<number>number);
+  }
+
+  if (format === NumberFormat.WHOLE) {
+    return new Intl.NumberFormat('en-US', {
+      maximumFractionDigits: 0,
+    }).format(<number>number);
+  }
+
+  if (format === NumberFormat.DECIMALS) {
+    return new Intl.NumberFormat('en-US', {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    }).format(<number>number);
+  }
+
+  if (format === NumberFormat.DECIMALS_TRIMMED) {
+    return new Intl.NumberFormat('en-US', {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    }).format(<number>number);
+  }
+
+  if (format === NumberFormat.MILLIFY_WHOLE) {
+    return millify(<number>number, { precision: 0 });
+  }
+
+  if (format === NumberFormat.MILLIFY_EXPANDED) {
+    const exponent = Math.floor(Math.log10(<number>number));
+    const precision = Math.min(Math.max(Math.floor(exponent / 3 /* 3 Zeros */) - 1, 0), 3);
+    return millify(<number>number, { precision });
+  }
+
+  return '--';
 };
