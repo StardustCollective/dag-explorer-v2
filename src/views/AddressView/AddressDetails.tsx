@@ -6,7 +6,7 @@ import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
-import { IconType } from '../../constants';
+import { IconType, Network } from '../../constants';
 import styles from './AddressDetails.module.scss';
 import { NotFound } from '../NotFoundView/NotFound';
 import { formatAmount, formatPrice } from '../../utils/numbers';
@@ -25,7 +25,7 @@ type Params = {
   search_before?: string;
 };
 
-export const AddressDetails = () => {
+export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const { addressId } = useParams();
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<Transaction[] | undefined>(undefined);
@@ -34,7 +34,7 @@ export const AddressDetails = () => {
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const addressInfo = useGetAddressTransactions(addressId, params);
   const addressBalance = useGetAddressBalance(addressId);
-  const totalRewards = useGetAddressTotalRewards(addressId);
+  const totalRewards = useGetAddressTotalRewards(addressId, network);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
