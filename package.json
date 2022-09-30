@@ -15,6 +15,7 @@
     "date-fns": "^2.28.0",
     "dayjs": "^1.11.3",
     "dotenv": "^16.0.1",
+    "millify": "^4.0.0",
     "phosphor-react": "^1.4.1",
     "react": "^18.1.0",
     "react-csv": "^2.2.2",
