@@ -69,6 +69,8 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     if (!totalRewards.isFetching && !totalRewards.isError) {
       if (totalRewards.data.isValidator) {
         setAllTimeRewards(totalRewards.data.totalAmount ?? 0);
+      } else {
+        setAllTimeRewards(undefined);
       }
     }
   }, [totalRewards.isFetching]);
