@@ -51,7 +51,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       if (addressInfo.data.length > 0) {
         setAddressTxs(addressInfo.data);
       }
-      if (addressInfo.data.length <= LIMIT) {
+      if (addressInfo.data.length < LIMIT) {
         setLastPage(true);
       } else {
         setLastPage(false);
@@ -172,8 +172,8 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
             <div className={`${styles.flexRowBottom}`}>
               <p className="overviewText">Transactions</p>
               <div className={styles.arrows}>
-                <ArrowButton handleClick={handlePrevPage} disabled={page === 0 || addressInfo.isFetching} />
-                <ArrowButton forward handleClick={handleNextPage} disabled={addressInfo.isFetching || lastPage} />
+                <ArrowButton handleClick={handlePrevPage} disabled={page === 0 || skeleton} />
+                <ArrowButton forward handleClick={handleNextPage} disabled={skeleton || lastPage} />
               </div>
             </div>
           </div>
@@ -190,12 +190,8 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
               <span />
 
               <div className={styles.arrows}>
-                <ArrowButton handleClick={() => handlePrevPage()} disabled={page === 0 || addressInfo.isFetching} />
-                <ArrowButton
-                  forward
-                  handleClick={() => handleNextPage()}
-                  disabled={addressInfo.isFetching || lastPage}
-                />
+                <ArrowButton handleClick={() => handlePrevPage()} disabled={page === 0 || skeleton} />
+                <ArrowButton forward handleClick={() => handleNextPage()} disabled={skeleton || lastPage} />
               </div>
             </div>
           </div>

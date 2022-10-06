@@ -58,7 +58,7 @@ export const MainnetOneAddressDetails = () => {
         setAddressTxs(undefined);
       }
 
-      if (addressInfo.data.length <= LIMIT) {
+      if (addressInfo.data.length < LIMIT) {
         setLastPage(true);
       } else {
         setLastPage(false);
