@@ -14,6 +14,7 @@ import { PricesContext, PricesContextType } from '../../../context/PricesContext
 import { TransactionShape } from '../../../components/Shapes/TransactionShape';
 import { isValidAddress } from '../../../utils/search';
 import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
+import { SPECIAL_ADDRESSES_LIST } from '../../../constants/specialAddresses';
 
 const LIMIT = 10;
 
@@ -30,7 +31,7 @@ export const MainnetOneAddressDetails = () => {
   const [error, setError] = useState<string>(undefined);
 
   useEffect(() => {
-    if (!isValidAddress.test(addressId)) {
+    if (!isValidAddress.test(addressId) && !SPECIAL_ADDRESSES_LIST.includes(addressId)) {
       setError('404');
     }
   }, []);

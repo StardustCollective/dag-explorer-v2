@@ -16,6 +16,7 @@ import { ExportModal } from '../../components/Modals/ExportModal';
 import { AddressShape } from '../../components/Shapes/AddressShape';
 import { isValidAddress } from '../../utils/search';
 import { useGetAddressTotalRewards } from '../../api/block-explorer/address';
+import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
 
 const LIMIT = 10;
 
@@ -41,7 +42,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!isValidAddress.test(addressId)) {
+    if (!isValidAddress.test(addressId) && !SPECIAL_ADDRESSES_LIST.includes(addressId)) {
       setError('404');
     }
   }, []);
