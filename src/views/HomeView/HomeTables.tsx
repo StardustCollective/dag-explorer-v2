@@ -39,13 +39,13 @@ const HomeTables = ({
 
   useEffect(() => {
     if (!transactionsInfo.isFetching && !transactionsInfo.isError) {
-      setTransactions(transactionsInfo.data);
+      setTransactions(transactionsInfo.data.data);
     }
   }, [transactionsInfo.isFetching]);
 
   useEffect(() => {
     if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
-      setSnapshots(snapshotsInfo.data);
+      setSnapshots(snapshotsInfo.data.data);
     }
   }, [snapshotsInfo.isFetching]);
 

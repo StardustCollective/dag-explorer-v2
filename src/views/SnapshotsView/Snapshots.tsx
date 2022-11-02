@@ -8,36 +8,27 @@ import styles from './Snapshots.module.scss';
 import { NotFound } from '../NotFoundView/NotFound';
 import { useGetAllSnapshots } from '../../api/block-explorer/global-snapshot';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
+import { FetchedData, Params } from '../../types/requests';
+import { handleFetchedData, handlePagination } from '../../utils/pagination';
 
 const LIMIT = 14;
-
-type Params = {
-  limit: number;
-  search_after?: string;
-  search_before?: string;
-};
 
 export const Snapshots = () => {
   const [snapshots, setSnapshots] = useState<Snapshot[] | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
+  const [fetchedData, setFetchedData] = useState<FetchedData<Snapshot>[] | undefined>([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const snapshotsInfo = useGetAllSnapshots(params);
-  const [lastPage, setLastPage] = useState(false);
-  const [page, setPage] = useState(0);
   const [error, setError] = useState<string>(undefined);
-  const [skeleton, setSkeleton] = useState(true);
-  const [wentBack, setWentBack] = useState(false);
+  const [skeleton, setSkeleton] = useState(false);
 
   useEffect(() => {
     setSkeleton(true);
     if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
-      if (snapshotsInfo.data.length > 0) {
-        if (wentBack) {
-          setSnapshots(snapshotsInfo.data.reverse());
-        } else {
-          setSnapshots(snapshotsInfo.data);
-        }
+      if (snapshotsInfo.data.data.length > 0) {
+        setSnapshots(snapshotsInfo.data.data);
       }
-
+      handleFetchedData(setFetchedData, snapshotsInfo, currentPage);
       setSkeleton(false);
     }
   }, [snapshotsInfo.isFetching]);
@@ -48,28 +39,15 @@ export const Snapshots = () => {
     }
   }, [snapshotsInfo.isError]);
 
-  const handleNextPage = () => {
-    if (snapshots) {
-      setWentBack(false);
-      setParams({
-        limit: LIMIT,
-        search_before: snapshots[LIMIT - 1].ordinal.toString(),
-      });
-      setPage((p) => p + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (snapshots) {
-      setWentBack(true);
-      setParams({
-        limit: LIMIT,
-        search_after: snapshots[0].ordinal.toString(),
-      });
-      setPage((p) => p - 1);
-      setLastPage(false);
-    }
-  };
+  const [handlePrevPage, handleNextPage] = handlePagination<Snapshot[], FetchedData<Snapshot>[]>(
+    snapshots,
+    setSnapshots,
+    fetchedData,
+    currentPage,
+    setCurrentPage,
+    setParams,
+    LIMIT
+  );
 
   return (
     <>
@@ -82,11 +60,11 @@ export const Snapshots = () => {
             <div className={`${styles.flexRowBottom}`}>
               <span />
               <div className={styles.arrows}>
-                <ArrowButton handleClick={() => handlePrevPage()} disabled={snapshotsInfo.isFetching || page === 0} />
+                <ArrowButton handleClick={handlePrevPage} disabled={skeleton || currentPage === 0} />
                 <ArrowButton
                   forward
-                  handleClick={() => handleNextPage()}
-                  disabled={snapshotsInfo.isFetching || lastPage}
+                  handleClick={handleNextPage}
+                  disabled={skeleton || !snapshotsInfo.data?.meta?.next}
                 />
               </div>
             </div>
@@ -102,13 +80,12 @@ export const Snapshots = () => {
           <div className={`${styles.row3}`}>
             <div className={`${styles.flexRowBottom}`}>
               <span />
-
               <div className={styles.arrows}>
-                <ArrowButton handleClick={() => handlePrevPage()} disabled={snapshotsInfo.isFetching || page === 0} />
+                <ArrowButton handleClick={handlePrevPage} disabled={skeleton || currentPage === 0} />
                 <ArrowButton
                   forward
-                  handleClick={() => handleNextPage()}
-                  disabled={snapshotsInfo.isFetching || lastPage}
+                  handleClick={handleNextPage}
+                  disabled={skeleton || !snapshotsInfo.data?.meta?.next}
                 />
               </div>
             </div>
