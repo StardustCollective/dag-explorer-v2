@@ -13,10 +13,15 @@ const getUrl = () => {
 };
 
 export const useGetAddressTransactions = (address: string, params?: any) => {
-  return useFetch<Transaction[]>(getUrl() + '/' + address + '/transactions', params, {
-    keepPreviousData: true,
-    retry: false,
-  });
+  return useFetch<{ data: Transaction[]; meta?: any }>(
+    getUrl() + '/' + address + '/transactions',
+    params,
+    {
+      keepPreviousData: true,
+      retry: false,
+    },
+    false
+  );
 };
 
 export const useGetAddressSentTransactions = (address: string) => {

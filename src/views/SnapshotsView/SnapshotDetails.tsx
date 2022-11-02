@@ -12,38 +12,32 @@ import { NotFound } from '../NotFoundView/NotFound';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { formatTime } from '../../utils/numbers';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
+import { handleFetchedData, handlePagination } from '../../utils/pagination';
+import { FetchedData, Params } from '../../types/requests';
 
 const LIMIT = 8;
-type Params = {
-  limit: number;
-  search_after?: string;
-  search_before?: string;
-};
 
 export const SnapshotDetails = () => {
   const { snapshotHeight } = useParams();
   const [snapshotTxs, setSnapshotTxs] = useState<Transaction[] | undefined>(undefined);
   const [snapshot, setSnapshot] = useState<Snapshot | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
+  const [fetchedData, setFetchedData] = useState<FetchedData<Transaction>[] | undefined>([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const snapshotTransactions = useGetSnapshotTransactions(snapshotHeight, params);
   //const snapshotRewards = useGetSnapshotRewards(snapshotHeight);
   const snapshotInfo = useGetSnapshot(snapshotHeight);
-  const [page, setPage] = useState(0);
-  const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
+  const [txsSkeleton, setTxsSkeleton] = useState(false);
 
   useEffect(() => {
+    setTxsSkeleton(true);
     if (!snapshotTransactions.isFetching && !snapshotTransactions.isError) {
-      if (snapshotTransactions.data && snapshotTransactions.data.length) {
-        setSnapshotTxs(snapshotTransactions.data);
-      } else {
-        setPage((p) => p - 1);
+      if (snapshotTransactions.data?.data.length > 0) {
+        setSnapshotTxs(snapshotTransactions.data.data);
       }
-      if (!snapshotTransactions.data.length || snapshotTransactions.data.length < LIMIT) {
-        setLastPage(true);
-      } else {
-        setLastPage(false);
-      }
+      handleFetchedData(setFetchedData, snapshotTransactions, currentPage);
+      setTxsSkeleton(false);
     }
   }, [snapshotTransactions.isFetching]);
 
@@ -59,28 +53,17 @@ export const SnapshotDetails = () => {
     }
   }, [snapshotTransactions.status, snapshotInfo.status]);
 
-  const handleNextPage = () => {
-    if (snapshotTxs) {
-      setParams({
-        limit: LIMIT,
-        search_before: snapshotTxs[LIMIT - 1].hash,
-      });
-      setPage((p) => p + 1);
-    }
-  };
+  const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
+    snapshotTxs,
+    setSnapshotTxs,
+    fetchedData,
+    currentPage,
+    setCurrentPage,
+    setParams,
+    LIMIT
+  );
 
-  const handlePrevPage = () => {
-    if (snapshotTxs) {
-      setParams({
-        limit: LIMIT,
-        search_after: snapshotTxs[0].hash,
-      });
-      setPage((p) => p - 1);
-      setLastPage(false);
-    }
-  };
-
-  const skeleton = snapshotInfo.isLoading || !snapshotInfo.data;
+  const skeleton = snapshotInfo.isFetching || !snapshotInfo.data;
   return (
     <>
       <section className={`${styles.searchMobile}`}>
@@ -131,25 +114,23 @@ export const SnapshotDetails = () => {
               <div className={`${styles.row3}`}>
                 <div className={`${styles.flexRowBottom}`}>
                   <p className="overviewText">Transactions</p>
-                  {!snapshotTransactions.isFetching && snapshotTxs && (
-                    <div className={styles.arrows}>
-                      <ArrowButton
-                        handleClick={handlePrevPage}
-                        disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
-                      />
-                      <ArrowButton
-                        forward
-                        handleClick={handleNextPage}
-                        disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
-                      />
-                    </div>
-                  )}
+                  <div className={styles.arrows}>
+                    <ArrowButton
+                      handleClick={handlePrevPage}
+                      disabled={currentPage === 0 || txsSkeleton || error !== undefined}
+                    />
+                    <ArrowButton
+                      forward
+                      handleClick={handleNextPage}
+                      disabled={txsSkeleton || !snapshotTransactions.data?.meta?.next || error !== undefined}
+                    />
+                  </div>
                 </div>
               </div>
               <div className={`${styles.row4}`}>
                 {!error && (
                   <TransactionsTable
-                    skeleton={{ showSkeleton: skeleton }}
+                    skeleton={{ showSkeleton: txsSkeleton }}
                     limit={LIMIT}
                     transactions={snapshotTxs}
                     icon={<SnapshotShape />}
@@ -157,23 +138,20 @@ export const SnapshotDetails = () => {
                 )}
               </div>
               <div className={`${styles.row5}`}>
-                {!snapshotTransactions.isFetching && snapshotTxs && snapshotTxs.length > 0 && (
-                  <div className={`${styles.flexRowTop}`}>
-                    <span />
-
-                    <div className={styles.arrows}>
-                      <ArrowButton
-                        handleClick={handlePrevPage}
-                        disabled={page === 0 || snapshotTransactions.isFetching || error !== undefined}
-                      />
-                      <ArrowButton
-                        forward
-                        handleClick={handleNextPage}
-                        disabled={snapshotTransactions.isFetching || lastPage || error !== undefined}
-                      />
-                    </div>
+                <div className={`${styles.flexRowTop}`}>
+                  <span />
+                  <div className={styles.arrows}>
+                    <ArrowButton
+                      handleClick={handlePrevPage}
+                      disabled={currentPage === 0 || txsSkeleton || error !== undefined}
+                    />
+                    <ArrowButton
+                      forward
+                      handleClick={handleNextPage}
+                      disabled={txsSkeleton || !snapshotTransactions.data?.meta?.next || error !== undefined}
+                    />
                   </div>
-                )}
+                </div>
               </div>
             </>
           )}

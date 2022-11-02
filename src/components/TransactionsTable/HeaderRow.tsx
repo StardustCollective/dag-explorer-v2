@@ -71,7 +71,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <p className={styles.headerText}>{forSnapshots ? 'HASH' : 'TXN HASH'}</p>
       </div>
 
-      <div className={`${styles.headerColumn} ${styles.timestamp}`}>
+      <div className={clsx(styles.headerColumn, !forSnapshots ? styles.timestamp : undefined)}>
         <p className={styles.headerText}>TIMESTAMP</p>
       </div>
 

@@ -30,8 +30,8 @@ export const BlockDetailsTableWrapper = ({
 
   useEffect(() => {
     if (!snapshotTxs.isFetching) {
-      transformTransactions(snapshotTxs.data);
-      if (snapshotTxs.data && snapshotTxs.data.length > 0) {
+      transformTransactions(snapshotTxs.data.data);
+      if (snapshotTxs.data && snapshotTxs.data.data.length > 0) {
         setHasTx();
       }
     }
