@@ -82,10 +82,10 @@ export const Transactions = () => {
               <span />
 
               <div className={styles.arrows}>
-                <ArrowButton handleClick={() => handlePrevPage()} disabled={currentPage === 0 || skeleton} />
+                <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || skeleton} />
                 <ArrowButton
                   forward
-                  handleClick={() => handleNextPage()}
+                  handleClick={handleNextPage}
                   disabled={skeleton || !transactionsInfo.data?.meta?.next || !transactions}
                 />
               </div>
