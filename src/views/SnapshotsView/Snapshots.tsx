@@ -21,9 +21,9 @@ export const Snapshots = () => {
   const snapshotsInfo = useGetAllSnapshots(params);
   const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(false);
+  const [lastPage, setLastPage] = useState(false);
 
   useEffect(() => {
-    setSkeleton(true);
     if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
       if (snapshotsInfo.data.data.length > 0) {
         setSnapshots(snapshotsInfo.data.data);
@@ -46,6 +46,8 @@ export const Snapshots = () => {
     currentPage,
     setCurrentPage,
     setParams,
+    setLastPage,
+    setSkeleton,
     LIMIT
   );
 
@@ -61,11 +63,7 @@ export const Snapshots = () => {
               <span />
               <div className={styles.arrows}>
                 <ArrowButton handleClick={handlePrevPage} disabled={skeleton || currentPage === 0} />
-                <ArrowButton
-                  forward
-                  handleClick={handleNextPage}
-                  disabled={skeleton || !snapshotsInfo.data?.meta?.next}
-                />
+                <ArrowButton forward handleClick={handleNextPage} disabled={skeleton || lastPage} />
               </div>
             </div>
           </div>
@@ -82,11 +80,7 @@ export const Snapshots = () => {
               <span />
               <div className={styles.arrows}>
                 <ArrowButton handleClick={handlePrevPage} disabled={skeleton || currentPage === 0} />
-                <ArrowButton
-                  forward
-                  handleClick={handleNextPage}
-                  disabled={skeleton || !snapshotsInfo.data?.meta?.next}
-                />
+                <ArrowButton forward handleClick={handleNextPage} disabled={skeleton || lastPage} />
               </div>
             </div>
           </div>

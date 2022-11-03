@@ -19,11 +19,10 @@ export const Transactions = () => {
   const [fetchedData, setFetchedData] = useState<FetchedData<Transaction>[] | undefined>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const transactionsInfo = useGetAllTransactions(params);
-  const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(false);
+  const [lastPage, setLastPage] = useState(false);
 
   useEffect(() => {
-    setSkeleton(true);
     if (!transactionsInfo.isFetching && !transactionsInfo.isLoading && !transactionsInfo.isError) {
       if (transactionsInfo.data?.data.length > 0) {
         setTransactions(transactionsInfo.data.data);
@@ -33,12 +32,6 @@ export const Transactions = () => {
     }
   }, [transactionsInfo.isLoading, transactionsInfo.isFetching]);
 
-  useEffect(() => {
-    if (transactionsInfo.isError) {
-      setError(transactionsInfo.error.message);
-    }
-  }, [transactionsInfo.isError]);
-
   const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
     transactions,
     setTransactions,
@@ -46,14 +39,16 @@ export const Transactions = () => {
     currentPage,
     setCurrentPage,
     setParams,
+    setLastPage,
+    setSkeleton,
     LIMIT
   );
 
   return (
     <>
       <Subheader text={'Transactions'} item={IconType.Transaction} />
-      {error ? (
-        <NotFound entire={false} errorCode={error} />
+      {transactionsInfo.isError ? (
+        <NotFound entire={false} errorCode={transactionsInfo.error.message} />
       ) : (
         <main className={`${styles.fullWidth3}`}>
           <div className={`${styles.row1}`}>
@@ -61,11 +56,7 @@ export const Transactions = () => {
               <span />
               <div className={styles.arrows}>
                 <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || skeleton} />
-                <ArrowButton
-                  forward
-                  handleClick={handleNextPage}
-                  disabled={skeleton || !transactionsInfo.data?.meta?.next || !transactions}
-                />
+                <ArrowButton forward handleClick={handleNextPage} disabled={skeleton || lastPage} />
               </div>
             </div>
           </div>
@@ -80,14 +71,9 @@ export const Transactions = () => {
           <div className={`${styles.row3}`}>
             <div className={`${styles.flexRowBottom}`}>
               <span />
-
               <div className={styles.arrows}>
                 <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || skeleton} />
-                <ArrowButton
-                  forward
-                  handleClick={handleNextPage}
-                  disabled={skeleton || !transactionsInfo.data?.meta?.next || !transactions}
-                />
+                <ArrowButton forward handleClick={handleNextPage} disabled={skeleton || lastPage} />
               </div>
             </div>
           </div>

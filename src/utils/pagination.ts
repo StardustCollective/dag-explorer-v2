@@ -11,6 +11,8 @@ function handlePagination<TData, TFetchedData extends DataFields[]>(
   currentPage: number,
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
   setParams: React.Dispatch<React.SetStateAction<{ limit: number; next?: string }>>,
+  setLastPage: React.Dispatch<React.SetStateAction<boolean>>,
+  setSkeleton: React.Dispatch<React.SetStateAction<boolean>>,
   limit: number
 ) {
   const handleNextPage = () => {
@@ -18,17 +20,22 @@ function handlePagination<TData, TFetchedData extends DataFields[]>(
       setCurrentPage((p) => p + 1);
       if (fetchedData.length > 0 && currentPage + 1 <= fetchedData.length - 1) {
         setData(fetchedData[currentPage + 1].data);
+        setLastPage(!fetchedData[currentPage + 1].next);
       } else {
         setParams({ limit: limit, next: fetchedData[currentPage]?.next ?? '' });
+        setSkeleton(true);
       }
     }
   };
+
   const handlePrevPage = () => {
     if (data) {
       setCurrentPage((p) => p - 1);
       setData(fetchedData[currentPage - 1].data);
+      setLastPage(false);
     }
   };
+
   return [handlePrevPage, handleNextPage];
 }
 

@@ -29,13 +29,14 @@ export const SnapshotDetails = () => {
   const snapshotInfo = useGetSnapshot(snapshotHeight);
   const [error, setError] = useState<string>(undefined);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
+  const [lastPage, setLastPage] = useState(false);
 
   useEffect(() => {
-    setTxsSkeleton(true);
     if (!snapshotTransactions.isFetching && !snapshotTransactions.isError) {
       if (snapshotTransactions.data?.data.length > 0) {
         setSnapshotTxs(snapshotTransactions.data.data);
       }
+      setLastPage(!snapshotTransactions.data?.meta?.next);
       handleFetchedData(setFetchedData, snapshotTransactions, currentPage);
       setTxsSkeleton(false);
     }
@@ -60,6 +61,8 @@ export const SnapshotDetails = () => {
     currentPage,
     setCurrentPage,
     setParams,
+    setLastPage,
+    setTxsSkeleton,
     LIMIT
   );
 
@@ -122,7 +125,7 @@ export const SnapshotDetails = () => {
                     <ArrowButton
                       forward
                       handleClick={handleNextPage}
-                      disabled={txsSkeleton || !snapshotTransactions.data?.meta?.next || error !== undefined}
+                      disabled={txsSkeleton || lastPage || error !== undefined}
                     />
                   </div>
                 </div>
@@ -148,7 +151,7 @@ export const SnapshotDetails = () => {
                     <ArrowButton
                       forward
                       handleClick={handleNextPage}
-                      disabled={txsSkeleton || !snapshotTransactions.data?.meta?.next || error !== undefined}
+                      disabled={txsSkeleton || lastPage || error !== undefined}
                     />
                   </div>
                 </div>

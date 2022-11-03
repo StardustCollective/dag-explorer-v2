@@ -37,6 +37,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [error, setError] = useState<string>(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
+  const [lastPage, setLastPage] = useState(false);
 
   useEffect(() => {
     if (!isValidAddress.test(addressId) && !SPECIAL_ADDRESSES_LIST.includes(addressId)) {
@@ -45,7 +46,6 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   }, []);
 
   useEffect(() => {
-    setTxsSkeleton(true);
     if (!addressInfo.isLoading && !addressInfo.isFetching && !addressInfo.isError) {
       if (addressInfo.data?.data.length > 0) {
         setAddressTxs(addressInfo.data.data);
@@ -90,6 +90,8 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     currentPage,
     setCurrentPage,
     setParams,
+    setLastPage,
+    setTxsSkeleton,
     LIMIT
   );
 
@@ -157,11 +159,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
               <p className="overviewText">Transactions</p>
               <div className={styles.arrows}>
                 <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || txsSkeleton} />
-                <ArrowButton
-                  forward
-                  handleClick={handleNextPage}
-                  disabled={txsSkeleton || !addressInfo.data?.meta?.next}
-                />
+                <ArrowButton forward handleClick={handleNextPage} disabled={txsSkeleton || lastPage} />
               </div>
             </div>
           </div>
@@ -179,11 +177,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
 
               <div className={styles.arrows}>
                 <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || txsSkeleton} />
-                <ArrowButton
-                  forward
-                  handleClick={handleNextPage}
-                  disabled={txsSkeleton || !addressInfo.data?.meta?.next}
-                />
+                <ArrowButton forward handleClick={handleNextPage} disabled={txsSkeleton || lastPage} />
               </div>
             </div>
           </div>
