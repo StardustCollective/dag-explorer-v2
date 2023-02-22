@@ -14,6 +14,9 @@ import { BlockDetailsWrapper } from './views/BlocksView/Wrappers/BlockDetailsWra
 import { AddressDetailsWrapper } from './views/AddressView/Wrappers/AddressDetailsWrapper';
 import { Search } from './components/Search/Search';
 import { NodeExplorerWrapper } from './views/NodeExplorerView/NodeExplorerWrapper';
+import { initializeReactGaLib } from './utils/reactGoogleAnalytics';
+
+initializeReactGaLib();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
