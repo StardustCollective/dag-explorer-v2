@@ -21,6 +21,7 @@
     "react-csv": "^2.2.2",
     "react-date-range": "^1.4.0",
     "react-dom": "^18.1.0",
+    "react-ga4": "^2.0.0",
     "react-query": "^3.39.1",
     "react-router-dom": "6",
     "react-tooltip": "^4.2.21",
