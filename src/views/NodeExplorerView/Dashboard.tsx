@@ -49,7 +49,7 @@ export const Dashboard = ({ network }: { network: Exclude<Network, 'mainnet1'> }
       setTotalRewards(clusterRewards.data.totalRewards);
     }
 
-    if (!clusterData.isFetching && !validatorNodes.isFetching && !clusterRewards.isFetching) {
+    if (!clusterData.isFetching && !validatorNodes.isFetching) {
       setSkeleton(false);
       setLastUpdatedAt(clusterData.dataUpdatedAt);
     }
@@ -79,6 +79,7 @@ export const Dashboard = ({ network }: { network: Exclude<Network, 'mainnet1'> }
             loading={skeleton}
             validatorsAmount={validatorsAmount}
             totalRewards={totalRewards}
+            totalRewardsLoading={clusterRewards.isFetching}
             lastUpdatedAt={lastUpdatedAt}
           />
           <ValidatorsTable

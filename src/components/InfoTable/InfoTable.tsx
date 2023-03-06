@@ -11,12 +11,14 @@ export const InfoTable = ({
   validatorsAmount,
   totalRewards,
   lastUpdatedAt,
+  totalRewardsLoading,
 }: {
   title: string;
   loading: boolean;
   validatorsAmount: number;
   totalRewards: number;
   lastUpdatedAt: number;
+  totalRewardsLoading: boolean;
 }) => {
   const transformedDagAmount = (totalRewards / Math.pow(10, 8)).toFixed(8);
   const formattedAmount = formatNumber(transformedDagAmount, NumberFormat.MILLIFY);
@@ -26,7 +28,11 @@ export const InfoTable = ({
       <div className={styles.cardsContainer}>
         {loading ? <SkeletonSimpleCard /> : <SimpleCard title={validatorsAmount.toString()} subTitle={'VALIDATORS'} />}
         <div className={styles.verticalLine} />
-        {loading ? <SkeletonSimpleCard /> : <SimpleCard title={formattedAmount} subTitle={'TOTAL REWARDS'} />}
+        {totalRewardsLoading ? (
+          <SkeletonSimpleCard />
+        ) : (
+          <SimpleCard title={formattedAmount} subTitle={'TOTAL REWARDS'} />
+        )}
       </div>
     </div>
   );
