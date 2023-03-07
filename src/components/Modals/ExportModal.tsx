@@ -1,63 +1,64 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
-import styles from './ExportModal.module.scss';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
-import { DateRange } from 'react-date-range';
-import { subDays, format, isWithinInterval } from 'date-fns';
-import { Button } from '../Buttons/Button';
+import cls from 'classnames';
+import { isWithinInterval } from 'date-fns';
 import { CSVLink } from 'react-csv';
+
+import styles from './ExportModal.module.scss';
+import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { Button } from '../Buttons/Button';
 import { api } from '../../utils/api';
-import { Network } from '../../constants';
 import { Transaction } from '../../types';
 import { formatAmount } from '../../utils/numbers';
+import { InputRow } from '../InputRow';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Dropdown } from '../Dropdown';
+import { ImpulseSpinner } from 'react-spinners-kit';
 
-const { 
-  REACT_APP_TESTNET_BE_URL, 
-  REACT_APP_MAINNET_ONE_BE_URL, 
-  REACT_APP_MAINNET_TWO_BE_URL  
+const {
+  REACT_APP_TESTNET_BE_URL,
+  REACT_APP_MAINNET_ONE_BE_URL,
+  REACT_APP_MAINNET_TWO_BE_URL,
+  REACT_APP_DAG_EXPLORER_API_URL,
 } = process.env;
 
-export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose: () => void; address: string }) => {
+export const ExportModal = ({
+  open,
+  onClose,
+  address,
+  hasRewards,
+  loadingRewards,
+}: {
+  open: boolean;
+  onClose: () => void;
+  address: string;
+  hasRewards: boolean;
+  loadingRewards: boolean;
+}) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
 
-  const [range, setRange] = useState([{ startDate: subDays(new Date(), 7), endDate: new Date(), key: 'selection' }]);
-  const [openCalendar, setOpenCalendar] = useState(false);
-  const refDateRange = useRef(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [maxDate, setMaxDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [requesting, setRequesting] = useState(false);
 
+  const filterPassedTime = (time: any) => new Date().getTime() < new Date(time).getTime();
+
+  const filterEndTime = (time: any) => (startDate ? startDate.getTime() + 1 < new Date(time).getTime() : false);
+  const [dataSet, setDataSet] = useState<{ value: string; content: string }>({
+    value: 'transactions',
+    content: 'Transaction history',
+  });
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [downloadClicked, setDownloadClicked] = useState(false);
   const csvLink = useRef<HTMLButtonElement>();
 
-  const getTransactionData = async (network: Network) => {
-    let URL: string;
-
-    if (network === 'mainnet1') {
-      URL = REACT_APP_MAINNET_ONE_BE_URL + '/address/' + address + '/transaction';
-      setHeaders(['amount', 'checkpointBlock', 'fee', 'hash', 'receiver', 'sender', 'snapshotHash', 'timestamp']);
-    } else {
-      const base = network === 'testnet' ? REACT_APP_TESTNET_BE_URL : REACT_APP_MAINNET_TWO_BE_URL;
-      URL = base + '/addresses/' + address + '/transactions';
-      setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
-    }
-
-    await api
-      .get<any>(URL, { limit: 3370 })
-      .then((r) => {
-        const data = r.data as Transaction[];
-        const transformed = data
-          .filter((tx) => {
-            const date = new Date(tx.timestamp);
-            return isWithinInterval(date, { start: range[0].startDate, end: range[0].endDate });
-          })
-          .map((tx) => {
-            return { ...tx, amount: formatAmount(tx.amount, 8, true), fee: formatAmount(tx.fee, 8, true) };
-          });
-        setData(transformed);
-      })
-      .catch((e) => console.log(e));
+  const getData = async (request: () => Promise<any>) => {
+    setRequesting(true);
+    const dataToSet = await request();
     setDownloadClicked(true);
+    setRequesting(false);
+    return dataToSet;
   };
 
   useEffect(() => {
@@ -70,26 +71,83 @@ export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose
     setDownloadClicked(false);
   }, [data]);
 
-  useEffect(() => {
-    document.addEventListener('keydown', hideOnEscape, true);
-    document.addEventListener('click', hideOnClickOutside, true);
-  }, []);
-
-  const hideOnEscape = (e) => {
-    if (e.key === 'Escape') {
-      setOpenCalendar(false);
-    }
-  };
-
-  const hideOnClickOutside = (e) => {
-    if (refDateRange.current && !refDateRange.current.contains(e.target)) {
-      setOpenCalendar(false);
-    }
-  };
-
   const handleDownload = async () => {
-    await getTransactionData(network);
+    if (startDate && endDate) {
+      if (dataSet.value === 'rewards') {
+        setHeaders(['date', 'amount']);
+        const data = await getData(() =>
+          api
+            .get<any>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes/' + address + '/rewards', {
+              startDate: startDate.toLocaleDateString(),
+              endDate: endDate.toLocaleDateString(),
+            })
+            .then((r) => {
+              const data = r.data as {
+                rewards: { rewardAmount: string; date: string }[];
+                isValidator: boolean;
+              };
+              const transformed = data.rewards.map((reward) => {
+                return {
+                  date: new Date(reward.date).toLocaleDateString().replaceAll('/', '-'),
+                  amount: formatAmount(Number.parseInt(reward.rewardAmount), 8, true),
+                };
+              });
+              return transformed;
+            })
+            .catch((e) => console.log(e))
+        );
+        setData(data);
+      }
+      if (dataSet.value === 'transactions') {
+        let URL: string;
+
+        if (network === 'mainnet1') {
+          URL = REACT_APP_MAINNET_ONE_BE_URL + '/address/' + address + '/transaction';
+          setHeaders(['amount', 'checkpointBlock', 'fee', 'hash', 'receiver', 'sender', 'snapshotHash', 'timestamp']);
+        } else {
+          const base = network === 'testnet' ? REACT_APP_TESTNET_BE_URL : REACT_APP_MAINNET_TWO_BE_URL;
+          URL = base + '/addresses/' + address + '/transactions';
+          setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
+        }
+
+        const data = await getData(() =>
+          api
+            .get<any>(URL, { limit: 3370 })
+            .then((r) => {
+              const data = r.data as Transaction[];
+              const transformed = data
+                .filter((tx) => {
+                  const date = new Date(tx.timestamp);
+                  return isWithinInterval(date, { start: startDate, end: endDate });
+                })
+                .map((tx) => {
+                  return { ...tx, amount: formatAmount(tx.amount, 8, true), fee: formatAmount(tx.fee, 8, true) };
+                });
+              return transformed;
+            })
+            .catch((e) => console.log(e))
+        );
+        setData(data);
+      }
+    }
   };
+
+  useEffect(() => {
+    if (startDate) {
+      const date = new Date(startDate);
+      date.setDate(date.getDate() + 365);
+      setMaxDate(date > new Date() ? new Date() : date);
+    }
+  }, [startDate]);
+
+  useEffect(() => {
+    setDataSet({
+      value: 'transactions',
+      content: 'Transaction history',
+    });
+    setStartDate(null);
+    setEndDate(null);
+  }, []);
 
   if (!open) return null;
   return (
@@ -102,50 +160,86 @@ export const ExportModal = ({ open, onClose, address }: { open: boolean; onClose
               X
             </div>
           </div>
+          <div className={`${styles.text} ${styles.description}`}>
+            Each export is capped at 3,370 transactions. For larger datasets, run multiple exports with shorter time
+            ranges, such as quartely.
+          </div>
           <div className={styles.modalContent}>
-            <div className={`${styles.text} ${styles.description}`}>
-              Each export is capped at 3,370 transactions. For larger datasets, run multiple exports with shorter time
-              ranges, such as quartely.
-            </div>
             <div className={styles.dateSelection}>
-              <div className={styles.dateFrame}>
-                <div className={`${styles.text} ${styles.flexRow}`}>
-                  Selected date range:
-                  <div className={styles.bold}>{`${format(range[0].startDate, 'MM/dd/yyyy')} to ${format(
-                    range[0].endDate,
-                    'MM/dd/yyyy'
-                  )}`}</div>
+              {loadingRewards && (
+                <div className={styles.separate}>
+                  <ImpulseSpinner frontColor={'#ffffff'} backColor={'#174cd3'} size={30} />
                 </div>
-                <Button variant={styles.changeRange} onClick={() => setOpenCalendar((openCalendar) => !openCalendar)}>
-                  Change Range
-                </Button>
-              </div>
-              <div ref={refDateRange}>
-                {openCalendar && (
-                  <DateRange
-                    ranges={range}
-                    onChange={(item) => setRange([item.selection])}
-                    editableDateInputs
-                    moveRangeOnFirstSelection={false}
-                    direction="horizontal"
-                    className={styles.calendarElement}
-                  />
-                )}
+              )}
+              {hasRewards && (
+                <>
+                  <div className={styles.text}>Select data set to export</div>
+                  <Dropdown
+                    options={[
+                      { value: 'transactions', content: 'Transaction history' },
+                      { value: 'rewards', content: 'Rewards history' },
+                    ].map((option) => ({
+                      value: option,
+                      content: option.content,
+                    }))}
+                    onOptionClick={(value) => setDataSet(value)}
+                    className={{ button: styles.dropdownButton }}
+                  >
+                    {dataSet.content}
+                  </Dropdown>
+                </>
+              )}
+              <div className={styles.dateSelectors}>
+                <InputRow.DatePicker
+                  selected={startDate}
+                  label={'Start Date'}
+                  variants={['indent', 'full-width']}
+                  onChange={(date) => setStartDate(date)}
+                  dateFormat="MM/dd/yyyy"
+                  filterTime={filterPassedTime}
+                  className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
+                  maxDate={new Date()}
+                />
+                <InputRow.DatePicker
+                  selected={endDate}
+                  label={'End Date'}
+                  disabled={!startDate}
+                  variants={['indent', 'full-width']}
+                  onChange={(date) => setEndDate(date)}
+                  dateFormat="MM/dd/yyyy"
+                  filterTime={filterEndTime}
+                  className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
+                  maxDate={maxDate || new Date()}
+                />
               </div>
             </div>
             <div className={styles.buttons}>
-              <Button variant={styles.close} onClick={onClose}>
+              <Button variant={cls(styles.button, styles.close)} onClick={onClose}>
                 Cancel
               </Button>
-              <Button variant={styles.download} onClick={handleDownload}>
-                Download CSV
+
+              <Button
+                variant={cls(styles.button, styles.download)}
+                disabled={!startDate || !endDate || requesting}
+                onClick={() => !requesting && handleDownload()}
+              >
+                {requesting ? <ImpulseSpinner frontColor={'#ffffff'} backColor={'#174cd3'} size={30} /> : 'Download'}
               </Button>
+
               <CSVLink
                 ref={csvLink}
                 className={styles.download}
                 data={data}
                 headers={headers}
-                filename={`Transactions_from_${range[0].startDate.toLocaleDateString()}_to_${range[0].endDate.toLocaleDateString()}`}
+                filename={
+                  startDate && endDate
+                    ? dataSet.value === 'transactions'
+                      ? `Transactions_from_${startDate.toLocaleDateString()}_to_${endDate.toLocaleDateString()}.csv`
+                      : dataSet.value === 'rewards'
+                      ? `Rewards_from_${startDate.toLocaleDateString()}_to_${endDate.toLocaleDateString()}.csv`
+                      : ''
+                    : ''
+                }
                 target="_blank"
               />
             </div>

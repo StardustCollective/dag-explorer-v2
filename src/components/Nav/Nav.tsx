@@ -1,4 +1,4 @@
-import { Dropdown } from './Dropdown';
+import { NavDropdown } from './NavDropdown';
 import styles from './Nav.module.scss';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../assets/icons/HeaderLogo.svg';
@@ -17,7 +17,7 @@ export const Nav = () => {
             <p className={styles.title}>DAG Explorer</p>
           </div>
           <div className={styles.rightSide}>
-            <Dropdown />
+            <NavDropdown />
             <p>USD</p>
           </div>
         </div>

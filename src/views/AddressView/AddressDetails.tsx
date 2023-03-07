@@ -109,7 +109,13 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
         </div>
       </section>
       <Subheader text={'Address details'} item={IconType.Address} hasExport handleExport={handleExport} />
-      <ExportModal open={modalOpen} onClose={handleExport} address={addressId} />
+      <ExportModal
+        open={modalOpen}
+        onClose={handleExport}
+        address={addressId}
+        hasRewards={!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined}
+        loadingRewards={totalRewards.isFetching || totalRewards.isLoading}
+      />
       {error ? (
         <NotFound entire={false} errorCode={error} />
       ) : (

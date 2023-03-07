@@ -1,16 +1,26 @@
 import { FC, ReactNode } from 'react';
 import styles from './Button.module.scss';
 
-interface IButton {
+type ButtonProps<RenderElementProps = JSX.IntrinsicElements['button']> = {
   children: ReactNode;
-  onClick?: () => void;
   variant?: string;
-}
+  variants?: 'right-icon'[];
+  rightIcon?: React.ReactNode;
+  className?: string;
+} & RenderElementProps;
 
-export const Button: FC<IButton> = ({ children, onClick, variant }) => {
+export const Button: FC<ButtonProps> = ({
+  children,
+  variant,
+  variants,
+  rightIcon,
+  className,
+  ...props
+}: ButtonProps) => {
   return (
-    <div className={`${styles.button} ${variant}`} onClick={onClick}>
+    <button className={`${styles.button} ${variant} ${className}`} {...props}>
       {children}
-    </div>
+      {variants?.includes('right-icon') && <div className={styles.iconHolder}>{rightIcon}</div>}
+    </button>
   );
 };
