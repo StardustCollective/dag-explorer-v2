@@ -170,7 +170,7 @@ export const ExportModal = ({
                 </div>
               )}
               {hasRewards && (
-                <>
+                <div className={styles.dropdownWrapper}>
                   <div className={styles.text}>Select data set to export</div>
                   <Dropdown
                     options={[
@@ -185,7 +185,7 @@ export const ExportModal = ({
                   >
                     {dataSet.content}
                   </Dropdown>
-                </>
+                </div>
               )}
               <div className={styles.dateSelectors}>
                 <InputRow.DatePicker
