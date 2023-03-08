@@ -17,7 +17,6 @@ const DatePickerRow = ({
   showTimeSelect,
   showTimeInput,
   dateFormat,
-  timeIntervals,
   minDate,
   maxDate,
   filterTime,
@@ -32,8 +31,7 @@ const DatePickerRow = ({
   disabled?: boolean;
   showTimeSelect?: boolean;
   showTimeInput?: boolean;
-  dateFormat?: string | string[];
-  timeIntervals?: number;
+  dateFormat?: string;
   minDate?: Date | null;
   maxDate?: Date | null;
   onChange?: (value: Date | null) => void;
@@ -64,6 +62,7 @@ const DatePickerRow = ({
           filterTime={filterTime}
           filterDate={filterDate}
           timeIntervals={15}
+          dateFormatCalendar={dateFormat}
           showTimeSelect={showTimeSelect}
           showTimeInput={showTimeInput}
           popperClassName={styles.popper}
