@@ -167,8 +167,17 @@
   min-width: 96px;
 }
 
-.close:hover {
-  cursor: pointer;
+.close {
+  background-color: white;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.react-datepicker-wrapper {
+  color: red;
+  background-color: blue;
 }
 
 .download {

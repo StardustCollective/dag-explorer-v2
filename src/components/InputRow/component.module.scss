@@ -62,7 +62,19 @@
   }
 
   &.indent {
-    text-indent: 40px;
+    text-indent: 16px;
+  }
+}
+
+.popper {
+  > div {
+    > div {
+      :nth-child(4) {
+        > div {
+          background-color: white;
+        }
+      }
+    }
   }
 }
 

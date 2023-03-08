@@ -2,7 +2,6 @@ import React from 'react';
 import cls from 'classnames';
 import DatePicker from 'react-datepicker';
 
-import CalendarIcon from '../../../../assets/icons/CalendarBlank.svg';
 import styles from '../../component.module.scss';
 
 const DatePickerRow = ({
@@ -52,9 +51,6 @@ const DatePickerRow = ({
     <div className={cls(styles.root, variants?.includes('full-width') && styles.fullWidth, className?.root)}>
       {label && <label className={cls(styles.label, className?.label)}>{label}</label>}
       <div className={cls(styles.inputWrapper, className?.inputWrapper)}>
-        <div className={cls(styles.leftIcon)}>
-          <img className={styles.navSeparator} src={CalendarIcon} />
-        </div>
         <DatePicker
           {...props}
           selected={selected}
@@ -67,6 +63,7 @@ const DatePickerRow = ({
           timeIntervals={15}
           showTimeSelect={showTimeSelect}
           showTimeInput={showTimeInput}
+          popperClassName={styles.popper}
           className={cls(
             styles.input,
             error && cls(styles.error, className?.error),

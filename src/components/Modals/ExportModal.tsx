@@ -13,6 +13,7 @@ import { InputRow } from '../InputRow';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dropdown } from '../Dropdown';
 import { ImpulseSpinner } from 'react-spinners-kit';
+import CalendarIcon from '../../assets/icons/CalendarBlank.svg';
 
 const {
   REACT_APP_TESTNET_BE_URL,
@@ -162,7 +163,7 @@ export const ExportModal = ({
           </div>
           <div className={`${styles.text} ${styles.description}`}>
             Each export is capped at 3,370 transactions. For larger datasets, run multiple exports with shorter time
-            ranges, such as quartely.
+            ranges, such as quartely. Exports are limited to 1 year.
           </div>
           <div className={styles.modalContent}>
             <div className={styles.dateSelection}>
@@ -199,6 +200,7 @@ export const ExportModal = ({
                   filterTime={filterPassedTime}
                   className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
                   maxDate={new Date()}
+                  icon={<img src={CalendarIcon} />}
                 />
                 <InputRow.DatePicker
                   selected={endDate}
@@ -210,6 +212,7 @@ export const ExportModal = ({
                   filterTime={filterEndTime}
                   className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
                   maxDate={maxDate || new Date()}
+                  icon={<img src={CalendarIcon} />}
                 />
               </div>
             </div>
