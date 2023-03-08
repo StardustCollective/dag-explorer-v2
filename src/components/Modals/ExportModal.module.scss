@@ -166,7 +166,7 @@
   display: flex;
   justify-content: flex-end;
   height: 40px;
-  gap: 10px;
+  gap: 12px;
 }
 
 .button {
@@ -224,5 +224,9 @@
   .buttons {
     margin-top: 1rem;
     justify-content: flex-end;
+
+    > :nth-child(n) {
+      width: 50%;
+    }
   }
 }

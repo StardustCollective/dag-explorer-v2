@@ -217,7 +217,6 @@ export const ExportModal = ({
               <Button variant={cls(styles.button, styles.close)} onClick={onClose}>
                 Cancel
               </Button>
-
               <Button
                 variant={cls(styles.button, styles.download)}
                 disabled={!startDate || !endDate || requesting}
@@ -225,25 +224,24 @@ export const ExportModal = ({
               >
                 {requesting ? <ImpulseSpinner frontColor={'#ffffff'} backColor={'#174cd3'} size={30} /> : 'Download'}
               </Button>
-
-              <CSVLink
-                ref={csvLink}
-                className={styles.download}
-                data={data}
-                headers={headers}
-                filename={
-                  startDate && endDate
-                    ? dataSet.value === 'transactions'
-                      ? `Transactions_from_${startDate.toLocaleDateString()}_to_${endDate.toLocaleDateString()}.csv`
-                      : dataSet.value === 'rewards'
-                      ? `Rewards_from_${startDate.toLocaleDateString()}_to_${endDate.toLocaleDateString()}.csv`
-                      : ''
-                    : ''
-                }
-                target="_blank"
-              />
             </div>
           </div>
+          <CSVLink
+            ref={csvLink}
+            className={styles.download}
+            data={data}
+            headers={headers}
+            filename={
+              startDate && endDate
+                ? dataSet.value === 'transactions'
+                  ? `Transactions_from_${startDate.toLocaleDateString()}_to_${endDate.toLocaleDateString()}.csv`
+                  : dataSet.value === 'rewards'
+                  ? `Rewards_from_${startDate.toLocaleDateString()}_to_${endDate.toLocaleDateString()}.csv`
+                  : ''
+                : ''
+            }
+            target="_blank"
+          />
         </div>
       </div>
     </div>
