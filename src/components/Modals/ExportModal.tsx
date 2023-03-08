@@ -157,9 +157,6 @@ export const ExportModal = ({
         <div className={styles.innerContainer}>
           <div className={styles.modalHeader}>
             <h6 className={styles.title}>Export .csv data</h6>
-            <div onClick={onClose} className={styles.close}>
-              X
-            </div>
           </div>
           <div className={`${styles.text} ${styles.description}`}>
             Each export is capped at 3,370 transactions. For larger datasets, run multiple exports with shorter time
