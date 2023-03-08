@@ -21,6 +21,7 @@ const DatePickerRow = ({
   minDate,
   maxDate,
   filterTime,
+  filterDate,
   ...props
 }: {
   variants?: ('full-width' | 'indent')[];
@@ -38,6 +39,7 @@ const DatePickerRow = ({
   onChange?: (value: Date | null) => void;
   onIconClick?: React.MouseEventHandler<HTMLDivElement>;
   filterTime?: (date: Date) => boolean;
+  filterDate?: (date: Date) => boolean;
   className?: {
     root?: string;
     label?: string;
@@ -60,6 +62,7 @@ const DatePickerRow = ({
           maxDate={maxDate}
           disabled={disabled}
           filterTime={filterTime}
+          filterDate={filterDate}
           timeIntervals={15}
           showTimeSelect={showTimeSelect}
           showTimeInput={showTimeInput}

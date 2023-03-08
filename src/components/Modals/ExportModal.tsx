@@ -42,9 +42,8 @@ export const ExportModal = ({
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [requesting, setRequesting] = useState(false);
 
-  const filterPassedTime = (time: any) => new Date().getTime() < new Date(time).getTime();
-
   const filterEndTime = (time: any) => (startDate ? startDate.getTime() + 1 < new Date(time).getTime() : false);
+
   const [dataSet, setDataSet] = useState<{ value: string; content: string }>({
     value: 'transactions',
     content: 'Transaction history',
@@ -194,7 +193,6 @@ export const ExportModal = ({
                   variants={['indent', 'full-width']}
                   onChange={(date) => setStartDate(date)}
                   dateFormat="MM/dd/yyyy"
-                  filterTime={filterPassedTime}
                   className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
                   maxDate={new Date()}
                   icon={<img src={CalendarIcon} />}
@@ -207,6 +205,7 @@ export const ExportModal = ({
                   onChange={(date) => setEndDate(date)}
                   dateFormat="MM/dd/yyyy"
                   filterTime={filterEndTime}
+                  filterDate={filterEndTime}
                   className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
                   maxDate={maxDate || new Date()}
                   icon={<img src={CalendarIcon} />}
