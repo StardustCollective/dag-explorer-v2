@@ -13,7 +13,7 @@
   max-width: 508px;
   width: 100%;
   position: fixed;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -175,19 +175,16 @@
   }
 }
 
-.react-datepicker-wrapper {
-  color: red;
-  background-color: blue;
-}
-
 .download {
   background-color: $blue-700;
   color: $white !important;
 }
+
 .download:hover:enabled {
   background-color: $blue-600 !important;
   cursor: pointer;
 }
+
 .download:hover > a {
   background-color: $blue-600 !important;
   cursor: pointer;

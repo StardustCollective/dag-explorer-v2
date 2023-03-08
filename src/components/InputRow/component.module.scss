@@ -66,18 +66,6 @@
   }
 }
 
-.popper {
-  > div {
-    > div {
-      :nth-child(4) {
-        > div {
-          background-color: white;
-        }
-      }
-    }
-  }
-}
-
 .icon {
   display: flex;
   position: absolute;
