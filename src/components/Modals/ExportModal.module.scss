@@ -172,7 +172,7 @@
 .button {
   padding: 10px 24px;
   height: 100%;
-  min-width: 96px;
+  width: auto;
 }
 
 .close {
@@ -216,13 +216,13 @@
   .container {
     top: 0;
     left: 0;
-    transform: translate(0%, 40%);
-    width: 100%;
+    transform: translateY(30%);
+    width: auto;
     height: fit-content;
+    margin: 0 16px;
   }
 
   .buttons {
-    margin-top: 1rem;
     justify-content: flex-end;
 
     > :nth-child(n) {
