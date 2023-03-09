@@ -19,6 +19,7 @@ const DatePickerRow = ({
   dateFormat,
   minDate,
   maxDate,
+  placeholderText,
   filterTime,
   filterDate,
   ...props
@@ -34,6 +35,7 @@ const DatePickerRow = ({
   dateFormat?: string;
   minDate?: Date | null;
   maxDate?: Date | null;
+  placeholderText?: string;
   onChange?: (value: Date | null) => void;
   onIconClick?: React.MouseEventHandler<HTMLDivElement>;
   filterTime?: (date: Date) => boolean;
@@ -59,13 +61,14 @@ const DatePickerRow = ({
           minDate={minDate}
           maxDate={maxDate}
           disabled={disabled}
+          placeholderText={placeholderText}
           filterTime={filterTime}
           filterDate={filterDate}
           timeIntervals={15}
           dateFormatCalendar={dateFormat}
           showTimeSelect={showTimeSelect}
           showTimeInput={showTimeInput}
-          popperClassName={styles.popper}
+          calendarClassName={styles.calendar}
           className={cls(
             styles.input,
             error && cls(styles.error, className?.error),

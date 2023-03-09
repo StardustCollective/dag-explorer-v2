@@ -196,6 +196,7 @@ export const ExportModal = ({
                   className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
                   maxDate={new Date()}
                   icon={<img src={CalendarIcon} />}
+                  placeholderText={'Select date'}
                 />
                 <InputRow.DatePicker
                   selected={endDate}
@@ -209,6 +210,7 @@ export const ExportModal = ({
                   className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
                   maxDate={maxDate || new Date()}
                   icon={<img src={CalendarIcon} />}
+                  placeholderText={'Select date'}
                 />
               </div>
             </div>
