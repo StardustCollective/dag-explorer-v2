@@ -51,7 +51,7 @@ export const ExportModal = ({
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [downloadClicked, setDownloadClicked] = useState(false);
-  const csvLink = useRef<HTMLButtonElement>();
+  const csvLink = useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
 
   const getData = async (request: () => Promise<any>) => {
     setRequesting(true);
@@ -64,8 +64,7 @@ export const ExportModal = ({
   useEffect(() => {
     if (downloadClicked) {
       if (csvLink && csvLink.current) {
-        const link: CSVLink = csvLink.current;
-        link.link.click();
+        csvLink.current.link.click();
       }
     }
     setDownloadClicked(false);
@@ -75,29 +74,31 @@ export const ExportModal = ({
     if (startDate && endDate) {
       if (dataSet.value === 'rewards') {
         setHeaders(['date', 'amount']);
-        const data = await getData(() =>
-          api
-            .get<any>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes/' + address + '/rewards', {
-              startDate: startDate.toLocaleDateString(),
-              endDate: endDate.toLocaleDateString(),
-            })
-            .then((r) => {
-              const data = r.data as {
-                rewards: { rewardAmount: string; date: string }[];
-                isValidator: boolean;
-              };
-              const transformed = data.rewards.map((reward) => {
-                return {
-                  date: new Date(reward.date).toLocaleDateString().replaceAll('/', '-'),
-                  amount: formatAmount(Number.parseInt(reward.rewardAmount), 8, true),
-                };
-              });
-              return transformed;
-            })
-            .catch((e) => console.log(e))
-        );
+        const data = await getData(async () => {
+          const result = await api.get<{
+            data: {
+              rewards: { rewardAmount: string; date: string }[];
+              isValidator: boolean;
+            };
+          }>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes/' + address + '/rewards', {
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+          });
+
+          const data = result.data as {
+            rewards: { rewardAmount: string; date: string }[];
+            isValidator: boolean;
+          };
+          return data.rewards.map((reward) => {
+            return {
+              date: new Date(reward.date).toISOString().replaceAll('/', '-'),
+              amount: formatAmount(Number.parseInt(reward.rewardAmount), 8, true),
+            };
+          });
+        });
         setData(data);
       }
+
       if (dataSet.value === 'transactions') {
         let URL: string;
 
@@ -110,23 +111,23 @@ export const ExportModal = ({
           setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
         }
 
-        const data = await getData(() =>
-          api
-            .get<any>(URL, { limit: 3370 })
-            .then((r) => {
-              const data = r.data as Transaction[];
-              const transformed = data
-                .filter((tx) => {
-                  const date = new Date(tx.timestamp);
-                  return isWithinInterval(date, { start: startDate, end: endDate });
-                })
-                .map((tx) => {
-                  return { ...tx, amount: formatAmount(tx.amount, 8, true), fee: formatAmount(tx.fee, 8, true) };
-                });
-              return transformed;
-            })
-            .catch((e) => console.log(e))
-        );
+        const data = await getData(async () => {
+          try {
+            const result = await api.get<any>(URL, { limit: 3370 });
+
+            const data = result.data as Transaction[];
+            return data
+              .filter((tx) => {
+                const date = new Date(tx.timestamp);
+                return isWithinInterval(date, { start: startDate, end: endDate });
+              })
+              .map((tx) => {
+                return { ...tx, amount: formatAmount(tx.amount, 8, true), fee: formatAmount(tx.fee, 8, true) };
+              });
+          } catch (e) {
+            console.log(e);
+          }
+        });
         setData(data);
       }
     }
@@ -235,9 +236,9 @@ export const ExportModal = ({
             filename={
               startDate && endDate
                 ? dataSet.value === 'transactions'
-                  ? `Transactions_from_${startDate.toLocaleDateString()}_to_${endDate.toLocaleDateString()}.csv`
+                  ? `Transactions_from_${startDate.toISOString()}_to_${endDate.toISOString()}.csv`
                   : dataSet.value === 'rewards'
-                  ? `Rewards_from_${startDate.toLocaleDateString()}_to_${endDate.toLocaleDateString()}.csv`
+                  ? `Rewards_from_${startDate.toISOString()}_to_${endDate.toISOString()}.csv`
                   : ''
                 : ''
             }

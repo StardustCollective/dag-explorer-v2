@@ -68,7 +68,6 @@ const DatePickerRow = ({
           dateFormatCalendar={dateFormat}
           showTimeSelect={showTimeSelect}
           showTimeInput={showTimeInput}
-          calendarClassName={styles.calendar}
           className={cls(
             styles.input,
             error && cls(styles.error, className?.error),
