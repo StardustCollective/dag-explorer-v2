@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
 import millify from 'millify';
 
 dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 export enum NumberFormat {
   MILLIFY,
@@ -64,7 +66,7 @@ const formatRelativeString = (date: string) => {
 
 export const formatTime = (timestamp: string | number, format: 'full' | 'relative') => {
   return format === 'full'
-    ? dayjs(timestamp).format('MMM D, YYYY h:mm A Z')
+    ? dayjs(timestamp).utc().format('YYYY-MM-DD h:mm A +UTC')
     : formatRelativeString(dayjs().to(dayjs(timestamp)));
 };
 
