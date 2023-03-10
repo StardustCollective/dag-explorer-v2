@@ -54,7 +54,8 @@ export const BlockDetails = () => {
     setPage((p) => p + 1);
   };
 
-  const skeleton = blockInfo.isLoading || !blockData;
+  const skeleton = blockInfo.isLoading || blockInfo.isFetching || !blockData;
+
   return (
     <>
       <section className={`${styles.searchMobile}`}>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-import { fitStringInCell, formatTime } from '../../utils/numbers';
+import { fitStringInCell } from '../../utils/numbers';
 import styles from './DetailRow.module.scss';
 import CopyIcon from '../../assets/icons/Copy.svg';
 
@@ -50,7 +50,7 @@ export const Content = ({
             {onlyLink}
           </div>
         )}
-        {date && !isLong && <p className={styles.fullDate}>{'(' + formatTime(date, 'full') + ')'}</p>}
+        {date && !isLong && <p className={styles.fullDate}>{date}</p>}
         {copy && !copied && (
           <img className={`${styles.copy}`} src={CopyIcon} onClick={() => handleCopyToClipboard(value)} />
         )}
