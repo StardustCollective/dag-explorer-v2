@@ -57,7 +57,7 @@ const DatePickerRow = ({
           {...props}
           selected={selected}
           onChange={(date) => onChange && onChange(date)}
-          dateFormat="MM/dd/yyyy"
+          dateFormat={dateFormat}
           minDate={minDate}
           maxDate={maxDate}
           disabled={disabled}
@@ -65,7 +65,6 @@ const DatePickerRow = ({
           filterTime={filterTime}
           filterDate={filterDate}
           timeIntervals={15}
-          dateFormatCalendar={dateFormat}
           showTimeSelect={showTimeSelect}
           showTimeInput={showTimeInput}
           className={cls(

@@ -193,7 +193,7 @@ export const ExportModal = ({
                   label={'Start Date'}
                   variants={['indent', 'full-width']}
                   onChange={(date) => setStartDate(date)}
-                  dateFormat="MM/dd/yyyy"
+                  dateFormat="yyyy-MM-dd"
                   className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
                   maxDate={new Date()}
                   icon={<img src={CalendarIcon} />}
@@ -205,7 +205,7 @@ export const ExportModal = ({
                   disabled={!startDate}
                   variants={['indent', 'full-width']}
                   onChange={(date) => setEndDate(date)}
-                  dateFormat="MM/dd/yyyy"
+                  dateFormat="yyyy-MM-dd"
                   filterTime={filterEndTime}
                   filterDate={filterEndTime}
                   className={{ inputWrapper: styles.timeinput, input: styles.inputs, label: styles.label }}
