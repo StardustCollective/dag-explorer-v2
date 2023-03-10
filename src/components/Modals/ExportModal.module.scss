@@ -13,13 +13,13 @@
   max-width: 508px;
   width: 100%;
   position: fixed;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 0px 18px 0px black;
+  box-shadow: 0px 24px 48px -12px rgba(16, 24, 40, 0.24);
   border-radius: 8px;
 }
 
@@ -35,17 +35,24 @@
   margin-bottom: 16px;
 }
 
+.separate {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 4px;
+}
+
 .modalContent {
   min-height: 200px;
   display: flex;
   flex-direction: column;
+  gap: 32px;
 }
 
 .dateSelection {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 20px;
 }
 
 .dateFrame {
@@ -78,6 +85,8 @@
   line-height: 32px;
   margin-block-start: 0;
   margin-block-end: 0;
+
+  color: #174cd3;
 }
 
 .text {
@@ -106,24 +115,84 @@
   font-weight: 600;
 }
 
+.dateSelectors {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+
+  * {
+    flex: 1;
+  }
+}
+
+.inputs {
+  border: 1px solid rgba(0, 0, 0, 0.24) !important;
+  color: rgba(black, 0.88) !important;
+  padding: 12px 0px !important;
+}
+
+.label {
+  color: rgba(0, 0, 0, 0.66) !important;
+}
+
+.dropdownButton {
+  width: 100%;
+  border-radius: 4px !important;
+  border-color: rgba(0, 0, 0, 0.24) !important;
+  justify-content: space-between !important;
+  padding: 12px !important;
+  height: 44px !important;
+  background-color: #ffffff;
+  color: rgba(black, 0.88) !important;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+  }
+}
+
+.dropdownWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.timeinput {
+  max-width: 100%;
+}
+
 .buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  height: 40px;
+  gap: 12px;
 }
 
-.close:hover {
-  cursor: pointer;
+.button {
+  padding: 10px 24px;
+  height: 100%;
+  width: auto;
+}
+
+.close {
+  background-color: white;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .download {
   background-color: $blue-700;
   color: $white !important;
 }
-.download:hover {
+
+.download:hover:enabled {
   background-color: $blue-600 !important;
   cursor: pointer;
 }
+
 .download:hover > a {
   background-color: $blue-600 !important;
   cursor: pointer;
@@ -131,16 +200,33 @@
   text-decoration: none;
   cursor: pointer;
 }
+
 @media screen and (max-width: $md) {
+  .dateSelectors {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+
+    * {
+      flex: 1;
+    }
+  }
+
   .container {
     top: 0;
     left: 0;
-    transform: none;
-    width: 100%;
-    height: 40vh;
+    transform: translateY(30%);
+    width: auto;
+    height: fit-content;
+    margin: 0 16px;
   }
+
   .buttons {
-    margin-top: 1rem;
-    justify-content: flex-start;
+    justify-content: flex-end;
+
+    > :nth-child(n) {
+      width: 50%;
+    }
   }
 }

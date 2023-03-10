@@ -33,3 +33,21 @@ html {
     background-color: $grayCool-200;
   }
 }
+
+div.react-datepicker__day {
+  &--selected {
+    background-color: #2e73fa;
+    color: white;
+    font-weight: normal;
+  }
+
+  &--keyboard-selected {
+    background-color: #2e73fa;
+    color: white;
+    font-weight: normal;
+  }
+
+  &:hover {
+    background-color: rgba(#2e73fa, 0.25);
+  }
+}

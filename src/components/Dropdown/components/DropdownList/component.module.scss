@@ -1,0 +1,19 @@
+.main {
+  display: grid;
+  min-width: 100%;
+
+  grid-template-columns: 1fr;
+  grid-auto-rows: min-content;
+
+  border-radius: 6px;
+  border: 1px solid rgba(black, 0.4);
+  background-color: #ffff;
+}
+
+.absolute {
+  position: absolute;
+
+  z-index: 10;
+  top: calc(100% + 8px);
+  left: 0;
+}
