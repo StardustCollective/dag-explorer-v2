@@ -121,7 +121,12 @@ export const ExportModal = ({
             return data
               .filter((tx) => {
                 const date = new Date(tx.timestamp);
-                return isWithinInterval(date, { start: startDate, end: endDate.setDate(endDate.getDate() + 1) });
+                const endDateToUse = new Date(endDate);
+                endDateToUse.setDate(endDateToUse.getDate() + 1);
+                return isWithinInterval(date, {
+                  start: startDate,
+                  end: endDateToUse,
+                });
               })
               .map((tx) => {
                 return { ...tx, amount: formatAmount(tx.amount, 8, true), fee: formatAmount(tx.fee, 8, true) };
