@@ -42,7 +42,9 @@ export const ExportModal = ({
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [requesting, setRequesting] = useState(false);
 
-  const filterEndTime = (time: any) => (startDate ? startDate.getTime() + 1 < new Date(time).getTime() : false);
+  const filterEndTime = (time: any) => {
+    return startDate ? startDate.getTime() <= new Date(time).getTime() : false;
+  };
 
   const [dataSet, setDataSet] = useState<{ value: string; content: string }>({
     value: 'transactions',
