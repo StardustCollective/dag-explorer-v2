@@ -52,7 +52,7 @@ export const TransactionDetail = () => {
 
   useEffect(() => {
     if (transaction.isError || prices.isError) {
-      setError(transaction.error.message);
+      setError(transaction.error.message || prices.error.message);
     } else {
       setError(undefined);
     }
