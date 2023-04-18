@@ -1,6 +1,6 @@
 import { COIN_IDS } from '../constants';
 import { useFetch } from '../utils/reactQuery';
-const { REACT_APP_COINGECKO_URL, REACT_APP_COINGECKO_API_KEY } = process.env;
+const { REACT_APP_ECOSYSTEM_API_URL } = process.env;
 
 export const useGetPrices = () => {
   const coinIds = Object.values(COIN_IDS).join(',');
@@ -11,10 +11,10 @@ export const useGetPrices = () => {
     include_24hr_vol: 'true',
     include_24hr_change: 'true',
     include_last_updated_at: 'true',
-    x_cg_pro_api_key: REACT_APP_COINGECKO_API_KEY,
+    token: 'dagExplorer',
   };
-  return useFetch(REACT_APP_COINGECKO_URL + '/simple/price', params, {
-    refetchInterval: 10000,
+  return useFetch(REACT_APP_ECOSYSTEM_API_URL + '/coin-prices', params, {
+    refetchInterval: 30000,
     cacheTime: 0,
   });
 };
