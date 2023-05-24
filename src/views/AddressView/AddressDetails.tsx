@@ -102,6 +102,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
         icon: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
         price: 123,
         balance: 0,
+        amount: 10
       },
       {
         name: 'DAG2',
@@ -109,6 +110,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
         icon: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
         price: 123,
         balance: 2,
+        amount: 10,
       },
     ];
 
@@ -121,6 +123,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       icon: '',
       price: 123,
       balance,
+      amount: 10,
     }, ... data]);
 
   }, []);

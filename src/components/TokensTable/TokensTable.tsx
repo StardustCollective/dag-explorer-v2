@@ -67,7 +67,7 @@ export const TokensTable = ({
         </div>
       </div>
       <div className={styles.tableCards}>
-        <TableCards limit={amount} showSkeleton={loading} titles={HEADERS} headerText={'Node tokens'} elements={elements}/>
+        <TableCards limit={amount} showSkeleton={loading} titles={HEADERS} elements={elements}/>
       </div>
     </>
   );

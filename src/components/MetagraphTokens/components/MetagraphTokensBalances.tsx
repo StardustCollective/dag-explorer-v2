@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useComponentVisible } from '../../../utils/clickOutside';
 import styles from './MetagraphTokensBalances.module.scss';
 import { MetagraphToken } from '../../../types';
+import { formatPrice } from '../../../utils/numbers';
 
 type MetagraphTokensBalancesProps = {
   metagraphTokens: MetagraphToken[];
@@ -45,8 +46,14 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
                     setSelectedMetagraphToken(option);
                   }}
                 >
-                  <span className={styles.name}>{option.name}</span>
-                  <span className={styles.amount}>(${option.balance} USD)</span>
+                  <div className={styles.nameList}>
+                    <img src={option.icon} />
+                    <span>{option.name}</span>
+                    </div>
+                  <div className={styles.amountList}>
+                    <span>{option.amount} {option.symbol}</span>
+                    <span>${formatPrice(option.amount, {usd: option.price}, 2)} USD</span>
+                  </div>
                 </div>
               ))}
             </div>

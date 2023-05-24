@@ -77,6 +77,8 @@
   display: flex;
   padding: 10px 0px;
   width: 100%;
+  align-items: center;
+  border-bottom: 0.5px solid $grayCool-200;
 }
 
 .name {
@@ -90,6 +92,30 @@
   width: 100%;
 }
 
+.nameList {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  
+  img {
+    width: 20px;
+    height: 20px;
+
+    border: 0.5px solid $gray-300;
+    border-radius: 24px;
+    margin-left: 12px;
+    margin-right: 8px;
+  }
+
+  span {
+    color: $gray-900;
+    font-style: regular;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
 .amount {
   font-family: 'IBM Plex Mono';
   color: $gray-500;
@@ -99,6 +125,37 @@
   line-height: 18px;
 
   width: 100%;
+}
+
+.amountList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  font-family: 'IBM Plex Mono';
+
+  span:nth-child(1) {
+    display: flex;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 18px;
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.015em;
+    text-transform: uppercase;
+    color: $gray-900;
+  }
+
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 18px;
+
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  color: $gray-500;
 }
 
 .dropdownItem:hover {

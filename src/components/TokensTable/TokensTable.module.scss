@@ -2,7 +2,6 @@
 @use '../../styles/_breakpoints' as *;
 .tableContainer {
   width: 100%;
-  margin-top: 2rem;
 
   background: $white;
   border: 1px solid $grayCool-200;
@@ -42,8 +41,8 @@
   .tableCards {
     display: flex;
     flex-direction: column;
-    width: 90%;
-    margin: 2rem 0 1rem 0;
+    width: 100%;
+    margin-bottom: 1rem;
   }
 }
 
