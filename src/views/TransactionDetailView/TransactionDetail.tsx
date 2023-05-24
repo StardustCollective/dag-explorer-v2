@@ -10,7 +10,7 @@ import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
 import { IconType } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatAmount, formatDagPrice, formatTime } from '../../utils/numbers';
+import { formatAmount, formatDagPrice, formatPrice, formatTime } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { useGetClusterInfo } from '../../api/l0-node';
 import { AddressShape } from '../../components/Shapes/AddressShape';
@@ -58,6 +58,12 @@ export const TransactionDetail = () => {
     }
   }, [transaction.status, prices.status]);
   const skeleton = transaction.isFetching || !data;
+
+  const tokenInfos = {
+    tokenName: 'DAG',
+    tokenImage: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg'
+  }
+
   return (
     <>
       <section className={`${styles.searchMobile}`}>
@@ -85,19 +91,28 @@ export const TransactionDetail = () => {
                     <div className={`${styles.txGroup}`}>
                       <DetailRow
                         borderBottom
-                        title={'AMOUNT'}
+                        title={'Token'}
+                        value={!skeleton ? tokenInfos.tokenName : ''}
+                        skeleton={skeleton}
+                        icon={<img src={tokenInfos.tokenImage} alt='token_image' className={`${styles.tokenImage}`}/>}
+                      />
+                      <DetailRow
+                        borderBottom
+                        title={'Amount'}
                         value={!skeleton ? formatAmount(data.amount, 8) : ''}
+                        subValue={!skeleton ? `($${formatPrice(data.amount, dagInfo, 2)} USD)` : ''}
                         skeleton={skeleton}
                       />
                       <DetailRow
-                        title={'TRANSACTION FEE'}
+                        title={'Transaction Fee'}
                         value={!skeleton ? formatAmount(data.fee, 8) : ''}
+                        subValue={!skeleton ? `($${formatPrice(data.fee, dagInfo, 2)} USD)` : ''}
                         skeleton={skeleton}
                       />
                     </div>
                     <div className={`${styles.txGroup}`}>
                       <DetailRow
-                        title={'FROM'}
+                        title={'From'}
                         linkTo={'/address'}
                         borderBottom
                         value={!skeleton ? data.source : ''}
@@ -108,7 +123,7 @@ export const TransactionDetail = () => {
                         isMain
                       />
                       <DetailRow
-                        title={'TO'}
+                        title={'To'}
                         linkTo={'/address'}
                         value={!skeleton ? data.destination : ''}
                         skeleton={skeleton}
@@ -120,7 +135,7 @@ export const TransactionDetail = () => {
                     </div>
                     <div className={`${styles.txGroup}`}>
                       <DetailRow
-                        title={'TRANSACTION HASH'}
+                        title={'Transaction Hash'}
                         borderBottom
                         value={!skeleton ? data.hash : ''}
                         skeleton={skeleton}
@@ -130,7 +145,7 @@ export const TransactionDetail = () => {
                         isMain
                       />
                       <DetailRow
-                        title={'BLOCK'}
+                        title={'Block'}
                         linkTo={'/blocks'}
                         borderBottom
                         value={!skeleton ? data.blockHash : ''}
@@ -141,7 +156,7 @@ export const TransactionDetail = () => {
                         isMain
                       />
                       <DetailRow
-                        title={'SNAPSHOT ORDINAL'}
+                        title={'Snapshot Ordinal'}
                         linkTo={'/snapshots'}
                         borderBottom
                         value={!skeleton ? data.snapshotOrdinal.toString() : ''}
@@ -149,7 +164,7 @@ export const TransactionDetail = () => {
                         icon={<SnapshotShape size={'1.8rem'} />}
                       />
                       <DetailRow
-                        title={'TIMESTAMP'}
+                        title={'Timestamp'}
                         borderBottom
                         value={!skeleton ? formatTime(transaction.data.timestamp, 'relative') : ''}
                         skeleton={skeleton}
@@ -157,7 +172,7 @@ export const TransactionDetail = () => {
                         date={!skeleton ? transaction.data.timestamp : ''}
                       />
                       <DetailRow
-                        title={'STATUS'}
+                        title={'Status'}
                         value={'Success'}
                         skeleton={skeleton}
                         icon={<CheckCircleShape size={'2rem'} />}

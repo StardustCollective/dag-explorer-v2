@@ -1,7 +1,9 @@
+import clsx from 'clsx';
+
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetAddressBalance, useGetAddressTransactions } from '../../api/block-explorer';
-import { Transaction } from '../../types';
+import { MetagraphToken, Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
@@ -14,11 +16,16 @@ import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { ExportModal } from '../../components/Modals/ExportModal';
 import { AddressShape } from '../../components/Shapes/AddressShape';
+import { MetagraphTokens } from '../../components/MetagraphTokens/MetagraphTokens';
+import { SearchTokenBar } from '../../components/SearchTokenBar/SearchTokenBar';
+
 import { isValidAddress } from '../../utils/search';
 import { useGetAddressTotalRewards } from '../../api/block-explorer/address';
 import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
 import { handleFetchedData, handlePagination } from '../../utils/pagination';
 import { FetchedData, Params } from '../../types/requests';
+import { useGetAllMetagraphs } from '../../api/block-explorer/metagraphs';
+import { TokensTable } from '../../components/TokensTable/TokensTable';
 
 const LIMIT = 10;
 
@@ -34,10 +41,14 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const addressInfo = useGetAddressTransactions(addressId, params);
   const addressBalance = useGetAddressBalance(addressId);
   const totalRewards = useGetAddressTotalRewards(addressId, network);
+  const metagraphTokensInfo = useGetAllMetagraphs(addressId, {});
   const [error, setError] = useState<string>(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
+  const [metagraphTokens, setMetagraphTokens] = useState<MetagraphToken[]>([]);
+  const [metagraphTokensWithAmount, setMetagraphTokensWithAmount] = useState<MetagraphToken[]>([]);
+  const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens'>('transactions');
 
   useEffect(() => {
     if (!isValidAddress.test(addressId) && !SPECIAL_ADDRESSES_LIST.includes(addressId)) {
@@ -82,6 +93,49 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       setError(addressBalance.error.message);
     }
   }, [addressInfo.isError, addressBalance.isError]);
+
+  useEffect(() => {
+    const data = [
+      {
+        name: 'DAG',
+        symbol: 'DAG',
+        icon: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
+        price: 123,
+        balance: 0,
+      },
+      {
+        name: 'DAG2',
+        symbol: 'DAG',
+        icon: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
+        price: 123,
+        balance: 2,
+      },
+    ];
+
+    const balance = data.reduce((partialSum, a) => partialSum + a.balance, 0);
+    setMetagraphTokens(data);
+
+    setMetagraphTokensWithAmount([{
+      name: `All ${data.length} L0 tokens`,
+      symbol: 'DAG',
+      icon: '',
+      price: 123,
+      balance,
+    }, ... data]);
+
+  }, []);
+
+  // useEffect(() => {
+  //   if (metagraphTokensInfo.isError) {
+  //     setError(metagraphTokensInfo.error.message);
+  //   }
+  // }, [metagraphTokensInfo.isError]);
+
+  // useEffect(() => {
+  //   if (!metagraphTokensInfo.isFetching && !metagraphTokensInfo.isError) {
+  //     setMetagraphTokens(metagraphTokensInfo.data.data);
+  //   }
+  // }, [metagraphTokensInfo.isFetching]);
 
   const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
     addressTxs,
@@ -130,7 +184,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
               <div className={`${styles.txGroup}`}>
                 <DetailRow
                   borderBottom
-                  title={'ADDRESS'}
+                  title={'Address'}
                   value={skeleton ? '' : addressId}
                   skeleton={skeleton}
                   isLong
@@ -138,7 +192,14 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 />
                 <DetailRow
                   borderBottom
-                  title={'BALANCE'}
+                  title={'Balance'}
+                  value={skeleton ? '' : balance ? formatAmount(balance, 8) : '0 DAG'}
+                  subValue={skeleton ? '' : balance ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : '($0 USD)'}
+                  skeleton={skeleton}
+                />
+                <MetagraphTokens skeleton={skeleton} metagraphTokens={metagraphTokensWithAmount} defaultOption={metagraphTokensWithAmount[0]} />
+                <DetailRow
+                  title={'All time rewards'}
                   value={skeleton ? '' : balance ? formatAmount(balance, 8) : '0 DAG'}
                   subValue={skeleton ? '' : balance ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : '($0 USD)'}
                   skeleton={skeleton}
@@ -162,22 +223,46 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
           </div>
           <div className={`${styles.row3}`}>
             <div className={`${styles.flexRowBottom}`}>
-              <p className="overviewText">Transactions</p>
-              <div className={styles.arrows}>
-                <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || txsSkeleton} />
-                <ArrowButton forward handleClick={handleNextPage} disabled={txsSkeleton || lastPage} />
+              <div className={`${styles.tableOptions}`}>
+                <label
+                  className={clsx(styles.tab, selectedTable === 'transactions' && styles.selected)}
+                  htmlFor="radio-1"
+                >
+                  Transactions
+                </label>
+                <input type="radio" id="radio-1" name="tabs" onClick={() => setSelectedTable('transactions')} />
+
+                <label className={clsx(styles.tab, selectedTable === 'tokens' && styles.selected)} htmlFor="radio-2">
+                  Tokens list
+                </label>
+                <input type="radio" id="radio-2" name="tabs" onClick={() => setSelectedTable('tokens')} />
+
+                <span className={styles.glider} />
               </div>
             </div>
           </div>
           <div className={`${styles.row4}`}>
-            <TransactionsTable
-              skeleton={{ showSkeleton: txsSkeleton }}
-              limit={LIMIT}
-              transactions={addressTxs}
-              icon={<AddressShape />}
-            />
+            <div className={styles.searchTokens}>
+              <SearchTokenBar />
+            </div>
+            <div className={styles.arrows}>
+              <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || txsSkeleton} />
+              <ArrowButton forward handleClick={handleNextPage} disabled={txsSkeleton || lastPage} />
+            </div>
           </div>
           <div className={`${styles.row5}`}>
+            {selectedTable === 'transactions' ? (
+              <TransactionsTable
+                skeleton={{ showSkeleton: txsSkeleton }}
+                limit={LIMIT}
+                transactions={addressTxs}
+                icon={<AddressShape />}
+              />
+            ) : (
+              <TokensTable metagraphTokens={metagraphTokens} amount={5} loading={!metagraphTokens} />
+            )}
+          </div>
+          <div className={`${styles.row6}`}>
             <div className={`${styles.flexRowTop}`}>
               <span />
 

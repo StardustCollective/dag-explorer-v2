@@ -1,0 +1,59 @@
+@use '../../styles/colors' as *;
+@use '../../styles/_breakpoints' as *;
+.tableContainer {
+  width: 100%;
+  margin-top: 2rem;
+
+  background: $white;
+  border: 1px solid $grayCool-200;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: 56px; /* first one 56px */
+  grid-auto-rows: 64px;
+}
+
+.rowVariantWhite {
+  background: $white;
+}
+.rowVariantGray {
+  background: $grayCool-25;
+}
+
+.fillerRow {
+  grid-column: 1 / span 5;
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  width: 100%;
+}
+.tableCards {
+  display: none;
+}
+
+@media screen and (max-width: 725px) {
+  .tableContainer {
+    display: none;
+  }
+  .tableCards {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 2rem 0 1rem 0;
+  }
+}
+
+.metagraphIcon {
+  width: 20px;
+  height: 20px;
+
+  background: #FFFFFF;
+
+  border: 1px solid $gray-300;
+  border-radius: 24px;
+
+}
