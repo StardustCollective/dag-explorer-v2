@@ -10,7 +10,7 @@ import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
 import { IconType } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatAmount, formatDagPrice, formatPrice, formatPriceWithSymbol, formatTime } from '../../utils/numbers';
+import { formatAmount, formatDagPrice, formatPriceWithSymbol, formatTime } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { useGetClusterInfo } from '../../api/l0-node';
 import { AddressShape } from '../../components/Shapes/AddressShape';
