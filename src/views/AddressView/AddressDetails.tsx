@@ -190,9 +190,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   subValue={
                     skeleton
                       ? ''
-                      : balance
-                      ? `(${formatPriceWithSymbol(balance, dagInfo, 2, '$', 'USD')})`
-                      : `(${formatPriceWithSymbol(0, dagInfo, 2, '$', 'USD')})`
+                      : `(${formatPriceWithSymbol(balance || 0, dagInfo, 2, '$', 'USD')})`
                   }
                   skeleton={skeleton}
                   isLargeRow

@@ -10,7 +10,7 @@ import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
 import { IconType } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatAmount, formatDagPrice, formatPrice, formatTime } from '../../utils/numbers';
+import { formatAmount, formatDagPrice, formatPrice, formatPriceWithSymbol, formatTime } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { useGetClusterInfo } from '../../api/l0-node';
 import { AddressShape } from '../../components/Shapes/AddressShape';
@@ -61,8 +61,8 @@ export const TransactionDetail = () => {
 
   const tokenInfos = {
     tokenName: 'DAG',
-    tokenImage: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg'
-  }
+    tokenImage: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
+  };
 
   return (
     <>
@@ -94,19 +94,23 @@ export const TransactionDetail = () => {
                         title={'Token'}
                         value={!skeleton ? tokenInfos.tokenName : ''}
                         skeleton={skeleton}
-                        icon={<img src={tokenInfos.tokenImage} alt='token_image' className={`${styles.tokenImage}`}/>}
+                        icon={<img src={tokenInfos.tokenImage} alt="token_image" className={`${styles.tokenImage}`} />}
                       />
                       <DetailRow
                         borderBottom
                         title={'Amount'}
                         value={!skeleton ? formatAmount(data.amount, 8) : ''}
-                        subValue={!skeleton ? `($${formatPrice(data.amount, dagInfo, 2)} USD)` : ''}
+                        subValue={
+                          !skeleton && data && `(${formatPriceWithSymbol(data.amount || 0, dagInfo, 2, '$', 'USD')})`
+                        }
                         skeleton={skeleton}
                       />
                       <DetailRow
                         title={'Transaction Fee'}
                         value={!skeleton ? formatAmount(data.fee, 8) : ''}
-                        subValue={!skeleton ? `($${formatPrice(data.fee, dagInfo, 2)} USD)` : ''}
+                        subValue={
+                          !skeleton && data && `(${formatPriceWithSymbol(data.fee || 0, dagInfo, 2, '$', 'USD')})`
+                        }
                         skeleton={skeleton}
                       />
                     </div>

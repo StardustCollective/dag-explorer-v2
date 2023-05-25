@@ -1,6 +1,8 @@
+import React from 'react';
+import clsx from 'clsx';
+
 import styles from './DetailRow.module.scss';
 import { Content } from './Content';
-import React from 'react';
 
 export const DetailRow = ({
   ...props
@@ -21,7 +23,7 @@ export const DetailRow = ({
   isLargeRow?: boolean
 }) => {
   return (
-    <div className={`${styles.txFlexRow} ${props.borderBottom ? styles.borderBottom : styles} ${props.isLargeRow && styles.largeRow}`}>
+    <div className={clsx(styles.txFlexRow, props.borderBottom && styles.borderBottom, props.isLargeRow && styles.largeRow)}>
       <div className={styles.title}>
         <p className={'headerSubtitle'}>{props.title}</p>
       </div>
