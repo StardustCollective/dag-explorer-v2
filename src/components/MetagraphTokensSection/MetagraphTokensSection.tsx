@@ -1,6 +1,7 @@
-import styles from './MetagraphTokens.module.scss';
 import { MetagraphToken } from '../../types';
 import { MetagraphTokensBalances } from './components/MetagraphTokensBalances';
+
+import styles from './MetagraphTokensSection.module.scss';
 
 type MetagraphTokensProps = {
   metagraphTokens: MetagraphToken[];
@@ -8,7 +9,7 @@ type MetagraphTokensProps = {
   skeleton?: boolean;
 };
 
-export const MetagraphTokens = ({ metagraphTokens, defaultOption, skeleton }: MetagraphTokensProps) => {
+export const MetagraphTokensSection = ({ metagraphTokens, defaultOption, skeleton }: MetagraphTokensProps) => {
   return (
     <div className={styles.metagraphTokensOverview}>
       <span>Token balance</span>

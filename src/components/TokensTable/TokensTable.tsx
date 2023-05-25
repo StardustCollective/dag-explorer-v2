@@ -62,8 +62,8 @@ export const TokensTable = ({
               />
             ))
           ) : (
-            <SkeletonTokenRows amountRows={rows.length} variant={styles.rowVariantWhite} />
-          )}
+            <SkeletonTokenRows amountRows={5} variant={styles.rowVariantGray} />
+           )} 
         </div>
       </div>
       <div className={styles.tableCards}>

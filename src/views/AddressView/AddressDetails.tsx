@@ -11,12 +11,12 @@ import { TransactionsTable } from '../../components/TransactionsTable/Transactio
 import { IconType, Network } from '../../constants';
 import styles from './AddressDetails.module.scss';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatAmount, formatPrice } from '../../utils/numbers';
+import { formatAmount, formatPrice, formatPriceWithSymbol } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { ExportModal } from '../../components/Modals/ExportModal';
 import { AddressShape } from '../../components/Shapes/AddressShape';
-import { MetagraphTokens } from '../../components/MetagraphTokens/MetagraphTokens';
+import { MetagraphTokensSection } from '../../components/MetagraphTokensSection/MetagraphTokensSection';
 import { SearchTokenBar } from '../../components/SearchTokenBar/SearchTokenBar';
 
 import { isValidAddress } from '../../utils/search';
@@ -24,7 +24,6 @@ import { useGetAddressTotalRewards } from '../../api/block-explorer/address';
 import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
 import { handleFetchedData, handlePagination } from '../../utils/pagination';
 import { FetchedData, Params } from '../../types/requests';
-import { useGetAllMetagraphs } from '../../api/block-explorer/metagraphs';
 import { TokensTable } from '../../components/TokensTable/TokensTable';
 
 const LIMIT = 10;
@@ -41,7 +40,6 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const addressInfo = useGetAddressTransactions(addressId, params);
   const addressBalance = useGetAddressBalance(addressId);
   const totalRewards = useGetAddressTotalRewards(addressId, network);
-  const metagraphTokensInfo = useGetAllMetagraphs(addressId, {});
   const [error, setError] = useState<string>(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
@@ -102,7 +100,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
         icon: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
         price: 123,
         balance: 0,
-        amount: 10
+        amount: 10,
       },
       {
         name: 'DAG2',
@@ -117,28 +115,18 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     const balance = data.reduce((partialSum, a) => partialSum + a.balance, 0);
     setMetagraphTokens(data);
 
-    setMetagraphTokensWithAmount([{
-      name: `All ${data.length} L0 tokens`,
-      symbol: 'DAG',
-      icon: '',
-      price: 123,
-      balance,
-      amount: 10,
-    }, ... data]);
-
+    setMetagraphTokensWithAmount([
+      {
+        name: `All ${data.length} L0 tokens`,
+        symbol: 'DAG',
+        icon: '',
+        price: 123,
+        balance,
+        amount: 10,
+      },
+      ...data,
+    ]);
   }, []);
-
-  // useEffect(() => {
-  //   if (metagraphTokensInfo.isError) {
-  //     setError(metagraphTokensInfo.error.message);
-  //   }
-  // }, [metagraphTokensInfo.isError]);
-
-  // useEffect(() => {
-  //   if (!metagraphTokensInfo.isFetching && !metagraphTokensInfo.isError) {
-  //     setMetagraphTokens(metagraphTokensInfo.data.data);
-  //   }
-  // }, [metagraphTokensInfo.isFetching]);
 
   const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
     addressTxs,
@@ -186,10 +174,12 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
             <div className={styles.spanContent}>
               <div className={`${styles.txGroup}`}>
                 <DetailRow
-                  borderBottom
                   title={'Address'}
-                  value={skeleton ? '' : addressId}
+                  borderBottom
+                  value={!skeleton ? addressId : ''}
                   skeleton={skeleton}
+                  icon={<AddressShape />}
+                  copy
                   isLong
                   isMain
                 />
@@ -197,15 +187,20 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   borderBottom
                   title={'Balance'}
                   value={skeleton ? '' : balance ? formatAmount(balance, 8) : '0 DAG'}
-                  subValue={skeleton ? '' : balance ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : '($0 USD)'}
+                  subValue={
+                    skeleton
+                      ? ''
+                      : balance
+                      ? `(${formatPriceWithSymbol(balance, dagInfo, 2, '$', 'USD')})`
+                      : `(${formatPriceWithSymbol(0, dagInfo, 2, '$', 'USD')})`
+                  }
                   skeleton={skeleton}
+                  isLargeRow
                 />
-                <MetagraphTokens skeleton={skeleton} metagraphTokens={metagraphTokensWithAmount} defaultOption={metagraphTokensWithAmount[0]} />
-                <DetailRow
-                  title={'All time rewards'}
-                  value={skeleton ? '' : balance ? formatAmount(balance, 8) : '0 DAG'}
-                  subValue={skeleton ? '' : balance ? '($' + formatPrice(balance, dagInfo, 2) + ' USD)' : '($0 USD)'}
+                <MetagraphTokensSection
                   skeleton={skeleton}
+                  metagraphTokens={metagraphTokensWithAmount}
+                  defaultOption={metagraphTokensWithAmount[0]}
                 />
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow

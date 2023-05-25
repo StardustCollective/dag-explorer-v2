@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import clsx from 'clsx';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchableItem } from '../../constants';
 import { getSearchInputType } from '../../utils/search';
+
 import styles from './SearchTokenBar.module.scss';
 
 export const handleSearch = (searchText: string, performAction: (url: string) => void) => {
@@ -68,7 +71,7 @@ export const SearchTokenBar = () => {
         </div>
       </div>
       <div
-        className={`${styles.searchButton} ${styles.oldIos}`}
+        className={clsx(styles.searchButton, styles.oldIos)}
         onClick={() => {
           handleSearch(searchText, performAction);
         }}

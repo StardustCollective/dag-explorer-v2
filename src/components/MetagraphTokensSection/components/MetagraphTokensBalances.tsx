@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useComponentVisible } from '../../../utils/clickOutside';
-import styles from './MetagraphTokensBalances.module.scss';
 import { MetagraphToken } from '../../../types';
 import { formatPrice } from '../../../utils/numbers';
+
+import styles from './MetagraphTokensBalances.module.scss';
 
 type MetagraphTokensBalancesProps = {
   metagraphTokens: MetagraphToken[];

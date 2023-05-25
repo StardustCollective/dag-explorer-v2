@@ -8,7 +8,7 @@ const { REACT_APP_TESTNET_BE_URL, REACT_APP_MAINNET_TWO_BE_URL } = process.env;
 const getUrl = (address: string) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   const url = network === 'mainnet' ? REACT_APP_MAINNET_TWO_BE_URL : REACT_APP_TESTNET_BE_URL;
-  return `${url}/transactions`;
+  return `${url}/${address}`;
 };
 
 export const useGetAllMetagraphs = (address:string, params?: any, refetchInterval?: number) => {

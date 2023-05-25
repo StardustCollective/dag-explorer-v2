@@ -54,7 +54,7 @@
   border-bottom: 1px solid $grayCool-200;
 }
 
-@media screen and (max-width: $lg) {
+@include respond-below(lg) {
   .metagraphTokensOverview {
     height: 100px;
     > span {
@@ -67,7 +67,7 @@
   }
 }
 
-@media screen and (max-width: $md) {
+@include respond-below(md) {
   .metagraphTokensOverview {
     flex-direction: column;
     height: 100px;

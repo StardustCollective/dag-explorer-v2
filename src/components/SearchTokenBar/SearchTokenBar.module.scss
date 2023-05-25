@@ -38,6 +38,7 @@
 }
 
 .searchIcon:before {
+  margin-top: 5px;
   content: '';
   position: absolute;
   width: 15px;
@@ -48,10 +49,11 @@
 }
 
 .searchIcon:after {
+  margin-top: 5px;
   content: '';
   position: absolute;
   width: 3px;
-  height: 12px;
+  height: 8px;
   background: $gray-400;
   transform: translate(6px, 6px) rotate(315deg);
 }
@@ -88,7 +90,7 @@
   display: none;
 }
 
-@media screen and (max-width: $sm) {
+@include respond-below(sm) {
   .searchBar {
     flex-direction: column;
     width: 90%;
@@ -112,7 +114,7 @@
   
 }
 
-@media screen and (max-width: $md) {
+@include respond-below(md) {
   .searchBar {
     flex-direction: column;
     width: 90%;
@@ -157,18 +159,5 @@
     height: 12px;
     background: $gray-400;
     transform: translate(6px, 6px) rotate(315deg);
-  }
-
-  @supports (-webkit-touch-callout: none) {
-    .searchButton {
-      width: 91%;
-    }
-    .normal {
-      display: none;
-    }
-    .oldIos {
-      display: flex;
-      height: 40%;
-    }
   }
 }
