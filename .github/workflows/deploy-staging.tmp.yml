@@ -22,7 +22,7 @@ jobs:
           yarn install
       - name: Use env
         run: |
-          yarn use:staging
+          yarn use:delta
       - name: Move env config
         run: |
           rm ./.env.production;
