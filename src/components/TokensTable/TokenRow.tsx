@@ -1,5 +1,9 @@
 import clsx from 'clsx';
 import { MetagraphToken } from '../../types';
+
+import { ReactComponent as DefaultTokenIcon } from '../../assets/icons/DefaultTokenIcon.svg';
+import { ReactComponent as DAGToken } from '../../assets/icons/DAGToken.svg';
+
 import styles from './TokenRow.module.scss';
 
 export const TokenRow = ({
@@ -16,8 +20,12 @@ export const TokenRow = ({
         <>
           <div className={styles.tokenCell}>
             <p className={clsx(classCell, styles.black)}>
-              {metagraphToken.icon && (
-                <img className={styles.tokenIcon} src={metagraphToken.icon} alt={metagraphToken.name} />
+              {metagraphToken.icon ? (
+                <img className={styles.tokenIcon} src={metagraphToken.icon} />
+              ) : metagraphToken.symbol === 'DAG' ? (
+                <DAGToken className={styles.tokenIcon} />
+              ) : (
+                <DefaultTokenIcon className={styles.tokenIcon} />
               )}
               {metagraphToken.name}
             </p>
@@ -29,7 +37,9 @@ export const TokenRow = ({
             <p className={clsx(classCell, styles.gray)}>{metagraphToken.price}</p>
           </div>
           <div className={styles.tokenCell}>
-            <p className={clsx(classCell, styles.gray)}>{metagraphToken.balance} {metagraphToken.symbol}</p>
+            <p className={clsx(classCell, styles.gray)}>
+              {metagraphToken.balance} {metagraphToken.symbol}
+            </p>
           </div>
         </>
       ) : null}

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useGetTransaction } from '../../api/block-explorer';
 import { Card } from '../../components/Card/Card';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
-import styles from './TransactionDetail.module.scss';
 import { Transaction } from '../../types';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { useGetPrices } from '../../api/coingecko';
@@ -17,6 +16,9 @@ import { AddressShape } from '../../components/Shapes/AddressShape';
 import { TransactionShape } from '../../components/Shapes/TransactionShape';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 import { CheckCircleShape } from '../../components/Shapes/CheckCircle';
+import DAGToken from '../../assets/icons/DAGToken.svg';
+
+import styles from './TransactionDetail.module.scss';
 
 export const TransactionDetail = () => {
   const { transactionHash } = useParams();
@@ -61,7 +63,7 @@ export const TransactionDetail = () => {
 
   const tokenInfos = {
     tokenName: 'DAG',
-    tokenImage: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
+    tokenImage: null,
   };
 
   return (
@@ -94,14 +96,20 @@ export const TransactionDetail = () => {
                         title={'Token'}
                         value={!skeleton ? tokenInfos.tokenName : ''}
                         skeleton={skeleton}
-                        icon={<img src={tokenInfos.tokenImage} alt="token_image" className={`${styles.tokenImage}`} />}
+                        icon={
+                          tokenInfos.tokenImage ? (
+                            <img src={tokenInfos.tokenImage} alt="token_image" className={`${styles.tokenImage}`} />
+                          ) : (
+                            <img src={DAGToken} alt="token_image" className={`${styles.tokenImage}`} />
+                          )
+                        }
                       />
                       <DetailRow
                         borderBottom
                         title={'Amount'}
                         value={!skeleton ? formatAmount(data.amount, 8) : ''}
                         subValue={
-                          !skeleton && data && `(${formatPriceWithSymbol(data.amount || 0, dagInfo, 2, '$', 'USD')})`
+                          !skeleton && data && dagInfo && `(${formatPriceWithSymbol(data.amount || 0, dagInfo, 2, '$', 'USD')})`
                         }
                         skeleton={skeleton}
                       />
@@ -109,7 +117,7 @@ export const TransactionDetail = () => {
                         title={'Transaction Fee'}
                         value={!skeleton ? formatAmount(data.fee, 8) : ''}
                         subValue={
-                          !skeleton && data && `(${formatPriceWithSymbol(data.fee || 0, dagInfo, 2, '$', 'USD')})`
+                          !skeleton && data && dagInfo &&`(${formatPriceWithSymbol(data.fee || 0, dagInfo, 2, '$', 'USD')})`
                         }
                         skeleton={skeleton}
                       />

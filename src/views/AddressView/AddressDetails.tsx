@@ -9,7 +9,6 @@ import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType, Network } from '../../constants';
-import styles from './AddressDetails.module.scss';
 import { NotFound } from '../NotFoundView/NotFound';
 import { formatAmount, formatPrice, formatPriceWithSymbol } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
@@ -18,13 +17,15 @@ import { ExportModal } from '../../components/Modals/ExportModal';
 import { AddressShape } from '../../components/Shapes/AddressShape';
 import { MetagraphTokensSection } from '../../components/MetagraphTokensSection/MetagraphTokensSection';
 import { SearchTokenBar } from '../../components/SearchTokenBar/SearchTokenBar';
+import { TokensTable } from '../../components/TokensTable/TokensTable';
 
 import { isValidAddress } from '../../utils/search';
 import { useGetAddressTotalRewards } from '../../api/block-explorer/address';
 import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
 import { handleFetchedData, handlePagination } from '../../utils/pagination';
 import { FetchedData, Params } from '../../types/requests';
-import { TokensTable } from '../../components/TokensTable/TokensTable';
+
+import styles from './AddressDetails.module.scss';
 
 const LIMIT = 10;
 
@@ -97,7 +98,6 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       {
         name: 'DAG',
         symbol: 'DAG',
-        icon: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
         price: 123,
         balance: 0,
         amount: 10,
@@ -105,23 +105,20 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       {
         name: 'DAG2',
         symbol: 'DAG',
-        icon: 'https://pbs.twimg.com/profile_images/1590732001992114178/sIGtbT44_400x400.jpg',
         price: 123,
         balance: 2,
         amount: 10,
       },
     ];
 
-    const balance = data.reduce((partialSum, a) => partialSum + a.balance, 0);
     setMetagraphTokens(data);
-
     setMetagraphTokensWithAmount([
       {
         name: `All ${data.length} L0 tokens`,
-        symbol: 'DAG',
+        symbol: 'ALL',
         icon: '',
         price: 123,
-        balance,
+        balance: 2000000000000,
         amount: 10,
       },
       ...data,

@@ -14,8 +14,8 @@
 
 .subTitle {
   grid-column: 2 / span 12;
-  margin-top: 2rem;
-  margin-bottom: 0.7rem;
+  margin-top: 48px;
+  margin-bottom: 24px;
 }
 
 .addressOverview {
@@ -161,7 +161,6 @@
   border: 1px solid $grayCool-200;
   border-radius: 8px;
   width: 100%;
-  margin: 2rem 0px;
 }
 
 .txFlexRow {

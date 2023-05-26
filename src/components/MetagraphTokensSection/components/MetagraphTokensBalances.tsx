@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react';
 import { useComponentVisible } from '../../../utils/clickOutside';
 import { MetagraphToken } from '../../../types';
 import { formatPrice } from '../../../utils/numbers';
+import { ReactComponent as ChevronUpIcon } from '../../../assets/icons/chevron-up.svg';
+import { ReactComponent as ChevronDownIcon } from '../../../assets/icons/chevron-down.svg';
+import { ReactComponent as DefaultTokenIcon } from '../../../assets/icons/DefaultTokenIcon.svg';
+import { ReactComponent as DAGToken } from '../../../assets/icons/DAGToken.svg';
 
 import styles from './MetagraphTokensBalances.module.scss';
 
@@ -21,7 +25,7 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
   return (
     <>
       {selectedMetagraphToken && (
-        <div className={`${styles.dropdown} ${styles.navSeparator}`} ref={ref}>
+        <div className={`${styles.dropdown}`} ref={ref}>
           {
             <div
               className={styles.dropdownInput}
@@ -30,9 +34,15 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
             >
               <div>
                 <span className={styles.name}>{selectedMetagraphToken.name}</span>
-                <span className={styles.amount}>(${selectedMetagraphToken.balance} USD)</span>
+                <span className={styles.amount}>
+                  (${formatPrice(selectedMetagraphToken.balance, { usd: 100000 }, 2)} USD)
+                </span>
               </div>
-              <i className={`${styles.arrow} ${styles.down}`}></i>
+              {isComponentVisible ? (
+                <ChevronUpIcon width={24} height={24} />
+              ) : (
+                <ChevronDownIcon width={24} height={24} />
+              )}
             </div>
           }
 
@@ -48,12 +58,20 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
                   }}
                 >
                   <div className={styles.nameList}>
-                    <img src={option.icon} />
+                    {option.icon ? (
+                      <img src={option.icon} />
+                    ) : option.symbol === 'DAG' ? (
+                      <DAGToken />
+                    ) : (
+                      <DefaultTokenIcon />
+                    )}
                     <span>{option.name}</span>
-                    </div>
+                  </div>
                   <div className={styles.amountList}>
-                    <span>{option.amount} {option.symbol}</span>
-                    <span>${formatPrice(option.amount, {usd: option.price}, 2)} USD</span>
+                    <span>
+                      {option.amount} {option.symbol}
+                    </span>
+                    <span>${formatPrice(option.amount, { usd: option.price }, 2)} USD</span>
                   </div>
                 </div>
               ))}

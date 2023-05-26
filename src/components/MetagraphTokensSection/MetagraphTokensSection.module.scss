@@ -47,11 +47,9 @@
   }
 
   > div {
-    width: 20%;
+    width: 31%;
     margin-left: 2rem;
   }
-
-  border-bottom: 1px solid $grayCool-200;
 }
 
 @include respond-below(lg) {

@@ -145,7 +145,7 @@ export type MainnetOneClusterInfo = {
 export type MetagraphToken = {
   name: string;
   symbol: string;
-  icon: string;
+  icon?: string;
   amount: number;
   price: number;
   balance: number;
