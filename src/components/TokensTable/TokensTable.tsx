@@ -7,7 +7,6 @@ import styles from './TokensTable.module.scss';
 import { CardDataRow, TableCards } from '../TransactionsTable/TableCards';
 
 const HEADERS = ['TOKEN', 'SYMBOL', 'TOKEN PRICE', 'BALANCE'];
-const MINIMUM_TABLE_LENGTH = 5;
 export const TokensTable = ({
   metagraphTokens,
   amount,
@@ -21,11 +20,7 @@ export const TokensTable = ({
   const [elements, setElements] = useState<Set<CardDataRow[]>>(new Set<[]>);
 
   useEffect(() => {
-    if (metagraphTokens.length < MINIMUM_TABLE_LENGTH) {
-      setRows(metagraphTokens.concat(...new Array<MetagraphToken>(amount - metagraphTokens.length).fill(undefined)));
-    } else {
       setRows(metagraphTokens);
-    }
   }, [metagraphTokens]);
 
   useEffect(() => {
