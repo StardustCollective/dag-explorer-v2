@@ -7,7 +7,7 @@
   height: 1600px;
   min-height: 100vh;
   position: relative;
-  grid-template-rows: 6% 10% 7% 72% 5%;
+  grid-template-rows: 6% 10% 6% 72% 6%;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
   background-color: $gray-25;
 }

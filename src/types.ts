@@ -141,3 +141,12 @@ export type MainnetOneClusterInfo = {
   status: 'Ready';
   reputation: number;
 };
+
+export type MetagraphToken = {
+  name: string;
+  symbol: string;
+  icon?: string;
+  amount: number;
+  price: number;
+  balance: number;
+}

@@ -1,21 +1,22 @@
-@use '../../styles/colors' as *;
-@use '../../styles/_breakpoints' as *;
-
-.dropDownList {
-  position: relative
+@use '../../../styles/colors' as *;
+@use '../../../styles/_breakpoints' as *;
+.fullWidth2 {
+  grid-column: 1 / span 14;
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+  grid-template-rows: 25% 65% 10%;
 }
 
 .fullWidth3 {
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
-  grid-template-rows: 10% 20% 8% 7% 50% 5%;
+  grid-template-rows: 10% 12% 8% 60% 10%;
 }
-
 .subTitle {
   grid-column: 2 / span 12;
-  margin-top: 48px;
-  margin-bottom: 24px;
+  margin-top: 2rem;
+  margin-bottom: 0.7rem;
 }
 
 .addressOverview {
@@ -35,26 +36,11 @@
   grid-row: 4/4;
   grid-column: 2 / span 12;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px 0px;
-
-  .searchTokens {
-    width: 400px;
-  }
 }
 
 .row5 {
   grid-row: 5/5;
   grid-column: 2 / span 12;
-  display: flex;
-  justify-content: center;
-}
-
-.row6 {
-  grid-row: 6/6;
-  grid-column: 2 / span 12;
-  display: flex;
 }
 
 .column1 {
@@ -64,65 +50,6 @@
 .column2 {
   grid-column-start: 11;
   grid-column-end: span 3;
-}
-
-.tableOptions {
-  display: flex;
-  width: 100%;
-  border-bottom: 1px solid $grayCool-200;
-  position: relative;
-  
-  .tab { 
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 28px;
-    color: $gray-500;
-    margin-bottom: 14px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.15s ease-in;
-  }
-
-  input[type="radio"] {
-    display: none;
-  }
-
-  > label {
-    margin-right: 40px;
-  }
-
-  .selected {
-    color:#2E73FA;
-  }
-
-  .glider {
-    position: absolute;
-    display: flex;
-    height: 2px;
-    width: 121px;
-    background-color: #2E73FA;
-    z-index: 1;
-    border-radius: 99px; // just a high number to create pill effect
-    transition: 0.25s ease-out;
-    top: calc(100%)
-  }
-
-  input[id="radio-1"] {
-    &:checked {
-      & ~ .glider {
-        transform: translateX(calc(0%));
-      }
-    }
-  }
-
-  input[id="radio-2"] {
-    &:checked {
-      & ~ .glider {
-        transform: translateX(calc(105%));
-      }
-    }
-  }
 }
 
 %flexRow {
@@ -161,6 +88,7 @@
   border: 1px solid $grayCool-200;
   border-radius: 8px;
   width: 100%;
+  margin-bottom: 2rem;
 }
 
 .txFlexRow {
@@ -178,7 +106,6 @@
 .arrows {
   display: flex;
   gap: 0.5rem;
-  max-height: 32px;
 }
 
 .searchMobile {
@@ -233,11 +160,6 @@
     margin-left: 2rem;
     margin-right: 2rem;
   }
-  .row5 {
-    justify-content: center;
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
   .spanContent {
     margin-left: 2rem;
     margin-right: 2rem;
@@ -254,12 +176,12 @@
 
 @media screen and (min-width: $md) and (max-width: 805px) {
   .fullWidth3 {
-    grid-template-rows: 10% 10% 15% 5% 36% 10%;
+    grid-template-rows: 5% 6% 8% 36% 10%;
   }
 }
 
 @media screen and (min-width: 805px) and (max-width: $lg) {
   .fullWidth3 {
-    grid-template-rows: 5% 6% 15% 5% 36% 10%;
+    grid-template-rows: 5% 6% 8% 36% 10%;
   }
 }

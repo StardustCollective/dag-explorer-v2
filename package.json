@@ -38,6 +38,7 @@
     "eject": "react-scripts eject",
     "use:development": "node scripts/use-envs.js base",
     "use:theta": "node scripts/use-envs.js base theta",
+    "use:delta": "node scripts/use-envs.js base delta",
     "use:staging": "node scripts/use-envs.js base staging",
     "use:production": "node scripts/use-envs.js base production"
   },

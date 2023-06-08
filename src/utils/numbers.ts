@@ -30,6 +30,16 @@ export const formatPrice = (amount: number, dagInfo: any, toFixed: number) => {
   return formater.format(parseFloat((parseFloat(formatedValue) * dagInfo.usd).toFixed(toFixed)));
 };
 
+export const formatPriceWithSymbol = (
+  amount: number,
+  dagInfo: any,
+  toFixed: number,
+  prefixSymbol: string,
+  suffixSymbol: string
+) => {
+  return `${prefixSymbol || ''}${formatPrice(amount, dagInfo, toFixed)} ${suffixSymbol ||''}`;
+};
+
 export const formatAmount = (amount: number, toFixed: number, forExport?: boolean) => {
   const formatedValue = (amount / Math.pow(10, 8)).toFixed(toFixed);
   const regex = formatedValue.match('^(\\d+\\.\\d*?)(0+)$');
