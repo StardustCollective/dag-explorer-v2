@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { MetagraphToken } from '../../types';
+import { MetagraphInfo } from '../../types';
 
 import { ReactComponent as DefaultTokenIcon } from '../../assets/icons/DefaultTokenIcon.svg';
 import { ReactComponent as DAGToken } from '../../assets/icons/DAGToken.svg';
@@ -10,7 +10,7 @@ export const TokenRow = ({
   metagraphToken,
   variant,
 }: {
-  metagraphToken: MetagraphToken | undefined;
+  metagraphToken: MetagraphInfo | undefined;
   variant?: string;
 }) => {
   const classCell = clsx(styles.normalText, 'normalPlexMono');
@@ -20,25 +20,25 @@ export const TokenRow = ({
         <>
           <div className={styles.tokenCell}>
             <p className={clsx(classCell, styles.black)}>
-              {metagraphToken.icon ? (
-                <img className={styles.tokenIcon} src={metagraphToken.icon} />
-              ) : metagraphToken.symbol === 'DAG' ? (
+              {metagraphToken.metagraphIcon ? (
+                <img className={styles.tokenIcon} src={metagraphToken.metagraphIcon} />
+              ) : metagraphToken.metagraphSymbol === 'DAG' ? (
                 <DAGToken className={styles.tokenIcon} />
               ) : (
                 <DefaultTokenIcon className={styles.tokenIcon} />
               )}
-              {metagraphToken.name}
+              {metagraphToken.metagraphName}
             </p>
           </div>
           <div className={styles.tokenCell}>
-            <p className={clsx(classCell, styles.gray)}>{metagraphToken.symbol}</p>
+            <p className={clsx(classCell, styles.gray)}>{metagraphToken.metagraphSymbol}</p>
           </div>
           <div className={styles.tokenCell}>
-            <p className={clsx(classCell, styles.gray)}>{metagraphToken.price}</p>
+            <p className={clsx(classCell, styles.gray)}>{10}</p>
           </div>
           <div className={styles.tokenCell}>
             <p className={clsx(classCell, styles.gray)}>
-              {metagraphToken.balance} {metagraphToken.symbol}
+              {10} {metagraphToken.metagraphSymbol}
             </p>
           </div>
         </>

@@ -1,11 +1,11 @@
-import { MetagraphToken } from '../../types';
+import { MetagraphInfo } from '../../types';
 import { MetagraphTokensBalances } from './components/MetagraphTokensBalances';
 
 import styles from './MetagraphTokensSection.module.scss';
 
 type MetagraphTokensProps = {
-  metagraphTokens: MetagraphToken[];
-  defaultOption: MetagraphToken;
+  metagraphTokens: MetagraphInfo[];
+  defaultOption: MetagraphInfo;
   skeleton?: boolean;
 };
 

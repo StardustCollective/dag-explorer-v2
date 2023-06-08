@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetAddressBalance, useGetAddressTransactions } from '../../api/block-explorer';
-import { MetagraphToken, Transaction } from '../../types';
+import { MetagraphInfo, Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
@@ -45,8 +45,8 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [modalOpen, setModalOpen] = useState(false);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
-  const [metagraphTokens, setMetagraphTokens] = useState<MetagraphToken[]>([]);
-  const [metagraphTokensWithAmount, setMetagraphTokensWithAmount] = useState<MetagraphToken[]>([]);
+  const [metagraphTokens, setMetagraphTokens] = useState<MetagraphInfo[]>([]);
+  const [metagraphTokensWithAmount, setMetagraphTokensWithAmount] = useState<MetagraphInfo[]>([]);
   const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens'>('transactions');
 
   useEffect(() => {
@@ -96,30 +96,23 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   useEffect(() => {
     const data = [
       {
-        name: 'DAG',
-        symbol: 'DAG',
-        price: 123,
-        balance: 0,
-        amount: 10,
+        metagraphName: 'DAG',
+        metagraphSymbol: 'DAG',
+        metagraphIcon: '',
       },
       {
-        name: 'DAG2',
-        symbol: 'DAG',
-        price: 123,
-        balance: 2,
-        amount: 10,
+        metagraphName: 'DAG2',
+        metagraphSymbol: 'DAG',
+        metagraphIcon: '',
       },
     ];
 
     setMetagraphTokens(data);
     setMetagraphTokensWithAmount([
       {
-        name: `All ${data.length} L0 tokens`,
-        symbol: 'ALL',
-        icon: '',
-        price: 123,
-        balance: 2000000000000,
-        amount: 10,
+        metagraphName: `All ${data.length} L0 tokens`,
+        metagraphSymbol: 'ALL',
+        metagraphIcon: '',
       },
       ...data,
     ]);
