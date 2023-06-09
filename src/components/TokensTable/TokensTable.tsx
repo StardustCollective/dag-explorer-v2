@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MetagraphInfo } from '../../types';
+import { AddressMetagraphResponse } from '../../types';
 import { SkeletonTokenRows } from './SkeletonTokenRows';
 import { TokenRow } from './TokenRow';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
@@ -12,11 +12,11 @@ export const TokensTable = ({
   amount,
   loading,
 }: {
-  metagraphTokens: MetagraphInfo[];
+  metagraphTokens: AddressMetagraphResponse[];
   amount: number;
   loading: boolean;
 }) => {
-  const [rows, setRows] = useState<MetagraphInfo[]>([]);
+  const [rows, setRows] = useState<AddressMetagraphResponse[]>([]);
   const [elements, setElements] = useState<Set<CardDataRow[]>>(new Set<[]>);
 
   useEffect(() => {
@@ -34,8 +34,8 @@ export const TokensTable = ({
             element: <img src={node.metagraphIcon} className={styles.metagraphIcon}/>
           });
           tokenCard.push({value: node.metagraphSymbol});
-          tokenCard.push({value: 10});
-          tokenCard.push({value: 10});
+          tokenCard.push({value: 0});
+          tokenCard.push({value: node.balance});
           tokensCards.add(tokenCard);
         }        
       });
@@ -57,7 +57,7 @@ export const TokensTable = ({
               />
             ))
           ) : (
-            <SkeletonTokenRows amountRows={5} variant={styles.rowVariantGray} />
+            <SkeletonTokenRows amountRows={amount} variant={styles.rowVariantGray} />
            )} 
         </div>
       </div>

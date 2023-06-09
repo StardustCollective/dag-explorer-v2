@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { MetagraphInfo } from '../../types';
+import { AddressMetagraphResponse } from '../../types';
 
 import { ReactComponent as DefaultTokenIcon } from '../../assets/icons/DefaultTokenIcon.svg';
 import { ReactComponent as DAGToken } from '../../assets/icons/DAGToken.svg';
@@ -10,7 +10,7 @@ export const TokenRow = ({
   metagraphToken,
   variant,
 }: {
-  metagraphToken: MetagraphInfo | undefined;
+  metagraphToken: AddressMetagraphResponse | undefined;
   variant?: string;
 }) => {
   const classCell = clsx(styles.normalText, 'normalPlexMono');
@@ -34,11 +34,11 @@ export const TokenRow = ({
             <p className={clsx(classCell, styles.gray)}>{metagraphToken.metagraphSymbol}</p>
           </div>
           <div className={styles.tokenCell}>
-            <p className={clsx(classCell, styles.gray)}>{10}</p>
+            <p className={clsx(classCell, styles.gray)}>0</p>
           </div>
           <div className={styles.tokenCell}>
             <p className={clsx(classCell, styles.gray)}>
-              {10} {metagraphToken.metagraphSymbol}
+            {metagraphToken.balance} {metagraphToken.metagraphSymbol}
             </p>
           </div>
         </>

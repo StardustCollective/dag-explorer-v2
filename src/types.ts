@@ -152,3 +152,7 @@ export type MetagraphTransactionResponse = {
   metagraph: MetagraphInfo;
   transaction?: Transaction;
 };
+
+export type AddressMetagraphResponse = MetagraphInfo & {
+  balance: number
+};

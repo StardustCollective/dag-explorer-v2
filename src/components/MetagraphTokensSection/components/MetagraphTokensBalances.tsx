@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useComponentVisible } from '../../../utils/clickOutside';
-import { MetagraphInfo } from '../../../types';
+import { AddressMetagraphResponse } from '../../../types';
 import { formatPrice } from '../../../utils/numbers';
 import { ReactComponent as ChevronUpIcon } from '../../../assets/icons/chevron-up.svg';
 import { ReactComponent as ChevronDownIcon } from '../../../assets/icons/chevron-down.svg';
@@ -10,13 +10,13 @@ import { ReactComponent as DAGToken } from '../../../assets/icons/DAGToken.svg';
 import styles from './MetagraphTokensBalances.module.scss';
 
 type MetagraphTokensBalancesProps = {
-  metagraphTokens: MetagraphInfo[];
-  defaultOption: MetagraphInfo;
+  metagraphTokens: AddressMetagraphResponse[];
+  defaultOption: AddressMetagraphResponse;
 };
 
 export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: MetagraphTokensBalancesProps) => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
-  const [selectedMetagraphToken, setSelectedMetagraphToken] = useState<MetagraphInfo>();
+  const [selectedMetagraphToken, setSelectedMetagraphToken] = useState<AddressMetagraphResponse>();
 
   useEffect(() => {
     setSelectedMetagraphToken(defaultOption);
@@ -35,7 +35,7 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
               <div>
                 <span className={styles.name}>{selectedMetagraphToken.metagraphName}</span>
                 <span className={styles.amount}>
-                  (${formatPrice(10, { usd: 100000 }, 2)} USD)
+                  (${formatPrice(selectedMetagraphToken.balance, { usd: 100000 }, 2)} USD)
                 </span>
               </div>
               {isComponentVisible ? (
@@ -69,9 +69,9 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
                   </div>
                   <div className={styles.amountList}>
                     <span>
-                      {10} {option.metagraphSymbol}
+                      {option.balance} {option.metagraphSymbol}
                     </span>
-                    <span>${formatPrice(10, { usd: 1 }, 2)} USD</span>
+                    <span>${formatPrice(option.balance, { usd: 1 }, 2)} USD</span>
                   </div>
                 </div>
               ))}
