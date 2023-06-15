@@ -141,3 +141,18 @@ export type MainnetOneClusterInfo = {
   status: 'Ready';
   reputation: number;
 };
+
+export type MetagraphInfo = {
+  metagraphName: string;
+  metagraphSymbol: string;
+  metagraphIcon: string;
+}
+
+export type MetagraphTransactionResponse = {
+  metagraph: MetagraphInfo;
+  transaction?: Transaction;
+};
+
+export type AddressMetagraphResponse = MetagraphInfo & {
+  balance: number
+};

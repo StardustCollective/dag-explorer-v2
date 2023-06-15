@@ -51,9 +51,10 @@ a {
   .headerSubtitle {
     font-family: 'Lausanne';
     font-style: 'regular';
-    font-weight: 600;
-    font-size: 12px;
-    color: $grayCool-500;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: $grayCool-600;
     margin: 0;
   }
   .networkName {

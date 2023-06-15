@@ -30,14 +30,24 @@ export const formatPrice = (amount: number, dagInfo: any, toFixed: number) => {
   return formater.format(parseFloat((parseFloat(formatedValue) * dagInfo.usd).toFixed(toFixed)));
 };
 
-export const formatAmount = (amount: number, toFixed: number, forExport?: boolean) => {
+export const formatPriceWithSymbol = (
+  amount: number,
+  dagInfo: any,
+  toFixed: number,
+  prefixSymbol: string,
+  suffixSymbol: string
+) => {
+  return `${prefixSymbol || ''}${formatPrice(amount, dagInfo, toFixed)} ${suffixSymbol ||''}`;
+};
+
+export const formatAmount = (amount: number, toFixed: number, forExport?: boolean, suffix = 'DAG') => {
   const formatedValue = (amount / Math.pow(10, 8)).toFixed(toFixed);
   const regex = formatedValue.match('^(\\d+\\.\\d*?)(0+)$');
   let toReturn: string;
   if (regex) {
     const subString = regex[1].split('.')[1];
     if (subString && subString.length >= 2) {
-      return forExport ? regex[1] : formater.format(parseFloat(regex[1])) + ' DAG';
+      return forExport ? regex[1] : formater.format(parseFloat(regex[1])) + ' ' + suffix;
     } else {
       toReturn = subString.length === 1 ? regex[1].concat('0') : regex[1].concat('00');
     }
@@ -46,7 +56,7 @@ export const formatAmount = (amount: number, toFixed: number, forExport?: boolea
     ? toReturn
       ? toReturn
       : formater.format(parseFloat(formatedValue))
-    : (toReturn ? formater.format(parseFloat(toReturn)) : formater.format(parseFloat(formatedValue))) + ' DAG';
+    : (toReturn ? formater.format(parseFloat(toReturn)) : formater.format(parseFloat(formatedValue))) + ' ' + suffix;
 };
 
 export const fitStringInCell = (value: string) => value.slice(0, 5) + '...' + value.slice(value.length - 5);
