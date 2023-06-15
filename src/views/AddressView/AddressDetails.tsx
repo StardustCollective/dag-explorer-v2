@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetAddressBalance, useGetAddressTransactions } from '../../api/block-explorer';
-import { MetagraphToken, Transaction } from '../../types';
+import { AddressMetagraphResponse, Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
@@ -21,6 +21,7 @@ import { TokensTable } from '../../components/TokensTable/TokensTable';
 
 import { isValidAddress } from '../../utils/search';
 import { useGetAddressTotalRewards } from '../../api/block-explorer/address';
+import { useGetAdressMetagraphs } from '../../api/block-explorer/metagraph-address';
 import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
 import { handleFetchedData, handlePagination } from '../../utils/pagination';
 import { FetchedData, Params } from '../../types/requests';
@@ -45,9 +46,10 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [modalOpen, setModalOpen] = useState(false);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
-  const [metagraphTokens, setMetagraphTokens] = useState<MetagraphToken[]>([]);
-  const [metagraphTokensWithAmount, setMetagraphTokensWithAmount] = useState<MetagraphToken[]>([]);
   const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens'>('transactions');
+  const addressMetagraphs = useGetAdressMetagraphs(addressId);
+  const [metagraphTokens, setMetagraphTokens] = useState<AddressMetagraphResponse[]>([]);
+  const [metagraphTokensTable, setMetagraphTokensTable] = useState<AddressMetagraphResponse[]>([]);
 
   useEffect(() => {
     if (!isValidAddress.test(addressId) && !SPECIAL_ADDRESSES_LIST.includes(addressId)) {
@@ -72,6 +74,28 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   }, [addressBalance.isFetching]);
 
   useEffect(() => {
+    if (!addressMetagraphs.isFetching && !addressMetagraphs.isError) {
+      const metagraphs = addressMetagraphs.data;
+      const metagraphsSize = metagraphs.length;
+
+      const totalBalance = metagraphs.reduce(function(accumulate, current){
+        return accumulate + current.balance;
+      }, 0);
+
+      setMetagraphTokensTable(metagraphs);
+      setMetagraphTokens([
+        {
+          metagraphName: `All ${metagraphsSize} L0 tokens`,
+          metagraphSymbol: 'ALL',
+          metagraphIcon: '',
+          balance: totalBalance,
+        },
+        ...metagraphs,
+      ]);
+    }
+  }, [addressMetagraphs.isFetching]);
+
+  useEffect(() => {
     if (!totalRewards.isFetching && !totalRewards.isError) {
       if (totalRewards.data.isValidator) {
         setAllTimeRewards(totalRewards.data.totalAmount ?? 0);
@@ -91,39 +115,10 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     if (addressBalance.isError) {
       setError(addressBalance.error.message);
     }
-  }, [addressInfo.isError, addressBalance.isError]);
-
-  useEffect(() => {
-    const data = [
-      {
-        name: 'DAG',
-        symbol: 'DAG',
-        price: 123,
-        balance: 0,
-        amount: 10,
-      },
-      {
-        name: 'DAG2',
-        symbol: 'DAG',
-        price: 123,
-        balance: 2,
-        amount: 10,
-      },
-    ];
-
-    setMetagraphTokens(data);
-    setMetagraphTokensWithAmount([
-      {
-        name: `All ${data.length} L0 tokens`,
-        symbol: 'ALL',
-        icon: '',
-        price: 123,
-        balance: 2000000000000,
-        amount: 10,
-      },
-      ...data,
-    ]);
-  }, []);
+    if (addressMetagraphs.isError) {
+      setError(addressMetagraphs.error.message);
+    }
+  }, [addressInfo.isError, addressBalance.isError, addressMetagraphs.isError]);
 
   const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
     addressTxs,
@@ -142,6 +137,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   };
 
   const skeleton = addressBalance.isFetching || totalRewards.isFetching || !dagInfo;
+  const metagraphSkeleton = addressMetagraphs.isFetching || metagraphTokens.length === 0;
 
   return (
     <>
@@ -184,18 +180,14 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   borderBottom
                   title={'Balance'}
                   value={skeleton ? '' : balance ? formatAmount(balance, 8) : '0 DAG'}
-                  subValue={
-                    skeleton
-                      ? ''
-                      : `(${formatPriceWithSymbol(balance || 0, dagInfo, 2, '$', 'USD')})`
-                  }
+                  subValue={skeleton ? '' : `(${formatPriceWithSymbol(balance || 0, dagInfo, 2, '$', 'USD')})`}
                   skeleton={skeleton}
                   isLargeRow
                 />
                 <MetagraphTokensSection
-                  skeleton={skeleton}
-                  metagraphTokens={metagraphTokensWithAmount}
-                  defaultOption={metagraphTokensWithAmount[0]}
+                  skeleton={metagraphSkeleton}
+                  metagraphTokens={metagraphTokens}
+                  defaultOption={metagraphTokens[0]}
                 />
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow
@@ -252,7 +244,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 icon={<AddressShape />}
               />
             ) : (
-              <TokensTable metagraphTokens={metagraphTokens} amount={5} loading={!metagraphTokens} />
+              <TokensTable metagraphTokens={metagraphTokensTable} amount={5} loading={!metagraphTokensTable} />
             )}
           </div>
           <div className={`${styles.row6}`}>

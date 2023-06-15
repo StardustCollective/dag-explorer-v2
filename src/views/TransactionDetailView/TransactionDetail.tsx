@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useGetTransaction } from '../../api/block-explorer';
 import { Card } from '../../components/Card/Card';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
-import { Transaction } from '../../types';
+import { MetagraphInfo, Transaction } from '../../types';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
@@ -19,11 +19,16 @@ import { CheckCircleShape } from '../../components/Shapes/CheckCircle';
 import DAGToken from '../../assets/icons/DAGToken.svg';
 
 import styles from './TransactionDetail.module.scss';
+import { useGetMetagraphTransaction } from '../../api/block-explorer/metagraph-transaction';
 
 export const TransactionDetail = () => {
   const { transactionHash } = useParams();
-  const transaction = useGetTransaction(transactionHash);
-  const [data, setData] = useState<Transaction | undefined>(undefined);
+
+  const rawTransaction = useGetTransaction(transactionHash);
+  const metagraphTransaction = useGetMetagraphTransaction(transactionHash);
+
+  const [metagraphInfo, setMetagraphInfo] = useState<MetagraphInfo>(undefined);
+  const [transaction, setTransaction] = useState<Transaction>(undefined);
 
   const [dagInfo, setDagInfo] = useState(null);
   const [btcInfo, setBtcInfo] = useState(null);
@@ -47,24 +52,37 @@ export const TransactionDetail = () => {
   }, [prices.isFetching]);
 
   useEffect(() => {
-    if (!transaction.isFetching && !transaction.isError) {
-      setData(transaction.data);
+    if (!rawTransaction.isFetching && !rawTransaction.isError) {
+      setTransaction(rawTransaction.data);
     }
-  }, [transaction.isFetching]);
+  }, [rawTransaction.isFetching]);
 
   useEffect(() => {
-    if (transaction.isError || prices.isError) {
-      setError(transaction.error.message || prices.error.message);
+    if (!metagraphTransaction.isFetching && !metagraphTransaction.isError) {
+      if (metagraphTransaction.data && metagraphTransaction.data.transaction) {
+        setTransaction(metagraphTransaction.data.transaction);
+      } 
+      if (metagraphTransaction.data.metagraph.metagraphName) {
+        setMetagraphInfo(metagraphTransaction.data.metagraph);
+      } else {
+        setMetagraphInfo({
+          metagraphName: 'DAG',
+          metagraphSymbol: 'DAG',
+          metagraphIcon: DAGToken,
+        });
+      }
+    }
+  }, [metagraphTransaction.isFetching]);
+
+  useEffect(() => {
+    if ((rawTransaction.isError && metagraphTransaction.isError) || prices.isError) {
+      setError(rawTransaction.error.message || prices.error.message || metagraphTransaction.error.message);
     } else {
       setError(undefined);
     }
-  }, [transaction.status, prices.status]);
-  const skeleton = transaction.isFetching || !data;
+  }, [rawTransaction.status, prices.status, metagraphTransaction.status]);
 
-  const tokenInfos = {
-    tokenName: 'DAG',
-    tokenImage: null,
-  };
+  const skeleton = (rawTransaction.isFetching && metagraphTransaction.isFetching) || (!transaction || !metagraphInfo);
 
   return (
     <>
@@ -94,30 +112,50 @@ export const TransactionDetail = () => {
                       <DetailRow
                         borderBottom
                         title={'Token'}
-                        value={!skeleton ? tokenInfos.tokenName : ''}
+                        value={!skeleton ? metagraphInfo.metagraphSymbol : ''}
                         skeleton={skeleton}
                         icon={
-                          tokenInfos.tokenImage ? (
-                            <img src={tokenInfos.tokenImage} alt="token_image" className={`${styles.tokenImage}`} />
+                          !skeleton ? (
+                            <img
+                              src={metagraphInfo.metagraphIcon}
+                              alt="token_image"
+                              className={`${styles.tokenImage}`}
+                            />
                           ) : (
-                            <img src={DAGToken} alt="token_image" className={`${styles.tokenImage}`} />
+                            <></>
                           )
                         }
                       />
                       <DetailRow
                         borderBottom
                         title={'Amount'}
-                        value={!skeleton ? formatAmount(data.amount, 8) : ''}
+                        value={
+                          !skeleton
+                            ? formatAmount(transaction.amount, 8, false, metagraphInfo.metagraphSymbol || 'DAG')
+                            : ''
+                        }
                         subValue={
-                          !skeleton && data && dagInfo && `(${formatPriceWithSymbol(data.amount || 0, dagInfo, 2, '$', 'USD')})`
+                          !skeleton &&
+                          metagraphInfo &&
+                          transaction &&
+                          dagInfo &&
+                          `(${formatPriceWithSymbol(transaction.amount || 0, {usd: 0}, 2, '$', 'USD')})`
                         }
                         skeleton={skeleton}
                       />
                       <DetailRow
                         title={'Transaction Fee'}
-                        value={!skeleton ? formatAmount(data.fee, 8) : ''}
+                        value={
+                          !skeleton
+                            ? formatAmount(transaction.fee, 8, false, metagraphInfo.metagraphSymbol || 'DAG')
+                            : ''
+                        }
                         subValue={
-                          !skeleton && data && dagInfo &&`(${formatPriceWithSymbol(data.fee || 0, dagInfo, 2, '$', 'USD')})`
+                          !skeleton &&
+                          metagraphInfo &&
+                          transaction &&
+                          dagInfo &&
+                          `(${formatPriceWithSymbol(transaction.fee || 0, dagInfo, 2, '$', 'USD')})`
                         }
                         skeleton={skeleton}
                       />
@@ -127,7 +165,7 @@ export const TransactionDetail = () => {
                         title={'From'}
                         linkTo={'/address'}
                         borderBottom
-                        value={!skeleton ? data.source : ''}
+                        value={!skeleton ? transaction.source : ''}
                         skeleton={skeleton}
                         icon={<AddressShape />}
                         copy
@@ -137,7 +175,7 @@ export const TransactionDetail = () => {
                       <DetailRow
                         title={'To'}
                         linkTo={'/address'}
-                        value={!skeleton ? data.destination : ''}
+                        value={!skeleton ? transaction.destination : ''}
                         skeleton={skeleton}
                         icon={<AddressShape />}
                         copy
@@ -149,7 +187,7 @@ export const TransactionDetail = () => {
                       <DetailRow
                         title={'Transaction Hash'}
                         borderBottom
-                        value={!skeleton ? data.hash : ''}
+                        value={!skeleton ? transaction.hash : ''}
                         skeleton={skeleton}
                         icon={<TransactionShape />}
                         copy
@@ -160,7 +198,7 @@ export const TransactionDetail = () => {
                         title={'Block'}
                         linkTo={'/blocks'}
                         borderBottom
-                        value={!skeleton ? data.blockHash : ''}
+                        value={!skeleton ? transaction.blockHash : ''}
                         skeleton={skeleton}
                         icon={<SnapshotShape />}
                         copy
@@ -171,17 +209,17 @@ export const TransactionDetail = () => {
                         title={'Snapshot Ordinal'}
                         linkTo={'/snapshots'}
                         borderBottom
-                        value={!skeleton ? data.snapshotOrdinal.toString() : ''}
+                        value={!skeleton ? transaction.snapshotOrdinal.toString() : ''}
                         skeleton={skeleton}
                         icon={<SnapshotShape size={'1.8rem'} />}
                       />
                       <DetailRow
                         title={'Timestamp'}
                         borderBottom
-                        value={!skeleton ? formatTime(transaction.data.timestamp, 'relative') : ''}
+                        value={!skeleton ? formatTime(transaction.timestamp, 'relative') : ''}
                         skeleton={skeleton}
                         isLong
-                        date={!skeleton ? transaction.data.timestamp : ''}
+                        date={!skeleton ? transaction.timestamp : ''}
                       />
                       <DetailRow
                         title={'Status'}

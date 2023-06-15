@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MetagraphToken } from '../../types';
+import { AddressMetagraphResponse } from '../../types';
 import { SkeletonTokenRows } from './SkeletonTokenRows';
 import { TokenRow } from './TokenRow';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
@@ -12,11 +12,11 @@ export const TokensTable = ({
   amount,
   loading,
 }: {
-  metagraphTokens: MetagraphToken[];
+  metagraphTokens: AddressMetagraphResponse[];
   amount: number;
   loading: boolean;
 }) => {
-  const [rows, setRows] = useState<MetagraphToken[]>([]);
+  const [rows, setRows] = useState<AddressMetagraphResponse[]>([]);
   const [elements, setElements] = useState<Set<CardDataRow[]>>(new Set<[]>);
 
   useEffect(() => {
@@ -30,11 +30,11 @@ export const TokensTable = ({
         if(node){
           const tokenCard: CardDataRow[] = [];
           tokenCard.push({
-            value: node.name,
-            element: <img src={node.icon} className={styles.metagraphIcon}/>
+            value: node.metagraphName,
+            element: <img src={node.metagraphIcon} className={styles.metagraphIcon}/>
           });
-          tokenCard.push({value: node.symbol});
-          tokenCard.push({value: node.price});
+          tokenCard.push({value: node.metagraphSymbol});
+          tokenCard.push({value: 0});
           tokenCard.push({value: node.balance});
           tokensCards.add(tokenCard);
         }        
@@ -52,12 +52,12 @@ export const TokensTable = ({
             rows.map((metagraphToken, idx) => (
               <TokenRow
                 metagraphToken={metagraphToken}
-                key={metagraphToken?.name || idx}
+                key={metagraphToken?.metagraphName || idx}
                 variant={idx % 2 === 0 ? styles.rowVariantWhite : undefined}
               />
             ))
           ) : (
-            <SkeletonTokenRows amountRows={5} variant={styles.rowVariantGray} />
+            <SkeletonTokenRows amountRows={amount} variant={styles.rowVariantGray} />
            )} 
         </div>
       </div>

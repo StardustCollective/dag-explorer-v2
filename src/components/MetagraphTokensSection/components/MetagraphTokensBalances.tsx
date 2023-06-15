@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useComponentVisible } from '../../../utils/clickOutside';
-import { MetagraphToken } from '../../../types';
+import { AddressMetagraphResponse } from '../../../types';
 import { formatPrice } from '../../../utils/numbers';
 import { ReactComponent as ChevronUpIcon } from '../../../assets/icons/chevron-up.svg';
 import { ReactComponent as ChevronDownIcon } from '../../../assets/icons/chevron-down.svg';
@@ -10,13 +10,13 @@ import { ReactComponent as DAGToken } from '../../../assets/icons/DAGToken.svg';
 import styles from './MetagraphTokensBalances.module.scss';
 
 type MetagraphTokensBalancesProps = {
-  metagraphTokens: MetagraphToken[];
-  defaultOption: MetagraphToken;
+  metagraphTokens: AddressMetagraphResponse[];
+  defaultOption: AddressMetagraphResponse;
 };
 
 export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: MetagraphTokensBalancesProps) => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
-  const [selectedMetagraphToken, setSelectedMetagraphToken] = useState<MetagraphToken>();
+  const [selectedMetagraphToken, setSelectedMetagraphToken] = useState<AddressMetagraphResponse>();
 
   useEffect(() => {
     setSelectedMetagraphToken(defaultOption);
@@ -33,9 +33,9 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
               onClick={() => setIsComponentVisible(!isComponentVisible)}
             >
               <div>
-                <span className={styles.name}>{selectedMetagraphToken.name}</span>
+                <span className={styles.name}>{selectedMetagraphToken.metagraphName}</span>
                 <span className={styles.amount}>
-                  (${formatPrice(selectedMetagraphToken.balance, { usd: 100000 }, 2)} USD)
+                  (${formatPrice(selectedMetagraphToken.balance, { usd: 0 }, 2)} USD)
                 </span>
               </div>
               {isComponentVisible ? (
@@ -51,27 +51,27 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
               {metagraphTokens.map((option) => (
                 <div
                   className={styles.dropdownItem}
-                  key={option.name}
+                  key={option.metagraphName}
                   onClick={() => {
                     setIsComponentVisible(!isComponentVisible);
                     setSelectedMetagraphToken(option);
                   }}
                 >
                   <div className={styles.nameList}>
-                    {option.icon ? (
-                      <img src={option.icon} />
-                    ) : option.symbol === 'DAG' ? (
+                    {option.metagraphIcon ? (
+                      <img src={option.metagraphIcon} />
+                    ) : option.metagraphSymbol === 'DAG' ? (
                       <DAGToken />
                     ) : (
                       <DefaultTokenIcon />
                     )}
-                    <span>{option.name}</span>
+                    <span>{option.metagraphName}</span>
                   </div>
                   <div className={styles.amountList}>
                     <span>
-                      {option.amount} {option.symbol}
+                      {option.balance} {option.metagraphSymbol}
                     </span>
-                    <span>${formatPrice(option.amount, { usd: option.price }, 2)} USD</span>
+                    <span>${formatPrice(option.balance, { usd: 0 }, 2)} USD</span>
                   </div>
                 </div>
               ))}

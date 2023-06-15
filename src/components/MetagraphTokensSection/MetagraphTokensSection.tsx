@@ -1,11 +1,11 @@
-import { MetagraphToken } from '../../types';
+import { AddressMetagraphResponse } from '../../types';
 import { MetagraphTokensBalances } from './components/MetagraphTokensBalances';
 
 import styles from './MetagraphTokensSection.module.scss';
 
 type MetagraphTokensProps = {
-  metagraphTokens: MetagraphToken[];
-  defaultOption: MetagraphToken;
+  metagraphTokens: AddressMetagraphResponse[];
+  defaultOption: AddressMetagraphResponse;
   skeleton?: boolean;
 };
 
