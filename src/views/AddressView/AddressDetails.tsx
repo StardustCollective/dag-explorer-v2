@@ -78,13 +78,17 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       const metagraphs = addressMetagraphs.data;
       const metagraphsSize = metagraphs.length;
 
+      const totalBalance = metagraphs.reduce(function(accumulate, current){
+        return accumulate + current.balance;
+      }, 0);
+
       setMetagraphTokensTable(metagraphs);
       setMetagraphTokens([
         {
           metagraphName: `All ${metagraphsSize} L0 tokens`,
           metagraphSymbol: 'ALL',
           metagraphIcon: '',
-          balance: 0,
+          balance: totalBalance,
         },
         ...metagraphs,
       ]);

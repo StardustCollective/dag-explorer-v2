@@ -52,12 +52,16 @@ export const TransactionDetail = () => {
   }, [prices.isFetching]);
 
   useEffect(() => {
-    if (
-      !rawTransaction.isFetching &&
-      !metagraphTransaction.isFetching &&
-      !rawTransaction.isError &&
-      !metagraphTransaction.isError
-    ) {
+    if (!rawTransaction.isFetching && !rawTransaction.isError) {
+      setTransaction(rawTransaction.data);
+    }
+  }, [rawTransaction.isFetching]);
+
+  useEffect(() => {
+    if (!metagraphTransaction.isFetching && !metagraphTransaction.isError) {
+      if (metagraphTransaction.data && metagraphTransaction.data.transaction) {
+        setTransaction(metagraphTransaction.data.transaction);
+      } 
       if (metagraphTransaction.data.metagraph.metagraphName) {
         setMetagraphInfo(metagraphTransaction.data.metagraph);
       } else {
@@ -67,19 +71,18 @@ export const TransactionDetail = () => {
           metagraphIcon: DAGToken,
         });
       }
-      setTransaction(metagraphTransaction.data.transaction || rawTransaction.data);
     }
-  }, [rawTransaction.isFetching, metagraphTransaction.isFetching]);
+  }, [metagraphTransaction.isFetching]);
 
   useEffect(() => {
-    if (rawTransaction.isError || prices.isError || metagraphTransaction.isError) {
+    if ((rawTransaction.isError && metagraphTransaction.isError) || prices.isError) {
       setError(rawTransaction.error.message || prices.error.message || metagraphTransaction.error.message);
     } else {
       setError(undefined);
     }
   }, [rawTransaction.status, prices.status, metagraphTransaction.status]);
 
-  const skeleton = (rawTransaction.isFetching && metagraphTransaction.isFetching) || (!transaction && !metagraphInfo);
+  const skeleton = (rawTransaction.isFetching && metagraphTransaction.isFetching) || (!transaction || !metagraphInfo);
 
   return (
     <>
@@ -136,7 +139,7 @@ export const TransactionDetail = () => {
                           metagraphInfo &&
                           transaction &&
                           dagInfo &&
-                          `(${formatPriceWithSymbol(transaction.amount || 0, dagInfo, 2, '$', 'USD')})`
+                          `(${formatPriceWithSymbol(transaction.amount || 0, {usd: 0}, 2, '$', 'USD')})`
                         }
                         skeleton={skeleton}
                       />

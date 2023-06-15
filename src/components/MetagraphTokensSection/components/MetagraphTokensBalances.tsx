@@ -35,7 +35,7 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
               <div>
                 <span className={styles.name}>{selectedMetagraphToken.metagraphName}</span>
                 <span className={styles.amount}>
-                  (${formatPrice(selectedMetagraphToken.balance, { usd: 100000 }, 2)} USD)
+                  (${formatPrice(selectedMetagraphToken.balance, { usd: 0 }, 2)} USD)
                 </span>
               </div>
               {isComponentVisible ? (
@@ -71,7 +71,7 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
                     <span>
                       {option.balance} {option.metagraphSymbol}
                     </span>
-                    <span>${formatPrice(option.balance, { usd: 1 }, 2)} USD</span>
+                    <span>${formatPrice(option.balance, { usd: 0 }, 2)} USD</span>
                   </div>
                 </div>
               ))}
