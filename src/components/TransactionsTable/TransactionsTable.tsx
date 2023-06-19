@@ -107,7 +107,7 @@ export const TransactionsTable = ({
         linkTo: '/address/' + tx.destination,
         toCopy: tx.destination,
       });
-      txCard.push({ value: formatAmount(tx.amount, 8) });
+      txCard.push({ value: formatAmount(tx.amount, 8, false, tx.symbol) });
       cardsSet.add(txCard);
     });
   }

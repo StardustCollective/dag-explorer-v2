@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllSnapshots } from '../../api/block-explorer/global-snapshot';
-import { useGetAllTransactions } from '../../api/block-explorer/transaction';
+import { useGetLatestTransactions } from '../../api/block-explorer/transaction';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 import { TransactionShape } from '../../components/Shapes/TransactionShape';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
@@ -20,7 +20,7 @@ const HomeTables = ({
 }) => {
   const navigate = useNavigate();
   const snapshotsInfo = useGetAllSnapshots({ limit: limit }, refetchEvery);
-  const transactionsInfo = useGetAllTransactions({ limit: limit }, refetchEvery);
+  const transactionsInfo = useGetLatestTransactions({ limit: limit }, refetchEvery);
 
   const [transactions, setTransactions] = useState<Transaction[]>(null);
   const [snapshots, setSnapshots] = useState<Snapshot[]>(null);

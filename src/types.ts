@@ -49,6 +49,8 @@ export type Transaction = {
   blockHash: string;
   timestamp: string;
   transactionOriginal: null;
+  symbol?: string;
+  isMetagraphTransaction?: boolean
 };
 
 type TransactionReference = {
