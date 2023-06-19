@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
-import { Transaction } from '../../types';
+import { MetagraphTransactionResponse, Transaction } from '../../types';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 
 const { REACT_APP_TESTNET_BE_URL, REACT_APP_MAINNET_TWO_BE_URL, REACT_APP_DAG_EXPLORER_API_URL } = process.env;
@@ -12,7 +12,10 @@ const getUrl = () => {
 };
 
 export const useGetTransaction = (hash: string) => {
-  return useFetch<Transaction>(getUrl() + '/' + hash);
+  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const url = `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/transactions/${hash}`;
+
+  return useFetch<MetagraphTransactionResponse>(url);
 };
 
 export const useGetAllTransactions = (params?: any, refetchInterval?: number) => {

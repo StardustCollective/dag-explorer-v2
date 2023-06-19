@@ -85,7 +85,7 @@ export const TransactionRow = ({
             </div>
           </div>
           <div className={`${styles.txnCell} ${styles.amount}`}>
-            {dagInfo && <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>}
+            {dagInfo && !tx.isMetagraphTransaction && <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>}
             <div className={styles.dag}>{formatAmount(tx.amount, 8, false, tx.symbol)}</div>
           </div>
         </>

@@ -145,6 +145,7 @@ export type MainnetOneClusterInfo = {
 };
 
 export type MetagraphInfo = {
+  metagraphId: string;
   metagraphName: string;
   metagraphSymbol: string;
   metagraphIcon: string;

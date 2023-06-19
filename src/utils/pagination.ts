@@ -42,10 +42,11 @@ function handlePagination<TData, TFetchedData extends DataFields[]>(
 const handleFetchedData = (
   setFetchedData: React.Dispatch<React.SetStateAction<DataFields[]>>,
   endpointData: any,
-  currentPage: number
+  currentPage: number,
+  resetPagination ?: boolean
 ) => {
   setFetchedData((data) =>
-    data.length === 0
+    data.length === 0 || resetPagination
       ? [{ data: endpointData.data?.data, page: currentPage, next: endpointData.data?.meta?.next }]
       : currentPage >= data.length
       ? [...data, { data: endpointData.data?.data, page: currentPage, next: endpointData.data?.meta?.next }]
