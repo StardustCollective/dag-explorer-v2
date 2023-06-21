@@ -76,7 +76,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
         setAddressTxs(transactions);
       }
 
-      handleFetchedData(setFetchedData, addressInfo, currentPage, tokenChanged);
+      handleFetchedData(setFetchedData, addressInfo, currentPage, setLastPage, tokenChanged);
       setTokenChanged(false);
       setTxsSkeleton(false);
     }

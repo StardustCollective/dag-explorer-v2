@@ -27,7 +27,7 @@ export const Transactions = () => {
       if (transactionsInfo.data?.data.length > 0) {
         setTransactions(transactionsInfo.data.data);
       }
-      handleFetchedData(setFetchedData, transactionsInfo, currentPage);
+      handleFetchedData(setFetchedData, transactionsInfo, currentPage, setLastPage);
       setSkeleton(false);
     }
   }, [transactionsInfo.isLoading, transactionsInfo.isFetching]);
