@@ -2,7 +2,7 @@ name: 'PR #28 Build'
 on:
   push:
     branches:
-      - development/marcus/DEW-21/DEW-15/adding-support-to-metagraph-tokens
+      - development/marcus/LE-720/updating-fetching-last-transactions-to-include-metagraphs
 jobs:
   build:
     runs-on: ubuntu-latest
