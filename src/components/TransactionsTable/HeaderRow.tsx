@@ -101,7 +101,19 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
 
       {!forSnapshots && (
         <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
-          <p className={styles.headerText}>FROM / TO</p>
+          <p className={styles.headerText}>FROM</p>
+        </div>
+      )}
+      
+      {!forSnapshots && (
+        <div className={`${styles.headerColumn} ${styles.direction}`}>
+          <p className={styles.headerText}></p>
+        </div>
+      )}
+
+      {!forSnapshots && (
+        <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
+          <p className={styles.headerText}>TO</p>
         </div>
       )}
 

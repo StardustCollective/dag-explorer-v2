@@ -9,6 +9,7 @@ type FetchedData<T> = {
   data: T[];
   page: number;
   next?: string;
+  lastPage ?: boolean
 };
 
 export type { Params, FetchedData };

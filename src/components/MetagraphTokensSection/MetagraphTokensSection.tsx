@@ -8,7 +8,7 @@ type MetagraphTokensProps = {
   selectedOption: AddressMetagraphResponse;
   skeleton?: boolean;
   setSelectedMetagraph: (metagraph: AddressMetagraphResponse) => void;
-  setTokenChanged: (changed: boolean) => void
+  setTokenChanged: (changed: boolean) => void;
 };
 
 export const MetagraphTokensSection = ({

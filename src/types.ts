@@ -51,6 +51,8 @@ export type Transaction = {
   transactionOriginal: null;
   symbol?: string;
   isMetagraphTransaction?: boolean
+  metagraphId ?: string
+  direction?: string
 };
 
 type TransactionReference = {

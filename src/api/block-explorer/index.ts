@@ -13,4 +13,4 @@ export {
   useGetLatestSnapshotTransactions,
   useGetSnapshotTransactions,
 } from './global-snapshot';
-export { useGetTransaction } from './transaction';
+export { useGetTransaction, useGetMetagraphTransaction } from './transaction';

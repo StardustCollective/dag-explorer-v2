@@ -29,7 +29,6 @@
   background: none;
   border: none;
 
-  font-style: regular;
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
@@ -37,7 +36,7 @@
   color: #0F172A;
 
   cursor: pointer;
-  padding: 15px 12px;
+  padding: 14px 12px 14px 16px;
 
   display: flex;
   justify-content: space-between;
@@ -76,7 +75,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0px;
+  padding: 18px 0px;
   width: 100%;
   align-items: center;
   border-bottom: 0.5px solid $grayCool-200;
@@ -90,21 +89,8 @@
   color: $gray-900;
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  padding-left: 12px;
-
-  width: 100%;
-}
-
-.amount {
-  font-family: 'IBM Plex Mono';
-  color: $gray-500;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-
+  font-size: 14px;
+  line-height: 20px;
   width: 100%;
 }
 
@@ -117,6 +103,7 @@
   img, svg {
     width: 20px;
     height: 20px;
+    padding: 4px;
 
     border: 0.5px solid $gray-300;
     border-radius: 24px;
@@ -127,8 +114,8 @@
     color: $gray-900;
     font-style: regular;
     font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+    font-size: 14px;
+    line-height: 20px;
   }
 }
 
@@ -139,28 +126,13 @@
   width: 100%;
   padding-right: 16px;
 
-  span:nth-child(1) {
-    display: flex;
-    font-weight: 500;
-    font-size: 10px;
-    line-height: 18px;
-
-    display: flex;
-    align-items: center;
-    letter-spacing: 0.015em;
-    text-transform: uppercase;
-    color: $gray-900;
-  }
-
   font-family: 'IBM Plex Mono';
   font-style: regular;
   font-weight: 400;
-  font-size: 10px;
-  line-height: 18px;
-  letter-spacing: 0.015em;
-  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 20px;
   
-  color: $gray-600;
+  color: $gray-900;
 }
 
 .dropdownItem:hover {
@@ -182,4 +154,11 @@
   opacity: 1;
   transform: translateY(0);
   z-index: 3;
+}
+
+@include respond-below(md) {
+  .amountList {
+    font-size: 10px;
+    line-height: 15px;
+  }
 }

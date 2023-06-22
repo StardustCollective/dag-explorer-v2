@@ -95,7 +95,9 @@ export const TransactionsTable = ({
       const txCard: CardDataRow[] = [];
       txCard.push({
         value: fitStringInCell(tx.hash),
-        linkTo: '/transactions/' + tx.hash,
+        linkTo: tx.isMetagraphTransaction
+          ? `/metagraphs/${tx.metagraphId}/transactions/${tx.hash}`
+          : `/transactions/${tx.hash}`,
         toCopy: tx.hash,
         element: <TransactionShape />,
       });

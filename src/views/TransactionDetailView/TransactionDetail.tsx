@@ -16,14 +16,17 @@ import { TransactionShape } from '../../components/Shapes/TransactionShape';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 import { CheckCircleShape } from '../../components/Shapes/CheckCircle';
 import DAGToken from '../../assets/icons/DAGToken.svg';
+import DefaultTokenIcon from '../../assets/icons/DefaultTokenIcon.svg';
 
 import styles from './TransactionDetail.module.scss';
-import { useGetTransaction } from '../../api/block-explorer';
+import { useGetTransaction, useGetMetagraphTransaction } from '../../api/block-explorer';
 
 export const TransactionDetail = () => {
-  const { transactionHash } = useParams();
+  const { transactionHash, metagraphId } = useParams();
 
-  const rawTransaction = useGetTransaction(transactionHash);
+  const rawTransaction = metagraphId
+    ? useGetMetagraphTransaction(transactionHash, metagraphId)
+    : useGetTransaction(transactionHash);
 
   const [metagraphInfo, setMetagraphInfo] = useState<MetagraphInfo>(undefined);
   const [transaction, setTransaction] = useState<Transaction>(undefined);
@@ -52,13 +55,16 @@ export const TransactionDetail = () => {
   useEffect(() => {
     if (!rawTransaction.isFetching && !rawTransaction.isError) {
       const { metagraph, transaction } = rawTransaction.data;
-      
+
       if (transaction) {
         setTransaction(transaction);
       }
 
       if (metagraph.metagraphName === 'DAG') {
         metagraph.metagraphIcon = DAGToken;
+      }
+      if (metagraph.metagraphName === 'Unknown') {
+        metagraph.metagraphIcon = DefaultTokenIcon;
       }
 
       setMetagraphInfo(metagraph);

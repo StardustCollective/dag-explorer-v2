@@ -20,10 +20,9 @@ export const DetailRow = ({
   isMain?: boolean;
   isStatus?: boolean;
   icon?: JSX.Element;
-  isLargeRow?: boolean
 }) => {
   return (
-    <div className={clsx(styles.txFlexRow, props.borderBottom && styles.borderBottom, props.isLargeRow && styles.largeRow)}>
+    <div className={clsx(styles.txFlexRow, props.borderBottom && styles.borderBottom)}>
       <div className={styles.title}>
         <p className={'headerSubtitle'}>{props.title}</p>
       </div>

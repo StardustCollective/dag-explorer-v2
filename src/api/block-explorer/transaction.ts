@@ -18,6 +18,13 @@ export const useGetTransaction = (hash: string) => {
   return useFetch<MetagraphTransactionResponse>(url);
 };
 
+export const useGetMetagraphTransaction = (hash: string, metagraphId: string) => {
+  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const url = `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/metagraphs/${metagraphId}/transactions/${hash}`;
+
+  return useFetch<MetagraphTransactionResponse>(url);
+};
+
 export const useGetAllTransactions = (params?: any, refetchInterval?: number) => {
   return useFetch<{ data: Transaction[]; meta?: any }>(
     getUrl(),

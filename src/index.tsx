@@ -28,6 +28,7 @@ root.render(
             <Route index element={<HomeView />} />
             <Route path="transactions" element={<TransactionsWrapper />} />
             <Route path="transactions/:transactionHash" element={<TransactionDetailsWrapper />} />
+            <Route path="metagraphs/:metagraphId/transactions/:transactionHash" element={<TransactionDetailsWrapper />} />
             <Route path="snapshots" element={<SnapshotsWrapper />} />
             <Route path="snapshots/:snapshotHeight" element={<SnapshotDetailsWrapper />} />
             <Route path="address/:addressId" element={<AddressDetailsWrapper />} />

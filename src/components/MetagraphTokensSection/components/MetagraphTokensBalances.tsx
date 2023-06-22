@@ -1,6 +1,6 @@
 import { useComponentVisible } from '../../../utils/clickOutside';
 import { AddressMetagraphResponse } from '../../../types';
-import { formatPrice } from '../../../utils/numbers';
+import { formatAmount } from '../../../utils/numbers';
 import { ReactComponent as ChevronUpIcon } from '../../../assets/icons/chevron-up.svg';
 import { ReactComponent as ChevronDownIcon } from '../../../assets/icons/chevron-down.svg';
 import { ReactComponent as DefaultTokenIcon } from '../../../assets/icons/DefaultTokenIcon.svg';
@@ -12,14 +12,14 @@ type MetagraphTokensBalancesProps = {
   metagraphTokens: AddressMetagraphResponse[];
   selectedOption: AddressMetagraphResponse;
   setSelectedMetagraph: (metagraph: AddressMetagraphResponse) => void;
-  setTokenChanged: (changed: boolean) => void
+  setTokenChanged: (changed: boolean) => void;
 };
 
 export const MetagraphTokensBalances = ({
   metagraphTokens,
   selectedOption,
   setSelectedMetagraph,
-  setTokenChanged
+  setTokenChanged,
 }: MetagraphTokensBalancesProps) => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
 
@@ -35,9 +35,6 @@ export const MetagraphTokensBalances = ({
             >
               <div>
                 <span className={styles.name}>{selectedOption.metagraphName}</span>
-                <span className={styles.amount}>
-                  (${formatPrice(selectedOption.balance, { usd: 0 }, 2)} USD)
-                </span>
               </div>
               {isComponentVisible ? (
                 <ChevronUpIcon width={24} height={24} />
@@ -56,7 +53,7 @@ export const MetagraphTokensBalances = ({
                   onClick={() => {
                     setIsComponentVisible(!isComponentVisible);
                     setSelectedMetagraph(option);
-                    setTokenChanged(true)
+                    setTokenChanged(true);
                   }}
                 >
                   <div className={styles.nameList}>
@@ -67,14 +64,13 @@ export const MetagraphTokensBalances = ({
                     ) : (
                       <DefaultTokenIcon />
                     )}
-                    <span>{option.metagraphName}</span>
+                    <span>{option.metagraphSymbol}</span>
                   </div>
-                  <div className={styles.amountList}>
-                    <span>
-                      {option.balance} {option.metagraphSymbol}
-                    </span>
-                    <span>${formatPrice(option.balance, { usd: 0 }, 2)} USD</span>
-                  </div>
+                  {option.metagraphId !== 'ALL_METAGRAPHS' && (
+                    <div className={styles.amountList}>
+                      <span>{formatAmount(option.balance, 6, false, option.metagraphSymbol)}</span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
