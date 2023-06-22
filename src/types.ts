@@ -49,6 +49,8 @@ export type Transaction = {
   blockHash: string;
   timestamp: string;
   transactionOriginal: null;
+  symbol?: string;
+  isMetagraphTransaction?: boolean
 };
 
 type TransactionReference = {
@@ -143,6 +145,7 @@ export type MainnetOneClusterInfo = {
 };
 
 export type MetagraphInfo = {
+  metagraphId: string;
   metagraphName: string;
   metagraphSymbol: string;
   metagraphIcon: string;

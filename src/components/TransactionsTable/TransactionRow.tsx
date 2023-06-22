@@ -38,8 +38,8 @@ export const TransactionRow = ({
             <ReactTooltip />
           </div>
           <div className={`${styles.txnCell} ${styles.amount}`}>
-            {dagInfo && <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>}
-            <div className={styles.dag}>{formatAmount(tx.amount, 8)}</div>
+            {dagInfo && !tx.isMetagraphTransaction && <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>}
+            <div className={styles.dag}>{formatAmount(tx.amount, 8, false, tx.symbol)}</div>
           </div>
         </>
       );
@@ -68,7 +68,7 @@ export const TransactionRow = ({
             <Link to={'/snapshots/' + tx.snapshotOrdinal}>{tx.snapshotOrdinal}</Link>
           </div>
           <div className={`${styles.txnCell} ${styles.enoughSpace} ${styles.amount} ${styles.alignItemsLeft}`}>
-            {formatAmount(tx.fee, 8)}
+            {formatAmount(tx.fee, 8, false, tx.symbol)}
           </div>
           <div className={`${styles.txnCell} ${styles.stackFromTo}`}>
             <div className={styles.stackRow}>
@@ -85,8 +85,8 @@ export const TransactionRow = ({
             </div>
           </div>
           <div className={`${styles.txnCell} ${styles.amount}`}>
-            {dagInfo && <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>}
-            <div className={styles.dag}>{formatAmount(tx.amount, 8)}</div>
+            {dagInfo && !tx.isMetagraphTransaction && <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>}
+            <div className={styles.dag}>{formatAmount(tx.amount, 8, false, tx.symbol)}</div>
           </div>
         </>
       );

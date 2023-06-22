@@ -37,7 +37,7 @@ export const SnapshotDetails = () => {
         setSnapshotTxs(snapshotTransactions.data.data);
       }
       setLastPage(!snapshotTransactions.data?.meta?.next);
-      handleFetchedData(setFetchedData, snapshotTransactions, currentPage);
+      handleFetchedData(setFetchedData, snapshotTransactions, currentPage, setLastPage);
       setTxsSkeleton(false);
     }
   }, [snapshotTransactions.isFetching]);

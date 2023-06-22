@@ -28,7 +28,7 @@ export const Snapshots = () => {
       if (snapshotsInfo.data.data.length > 0) {
         setSnapshots(snapshotsInfo.data.data);
       }
-      handleFetchedData(setFetchedData, snapshotsInfo, currentPage);
+      handleFetchedData(setFetchedData, snapshotsInfo, currentPage, setLastPage);
       setSkeleton(false);
     }
   }, [snapshotsInfo.isFetching]);

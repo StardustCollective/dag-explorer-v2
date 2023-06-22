@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useComponentVisible } from '../../../utils/clickOutside';
 import { AddressMetagraphResponse } from '../../../types';
 import { formatPrice } from '../../../utils/numbers';
@@ -11,20 +10,22 @@ import styles from './MetagraphTokensBalances.module.scss';
 
 type MetagraphTokensBalancesProps = {
   metagraphTokens: AddressMetagraphResponse[];
-  defaultOption: AddressMetagraphResponse;
+  selectedOption: AddressMetagraphResponse;
+  setSelectedMetagraph: (metagraph: AddressMetagraphResponse) => void;
+  setTokenChanged: (changed: boolean) => void
 };
 
-export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: MetagraphTokensBalancesProps) => {
+export const MetagraphTokensBalances = ({
+  metagraphTokens,
+  selectedOption,
+  setSelectedMetagraph,
+  setTokenChanged
+}: MetagraphTokensBalancesProps) => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
-  const [selectedMetagraphToken, setSelectedMetagraphToken] = useState<AddressMetagraphResponse>();
-
-  useEffect(() => {
-    setSelectedMetagraphToken(defaultOption);
-  }, [defaultOption]);
 
   return (
     <>
-      {selectedMetagraphToken && (
+      {selectedOption && (
         <div className={`${styles.dropdown}`} ref={ref}>
           {
             <div
@@ -33,9 +34,9 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
               onClick={() => setIsComponentVisible(!isComponentVisible)}
             >
               <div>
-                <span className={styles.name}>{selectedMetagraphToken.metagraphName}</span>
+                <span className={styles.name}>{selectedOption.metagraphName}</span>
                 <span className={styles.amount}>
-                  (${formatPrice(selectedMetagraphToken.balance, { usd: 0 }, 2)} USD)
+                  (${formatPrice(selectedOption.balance, { usd: 0 }, 2)} USD)
                 </span>
               </div>
               {isComponentVisible ? (
@@ -54,7 +55,8 @@ export const MetagraphTokensBalances = ({ metagraphTokens, defaultOption }: Meta
                   key={option.metagraphName}
                   onClick={() => {
                     setIsComponentVisible(!isComponentVisible);
-                    setSelectedMetagraphToken(option);
+                    setSelectedMetagraph(option);
+                    setTokenChanged(true)
                   }}
                 >
                   <div className={styles.nameList}>

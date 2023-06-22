@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetTransaction } from '../../api/block-explorer';
 import { Card } from '../../components/Card/Card';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { MetagraphInfo, Transaction } from '../../types';
@@ -19,13 +18,12 @@ import { CheckCircleShape } from '../../components/Shapes/CheckCircle';
 import DAGToken from '../../assets/icons/DAGToken.svg';
 
 import styles from './TransactionDetail.module.scss';
-import { useGetMetagraphTransaction } from '../../api/block-explorer/metagraph-transaction';
+import { useGetTransaction } from '../../api/block-explorer';
 
 export const TransactionDetail = () => {
   const { transactionHash } = useParams();
 
   const rawTransaction = useGetTransaction(transactionHash);
-  const metagraphTransaction = useGetMetagraphTransaction(transactionHash);
 
   const [metagraphInfo, setMetagraphInfo] = useState<MetagraphInfo>(undefined);
   const [transaction, setTransaction] = useState<Transaction>(undefined);
@@ -53,36 +51,29 @@ export const TransactionDetail = () => {
 
   useEffect(() => {
     if (!rawTransaction.isFetching && !rawTransaction.isError) {
-      setTransaction(rawTransaction.data);
+      const { metagraph, transaction } = rawTransaction.data;
+      
+      if (transaction) {
+        setTransaction(transaction);
+      }
+
+      if (metagraph.metagraphName === 'DAG') {
+        metagraph.metagraphIcon = DAGToken;
+      }
+
+      setMetagraphInfo(metagraph);
     }
   }, [rawTransaction.isFetching]);
 
   useEffect(() => {
-    if (!metagraphTransaction.isFetching && !metagraphTransaction.isError) {
-      if (metagraphTransaction.data && metagraphTransaction.data.transaction) {
-        setTransaction(metagraphTransaction.data.transaction);
-      } 
-      if (metagraphTransaction.data.metagraph.metagraphName) {
-        setMetagraphInfo(metagraphTransaction.data.metagraph);
-      } else {
-        setMetagraphInfo({
-          metagraphName: 'DAG',
-          metagraphSymbol: 'DAG',
-          metagraphIcon: DAGToken,
-        });
-      }
-    }
-  }, [metagraphTransaction.isFetching]);
-
-  useEffect(() => {
-    if ((rawTransaction.isError && metagraphTransaction.isError) || prices.isError) {
-      setError(rawTransaction.error.message || prices.error.message || metagraphTransaction.error.message);
+    if (rawTransaction.isError || prices.isError) {
+      setError(rawTransaction.error.message || prices.error.message);
     } else {
       setError(undefined);
     }
-  }, [rawTransaction.status, prices.status, metagraphTransaction.status]);
+  }, [rawTransaction.status, prices.status]);
 
-  const skeleton = (rawTransaction.isFetching && metagraphTransaction.isFetching) || (!transaction || !metagraphInfo);
+  const skeleton = rawTransaction.isFetching || !transaction || !metagraphInfo;
 
   return (
     <>
@@ -137,9 +128,10 @@ export const TransactionDetail = () => {
                         subValue={
                           !skeleton &&
                           metagraphInfo &&
+                          metagraphInfo.metagraphSymbol === 'DAG' &&
                           transaction &&
                           dagInfo &&
-                          `(${formatPriceWithSymbol(transaction.amount || 0, {usd: 0}, 2, '$', 'USD')})`
+                          `(${formatPriceWithSymbol(transaction.amount || 0, { usd: 0 }, 2, '$', 'USD')})`
                         }
                         skeleton={skeleton}
                       />
@@ -153,6 +145,7 @@ export const TransactionDetail = () => {
                         subValue={
                           !skeleton &&
                           metagraphInfo &&
+                          metagraphInfo.metagraphSymbol === 'DAG' &&
                           transaction &&
                           dagInfo &&
                           `(${formatPriceWithSymbol(transaction.fee || 0, dagInfo, 2, '$', 'USD')})`

@@ -39,7 +39,6 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [currentPage, setCurrentPage] = useState(0);
   const [allTimeRewards, setAllTimeRewards] = useState<number | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
-  const addressInfo = useGetAddressTransactions(addressId, params);
   const addressBalance = useGetAddressBalance(addressId);
   const totalRewards = useGetAddressTotalRewards(addressId, network);
   const [error, setError] = useState<string>(undefined);
@@ -47,9 +46,14 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [txsSkeleton, setTxsSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
   const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens'>('transactions');
+
   const addressMetagraphs = useGetAdressMetagraphs(addressId);
   const [metagraphTokens, setMetagraphTokens] = useState<AddressMetagraphResponse[]>([]);
   const [metagraphTokensTable, setMetagraphTokensTable] = useState<AddressMetagraphResponse[]>([]);
+
+  const [selectedMetagraph, setSelectedMetagraph] = useState<AddressMetagraphResponse | null>(null);
+  const [tokenChanged, setTokenChanged] = useState<boolean>(false);
+  const addressInfo = useGetAddressTransactions(addressId, selectedMetagraph && selectedMetagraph.metagraphId, params);
 
   useEffect(() => {
     if (!isValidAddress.test(addressId) && !SPECIAL_ADDRESSES_LIST.includes(addressId)) {
@@ -60,9 +64,20 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   useEffect(() => {
     if (!addressInfo.isLoading && !addressInfo.isFetching && !addressInfo.isError) {
       if (addressInfo.data?.data.length > 0) {
-        setAddressTxs(addressInfo.data.data);
+        const { data } = addressInfo.data;
+        const transactions = data.map((tx) => {
+          const isMetagraphTransaction = selectedMetagraph && selectedMetagraph.metagraphId !== 'DAG';
+          
+          tx.symbol = isMetagraphTransaction ? selectedMetagraph.metagraphSymbol : 'DAG';
+          tx.isMetagraphTransaction = isMetagraphTransaction;
+          
+          return tx;
+        });
+        setAddressTxs(transactions);
       }
-      handleFetchedData(setFetchedData, addressInfo, currentPage);
+
+      handleFetchedData(setFetchedData, addressInfo, currentPage, setLastPage, tokenChanged);
+      setTokenChanged(false);
       setTxsSkeleton(false);
     }
   }, [addressInfo.isLoading, addressInfo.isFetching]);
@@ -78,20 +93,20 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       const metagraphs = addressMetagraphs.data;
       const metagraphsSize = metagraphs.length;
 
-      const totalBalance = metagraphs.reduce(function(accumulate, current){
+      const totalBalance = metagraphs.reduce(function (accumulate, current) {
         return accumulate + current.balance;
       }, 0);
 
       setMetagraphTokensTable(metagraphs);
-      setMetagraphTokens([
-        {
-          metagraphName: `All ${metagraphsSize} L0 tokens`,
-          metagraphSymbol: 'ALL',
-          metagraphIcon: '',
-          balance: totalBalance,
-        },
-        ...metagraphs,
-      ]);
+      const defaultOption = {
+        metagraphId: 'DAG',
+        metagraphName: `All ${metagraphsSize} L0 tokens`,
+        metagraphSymbol: 'ALL',
+        metagraphIcon: '',
+        balance: totalBalance,
+      };
+      setSelectedMetagraph(defaultOption);
+      setMetagraphTokens([defaultOption, ...metagraphs]);
     }
   }, [addressMetagraphs.isFetching]);
 
@@ -187,7 +202,9 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 <MetagraphTokensSection
                   skeleton={metagraphSkeleton}
                   metagraphTokens={metagraphTokens}
-                  defaultOption={metagraphTokens[0]}
+                  selectedOption={selectedMetagraph}
+                  setSelectedMetagraph={setSelectedMetagraph}
+                  setTokenChanged={setTokenChanged}
                 />
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow
