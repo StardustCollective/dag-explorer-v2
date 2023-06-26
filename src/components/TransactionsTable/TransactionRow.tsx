@@ -92,7 +92,11 @@ export const TransactionRow = ({
             <ReactTooltip />
           </div>
           <div className={`${styles.txnCell}`}>
-            <Link to={'/snapshots/' + tx.snapshotOrdinal}>{tx.snapshotOrdinal}</Link>
+            {tx.isMetagraphTransaction && tx.metagraphId ? (
+              <Link to={`/metagraphs/${tx.metagraphId}/snapshots/${tx.snapshotOrdinal}`}>{tx.snapshotOrdinal}</Link>
+            ) : (
+              <Link to={'/snapshots/' + tx.snapshotOrdinal}>{tx.snapshotOrdinal}</Link>
+            )}
           </div>
           <div className={`${styles.txnCell} ${styles.enoughSpace} ${styles.amount} ${styles.alignItemsLeft}`}>
             {formatAmount(tx.fee, 8, false, tx.symbol)}
@@ -179,7 +183,11 @@ export const TransactionRow = ({
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
               {icon && icon}
-              <Link to={'/snapshots/' + snapshot.ordinal}>{snapshot.ordinal}</Link>
+              {snapshot.metagraphId ? (
+                <Link to={`/metagraphs/${snapshot.metagraphId}/snapshots/${snapshot.ordinal}`}>{snapshot.ordinal}</Link>
+              ) : (
+                <Link to={'/snapshots/' + snapshot.ordinal}>{snapshot.ordinal}</Link>
+              )}
             </div>
           </div>
           <div className={styles.txnCell}>
@@ -197,7 +205,13 @@ export const TransactionRow = ({
           <div className={styles.txnCell}>
             <div className={styles.txContainer}>
               {icon && icon}
-              <Link to={'/snapshots/' + snapshot.hash}>{fitStringInCell(snapshot.hash)}</Link>
+              {snapshot.metagraphId ? (
+                <Link to={`/metagraphs/${snapshot.metagraphId}/snapshots/${snapshot.hash}`}>
+                  {fitStringInCell(snapshot.hash)}
+                </Link>
+              ) : (
+                <Link to={'/snapshots/' + snapshot.hash}>{fitStringInCell(snapshot.hash)}</Link>
+              )}
             </div>
           </div>
           <div className={`${styles.txnCell} ${styles.date}`}>
@@ -206,7 +220,11 @@ export const TransactionRow = ({
           </div>
 
           <div className={styles.txnCell}>
-            <Link to={'/snapshots/' + snapshot.ordinal}>{snapshot.ordinal}</Link>
+            {snapshot.metagraphId ? (
+              <Link to={`/metagraphs/${snapshot.metagraphId}/snapshots/${snapshot.ordinal}`}>{snapshot.ordinal}</Link>
+            ) : (
+              <Link to={'/snapshots/' + snapshot.ordinal}>{snapshot.ordinal}</Link>
+            )}
           </div>
 
           <div className={styles.txnCell}>{snapshot.blocks.length}</div>

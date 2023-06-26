@@ -19,14 +19,12 @@ import DAGToken from '../../assets/icons/DAGToken.svg';
 import DefaultTokenIcon from '../../assets/icons/DefaultTokenIcon.svg';
 
 import styles from './TransactionDetail.module.scss';
-import { useGetTransaction, useGetMetagraphTransaction } from '../../api/block-explorer';
+import { useGetTransaction } from '../../api/block-explorer';
 
 export const TransactionDetail = () => {
   const { transactionHash, metagraphId } = useParams();
 
-  const rawTransaction = metagraphId
-    ? useGetMetagraphTransaction(transactionHash, metagraphId)
-    : useGetTransaction(transactionHash);
+  const rawTransaction = useGetTransaction(transactionHash, metagraphId);
 
   const [metagraphInfo, setMetagraphInfo] = useState<MetagraphInfo>(undefined);
   const [transaction, setTransaction] = useState<Transaction>(undefined);
@@ -57,6 +55,10 @@ export const TransactionDetail = () => {
       const { metagraph, transaction } = rawTransaction.data;
 
       if (transaction) {
+        if(metagraphId){
+          transaction.isMetagraphTransaction = true;
+          transaction.metagraphId = metagraphId
+        }
         setTransaction(transaction);
       }
 
@@ -206,7 +208,11 @@ export const TransactionDetail = () => {
                       />
                       <DetailRow
                         title={'Snapshot Ordinal'}
-                        linkTo={'/snapshots'}
+                        linkTo={
+                          !skeleton && transaction.isMetagraphTransaction
+                            ? `/metagraphs/${transaction.metagraphId}/snapshots`
+                            : '/snapshots'
+                        }
                         borderBottom
                         value={!skeleton ? transaction.snapshotOrdinal.toString() : ''}
                         skeleton={skeleton}

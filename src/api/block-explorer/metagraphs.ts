@@ -3,17 +3,17 @@ import { useFetch } from '../../utils/reactQuery';
 import { MetagraphInfo } from '../../types';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 
-const { REACT_APP_TESTNET_BE_URL, REACT_APP_MAINNET_TWO_BE_URL } = process.env;
+const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
-const getUrl = (address: string) => {
+const getUrl = () => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  const url = network === 'mainnet' ? REACT_APP_MAINNET_TWO_BE_URL : REACT_APP_TESTNET_BE_URL;
-  return `${url}/${address}`;
+  const url = `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/metagraphs`;
+  return url
 };
 
-export const useGetAllMetagraphs = (address:string, params?: any, refetchInterval?: number) => {
+export const useGetAllMetagraphs = (params?: any, refetchInterval?: number) => {
   return useFetch<{ data: MetagraphInfo[]; meta?: any }>(
-    getUrl(address),
+    getUrl(),
     params,
     {
       keepPreviousData: true,
@@ -23,3 +23,13 @@ export const useGetAllMetagraphs = (address:string, params?: any, refetchInterva
     false
   );
 };
+
+export const useGetMetagraph = (metagraphId?: string) => {
+  return useFetch<MetagraphInfo>(
+    `${getUrl()}/${metagraphId}`,
+    {},
+    {
+      enabled: !!metagraphId
+    }
+  );
+}
