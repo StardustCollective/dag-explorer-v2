@@ -3,10 +3,12 @@ import { AddressMetagraphResponse } from '../../types';
 import { SkeletonTokenRows } from './SkeletonTokenRows';
 import { TokenRow } from './TokenRow';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
-import styles from './TokensTable.module.scss';
 import { CardDataRow, TableCards } from '../TransactionsTable/TableCards';
+import { fitStringInCell } from '../../utils/numbers';
 
-const HEADERS = ['TOKEN', 'SYMBOL', 'TOKEN PRICE', 'BALANCE'];
+import styles from './TokensTable.module.scss';
+
+const HEADERS = ['TOKEN', 'SYMBOL', 'METAGRAPH ID', 'BALANCE'];
 export const TokensTable = ({
   metagraphTokens,
   amount,
@@ -34,7 +36,7 @@ export const TokensTable = ({
             element: <img src={node.metagraphIcon} className={styles.metagraphIcon}/>
           });
           tokenCard.push({value: node.metagraphSymbol});
-          tokenCard.push({value: 0});
+          tokenCard.push({value: fitStringInCell(node.metagraphId, 8), toCopy: node.metagraphId});
           tokenCard.push({value: node.balance});
           tokensCards.add(tokenCard);
         }        

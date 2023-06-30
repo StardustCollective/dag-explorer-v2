@@ -37,7 +37,7 @@ export const formatPriceWithSymbol = (
   prefixSymbol: string,
   suffixSymbol: string
 ) => {
-  return `${prefixSymbol || ''}${formatPrice(amount, dagInfo, toFixed)} ${suffixSymbol ||''}`;
+  return `${prefixSymbol || ''}${formatPrice(amount, dagInfo, toFixed)} ${suffixSymbol || ''}`;
 };
 
 export const formatAmount = (amount: number, toFixed: number, forExport?: boolean, suffix = 'DAG') => {
@@ -59,7 +59,8 @@ export const formatAmount = (amount: number, toFixed: number, forExport?: boolea
     : (toReturn ? formater.format(parseFloat(toReturn)) : formater.format(parseFloat(formatedValue))) + ' ' + suffix;
 };
 
-export const fitStringInCell = (value: string) => value.slice(0, 5) + '...' + value.slice(value.length - 5);
+export const fitStringInCell = (value: string, size: number = null) =>
+  value.slice(0, size ?? 5) + '...' + value.slice(value.length - (size ?? 5));
 
 export const formatTotalSupply = () => 'Max Supply: 3,693,588,685';
 

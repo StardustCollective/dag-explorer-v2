@@ -6,7 +6,9 @@ import { MainnetOneAddressDetails } from '../MainnetOne/MainnetOneAddressDetails
 
 export const AddressDetailsWrapper = () => {
   const { networkVersion, network } = useContext(NetworkContext);
-
+  if(!networkVersion){
+    return <></>
+  }
   return networkVersion === '2.0' ? (
     <AddressDetails network={network as Exclude<Network, 'mainnet1'>} />
   ) : (

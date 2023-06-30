@@ -19,12 +19,11 @@ const getMetagraphUrl = (metagraphId: string) => {
 };
 
 export const useGetAddressTransactions = (address: string, metagraphId?: string, params?: any) => {
-  const baseUrl = !metagraphId || metagraphId === 'DAG' ? getUrl() : getMetagraphUrl(metagraphId);
+  const baseUrl = (!metagraphId || metagraphId === 'ALL_METAGRAPHS') ? getUrl() : getMetagraphUrl(metagraphId);
   return useFetch<{ data: Transaction[]; meta?: any }>(
     baseUrl + '/' + address + '/transactions',
     params,
     {
-      keepPreviousData: true,
       retry: false,
     },
     false
