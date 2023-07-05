@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { Subheader } from '../../components/Subheader/Subheader';
@@ -10,27 +11,49 @@ import { useGetAllTransactions } from '../../api/block-explorer/transaction';
 import { TransactionShape } from '../../components/Shapes/TransactionShape';
 import { FetchedData, Params } from '../../types/requests';
 import { handleFetchedData, handlePagination } from '../../utils/pagination';
+import { useGetMetagraph } from '../../api/block-explorer/metagraphs';
+import { fillTransactionsWithMetagraphInfo } from '../../utils/metagraph';
 
 const LIMIT = 14;
 
 export const Transactions = () => {
+  const { metagraphId } = useParams();
   const [transactions, setTransactions] = useState<Transaction[] | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const [fetchedData, setFetchedData] = useState<FetchedData<Transaction>[] | undefined>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const transactionsInfo = useGetAllTransactions(params);
+  const transactionsInfo = useGetAllTransactions(params, null, metagraphId);
   const [skeleton, setSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
 
+  const metagraphInfo = useGetMetagraph(metagraphId);
+
   useEffect(() => {
-    if (!transactionsInfo.isFetching && !transactionsInfo.isLoading && !transactionsInfo.isError) {
+    if (!metagraphId && !transactionsInfo.isFetching && !transactionsInfo.isError) {
       if (transactionsInfo.data?.data.length > 0) {
         setTransactions(transactionsInfo.data.data);
       }
-      handleFetchedData(setFetchedData, transactionsInfo, currentPage);
+      handleFetchedData(setFetchedData, transactionsInfo, currentPage, setLastPage);
+      setSkeleton(false);
+      return;
+    }
+
+    if (
+      metagraphId &&
+      !transactionsInfo.isFetching &&
+      !transactionsInfo.isError &&
+      !metagraphInfo.isFetching &&
+      !metagraphInfo.isError
+    ) {
+      if (transactionsInfo.data?.data.length > 0) {
+        const txns = fillTransactionsWithMetagraphInfo(metagraphId, transactionsInfo.data.data, metagraphInfo.data);
+        setTransactions(txns);
+      }
+
+      handleFetchedData(setFetchedData, transactionsInfo, currentPage, setLastPage);
       setSkeleton(false);
     }
-  }, [transactionsInfo.isLoading, transactionsInfo.isFetching]);
+  }, [metagraphInfo.isFetching, transactionsInfo.isFetching]);
 
   const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
     transactions,

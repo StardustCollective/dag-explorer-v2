@@ -27,13 +27,26 @@ root.render(
           <Route path="/" element={<Layout />}>
             <Route index element={<HomeView />} />
             <Route path="transactions" element={<TransactionsWrapper />} />
+            <Route path="metagraphs/:metagraphId/transactions" element={<TransactionsWrapper />} />
+            
             <Route path="transactions/:transactionHash" element={<TransactionDetailsWrapper />} />
+            <Route path="metagraphs/:metagraphId/transactions/:transactionHash" element={<TransactionDetailsWrapper />} />
+            
             <Route path="snapshots" element={<SnapshotsWrapper />} />
+            <Route path="metagraphs/:metagraphId/snapshots" element={<SnapshotsWrapper />} />
+            
             <Route path="snapshots/:snapshotHeight" element={<SnapshotDetailsWrapper />} />
-            <Route path="address/:addressId" element={<AddressDetailsWrapper />} />
+            <Route path="metagraphs/:metagraphId/snapshots/:snapshotHeight" element={<SnapshotDetailsWrapper/>} />
+            
             <Route path="blocks/:blockHash" element={<BlockDetailsWrapper />} />
+            <Route path="metagraphs/:metagraphId/blocks/:blockHash" element={<BlockDetailsWrapper />} />
+            
+            <Route path="address/:addressId" element={<AddressDetailsWrapper />} />
+            
             <Route path="node-explorer" element={<NodeExplorerWrapper />} />
+            
             <Route path="search" element={<Search />} />
+            
             <Route path="*" element={<NotFound entire errorCode={'404'} />} />
           </Route>
         </Routes>

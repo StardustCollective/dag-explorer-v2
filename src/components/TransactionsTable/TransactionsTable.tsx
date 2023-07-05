@@ -95,19 +95,26 @@ export const TransactionsTable = ({
       const txCard: CardDataRow[] = [];
       txCard.push({
         value: fitStringInCell(tx.hash),
-        linkTo: '/transactions/' + tx.hash,
+        linkTo: tx.isMetagraphTransaction
+          ? `/metagraphs/${tx.metagraphId}/transactions/${tx.hash}`
+          : `/transactions/${tx.hash}`,
         toCopy: tx.hash,
         element: <TransactionShape />,
       });
       txCard.push({ value: formatTime(tx.timestamp, 'relative'), dataTip: formatTime(tx.timestamp, 'full') });
-      txCard.push({ value: tx.snapshotOrdinal, linkTo: '/snapshots/' + tx.snapshotOrdinal });
+      txCard.push({
+        value: tx.snapshotOrdinal,
+        linkTo: tx.isMetagraphTransaction
+          ? `/metagraphs/${tx.metagraphId}/snapshots/${tx.snapshotOrdinal}`
+          : '/snapshots/' + tx.snapshotOrdinal,
+      });
       txCard.push({ value: fitStringInCell(tx.source), linkTo: '/address/' + tx.source, toCopy: tx.source });
       txCard.push({
         value: fitStringInCell(tx.destination),
         linkTo: '/address/' + tx.destination,
         toCopy: tx.destination,
       });
-      txCard.push({ value: formatAmount(tx.amount, 8) });
+      txCard.push({ value: formatAmount(tx.amount, 8, false, tx.symbol) });
       cardsSet.add(txCard);
     });
   }
@@ -115,7 +122,13 @@ export const TransactionsTable = ({
   if (snapshots) {
     snapshots.forEach((snap) => {
       const snapshotCard: CardDataRow[] = [];
-      snapshotCard.push({ value: snap.ordinal, linkTo: '/snapshots/' + snap.ordinal, element: <SnapshotShape /> });
+      snapshotCard.push({
+        value: snap.ordinal,
+        linkTo: snap.metagraphId
+          ? `/metagraphs/${snap.metagraphId}/snapshots/${snap.ordinal}`
+          : `/snapshots/${snap.ordinal}`,
+        element: <SnapshotShape />,
+      });
       snapshotCard.push({ value: formatTime(snap.timestamp, 'relative'), dataTip: formatTime(snap.timestamp, 'full') });
       snapshotCard.push({ value: snap.blocks.length });
       cardsSet.add(snapshotCard);

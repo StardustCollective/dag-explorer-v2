@@ -2,6 +2,7 @@ interface DataFields {
   data: any;
   page: number;
   next?: string;
+  lastPage?: boolean;
 }
 
 function handlePagination<TData, TFetchedData extends DataFields[]>(
@@ -21,18 +22,33 @@ function handlePagination<TData, TFetchedData extends DataFields[]>(
       if (fetchedData.length > 0 && currentPage + 1 <= fetchedData.length - 1) {
         setData(fetchedData[currentPage + 1].data);
         setLastPage(!fetchedData[currentPage + 1].next);
+        setSkeleton(false);
       } else {
         setParams({ limit: limit, next: fetchedData[currentPage]?.next ?? '' });
         setSkeleton(true);
       }
+    } else {
+      handlePrevPage(true);
+    }
+    if (fetchedData[currentPage]?.lastPage) {
+      setSkeleton(false);
+      setLastPage(true);
     }
   };
 
-  const handlePrevPage = () => {
-    if (data) {
+  const handlePrevPage = (forceLastPage = false) => {
+    if (fetchedData[currentPage - 1]) {
       setCurrentPage((p) => p - 1);
       setData(fetchedData[currentPage - 1].data);
       setLastPage(false);
+    }
+    if (forceLastPage) {
+      setCurrentPage((p) => p + 1);
+      setLastPage(true);
+      setSkeleton(false);
+      if (fetchedData[currentPage - 2]) {
+        fetchedData[currentPage - 2].lastPage = true;
+      }
     }
   };
 
@@ -42,15 +58,35 @@ function handlePagination<TData, TFetchedData extends DataFields[]>(
 const handleFetchedData = (
   setFetchedData: React.Dispatch<React.SetStateAction<DataFields[]>>,
   endpointData: any,
-  currentPage: number
+  currentPage: number,
+  setLastPage: React.Dispatch<React.SetStateAction<boolean>>,
+  resetPagination?: boolean
 ) => {
-  setFetchedData((data) =>
-    data.length === 0
-      ? [{ data: endpointData.data?.data, page: currentPage, next: endpointData.data?.meta?.next }]
-      : currentPage >= data.length
-      ? [...data, { data: endpointData.data?.data, page: currentPage, next: endpointData.data?.meta?.next }]
-      : [...data]
-  );
+  if (endpointData.data?.data) {
+    setFetchedData((data) =>
+      data.length === 0 || resetPagination
+        ? [
+            {
+              data: endpointData.data?.data,
+              page: currentPage,
+              next: endpointData.data?.meta?.next,
+              lastPage: !endpointData.data?.meta?.next,
+            },
+          ]
+        : currentPage >= data.length
+        ? [
+            ...data,
+            {
+              data: endpointData.data?.data,
+              page: currentPage,
+              next: endpointData.data?.meta?.next,
+              lastPage: !endpointData.data?.meta?.next,
+            },
+          ]
+        : [...data]
+    );
+  }
+  setLastPage(!endpointData.data?.meta?.next);
 };
 
 export { handleFetchedData, handlePagination };

@@ -4,7 +4,6 @@
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
-  grid-template-rows: 7% 20% 6% 60% 7%;
 }
 
 .row1 {

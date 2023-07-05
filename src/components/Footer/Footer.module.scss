@@ -26,6 +26,7 @@
 }
 
 .fullWidth2 {
+  margin: 50px 0px;
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;

@@ -10,15 +10,17 @@ import { useGetAllSnapshots } from '../../api/block-explorer/global-snapshot';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 import { FetchedData, Params } from '../../types/requests';
 import { handleFetchedData, handlePagination } from '../../utils/pagination';
+import { useParams } from 'react-router-dom';
 
 const LIMIT = 14;
 
 export const Snapshots = () => {
+  const { metagraphId } = useParams();
   const [snapshots, setSnapshots] = useState<Snapshot[] | undefined>(undefined);
   const [params, setParams] = useState<Params>({ limit: LIMIT });
   const [fetchedData, setFetchedData] = useState<FetchedData<Snapshot>[] | undefined>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const snapshotsInfo = useGetAllSnapshots(params);
+  const snapshotsInfo = useGetAllSnapshots(params, null, metagraphId);
   const [error, setError] = useState<string>(undefined);
   const [skeleton, setSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
@@ -26,9 +28,17 @@ export const Snapshots = () => {
   useEffect(() => {
     if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
       if (snapshotsInfo.data.data.length > 0) {
+        if(metagraphId) {
+          const snapshots = snapshotsInfo.data.data.map(snapshot => {
+            snapshot.metagraphId = metagraphId
+            return snapshot
+          })
+          setSnapshots(snapshots)
+        }
+        
         setSnapshots(snapshotsInfo.data.data);
       }
-      handleFetchedData(setFetchedData, snapshotsInfo, currentPage);
+      handleFetchedData(setFetchedData, snapshotsInfo, currentPage, setLastPage);
       setSkeleton(false);
     }
   }, [snapshotsInfo.isFetching]);

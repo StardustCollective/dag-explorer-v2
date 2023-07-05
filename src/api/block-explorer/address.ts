@@ -12,12 +12,18 @@ const getUrl = () => {
   return `${url}/addresses`;
 };
 
-export const useGetAddressTransactions = (address: string, params?: any) => {
+const getMetagraphUrl = (metagraphId: string) => {
+  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const url = network === 'mainnet' ? REACT_APP_MAINNET_TWO_BE_URL : REACT_APP_TESTNET_BE_URL;
+  return `${url}/currency/${metagraphId}/addresses`;
+};
+
+export const useGetAddressTransactions = (address: string, metagraphId?: string, params?: any) => {
+  const baseUrl = (!metagraphId || metagraphId === 'ALL_METAGRAPHS') ? getUrl() : getMetagraphUrl(metagraphId);
   return useFetch<{ data: Transaction[]; meta?: any }>(
-    getUrl() + '/' + address + '/transactions',
+    baseUrl + '/' + address + '/transactions',
     params,
     {
-      keepPreviousData: true,
       retry: false,
     },
     false
