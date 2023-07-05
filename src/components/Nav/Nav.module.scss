@@ -60,15 +60,25 @@
   text-decoration: none;
   cursor: pointer;
   color: inherit;
-  padding: 14px;
+  padding: 12px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    margin-left: 8px;
+  }
 }
 
 .dropdown {
   position: relative;
-  min-width: 110px;
+  width: 150px;
   border: 1px solid $white;
   border-radius: 8px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .dropdownContent {

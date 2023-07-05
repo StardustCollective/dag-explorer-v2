@@ -16,10 +16,11 @@ export enum IconType {
   Block = 'BlockShape',
 }
 
-export type Network = 'testnet' | 'mainnet1' | 'mainnet';
+export type Network = 'testnet' | 'mainnet1' | 'mainnet' | 'integrationnet';
 export type NetworkVersion = '1.0' | '2.0';
 export const AVAILABLE_NETWORKS: Record<Network, string> = {
   mainnet1: 'Mainnet 1',
   testnet: 'Testnet',
   mainnet: 'Mainnet',
+  integrationnet: 'Integrationnet'
 };

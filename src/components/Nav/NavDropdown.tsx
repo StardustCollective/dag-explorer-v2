@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Network } from '../../constants';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import { useComponentVisible } from '../../utils/clickOutside';
+import ArrowDown from '../../assets/icons/ArrowDown.svg';
 import styles from './Nav.module.scss';
 
 export const NavDropdown = () => {
@@ -12,12 +13,13 @@ export const NavDropdown = () => {
     mainnet: 'Mainnet 2.0',
     mainnet1: 'Mainnet 1.0',
     testnet: 'Testnet 2.0',
+    integrationnet: 'Integrationnet 2.0',
   };
   return (
     <div className={`${styles.dropdown} ${styles.navSeparator}`} ref={ref}>
       {
         <div className={styles.network} tabIndex={0} onClick={() => setIsComponentVisible(!isComponentVisible)}>
-          {options[network]} <i className={`${styles.arrow} ${styles.down}`}></i>
+          {options[network]} <img src={ArrowDown} />
         </div>
       }
 

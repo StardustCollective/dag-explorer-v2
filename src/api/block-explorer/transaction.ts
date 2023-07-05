@@ -2,12 +2,13 @@ import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { MetagraphTransactionResponse, Transaction } from '../../types';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { getBEUrl } from '../../utils/networkUrls';
 
-const { REACT_APP_TESTNET_BE_URL, REACT_APP_MAINNET_TWO_BE_URL, REACT_APP_DAG_EXPLORER_API_URL } = process.env;
+const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
 const getUrl = (metagraphId?: string) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  const url = network === 'mainnet' ? REACT_APP_MAINNET_TWO_BE_URL : REACT_APP_TESTNET_BE_URL;
+  const url = getBEUrl(network);
   return metagraphId ? `${url}/currency/${metagraphId}/transactions` : `${url}/transactions`;
 };
 

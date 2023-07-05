@@ -3,6 +3,7 @@ import { useFetch } from '../../utils/reactQuery';
 import { Peer, ValidatorNode } from '../../types';
 import { Network } from '../../constants';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { getL0Url } from '../../utils/networkUrls';
 
 export { useGetLatestSnapshot, useGetSnapshot, useGetLatestSnapshotOrdinal } from './global-snapshot';
 export {
@@ -13,14 +14,12 @@ export {
 } from './dag';
 
 const { 
-  REACT_APP_TESTNET_L0_NODE_URL, 
-  REACT_APP_MAINNET_TWO_L0_NODE_URL,
   REACT_APP_DAG_EXPLORER_API_URL
 } = process.env;
 
 const getUrl = () => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  return network === 'mainnet' ? REACT_APP_MAINNET_TWO_L0_NODE_URL : REACT_APP_TESTNET_L0_NODE_URL; 
+  return getL0Url(network);
 }
 
 export const useGetClusterInfo = () => {
