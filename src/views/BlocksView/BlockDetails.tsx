@@ -125,6 +125,7 @@ export const BlockDetails = () => {
                 blockHash={blockData.hash}
                 setLastPage={handleLastPage}
                 setHasTx={handleHasTx}
+                metagraphId={metagraphId}
               />
             )}
           </div>

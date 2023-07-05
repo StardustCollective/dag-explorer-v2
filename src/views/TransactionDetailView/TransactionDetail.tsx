@@ -55,9 +55,9 @@ export const TransactionDetail = () => {
       const { metagraph, transaction } = rawTransaction.data;
 
       if (transaction) {
-        if(metagraphId){
+        if (metagraphId) {
           transaction.isMetagraphTransaction = true;
-          transaction.metagraphId = metagraphId
+          transaction.metagraphId = metagraphId;
         }
         setTransaction(transaction);
       }
@@ -197,7 +197,11 @@ export const TransactionDetail = () => {
                       />
                       <DetailRow
                         title={'Block'}
-                        linkTo={'/blocks'}
+                        linkTo={
+                          !skeleton && transaction.isMetagraphTransaction
+                            ? `/metagraphs/${transaction.metagraphId}/blocks`
+                            : '/blocks'
+                        }
                         borderBottom
                         value={!skeleton ? transaction.blockHash : ''}
                         skeleton={skeleton}

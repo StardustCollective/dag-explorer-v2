@@ -39,6 +39,7 @@ const HomeTables = ({
 
   useEffect(() => {
     if (!transactionsInfo.isFetching && !transactionsInfo.isError) {
+      console.log(transactionsInfo.data.data)
       setTransactions(transactionsInfo.data.data);
     }
   }, [transactionsInfo.isFetching]);
