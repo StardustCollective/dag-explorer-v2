@@ -22,5 +22,5 @@ export const AVAILABLE_NETWORKS: Record<Network, string> = {
   mainnet1: 'Mainnet 1',
   testnet: 'Testnet',
   mainnet: 'Mainnet',
-  integrationnet: 'Integrationnet'
+  integrationnet: 'IntegrationNet'
 };

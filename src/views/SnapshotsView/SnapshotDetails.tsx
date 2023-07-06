@@ -71,7 +71,6 @@ export const SnapshotDetails = () => {
       if (metagraphId) {
         snapshotInfo.data.metagraphId = metagraphId;
       }
-      console.log()
       setSnapshot(snapshotInfo.data);
     }
   }, [snapshotInfo.isLoading, snapshotInfo.isFetching]);

@@ -84,7 +84,6 @@ const HomeTables = ({
 
   useEffect(() => {
     if (!metagraphSnapshotsInfo.isFetching && !metagraphSnapshotsInfo.isError) {
-      console.log(metagraphSnapshotsInfo.data.data)
       setMetagraphSnapshots(metagraphSnapshotsInfo.data.data);
     }
   }, [metagraphSnapshotsInfo.isFetching]);

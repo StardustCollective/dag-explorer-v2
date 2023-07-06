@@ -159,7 +159,12 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
         setError(addressInfo.error.message);
       }
       if (addressInfo.error.message === '404') {
-        handlePrevPage(true);
+        if(tokenChanged){
+          setTxsSkeleton(false)
+          setAddressTxs([])
+        }else{
+          handlePrevPage(true);
+        }
       }
     }
     if (addressBalance.isError) {
@@ -269,6 +274,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   selectedOption={selectedMetagraph}
                   setSelectedMetagraph={setSelectedMetagraph}
                   setTokenChanged={setTokenChanged}
+                  setSkeleton={setTxsSkeleton}
                 />
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow

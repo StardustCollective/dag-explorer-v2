@@ -1,16 +1,18 @@
-import styles from './Footer.module.scss';
+import { Link } from 'react-router-dom';
 import FooterText from '../../assets/icons/FooterConstellation.svg';
+import styles from './Footer.module.scss';
 
 export const Footer = () => {
+  const handleOpenForm = () => {
+    window.open('https://www.google.com', '_blank');
+  }
   return (
     <>
       <footer className={`${styles.fullWidth2} background`}>
         <div className={`${styles.footer}`}>
-          <div className={`${styles.footerLeft} text`}>
-            <div className={styles.footerText}>© 2022 CONSTELLATION NETWORK</div>
-            <div className={styles.footerText}>DAG EXPLORER V2.0</div>
-          </div>
+          <div className={styles.footerText}>© 2022 CONSTELLATION NETWORK</div>
           <img className={styles.poweredBy} src={FooterText} />
+          <button onClick={handleOpenForm}>Submit a Metagraph</button>
         </div>
       </footer>
       <div></div>

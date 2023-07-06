@@ -13,7 +13,7 @@ export const NavDropdown = () => {
     mainnet: 'Mainnet 2.0',
     mainnet1: 'Mainnet 1.0',
     testnet: 'Testnet 2.0',
-    integrationnet: 'Integrationnet 2.0',
+    integrationnet: 'IntegrationNet 2.0',
   };
   return (
     <div className={`${styles.dropdown} ${styles.navSeparator}`} ref={ref}>
