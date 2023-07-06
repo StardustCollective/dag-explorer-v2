@@ -79,7 +79,7 @@ export const MetagraphTokensBalances = ({
                     ) : (
                       <DefaultTokenIcon />
                     )}
-                    <span>{option.metagraphSymbol}</span>
+                    <span>{fitStringInCell(option.metagraphName, 18, true)}</span>
                   </div>
                   {option.metagraphId !== 'ALL_METAGRAPHS' && (
                     <div className={styles.amountList}>
