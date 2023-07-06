@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import FooterText from '../../assets/icons/FooterConstellation.svg';
 import styles from './Footer.module.scss';
 
