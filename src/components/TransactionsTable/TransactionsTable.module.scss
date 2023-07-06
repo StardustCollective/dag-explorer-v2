@@ -39,6 +39,15 @@
   border-radius: 8px;
 }
 
+.homeContainerMetagraph {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr 0.75fr 1fr;
+  grid-auto-rows: 3.8rem;
+  background-color: $white;
+  border: 1px solid $grayCool-200;
+  border-radius: 8px;
+}
+
 .skeleton {
   animation: skeleton-loading 1s linear infinite alternate;
 }
@@ -73,6 +82,8 @@
   font-size: 20px;
   line-height: 30px;
   color: $grayCool-900;
+  white-space: nowrap;
+  max-width: 100px;
 }
 .cards {
   display: none;
@@ -113,5 +124,11 @@
 @media screen and (min-width: $md) and (max-width: $lg) {
   .container {
     grid-auto-rows: max-content;
+  }
+}
+
+@media screen and (max-width: $md) {
+  .icon {
+    display: none;
   }
 }

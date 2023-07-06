@@ -36,9 +36,24 @@ export const useGetAllTransactions = (params?: any, refetchInterval?: number, me
   );
 };
 
-export const useGetLatestTransactions = (params?: any, refetchInterval?: number) => {
+export const useGetLatestDAGTransactions = (params?: any, refetchInterval?: number) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  const url = REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/latest-transactions';
+  const url = REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/dag/latest-transactions';
+  return useFetch<{ data: Transaction[]; meta?: any }>(
+    url,
+    params,
+    {
+      keepPreviousData: true,
+      refetchInterval: refetchInterval,
+      retry: false,
+    },
+    false
+  );
+};
+
+export const useGetLatestMetagraphTransactions = (params?: any, refetchInterval?: number) => {
+  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const url = REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/metagraph/latest-transactions';
   return useFetch<{ data: Transaction[]; meta?: any }>(
     url,
     params,

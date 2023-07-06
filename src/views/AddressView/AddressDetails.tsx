@@ -146,7 +146,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   useEffect(() => {
     if (!totalRewards.isFetching && !totalRewards.isError) {
       if (totalRewards.data.isValidator) {
-        setAllTimeRewards(totalRewards.data.totalAmount ?? 0);
+        setAllTimeRewards(totalRewards.data.totalAmount);
       } else {
         setAllTimeRewards(undefined);
       }

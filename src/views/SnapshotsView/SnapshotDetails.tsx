@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetSnapshot, useGetSnapshotTransactions } from '../../api/block-explorer';
-import { Snapshot, Transaction } from '../../types';
+import { MetagraphInfo, Snapshot, Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
@@ -34,6 +34,7 @@ export const SnapshotDetails = () => {
   const [lastPage, setLastPage] = useState(false);
 
   const metagraphInfo = useGetMetagraph(metagraphId);
+  const [metagraph, setMetagraph] = useState<MetagraphInfo>(undefined)
 
   useEffect(() => {
     if (
@@ -50,6 +51,7 @@ export const SnapshotDetails = () => {
 
       setLastPage(!snapshotTransactions.data?.meta?.next);
       handleFetchedData(setFetchedData, snapshotTransactions, currentPage, setLastPage);
+      setMetagraph(metagraphInfo.data)
       setTxsSkeleton(false);
       return;
     }
@@ -66,10 +68,10 @@ export const SnapshotDetails = () => {
 
   useEffect(() => {
     if (!snapshotInfo.isLoading && !snapshotInfo.isFetching && !snapshotInfo.isError) {
-      if(metagraphId){
+      if (metagraphId) {
         snapshotInfo.data.metagraphId = metagraphId;
       }
-      
+      console.log()
       setSnapshot(snapshotInfo.data);
     }
   }, [snapshotInfo.isLoading, snapshotInfo.isFetching]);
@@ -122,25 +124,42 @@ export const SnapshotDetails = () => {
                           : '/snapshots'
                       }
                       borderBottom
-                      title={'SNAPSHOT ORDINAL'}
-                      value={snapshot && snapshot.ordinal.toString()}
+                      title={'Snapshot Height'}
+                      value={snapshot && snapshot.height.toString()}
                       skeleton={skeleton}
                       icon={<SnapshotShape size={'1.5rem'} />}
                     />
                     <DetailRow
                       borderBottom
-                      title={'BLOCKS'}
-                      value={!skeleton && snapshot ? snapshot.blocks.length.toString() : ''}
-                      skeleton={skeleton}
-                      icon={<SnapshotShape size={'1.5rem'} />}
-                    />
-                    <DetailRow
-                      borderBottom
-                      title={'TIMESTAMP'}
+                      title={'Timestamp'}
                       value={!skeleton ? formatTime(snapshotInfo.data.timestamp, 'relative') : ''}
                       date={!skeleton ? snapshotInfo.data.timestamp : ''}
                       skeleton={skeleton}
                     />
+                    <DetailRow
+                      borderBottom
+                      title={'Blocks'}
+                      value={!skeleton && snapshot ? snapshot.blocks?.length.toString() : ''}
+                      skeleton={skeleton}
+                      icon={<SnapshotShape size={'1.5rem'} />}
+                    />
+                    { metagraphId && (
+                      <>
+                        <DetailRow
+                          borderBottom
+                          title={'Metagraph Name'}
+                          value={!skeleton && metagraph && metagraph.metagraphName }
+                          skeleton={skeleton && !metagraph}
+                        />
+                        <DetailRow
+                          borderBottom
+                          title={'MetagraphId'}
+                          value={!skeleton && metagraph && metagraph.metagraphId }
+                          skeleton={skeleton && !metagraph}
+                          copy
+                        />
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

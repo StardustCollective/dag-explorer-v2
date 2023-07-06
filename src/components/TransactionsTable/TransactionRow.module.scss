@@ -16,6 +16,20 @@
   line-height: 18px;
 }
 
+.txnCellLastRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+  overflow: hidden;
+  height: auto;
+  min-height: 3rem;
+  max-height: 3.5rem;
+  font-family: 'IBM Plex Mono', sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+}
+
 .txnCell > a {
   color: $blue-700;
 }
@@ -40,10 +54,9 @@
 .amount {
   display: flex;
   flex-direction: column-reverse;
-  align-items: flex-end;
+  align-items: flex-start;
+  padding-left: 1.5rem;
   justify-content: center;
-  padding-right: 1.5rem;
-  padding-left: 0;
   gap: 0.2rem;
 }
 

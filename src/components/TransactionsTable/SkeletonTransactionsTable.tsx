@@ -12,12 +12,14 @@ export const SkeletonTransactionsTable = ({
   headerText,
   icon,
   headerCols,
+  showMetagraphSymbol,
 }: {
   rows: number;
   forSnapshots?: boolean;
   headerText?: string;
   icon?: JSX.Element;
   headerCols?: string[];
+  showMetagraphSymbol?: boolean;
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -27,7 +29,9 @@ export const SkeletonTransactionsTable = ({
     <div
       className={
         isHomePage
-          ? styles.homeContainer
+          ? showMetagraphSymbol
+            ? styles.homeContainerMetagraph
+            : styles.homeContainer
           : location.pathname === '/snapshots'
           ? styles.containerSnap
           : networkVersion === '2.0'
@@ -37,16 +41,30 @@ export const SkeletonTransactionsTable = ({
     >
       {headerText && <div className={styles.headerText}>{headerText}</div>}
       {headerText && <span />}
+      {showMetagraphSymbol && headerText && <span />}
       {headerText && cloneElement(icon, { classname: styles3.icon, size: '20px' })}
       <HeaderRow headerCols={headerCols} forSnapshots={forSnapshots} />
       {transactions.map((_, index) => (
-        <SkeletonTransactionRow forSnapshots={forSnapshots} isHomePage={isHomePage} key={index} />
+        <SkeletonTransactionRow
+          forSnapshots={forSnapshots}
+          isHomePage={isHomePage}
+          key={index}
+          showMetagraphSymbol={showMetagraphSymbol}
+        />
       ))}
     </div>
   );
 };
 
-const SkeletonTransactionRow = ({ isHomePage, forSnapshots }: { isHomePage: boolean; forSnapshots?: boolean }) => {
+const SkeletonTransactionRow = ({
+  isHomePage,
+  forSnapshots,
+  showMetagraphSymbol,
+}: {
+  isHomePage: boolean;
+  forSnapshots?: boolean;
+  showMetagraphSymbol?: boolean;
+}) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   return isHomePage ? (
     <>
@@ -59,6 +77,11 @@ const SkeletonTransactionRow = ({ isHomePage, forSnapshots }: { isHomePage: bool
       <div className={styles2.txnCell}>
         <div className={`${styles.skeleton} ${styles.value}`} />
       </div>
+      {showMetagraphSymbol && (
+        <div className={styles2.txnCell}>
+          <div className={`${styles.skeleton} ${styles.value}`} />
+        </div>
+      )}
     </>
   ) : network === 'mainnet1' || forSnapshots ? (
     <>
