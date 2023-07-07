@@ -170,17 +170,6 @@ export const SnapshotDetails = () => {
               <div className={`${styles.row3}`}>
                 <div className={`${styles.flexRowBottom}`}>
                   <p className="overviewText">Transactions</p>
-                  <div className={styles.arrows}>
-                    <ArrowButton
-                      handleClick={handlePrevPage}
-                      disabled={currentPage === 0 || txsSkeleton || error !== undefined}
-                    />
-                    <ArrowButton
-                      forward
-                      handleClick={handleNextPage}
-                      disabled={txsSkeleton || lastPage || error !== undefined}
-                    />
-                  </div>
                 </div>
               </div>
               <div className={`${styles.row4}`}>

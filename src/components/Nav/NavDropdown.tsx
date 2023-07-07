@@ -10,9 +10,9 @@ export const NavDropdown = () => {
 
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
   const options: Partial<Record<Network, string>> = {
-    mainnet: 'Mainnet 2.0',
-    mainnet1: 'Mainnet 1.0',
-    testnet: 'Testnet 2.0',
+    mainnet: 'MainNet 2.0',
+    mainnet1: 'MainNet 1.0',
+    testnet: 'TestNet 2.0',
     integrationnet: 'IntegrationNet 2.0',
   };
   return (
