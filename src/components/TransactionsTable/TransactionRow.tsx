@@ -95,7 +95,7 @@ export const TransactionRow = ({
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}`}>
+          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
             {tx.isMetagraphTransaction && tx.metagraphId ? (
               <Link to={`/metagraphs/${tx.metagraphId}/snapshots/${tx.snapshotOrdinal}`}>{tx.snapshotOrdinal}</Link>
             ) : (
@@ -128,7 +128,7 @@ export const TransactionRow = ({
               </div>
             </div>
           </div>
-          <div className={clsx(clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell), styles.txnDirection)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow :  styles.txnCell, styles.txnDirection)}>
             {tx.direction && (
               <div
                 className={clsx(
@@ -198,11 +198,11 @@ export const TransactionRow = ({
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}`}>
+          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
             <div className={styles.dag}>{snapshot.blocks.length}</div>
           </div>
           {showMetagraphSymbol && (
-            <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}`}>
+            <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
               <div className={styles.dag}>{snapshot.symbol}</div>
             </div>
           )}

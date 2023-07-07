@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { HeaderRow } from './HeaderRow';
 import styles from './TransactionsTable.module.scss';
 import styles2 from './TransactionRow.module.scss';
@@ -69,57 +70,57 @@ const SkeletonTransactionRow = ({
   return isHomePage ? (
     <>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       {showMetagraphSymbol && (
         <div className={styles2.txnCell}>
-          <div className={`${styles.skeleton} ${styles.value}`} />
+          <div className={clsx(styles.skeleton, styles.value)} />
         </div>
       )}
     </>
   ) : network === 'mainnet1' || forSnapshots ? (
     <>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
     </>
   ) : (
     <>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
     </>
   );
