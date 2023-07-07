@@ -34,7 +34,7 @@ export const SnapshotDetails = () => {
   const [lastPage, setLastPage] = useState(false);
 
   const metagraphInfo = useGetMetagraph(metagraphId);
-  const [metagraph, setMetagraph] = useState<MetagraphInfo>(undefined)
+  const [metagraph, setMetagraph] = useState<MetagraphInfo>(undefined);
 
   useEffect(() => {
     if (
@@ -51,7 +51,7 @@ export const SnapshotDetails = () => {
 
       setLastPage(!snapshotTransactions.data?.meta?.next);
       handleFetchedData(setFetchedData, snapshotTransactions, currentPage, setLastPage);
-      setMetagraph(metagraphInfo.data)
+      setMetagraph(metagraphInfo.data);
       setTxsSkeleton(false);
       return;
     }
@@ -136,24 +136,29 @@ export const SnapshotDetails = () => {
                       skeleton={skeleton}
                     />
                     <DetailRow
-                      borderBottom
+                      borderBottom={!!metagraphId}
                       title={'Blocks'}
-                      value={!skeleton && snapshot ? snapshot.blocks?.length.toString() : ''}
+                      value={
+                        !skeleton && snapshot
+                          ? snapshot.blocks.length > 1
+                            ? `${snapshot.blocks.length.toString()} blocks confirmed`
+                            : `${snapshot.blocks.length.toString()} block confirmed`
+                          : ''
+                      }
                       skeleton={skeleton}
                       icon={<SnapshotShape size={'1.5rem'} />}
                     />
-                    { metagraphId && (
+                    {metagraphId && (
                       <>
                         <DetailRow
                           borderBottom
                           title={'Metagraph Name'}
-                          value={!skeleton && metagraph && metagraph.metagraphName }
+                          value={!skeleton && metagraph && metagraph.metagraphName}
                           skeleton={skeleton && !metagraph}
                         />
                         <DetailRow
-                          borderBottom
                           title={'MetagraphId'}
-                          value={!skeleton && metagraph && metagraph.metagraphId }
+                          value={!skeleton && metagraph && metagraph.metagraphId}
                           skeleton={skeleton && !metagraph}
                           copy
                         />

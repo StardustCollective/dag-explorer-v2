@@ -246,21 +246,22 @@ export const TransactionRow = ({
     if (isHomePage) {
       snapRow = (
         <>
-          <div className={styles.txnEmptyRow} />
-          <div className={styles.txnEmptyRow} />
-          <div className={styles.txnEmptyRow} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
         </>
       );
     } else {
       snapRow = (
         <>
-          <div className={styles.txnEmptyRow} />
-          <div className={styles.txnEmptyRow} />
-          <div className={styles.txnEmptyRow} />
-          <div className={styles.txnEmptyRow} />
-          <div className={styles.txnEmptyRow} />
-          <div className={styles.txnEmptyRow} />
-          <div className={styles.txnEmptyRow} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
         </>
       );
     }
