@@ -1,10 +1,13 @@
 import FooterText from '../../assets/icons/FooterConstellation.svg';
+import { URL_SUBMIT_METAGRAPH_FORM } from '../../utils/consts';
+
 import styles from './Footer.module.scss';
 
 export const Footer = () => {
   const handleOpenForm = () => {
-    window.open('https://www.google.com', '_blank');
+    window.open(URL_SUBMIT_METAGRAPH_FORM, '_blank');
   }
+
   return (
     <>
       <footer className={`${styles.fullWidth2} background`}>
