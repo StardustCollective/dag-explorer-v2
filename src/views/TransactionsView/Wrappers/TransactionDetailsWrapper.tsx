@@ -6,5 +6,9 @@ import { MainnetOneTransactionDetails } from '../MainnetOne/MainnetOneTransactio
 export const TransactionDetailsWrapper = () => {
   const { networkVersion } = useContext(NetworkContext);
 
+  if(!networkVersion) {
+    return <></>
+  }
+  
   return networkVersion === '2.0' ? <TransactionDetail /> : <MainnetOneTransactionDetails />;
 };
