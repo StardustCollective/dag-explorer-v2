@@ -80,11 +80,12 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   };
 
   const handleFillMetagraphs = () => {
-    const metagraphsFormatted = allMetagraphTokens.slice(
+    const allMetagraphsToUse = allMetagraphTokens ?? [];
+    const metagraphsFormatted = allMetagraphsToUse.slice(
       offsetAddressMetagraphs,
       limitAddressMetagraphs + offsetAddressMetagraphs
     );
-    const metagraphsSize = allMetagraphTokens.length;
+    const metagraphsSize = allMetagraphsToUse.length;
 
     const totalBalance = metagraphsFormatted.reduce(function (accumulate, current) {
       return accumulate + current.balance;
@@ -99,7 +100,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       balance: totalBalance,
     };
     setSelectedMetagraph(defaultOption);
-    setMetagraphTokensDropdown([defaultOption, ...allMetagraphTokens]);
+    setMetagraphTokensDropdown([defaultOption, ...allMetagraphsToUse]);
   };
 
   useEffect(() => {
@@ -118,7 +119,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
           tx.symbol = isMetagraphTransaction ? selectedMetagraph.metagraphSymbol : 'DAG';
           tx.isMetagraphTransaction = isMetagraphTransaction;
           tx.direction = tx.destination === addressId ? 'IN' : 'OUT';
-          tx.metagraphId = selectedMetagraph.metagraphId
+          tx.metagraphId = selectedMetagraph.metagraphId;
 
           return tx;
         });
@@ -159,10 +160,10 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
         setError(addressInfo.error.message);
       }
       if (addressInfo.error.message === '404') {
-        if(tokenChanged){
-          setTxsSkeleton(false)
-          setAddressTxs([])
-        }else{
+        if (tokenChanged) {
+          setTxsSkeleton(false);
+          setAddressTxs([]);
+        } else {
           handlePrevPage(true);
         }
       }
@@ -221,7 +222,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const options = [
     { value: 10, label: 10 },
     { value: 25, label: 25 },
-    { value: 50, label: 50 }
+    { value: 50, label: 50 },
   ];
 
   return (
@@ -268,14 +269,16 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   subValue={skeleton ? '' : `(${formatPriceWithSymbol(balance || 0, dagInfo, 2, '$', 'USD')})`}
                   skeleton={skeleton}
                 />
-                <MetagraphTokensSection
-                  skeleton={metagraphSkeleton}
-                  metagraphTokens={metagraphTokensDropdown}
-                  selectedOption={selectedMetagraph}
-                  setSelectedMetagraph={setSelectedMetagraph}
-                  setTokenChanged={setTokenChanged}
-                  setSkeleton={setTxsSkeleton}
-                />
+                {network !== 'mainnet' && (
+                  <MetagraphTokensSection
+                    skeleton={metagraphSkeleton}
+                    metagraphTokens={metagraphTokensDropdown}
+                    selectedOption={selectedMetagraph}
+                    setSelectedMetagraph={setSelectedMetagraph}
+                    setTokenChanged={setTokenChanged}
+                    setSkeleton={setTxsSkeleton}
+                  />
+                )}
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow
                     title={'ALL-TIME REWARDS RECEIVED'}
@@ -303,11 +306,17 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   Transactions
                 </label>
                 <input type="radio" id="radio-1" name="tabs" onClick={() => setSelectedTable('transactions')} />
-
-                <label className={clsx(styles.tab, selectedTable === 'tokens' && styles.selected)} htmlFor="radio-2">
-                  Tokens list
-                </label>
-                <input type="radio" id="radio-2" name="tabs" onClick={() => setSelectedTable('tokens')} />
+                {network !== 'mainnet' && (
+                  <>
+                    <label
+                      className={clsx(styles.tab, selectedTable === 'tokens' && styles.selected)}
+                      htmlFor="radio-2"
+                    >
+                      Tokens list
+                    </label>
+                    <input type="radio" id="radio-2" name="tabs" onClick={() => setSelectedTable('tokens')} />
+                  </>
+                )}
 
                 <span className={styles.glider} />
               </div>
@@ -339,11 +348,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
               {selectedTable === 'transactions' ? (
                 <div className={styles.arrows}>
                   <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || txsSkeleton} />
-                  <ArrowButton
-                    forward
-                    handleClick={() => handleNextPage()}
-                    disabled={txsSkeleton || lastPage}
-                  />
+                  <ArrowButton forward handleClick={() => handleNextPage()} disabled={txsSkeleton || lastPage} />
                 </div>
               ) : (
                 <div className={styles.arrows}>

@@ -6,7 +6,7 @@ import { MetagraphInfo, Transaction } from '../../types';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
-import { IconType } from '../../constants';
+import { IconType, Network } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
 import { formatAmount, formatDagPrice, formatPriceWithSymbol, formatTime } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
@@ -21,7 +21,7 @@ import DefaultTokenIcon from '../../assets/icons/DefaultTokenIcon.svg';
 import styles from './TransactionDetail.module.scss';
 import { useGetTransaction } from '../../api/block-explorer';
 
-export const TransactionDetail = () => {
+export const TransactionDetail = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const { transactionHash, metagraphId } = useParams();
 
   const rawTransaction = useGetTransaction(transactionHash, metagraphId);
@@ -108,23 +108,26 @@ export const TransactionDetail = () => {
                 <div className={`${styles.column1}`}>
                   <div className={`${styles.flexTxContainer}`}>
                     <div className={`${styles.txGroup}`}>
-                      <DetailRow
-                        borderBottom
-                        title={'Token'}
-                        value={!skeleton ? metagraphInfo.metagraphSymbol : ''}
-                        skeleton={skeleton}
-                        icon={
-                          !skeleton ? (
-                            <img
-                              src={metagraphInfo.metagraphIcon}
-                              alt="token_image"
-                              className={`${styles.tokenImage}`}
-                            />
-                          ) : (
-                            <></>
-                          )
-                        }
-                      />
+                      {network !== 'mainnet' && (
+                        <DetailRow
+                          borderBottom
+                          title={'Token'}
+                          value={!skeleton ? metagraphInfo.metagraphSymbol : ''}
+                          skeleton={skeleton}
+                          icon={
+                            !skeleton ? (
+                              <img
+                                src={metagraphInfo.metagraphIcon}
+                                alt="token_image"
+                                className={`${styles.tokenImage}`}
+                              />
+                            ) : (
+                              <></>
+                            )
+                          }
+                        />
+                      )}
+
                       <DetailRow
                         borderBottom
                         title={'Amount'}
