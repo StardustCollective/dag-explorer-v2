@@ -13,29 +13,28 @@ export {
   useGetDagBalanceForAddressOnSnapshot,
 } from './dag';
 
-const { 
-  REACT_APP_DAG_EXPLORER_API_URL
-} = process.env;
+const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
-const getUrl = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+const getUrl = (network: Network) => {
   return getL0Url(network);
-}
+};
 
 export const useGetClusterInfo = () => {
-  return useFetch<Peer[]>(getUrl() + '/cluster/info');
-}
+  const { network } = useContext(NetworkContext) as NetworkContextType;
+  return useFetch<Peer[]>(getUrl(network) + '/cluster/info', {}, { enabled: !!network });
+};
 
 export const useGetMetric = () => {
-  return useFetch<string>(getUrl() + '/metric');
-}
+  const { network } = useContext(NetworkContext) as NetworkContextType;
+  return useFetch<string>(getUrl(network) + '/metric', {}, { enabled: !!network });
+};
 
 export const useGetValidatorNodes = (network: Exclude<Network, 'mainnet1'>) => {
   return useFetch<ValidatorNode[]>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes');
-}
-  
+};
 
 export const useGetClusterRewards = (network: Exclude<Network, 'mainnet1'>) => {
-  return useFetch<{ totalRewards: number }>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes/rewards');
-}
-  
+  return useFetch<{ totalRewards: number }>(
+    REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes/rewards'
+  );
+};

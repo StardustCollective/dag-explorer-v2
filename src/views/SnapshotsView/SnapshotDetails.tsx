@@ -93,7 +93,7 @@ export const SnapshotDetails = () => {
     LIMIT
   );
 
-  const skeleton = snapshotInfo.isFetching || !snapshotInfo.data;
+  const skeleton = snapshotInfo.isFetching || !snapshotInfo.data || !snapshot;
   return (
     <>
       <section className={`${styles.searchMobile}`}>
@@ -138,7 +138,7 @@ export const SnapshotDetails = () => {
                     <DetailRow
                       borderBottom={!!metagraphId}
                       title={'Blocks'}
-                      value={snapshot.blocks.length.toString()}
+                      value={!skeleton && snapshot.blocks.length.toString()}
                       skeleton={skeleton}
                       icon={<SnapshotShape size={'1.5rem'} />}
                     />
