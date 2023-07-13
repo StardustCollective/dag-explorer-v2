@@ -77,10 +77,10 @@ export const TokenRow = ({
         </>
       ) : (
         <>
-          <div className={clsx(classCell, styles.tokenCell)}>  —  </div>
-          <div className={clsx(classCell, styles.tokenCell)}>  —  </div>
-          <div className={clsx(classCell, styles.tokenCell)}>  —  </div>
-          <div className={clsx(classCell, styles.tokenCell)}>  —  </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
         </>
       )}
     </div>
