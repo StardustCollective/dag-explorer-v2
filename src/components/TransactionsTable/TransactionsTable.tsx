@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router-dom';
+import clsx from 'clsx';
 import { Snapshot, Transaction, Skeleton } from '../../types';
 import { HeaderRow } from './HeaderRow';
 import { TransactionRow } from './TransactionRow';
-import styles from './TransactionsTable.module.scss';
 import { SkeletonTransactionsTable } from './SkeletonTransactionsTable';
 import { useContext, cloneElement } from 'react';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
@@ -10,6 +10,7 @@ import { CardDataRow, TableCards } from './TableCards';
 import { fitStringInCell, formatAmount, formatTime } from '../../utils/numbers';
 import { TransactionShape } from '../Shapes/TransactionShape';
 import { SnapshotShape } from '../Shapes/SnapshotShape';
+import styles from './TransactionsTable.module.scss';
 
 export const TransactionsTable = ({
   skeleton,
@@ -18,6 +19,7 @@ export const TransactionsTable = ({
   snapshots,
   headerText,
   limit,
+  showMetagraphSymbol,
 }: {
   skeleton?: Skeleton;
   transactions?: Transaction[];
@@ -25,6 +27,7 @@ export const TransactionsTable = ({
   snapshots?: Snapshot[];
   headerText?: string;
   limit?: number;
+  showMetagraphSymbol?: boolean;
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -32,7 +35,10 @@ export const TransactionsTable = ({
 
   const titles = transactions
     ? ['TXN HASH', 'TIMESTAMP', 'SNAPSHOT', 'FROM', 'TO', 'AMOUNT']
+    : showMetagraphSymbol
+    ? ['ORDINAL', 'TIMESTAMP', 'BLOCKS COUNT', 'METAGRAPH']
     : ['ORDINAL', 'TIMESTAMP', 'BLOCKS COUNT'];
+
   const needDagInfo = transactions && transactions.length > 0;
   const mql = window.matchMedia('(max-width: 580px)');
 
@@ -48,6 +54,7 @@ export const TransactionsTable = ({
         rows={limit}
         headerText={headerText}
         icon={icon}
+        showMetagraphSymbol={showMetagraphSymbol}
       />
     );
   }
@@ -55,16 +62,27 @@ export const TransactionsTable = ({
   let txRows =
     transactions &&
     transactions.length > 0 &&
-    transactions.map((tx) => <TransactionRow dagInfo={dagInfo} key={tx.hash} tx={tx} icon={icon} />);
+    transactions.map((tx, idx) => (
+      <TransactionRow dagInfo={dagInfo} key={tx.hash} tx={tx} icon={icon} isLastRow={transactions.length >= limit && idx + 1 === transactions.length} />
+    ));
 
   let snapRows =
     snapshots &&
     snapshots.length > 0 &&
-    snapshots.map((snap) => <TransactionRow dagInfo={dagInfo} key={snap.hash} snapshot={snap} icon={icon} />);
+    snapshots.map((snap, idx) => (
+      <TransactionRow
+        dagInfo={dagInfo}
+        key={snap.hash}
+        snapshot={snap}
+        icon={icon}
+        showMetagraphSymbol={showMetagraphSymbol}
+        isLastRow={idx + 1 === snapshots.length}
+      />
+    ));
 
   const emptyRows = [];
   for (let i = 0; i < limit; i++) {
-    emptyRows.push(<TransactionRow key={i} tx={null} snapshot={null} />);
+    emptyRows.push(<TransactionRow key={i} tx={null} snapshot={null}  isLastRow={i + 1 === limit} showMetagraphSymbol={showMetagraphSymbol}/>);
   }
   if (!transactions || transactions.length === 0) {
     txRows = emptyRows;
@@ -130,7 +148,7 @@ export const TransactionsTable = ({
         element: <SnapshotShape />,
       });
       snapshotCard.push({ value: formatTime(snap.timestamp, 'relative'), dataTip: formatTime(snap.timestamp, 'full') });
-      snapshotCard.push({ value: snap.blocks.length });
+      snapshotCard.push({ value: snap.blocks ? snap.blocks.length : 0});
       cardsSet.add(snapshotCard);
     });
   }
@@ -138,13 +156,22 @@ export const TransactionsTable = ({
   return (
     <>
       <div
-        className={`${styles.table}
-        ${isHomePage ? styles.homeContainer : snapshots && !transactions ? styles.containerSnap : styles.container}`}
+        className={clsx(
+          styles.table,
+          isHomePage
+            ? showMetagraphSymbol
+              ? styles.homeContainerMetagraph
+              : styles.homeContainer
+            : snapshots && !transactions
+            ? styles.containerSnap
+            : styles.container
+        )}
       >
         {headerText && <div className={styles.headerText}>{headerText}</div>}
         {headerText && <span />}
+        {showMetagraphSymbol && headerText && <span />}
         {headerText && cloneElement(icon, { classname: styles.icon, size: '20px' })}
-        <HeaderRow forSnapshots={snapshots && !transactions} />
+        <HeaderRow forSnapshots={snapshots && !transactions} showMetagraphSymbol={showMetagraphSymbol} />
         {transactions && txRows}
         {snapshots && snapRows}
         {!transactions && !snapshots && emptyRows}

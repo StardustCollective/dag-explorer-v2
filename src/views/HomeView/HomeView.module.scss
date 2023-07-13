@@ -5,35 +5,47 @@
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
-  grid-template-rows: 1fr 1fr 0.7fr;
 }
 
 .fullWidth2 {
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
-  grid-template-rows: 25% 65% 10%;
 }
 
 .fila1 {
-  grid-row: 1/2;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 100px 0px;
 }
 
 .fila2 {
-  grid-row: 2/2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(2, minmax(auto, 1fr));
-  column-gap: 2rem;
-  row-gap: 1rem;
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
+.tables {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  > div {
+    width: 49%;
+  }
+}
+
+.viewAllContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 13px 0px 32px;
+  > div {
+    width: 49%;
+  }
+}
+
 .fila3 {
-  grid-row: 3/3;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(12, minmax(auto, 1fr));
@@ -92,6 +104,15 @@
     display: flex;
     flex-direction: column;
   }
+  
+  .tables {
+    display: flex;
+    flex-direction: column;
+    > div {
+      width: 100%;
+    }
+  }
+
   .viewAll {
     display: none;
   }
@@ -126,6 +147,15 @@
     flex-direction: column;
     margin-top: 2rem;
   }
+ 
+  .tables {
+    display: flex;
+    flex-direction: column;
+    > div {
+      width: 100%;
+    }
+  }
+
   .viewAll {
     display: none;
   }
@@ -147,11 +177,15 @@
   .fullWidth2 {
     padding-left: 1rem;
     padding-right: 1rem;
-    grid-template-rows: 15% 85%;
   }
 
-  .fila2 {
-    grid-template-columns: 1fr;
+  .tables {
+    display: flex;
+    flex-direction: column;
+    > div {
+      width: 100%;
+      margin-bottom: 40px;
+    }
   }
 
   .viewAll {
@@ -187,13 +221,18 @@
   .fullWidth2 {
     display: flex;
     flex-direction: column;
-    height: 98%;
   }
 
   .fila2 {
     display: flex;
     flex-direction: column;
   }
+
+  .tables {
+    display: flex;
+    flex-direction: column;
+  }
+
   .viewAll {
     display: none;
   }

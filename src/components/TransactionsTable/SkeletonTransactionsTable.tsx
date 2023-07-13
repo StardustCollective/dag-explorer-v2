@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { HeaderRow } from './HeaderRow';
 import styles from './TransactionsTable.module.scss';
 import styles2 from './TransactionRow.module.scss';
@@ -12,12 +13,14 @@ export const SkeletonTransactionsTable = ({
   headerText,
   icon,
   headerCols,
+  showMetagraphSymbol,
 }: {
   rows: number;
   forSnapshots?: boolean;
   headerText?: string;
   icon?: JSX.Element;
   headerCols?: string[];
+  showMetagraphSymbol?: boolean;
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -27,7 +30,9 @@ export const SkeletonTransactionsTable = ({
     <div
       className={
         isHomePage
-          ? styles.homeContainer
+          ? showMetagraphSymbol
+            ? styles.homeContainerMetagraph
+            : styles.homeContainer
           : location.pathname === '/snapshots'
           ? styles.containerSnap
           : networkVersion === '2.0'
@@ -37,66 +42,88 @@ export const SkeletonTransactionsTable = ({
     >
       {headerText && <div className={styles.headerText}>{headerText}</div>}
       {headerText && <span />}
+      {showMetagraphSymbol && headerText && <span />}
       {headerText && cloneElement(icon, { classname: styles3.icon, size: '20px' })}
       <HeaderRow headerCols={headerCols} forSnapshots={forSnapshots} />
       {transactions.map((_, index) => (
-        <SkeletonTransactionRow forSnapshots={forSnapshots} isHomePage={isHomePage} key={index} />
+        <SkeletonTransactionRow
+          forSnapshots={forSnapshots}
+          isHomePage={isHomePage}
+          key={index}
+          showMetagraphSymbol={showMetagraphSymbol}
+          isLastRow={index + 1 === transactions.length}
+        />
       ))}
     </div>
   );
 };
 
-const SkeletonTransactionRow = ({ isHomePage, forSnapshots }: { isHomePage: boolean; forSnapshots?: boolean }) => {
+const SkeletonTransactionRow = ({
+  isHomePage,
+  forSnapshots,
+  showMetagraphSymbol,
+  isLastRow
+}: {
+  isHomePage: boolean;
+  forSnapshots?: boolean;
+  showMetagraphSymbol?: boolean;
+  isLastRow ?: boolean
+}) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   return isHomePage ? (
     <>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
+      {showMetagraphSymbol && (
+        <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+          <div className={clsx(styles.skeleton, styles.value)} />
+        </div>
+      )}
     </>
   ) : network === 'mainnet1' || forSnapshots ? (
     <>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
     </>
   ) : (
     <>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={styles2.txnCell}>
-        <div className={`${styles.skeleton} ${styles.value}`} />
+      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(styles.skeleton, styles.value)} />
       </div>
     </>
   );

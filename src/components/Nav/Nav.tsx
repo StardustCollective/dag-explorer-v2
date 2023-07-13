@@ -1,7 +1,7 @@
 import { NavDropdown } from './NavDropdown';
-import styles from './Nav.module.scss';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../assets/icons/HeaderLogo.svg';
+import styles from './Nav.module.scss';
 
 export const Nav = () => {
   const navigate = useNavigate();

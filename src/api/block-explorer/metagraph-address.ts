@@ -12,8 +12,13 @@ const getUrl = (address: string) => {
 
 
 export const useGetAdressMetagraphs = (address: string) => {
+  const { network } = useContext(NetworkContext) as NetworkContextType;
   return useFetch<AddressMetagraphResponse[]>(
     getUrl(address),
+    {},
+    {
+      enabled: network !== 'mainnet'
+    }
   );
 };
 

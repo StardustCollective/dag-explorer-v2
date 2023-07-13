@@ -3,18 +3,19 @@ import { Balance, Transaction } from '../../types';
 import { useFetch } from '../../utils/reactQuery';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import { Network } from '../../constants';
+import { getBEUrl } from '../../utils/networkUrls';
 
-const { REACT_APP_TESTNET_BE_URL, REACT_APP_MAINNET_TWO_BE_URL, REACT_APP_DAG_EXPLORER_API_URL } = process.env;
+const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
 const getUrl = () => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  const url = network === 'mainnet' ? REACT_APP_MAINNET_TWO_BE_URL : REACT_APP_TESTNET_BE_URL;
+  const url = getBEUrl(network);
   return `${url}/addresses`;
 };
 
 const getMetagraphUrl = (metagraphId: string) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  const url = network === 'mainnet' ? REACT_APP_MAINNET_TWO_BE_URL : REACT_APP_TESTNET_BE_URL;
+  const url = getBEUrl(network);
   return `${url}/currency/${metagraphId}/addresses`;
 };
 

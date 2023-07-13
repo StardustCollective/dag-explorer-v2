@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useGetLatestSnapshots, useGetLatestTransactions } from '../../api/mainnet_1/block-explorer';
 import { MainnetOneSnapshot, MainnetOneTransaction } from '../../types';
 import { MainnetOneSnapshotTable } from '../../components/MainnetOneTable/MainnetOneTable';
@@ -18,7 +17,6 @@ const MainnetOneHomeTables = ({
   handleError: () => void;
   refetchEvery: number;
 }) => {
-  const navigate = useNavigate();
   const startAt = '0';
   const endAt = '9';
   const query = `?startAt="${startAt}"&endAt="${endAt}"&orderBy="$key"`;
@@ -63,6 +61,7 @@ const MainnetOneHomeTables = ({
     <NotFound entire={false} errorCode={error} />
   ) : (
     <>
+     <div className={styles.tables}>
       <MainnetOneSnapshotTable
         skeleton={{ showSkeleton: !snapshots, forSnapshots: true }}
         limit={limit}
@@ -71,10 +70,6 @@ const MainnetOneHomeTables = ({
         headerText={'Latest snapshots'}
       />
 
-      <div className={styles.viewAllMobile} onClick={() => navigate('/snapshots')}>
-        View all Snapshots
-      </div>
-
       <MainnetOneTransactionTable
         skeleton={{ showSkeleton: !transactions }}
         limit={limit}
@@ -82,9 +77,6 @@ const MainnetOneHomeTables = ({
         icon={<TransactionShape />}
         headerText={'Latest transactions'}
       />
-
-      <div className={styles.viewAllMobile} onClick={() => navigate('/transactions')}>
-        View all Transactions
       </div>
     </>
   );

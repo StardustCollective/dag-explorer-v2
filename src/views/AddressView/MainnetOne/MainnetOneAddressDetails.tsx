@@ -129,7 +129,7 @@ export const MainnetOneAddressDetails = () => {
                   value={!skeleton ? 'Transferred to ' : ''}
                   onlyLink={
                     <span className={styles.spanLink} onClick={() => changeNetwork('mainnet')}>
-                      Mainnet 2.0
+                      MainNet 2.0
                     </span>
                   }
                   skeleton={skeleton}
