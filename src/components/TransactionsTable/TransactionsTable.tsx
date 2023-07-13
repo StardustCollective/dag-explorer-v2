@@ -63,7 +63,7 @@ export const TransactionsTable = ({
     transactions &&
     transactions.length > 0 &&
     transactions.map((tx, idx) => (
-      <TransactionRow dagInfo={dagInfo} key={tx.hash} tx={tx} icon={icon} isLastRow={idx + 1 === transactions.length} />
+      <TransactionRow dagInfo={dagInfo} key={tx.hash} tx={tx} icon={icon} isLastRow={transactions.length >= limit && idx + 1 === transactions.length} />
     ));
 
   let snapRows =
