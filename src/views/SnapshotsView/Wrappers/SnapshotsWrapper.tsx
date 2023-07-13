@@ -6,5 +6,9 @@ import { Snapshots } from '../Snapshots';
 export const SnapshotsWrapper = () => {
   const { networkVersion } = useContext(NetworkContext);
 
+  if(!networkVersion) {
+    return <></>
+  }
+  
   return networkVersion === '2.0' ? <Snapshots /> : <MainnetOneSnapshots />;
 };

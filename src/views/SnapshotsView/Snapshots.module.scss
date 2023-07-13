@@ -7,7 +7,6 @@
 }
 
 .row1 {
-  grid-row: 1/1;
   grid-column: 2 / span 12;
   margin-bottom: 0.7rem;
   display: flex;
@@ -15,18 +14,15 @@
 }
 
 .row2 {
-  grid-row: 2/2;
   grid-column: 2 / span 12;
-  display: flex;
 }
 
 .row3 {
-  grid-row: 3/3;
   grid-column: 2 / span 12;
   margin-bottom: 0.7rem;
   display: flex;
   align-items: flex-start;
-  margin-top: 1rem;
+  margin-top: 3rem;
 }
 
 %flexRow {

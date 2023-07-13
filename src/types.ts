@@ -6,6 +6,10 @@ export type Snapshot = {
   lastSnapshotHash: string;
   blocks: string[];
   timestamp: string;
+  symbol?: string;
+  isMetagraphSnapshot?: boolean
+  metagraphId ?: string
+  metagraphName?: string;
 };
 
 export type MainnetOneSnapshot = {
@@ -49,6 +53,10 @@ export type Transaction = {
   blockHash: string;
   timestamp: string;
   transactionOriginal: null;
+  symbol?: string;
+  isMetagraphTransaction?: boolean
+  metagraphId ?: string
+  direction?: string
 };
 
 type TransactionReference = {
@@ -140,4 +148,20 @@ export type MainnetOneClusterInfo = {
   };
   status: 'Ready';
   reputation: number;
+};
+
+export type MetagraphInfo = {
+  metagraphId: string;
+  metagraphName: string;
+  metagraphSymbol: string;
+  metagraphIcon: string;
+}
+
+export type MetagraphTransactionResponse = {
+  metagraph: MetagraphInfo;
+  transaction?: Transaction;
+};
+
+export type AddressMetagraphResponse = MetagraphInfo & {
+  balance: number
 };

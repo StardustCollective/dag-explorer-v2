@@ -1,6 +1,8 @@
+import React from 'react';
+import clsx from 'clsx';
+
 import styles from './DetailRow.module.scss';
 import { Content } from './Content';
-import React from 'react';
 
 export const DetailRow = ({
   ...props
@@ -20,7 +22,7 @@ export const DetailRow = ({
   icon?: JSX.Element;
 }) => {
   return (
-    <div className={`${styles.txFlexRow} ${props.borderBottom ? styles.borderBottom : styles}`}>
+    <div className={clsx(styles.txFlexRow, props.borderBottom && styles.borderBottom)}>
       <div className={styles.title}>
         <p className={'headerSubtitle'}>{props.title}</p>
       </div>

@@ -5,7 +5,6 @@ import { ArrowButton } from '../../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../../components/DetailRow/DetailRow';
 import { Subheader } from '../../../components/Subheader/Subheader';
 import { IconType } from '../../../constants';
-import styles from '.././AddressDetails.module.scss';
 import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetTransactionsByAddress } from '../../../api/mainnet_1/block-explorer';
 import { MainnetOneTransactionTable } from '../../../components/MainnetOneTable/MainnetOneTransactionTable';
@@ -15,6 +14,8 @@ import { TransactionShape } from '../../../components/Shapes/TransactionShape';
 import { isValidAddress } from '../../../utils/search';
 import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
 import { SPECIAL_ADDRESSES_LIST } from '../../../constants/specialAddresses';
+
+import styles from './MainnetOneAddressDetails.module.scss';
 
 const LIMIT = 10;
 
@@ -128,7 +129,7 @@ export const MainnetOneAddressDetails = () => {
                   value={!skeleton ? 'Transferred to ' : ''}
                   onlyLink={
                     <span className={styles.spanLink} onClick={() => changeNetwork('mainnet')}>
-                      Mainnet 2.0
+                      MainNet 2.0
                     </span>
                   }
                   skeleton={skeleton}

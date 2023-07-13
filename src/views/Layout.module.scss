@@ -4,10 +4,9 @@
 .container {
   display: grid;
   width: 100%;
-  height: 1600px;
-  min-height: 100vh;
+  height: 100%;
   position: relative;
-  grid-template-rows: 6% 10% 7% 72% 5%;
+  grid-template-rows: 100px 200px 100px;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
   background-color: $gray-25;
 }
@@ -152,8 +151,6 @@
 @media screen and (min-width: $md) and (max-width: $lg) {
   .container {
     grid-template-columns: 1fr;
-    height: 2400px;
-    grid-template-rows: 4% 7% 4% 81% 5%;
   }
   .fullWidth {
     grid-column: 1 / span 8;

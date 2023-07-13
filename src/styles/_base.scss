@@ -26,7 +26,7 @@ a {
     margin-left: 0.5rem;
   }
   .overviewText {
-    color: $grayCool-600;
+    color: $grayCool-500;
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
@@ -51,8 +51,9 @@ a {
   .headerSubtitle {
     font-family: 'Lausanne';
     font-style: 'regular';
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
     color: $grayCool-500;
     margin: 0;
   }

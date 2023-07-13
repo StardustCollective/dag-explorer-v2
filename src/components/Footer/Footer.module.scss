@@ -9,11 +9,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
 
-.footerLeft {
-  display: flex;
-  gap: 2rem;
+  button {
+    color: $blue-500;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0.06px;
+    text-decoration-line: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
 }
 
 .footerText {
@@ -26,6 +33,7 @@
 }
 
 .fullWidth2 {
+  margin: 78px 0px 42px;
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;

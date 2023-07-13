@@ -3,6 +3,8 @@ import { useGetSnapshotTransactions } from '../../api/block-explorer';
 import { Transaction } from '../../types';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
+import { useGetMetagraph } from '../../api/block-explorer/metagraphs';
+import { fillTransactionsWithMetagraphInfo } from '../../utils/metagraph';
 
 export const BlockDetailsTableWrapper = ({
   snapshotOrdinal,
@@ -11,17 +13,21 @@ export const BlockDetailsTableWrapper = ({
   page,
   setLastPage,
   setHasTx,
+  metagraphId,
 }: {
   snapshotOrdinal: number;
   blockHash: string;
   limit: number;
   page: number;
+  metagraphId?: string;
   setLastPage: () => void;
   setHasTx: () => void;
 }) => {
-  const snapshotTxs = useGetSnapshotTransactions(snapshotOrdinal);
+  const snapshotTxs = useGetSnapshotTransactions(snapshotOrdinal, {}, metagraphId);
   const [allTransactions, setAllTransactions] = useState<Transaction[]>(null);
   const [transactionsToShow, setTransactionsToShow] = useState<Transaction[]>(null);
+
+  const metagraphInfo = useGetMetagraph(metagraphId);
 
   const transformTransactions = useCallback((transactions: Transaction[]) => {
     const filteredTxs = transactions.filter((tx) => tx.blockHash === blockHash);
@@ -29,13 +35,18 @@ export const BlockDetailsTableWrapper = ({
   }, []);
 
   useEffect(() => {
-    if (!snapshotTxs.isFetching) {
-      transformTransactions(snapshotTxs.data.data);
+    if (!snapshotTxs.isFetching && !metagraphInfo.isFetching) {
+      if (metagraphInfo.data) {
+        const txns = fillTransactionsWithMetagraphInfo(metagraphId, snapshotTxs.data.data, metagraphInfo.data);
+        transformTransactions(txns);
+      } else {
+        transformTransactions(snapshotTxs.data.data);
+      }
       if (snapshotTxs.data && snapshotTxs.data.data.length > 0) {
         setHasTx();
       }
     }
-  }, [snapshotTxs.isFetching]);
+  }, [snapshotTxs.isFetching, metagraphInfo.isFetching]);
 
   useEffect(() => {
     if (allTransactions) {

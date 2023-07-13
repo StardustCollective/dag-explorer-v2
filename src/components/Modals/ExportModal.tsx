@@ -14,11 +14,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Dropdown } from '../Dropdown';
 import { ImpulseSpinner } from 'react-spinners-kit';
 import CalendarIcon from '../../assets/icons/CalendarBlank.svg';
+import { getBEUrl } from '../../utils/networkUrls';
 
 const {
-  REACT_APP_TESTNET_BE_URL,
   REACT_APP_MAINNET_ONE_BE_URL,
-  REACT_APP_MAINNET_TWO_BE_URL,
   REACT_APP_DAG_EXPLORER_API_URL,
 } = process.env;
 
@@ -108,7 +107,7 @@ export const ExportModal = ({
           URL = REACT_APP_MAINNET_ONE_BE_URL + '/address/' + address + '/transaction';
           setHeaders(['amount', 'checkpointBlock', 'fee', 'hash', 'receiver', 'sender', 'snapshotHash', 'timestamp']);
         } else {
-          const base = network === 'testnet' ? REACT_APP_TESTNET_BE_URL : REACT_APP_MAINNET_TWO_BE_URL;
+          const base = getBEUrl(network)
           URL = base + '/addresses/' + address + '/transactions';
           setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
         }

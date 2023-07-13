@@ -16,6 +16,24 @@
   line-height: 18px;
 }
 
+.txnCellLastRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+  overflow: hidden;
+  height: auto;
+  min-height: 3rem;
+  max-height: 3.5rem;
+  font-family: 'IBM Plex Mono', sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.gray {
+  color: $grayCool-500;
+}
+
 .txnCell > a {
   color: $blue-700;
 }
@@ -30,6 +48,15 @@
   min-height: 3rem;
 }
 
+.txnEmptyLastRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+  overflow: hidden;
+  min-height: 2.5rem;
+}
+
 .txContainer {
   display: flex;
   align-items: center;
@@ -40,11 +67,10 @@
 .amount {
   display: flex;
   flex-direction: column-reverse;
-  align-items: flex-end;
+  align-items: flex-start;
+  padding-left: 1.5rem;
   justify-content: center;
-  padding-right: 1.5rem;
-  padding-left: 0;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .usd {
@@ -63,18 +89,14 @@
 
 .stackFromTo {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-  align-items: flex-start;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
+  width: 100%;
 }
 
 .stackRow {
   display: flex;
+  width: 100%;
 }
+
 .alignItemsLeft {
   align-items: flex-start;
   padding-left: 1.5rem;
@@ -84,11 +106,77 @@
   align-self: flex-start;
   width: 45px;
 }
+
 .alignRight {
-  align-self: flex-end;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
+
+.copyLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.copy {
+  margin-left: 0.1rem;
+  cursor: pointer;
+}
+
+.transactionDirectionGreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $green-50;
+  margin-right: 41px;
+  border-radius: 48px;
+  width: 40px;
+  height: 24px;
+  border: 1px solid $green-200;
+  color: $green-900;
+
+  span {
+    font-size: 10px;
+    font-family: IBM Plex Mono;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+}
+
+.transactionDirectionIndigo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $indigo-50;
+  margin-right: 41px;
+  border-radius: 48px;
+  width: 40px;
+  height: 24px;
+  border: 1px solid $indigo-200;
+  color: $indigo-900;
+
+  span {
+    font-size: 10px;
+    font-family: IBM Plex Mono;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+}
+
 .subTimestamp {
   display: none;
+}
+
+.txnDirection {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
 }
 
 @media screen and (max-width: $lg) {
@@ -120,6 +208,9 @@
 
 @media screen and (max-width: 780px) {
   .enoughSpace {
+    display: none;
+  }
+  .txnDirection {
     display: none;
   }
 }

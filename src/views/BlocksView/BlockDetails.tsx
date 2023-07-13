@@ -15,9 +15,9 @@ import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 
 const LIMIT = 10;
 export const BlockDetails = () => {
-  const { blockHash } = useParams();
+  const { blockHash, metagraphId } = useParams();
   const [blockData, setBlockData] = useState<Block | undefined>(undefined);
-  const blockInfo = useGetBlock(blockHash);
+  const blockInfo = useGetBlock(blockHash, metagraphId);
   const [page, setPage] = useState<number>(1);
   const [isLastPage, setIsLastPage] = useState(false);
   const [hasTx, setHasTx] = useState(false);
@@ -125,6 +125,7 @@ export const BlockDetails = () => {
                 blockHash={blockData.hash}
                 setLastPage={handleLastPage}
                 setHasTx={handleHasTx}
+                metagraphId={metagraphId}
               />
             )}
           </div>
