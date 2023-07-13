@@ -4,7 +4,7 @@ import { SkeletonTokenRows } from './SkeletonTokenRows';
 import { TokenRow } from './TokenRow';
 import { HeaderRow } from '../TransactionsTable/HeaderRow';
 import { CardDataRow, TableCards } from '../TransactionsTable/TableCards';
-import { fitStringInCell } from '../../utils/numbers';
+import { fitStringInCell, formatAmount } from '../../utils/numbers';
 
 import styles from './TokensTable.module.scss';
 
@@ -37,7 +37,7 @@ export const TokensTable = ({
           });
           tokenCard.push({value: node.metagraphSymbol});
           tokenCard.push({value: fitStringInCell(node.metagraphId, 8), toCopy: node.metagraphId});
-          tokenCard.push({value: node.balance});
+          tokenCard.push({value: formatAmount(node.balance, 6, false, '')});
           tokensCards.add(tokenCard);
         }        
       });
@@ -45,19 +45,28 @@ export const TokensTable = ({
     }
   }, [rows]);
 
+  const emptyRows = [];
+  for (let i = 0; i < amount; i++) {
+    emptyRows.push(<TokenRow key={i} />);
+  }
+
   return (
     <>
       <div className={styles.tableContainer}>
         <div className={styles.table}>
           <HeaderRow headerCols={HEADERS} />
           {!loading ? (
-            rows.map((metagraphToken, idx) => (
+            <>
+            {rows.length > 0 ? (rows.map((metagraphToken, idx) => (
               <TokenRow
                 metagraphToken={metagraphToken}
                 key={metagraphToken?.metagraphName || idx}
                 variant={idx % 2 === 0 ? styles.rowVariantWhite : undefined}
               />
-            ))
+            ))) : (
+              emptyRows
+            )}
+            </>
           ) : (
             <SkeletonTokenRows amountRows={amount} variant={styles.rowVariantGray} />
            )} 

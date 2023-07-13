@@ -331,7 +331,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 icon={<AddressShape />}
               />
             ) : (
-              <TokensTable metagraphTokens={metagraphTokensTable} amount={5} loading={!metagraphTokensTable} />
+              <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={!metagraphTokensTable} />
             )}
           </div>
           <div className={`${styles.row6}`}>

@@ -125,7 +125,7 @@ const HomeTables = ({
          <div className={styles.tables}>
          <TransactionsTable
            skeleton={{ showSkeleton: !metagraphSnapshots, headerCols: ['ORDINAL', 'TIMESTAMP', 'BLOCKS', 'METAGRAPH'] }}
-           limit={limit}
+           limit={1}
            snapshots={metagraphSnapshots}
            icon={<SnapshotShape />}
            headerText={'Latest Metagraph snapshots'}
@@ -137,7 +137,7 @@ const HomeTables = ({
              showSkeleton:
                !metagraphTransactions && metagraphTransactionsInfo.isLoading && !metagraphTransactionsInfo.isError,
            }}
-           limit={limit}
+           limit={1}
            transactions={metagraphTransactions}
            icon={<TransactionShape />}
            headerText={'Latest Metagraph transactions'}

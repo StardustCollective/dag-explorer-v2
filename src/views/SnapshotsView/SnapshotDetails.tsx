@@ -138,13 +138,7 @@ export const SnapshotDetails = () => {
                     <DetailRow
                       borderBottom={!!metagraphId}
                       title={'Blocks'}
-                      value={
-                        !skeleton && snapshot
-                          ? snapshot.blocks.length > 1
-                            ? `${snapshot.blocks.length.toString()} blocks confirmed`
-                            : `${snapshot.blocks.length.toString()} block confirmed`
-                          : ''
-                      }
+                      value={snapshot.blocks.length.toString()}
                       skeleton={skeleton}
                       icon={<SnapshotShape size={'1.5rem'} />}
                     />

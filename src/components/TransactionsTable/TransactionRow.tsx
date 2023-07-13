@@ -246,9 +246,12 @@ export const TransactionRow = ({
     if (isHomePage) {
       snapRow = (
         <>
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} > — </div>
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} > — </div>
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} > — </div>
+          {showMetagraphSymbol && (
+            <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} > — </div>
+          )}
         </>
       );
     } else {

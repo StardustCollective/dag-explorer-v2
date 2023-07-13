@@ -82,7 +82,7 @@ export const TransactionsTable = ({
 
   const emptyRows = [];
   for (let i = 0; i < limit; i++) {
-    emptyRows.push(<TransactionRow key={i} tx={null} snapshot={null}  isLastRow={i + 1 === limit} />);
+    emptyRows.push(<TransactionRow key={i} tx={null} snapshot={null}  isLastRow={i + 1 === limit} showMetagraphSymbol={showMetagraphSymbol}/>);
   }
   if (!transactions || transactions.length === 0) {
     txRows = emptyRows;

@@ -13,7 +13,7 @@ type MetagraphTokensBalancesProps = {
   selectedOption: AddressMetagraphResponse;
   setSelectedMetagraph: (metagraph: AddressMetagraphResponse) => void;
   setTokenChanged: (changed: boolean) => void;
-  setSkeleton: (changed: boolean) => void
+  setSkeleton: (changed: boolean) => void;
 };
 
 export const MetagraphTokensBalances = ({
@@ -21,7 +21,7 @@ export const MetagraphTokensBalances = ({
   selectedOption,
   setSelectedMetagraph,
   setTokenChanged,
-  setSkeleton
+  setSkeleton,
 }: MetagraphTokensBalancesProps) => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
 
@@ -67,7 +67,7 @@ export const MetagraphTokensBalances = ({
                     if (option.metagraphId !== selectedOption.metagraphId) {
                       setSelectedMetagraph(option);
                       setTokenChanged(true);
-                      setSkeleton(true)
+                      setSkeleton(true);
                     }
                   }}
                 >
@@ -79,7 +79,11 @@ export const MetagraphTokensBalances = ({
                     ) : (
                       <DefaultTokenIcon />
                     )}
-                    <span>{fitStringInCell(option.metagraphName, 18, true)}</span>
+                    <span>
+                      {option.metagraphId === 'ALL_METAGRAPHS'
+                        ? option.metagraphName
+                        : fitStringInCell(option.metagraphName, 18, true)}
+                    </span>
                   </div>
                   {option.metagraphId !== 'ALL_METAGRAPHS' && (
                     <div className={styles.amountList}>
