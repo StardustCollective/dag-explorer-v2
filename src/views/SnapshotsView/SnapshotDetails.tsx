@@ -117,13 +117,6 @@ export const SnapshotDetails = () => {
                 <div className={styles.spanContent}>
                   <div className={`${styles.txGroup}`}>
                     <DetailRow
-                      borderBottom
-                      title={'Height'}
-                      value={snapshot && snapshot.height.toString()}
-                      skeleton={skeleton}
-                      icon={<SnapshotShape size={'1.5rem'} />}
-                    />
-                    <DetailRow
                       linkTo={
                         !skeleton && snapshot && snapshot.metagraphId
                           ? `/metagraphs/${snapshot.metagraphId}/snapshots`
