@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import clsx from 'clsx';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SearchableItem } from '../../constants';
-import { getSearchInputType } from '../../utils/search';
+import { Network, SearchableItem } from '../../constants';
+import { checkIfBEUrlExists, getSearchInputType } from '../../utils/search';
 
 import styles from './SearchTokenBar.module.scss';
+import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 
-export const handleSearch = (searchText: string, performAction: (url: string) => void) => {
+export const handleSearch = async (searchText: string, performAction: (url: string) => void, network: Network) => {
   const inputType = getSearchInputType(searchText);
   switch (inputType) {
     case SearchableItem.Address: {
@@ -20,9 +21,17 @@ export const handleSearch = (searchText: string, performAction: (url: string) =>
       performAction(url);
       break;
     }
-    case SearchableItem.Transaction: {
+    case SearchableItem.Hash: {
+      const snapshotUrl = `/global-snapshots/${searchText}`;
+      const snapshotExists = await checkIfBEUrlExists(snapshotUrl, network);
+      if (snapshotExists) {
+        const url = '/snapshots/' + searchText;
+        performAction(url);
+        break;
+      }
       const url = '/transactions/' + searchText;
       performAction(url);
+
       break;
     }
     default: {
@@ -36,6 +45,7 @@ export const handleSearch = (searchText: string, performAction: (url: string) =>
 export const SearchTokenBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { network } = useContext(NetworkContext) as NetworkContextType;
 
   const [searchText, setSearchText] = useState<string>('');
 
@@ -45,9 +55,9 @@ export const SearchTokenBar = () => {
     isSameLocation(url) ? window.location.reload() : navigate(url);
   };
 
-  const handleKey = (e) => {
+  const handleKey = async (e) => {
     if (e.code === 'Enter' && searchText !== '') {
-      handleSearch(searchText, performAction);
+      await handleSearch(searchText, performAction, network);
     }
   };
 
@@ -63,7 +73,7 @@ export const SearchTokenBar = () => {
           <div className={styles.searchLeft}>
             <div
               onClick={() => {
-                handleSearch(searchText, performAction);
+                handleSearch(searchText, performAction, network);
               }}
               className={styles.searchIcon}
             />
@@ -73,7 +83,7 @@ export const SearchTokenBar = () => {
       <div
         className={clsx(styles.searchButton, styles.oldIos)}
         onClick={() => {
-          handleSearch(searchText, performAction);
+          handleSearch(searchText, performAction, network);
         }}
       >
         <p> Search </p>

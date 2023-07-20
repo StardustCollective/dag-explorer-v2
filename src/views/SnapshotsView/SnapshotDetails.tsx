@@ -123,10 +123,38 @@ export const SnapshotDetails = () => {
                           : '/snapshots'
                       }
                       borderBottom
-                      title={'Snapshot Height'}
-                      value={snapshot && snapshot.height.toString()}
+                      title={'Ordinal'}
+                      value={snapshot && snapshot.ordinal.toString()}
                       skeleton={skeleton}
                       icon={<SnapshotShape size={'1.5rem'} />}
+                    />
+                    <DetailRow
+                      linkTo={
+                        !skeleton && snapshot && snapshot.metagraphId
+                          ? `/metagraphs/${snapshot.metagraphId}/snapshots`
+                          : '/snapshots'
+                      }
+                      borderBottom
+                      title={'Hash'}
+                      value={snapshot && snapshot.hash.toString()}
+                      skeleton={skeleton}
+                      copy
+                      isLong
+                      isMain
+                    />
+                    <DetailRow
+                      linkTo={
+                        !skeleton && snapshot && snapshot.metagraphId
+                          ? `/metagraphs/${snapshot.metagraphId}/snapshots`
+                          : '/snapshots'
+                      }
+                      borderBottom
+                      title={'Last Snapshot Hash'}
+                      value={snapshot && snapshot.lastSnapshotHash.toString()}
+                      skeleton={skeleton}
+                      copy
+                      isLong
+                      isMain
                     />
                     <DetailRow
                       borderBottom

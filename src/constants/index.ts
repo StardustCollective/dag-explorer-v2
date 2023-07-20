@@ -6,7 +6,7 @@ export const COIN_IDS = {
 export enum SearchableItem {
   Address = 'ADDRESS',
   Snapshot = 'SNAPSHOT',
-  Transaction = 'TRANSACTION',
+  Hash = 'HASH'
 }
 
 export enum IconType {
