@@ -77,6 +77,32 @@ export const HeaderRow = ({
         <p className={styles.headerText}>AMOUNT</p>
       </div>
     </>
+  ) : network === 'mainnet1' && !forSnapshots ? (
+    <>
+      <div className={`${styles.headerColumn} ${styles.topLeftBorder}`}>
+        <p className={styles.headerText}>TXN HASH</p>
+      </div>
+
+      <div className={clsx(styles.headerColumn, styles.timestamp)}>
+        <p className={styles.headerText}>TIMESTAMP</p>
+      </div>
+
+      <div className={`${styles.headerColumn}`}>
+        <p className={styles.headerText}>SNAPSHOT</p>
+      </div>
+
+      <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
+        <p className={styles.headerText}>FROM</p>
+      </div>
+
+      <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
+        <p className={styles.headerText}>TO</p>
+      </div>
+
+      <div className={clsx(styles.headerColumn, styles.topRightBorder, styles.rightAligned)}>
+        <p className={styles.headerText}>AMOUNT</p>
+      </div>
+    </>
   ) : (
     <>
       <div className={`${styles.headerColumn} ${styles.topLeftBorder}`}>
@@ -89,7 +115,7 @@ export const HeaderRow = ({
 
       {!forSnapshots && (
         <div className={`${styles.headerColumn}`}>
-          <p className={styles.headerText}>{'SNAPSHOT'}</p>
+          <p className={styles.headerText}>SNAPSHOT</p>
         </div>
       )}
 

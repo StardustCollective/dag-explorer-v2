@@ -4,14 +4,12 @@
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
-  grid-template-rows: 25% 65% 10%;
 }
 
 .fullWidth3 {
   grid-column: 1 / span 14;
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
-  grid-template-rows: 10% 12% 8% 60% 10%;
 }
 .subTitle {
   grid-column: 2 / span 12;
