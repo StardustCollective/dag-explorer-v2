@@ -65,7 +65,7 @@ export const TransactionDetail = ({ network }: { network: Exclude<Network, 'main
       if (metagraph.metagraphName === 'DAG') {
         metagraph.metagraphIcon = DAGToken;
       }
-      if (metagraph.metagraphName === 'Unknown') {
+      if (metagraph.metagraphName === 'Unknown' || !metagraph.metagraphIcon) {
         metagraph.metagraphIcon = DefaultTokenIcon;
       }
 
