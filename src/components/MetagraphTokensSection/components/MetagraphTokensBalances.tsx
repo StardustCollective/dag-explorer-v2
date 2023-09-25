@@ -40,7 +40,13 @@ export const MetagraphTokensBalances = ({
                   <span className={styles.name}>{selectedOption.metagraphName}</span>
                 ) : (
                   <div className={styles.inputOptionSelected}>
-                    <img src={selectedOption.metagraphIcon} />
+                     {selectedOption.metagraphIcon ? (
+                      <img src={selectedOption.metagraphIcon} />
+                    ) : selectedOption.metagraphSymbol === 'DAG' ? (
+                      <DAGToken />
+                    ) : (
+                      <DefaultTokenIcon />
+                    )}
                     <span className={styles.name}>{fitStringInCell(selectedOption.metagraphName, 18, true)}</span>
                     <span className={styles.selectedOptionBalance}>
                       {formatAmount(selectedOption.balance, 6, false, selectedOption.metagraphSymbol)}
