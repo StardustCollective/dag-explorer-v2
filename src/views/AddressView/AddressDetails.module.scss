@@ -84,7 +84,7 @@
     position: absolute;
     display: flex;
     height: 2px;
-    width: 121px;
+    width: 160px;
     background-color: #2E73FA;
     z-index: 1;
     border-radius: 99px; // just a high number to create pill effect
@@ -103,7 +103,8 @@
   input[id="radio-2"] {
     &:checked {
       & ~ .glider {
-        transform: translateX(calc(105%));
+        transform: translateX(calc(140%));
+        width: 121px;
       }
     }
   }
