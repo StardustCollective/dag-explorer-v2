@@ -303,7 +303,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   className={clsx(styles.tab, selectedTable === 'transactions' && styles.selected)}
                   htmlFor="radio-1"
                 >
-                  Transactions
+                  {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS' ? 'DAG Transactions': `${selectedMetagraph.metagraphSymbol} Transactions`}
                 </label>
                 <input type="radio" id="radio-1" name="tabs" onClick={() => setSelectedTable('transactions')} />
                 {network !== 'mainnet' && (
