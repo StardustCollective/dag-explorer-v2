@@ -108,25 +108,23 @@ export const TransactionDetail = ({ network }: { network: Exclude<Network, 'main
                 <div className={`${styles.column1}`}>
                   <div className={`${styles.flexTxContainer}`}>
                     <div className={`${styles.txGroup}`}>
-                      {network !== 'mainnet' && (
-                        <DetailRow
-                          borderBottom
-                          title={'Token'}
-                          value={!skeleton ? metagraphInfo.metagraphSymbol : ''}
-                          skeleton={skeleton}
-                          icon={
-                            !skeleton ? (
-                              <img
-                                src={metagraphInfo.metagraphIcon}
-                                alt="token_image"
-                                className={`${styles.tokenImage}`}
-                              />
-                            ) : (
-                              <></>
-                            )
-                          }
-                        />
-                      )}
+                      <DetailRow
+                        borderBottom
+                        title={'Token'}
+                        value={!skeleton ? metagraphInfo.metagraphSymbol : ''}
+                        skeleton={skeleton}
+                        icon={
+                          !skeleton ? (
+                            <img
+                              src={metagraphInfo.metagraphIcon}
+                              alt="token_image"
+                              className={`${styles.tokenImage}`}
+                            />
+                          ) : (
+                            <></>
+                          )
+                        }
+                      />
 
                       <DetailRow
                         borderBottom

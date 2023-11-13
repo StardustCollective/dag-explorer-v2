@@ -269,16 +269,14 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   subValue={skeleton ? '' : `(${formatPriceWithSymbol(balance || 0, dagInfo, 2, '$', 'USD')})`}
                   skeleton={skeleton}
                 />
-                {network !== 'mainnet' && (
-                  <MetagraphTokensSection
-                    skeleton={metagraphSkeleton}
-                    metagraphTokens={metagraphTokensDropdown}
-                    selectedOption={selectedMetagraph}
-                    setSelectedMetagraph={setSelectedMetagraph}
-                    setTokenChanged={setTokenChanged}
-                    setSkeleton={setTxsSkeleton}
-                  />
-                )}
+                <MetagraphTokensSection
+                  skeleton={metagraphSkeleton}
+                  metagraphTokens={metagraphTokensDropdown}
+                  selectedOption={selectedMetagraph}
+                  setSelectedMetagraph={setSelectedMetagraph}
+                  setTokenChanged={setTokenChanged}
+                  setSkeleton={setTxsSkeleton}
+                />
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow
                     title={'ALL-TIME REWARDS RECEIVED'}
@@ -303,21 +301,15 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   className={clsx(styles.tab, selectedTable === 'transactions' && styles.selected)}
                   htmlFor="radio-1"
                 >
-                  {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS' ? 'DAG Transactions': `${selectedMetagraph.metagraphSymbol} Transactions`}
+                  {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
+                    ? 'DAG Transactions'
+                    : `${selectedMetagraph.metagraphSymbol} Transactions`}
                 </label>
                 <input type="radio" id="radio-1" name="tabs" onClick={() => setSelectedTable('transactions')} />
-                {network !== 'mainnet' && (
-                  <>
-                    <label
-                      className={clsx(styles.tab, selectedTable === 'tokens' && styles.selected)}
-                      htmlFor="radio-2"
-                    >
-                      Tokens list
-                    </label>
-                    <input type="radio" id="radio-2" name="tabs" onClick={() => setSelectedTable('tokens')} />
-                  </>
-                )}
-
+                <label className={clsx(styles.tab, selectedTable === 'tokens' && styles.selected)} htmlFor="radio-2">
+                  Tokens list
+                </label>
+                <input type="radio" id="radio-2" name="tabs" onClick={() => setSelectedTable('tokens')} />
                 <span className={styles.glider} />
               </div>
             </div>
