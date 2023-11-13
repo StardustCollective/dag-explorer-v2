@@ -10,15 +10,13 @@ const getUrl = (address: string) => {
   return `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/addresses/${address}/metagraphs`;
 };
 
-
 export const useGetAdressMetagraphs = (address: string) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   return useFetch<AddressMetagraphResponse[]>(
     getUrl(address),
     {},
     {
-      enabled: network !== 'mainnet'
+      enabled: true,
     }
   );
 };
-
