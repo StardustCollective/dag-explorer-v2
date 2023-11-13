@@ -121,8 +121,8 @@ const HomeTables = ({
           </>
         )}
       </div>
-      {network !== 'mainnet' && (
-         <div className={styles.tables}>
+      
+      <div className={styles.tables}>
          <TransactionsTable
            skeleton={{ showSkeleton: !metagraphSnapshots, headerCols: ['ORDINAL', 'TIMESTAMP', 'BLOCKS', 'METAGRAPH'] }}
            limit={1}
@@ -143,7 +143,7 @@ const HomeTables = ({
            headerText={'Latest Metagraph transactions'}
          />
        </div>
-      )}
+  
      
     </>
   );
