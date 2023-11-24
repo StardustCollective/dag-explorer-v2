@@ -2,12 +2,13 @@ import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { MetagraphTransactionResponse, Transaction } from '../../types';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { getBEUrl } from '../../utils/networkUrls';
 
-const { REACT_APP_TESTNET_BE_URL, REACT_APP_MAINNET_TWO_BE_URL, REACT_APP_DAG_EXPLORER_API_URL } = process.env;
+const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
 const getUrl = (metagraphId?: string) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  const url = network === 'mainnet' ? REACT_APP_MAINNET_TWO_BE_URL : REACT_APP_TESTNET_BE_URL;
+  const url = getBEUrl(network);
   return metagraphId ? `${url}/currency/${metagraphId}/transactions` : `${url}/transactions`;
 };
 
@@ -35,9 +36,24 @@ export const useGetAllTransactions = (params?: any, refetchInterval?: number, me
   );
 };
 
-export const useGetLatestTransactions = (params?: any, refetchInterval?: number) => {
+export const useGetLatestDAGTransactions = (params?: any, refetchInterval?: number) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  const url = REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/latest-transactions';
+  const url = REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/dag/latest-transactions';
+  return useFetch<{ data: Transaction[]; meta?: any }>(
+    url,
+    params,
+    {
+      keepPreviousData: true,
+      refetchInterval: refetchInterval,
+      retry: false,
+    },
+    false
+  );
+};
+
+export const useGetLatestMetagraphTransactions = (params?: any, refetchInterval?: number) => {
+  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const url = REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/metagraph/latest-transactions';
   return useFetch<{ data: Transaction[]; meta?: any }>(
     url,
     params,

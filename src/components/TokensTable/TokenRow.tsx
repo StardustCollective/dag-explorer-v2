@@ -15,7 +15,7 @@ export const TokenRow = ({
   metagraphToken,
   variant,
 }: {
-  metagraphToken: AddressMetagraphResponse | undefined;
+  metagraphToken?: AddressMetagraphResponse;
   variant?: string;
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
@@ -75,7 +75,14 @@ export const TokenRow = ({
             </p>
           </div>
         </>
-      ) : null}
+      ) : (
+        <>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
+        </>
+      )}
     </div>
   );
 };

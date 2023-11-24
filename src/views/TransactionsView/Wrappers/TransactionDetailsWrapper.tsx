@@ -2,9 +2,18 @@ import { useContext } from 'react';
 import { NetworkContext } from '../../../context/NetworkContext';
 import { TransactionDetail } from '../../TransactionDetailView/TransactionDetail';
 import { MainnetOneTransactionDetails } from '../MainnetOne/MainnetOneTransactionDetails';
+import { Network } from '../../../constants';
 
 export const TransactionDetailsWrapper = () => {
-  const { networkVersion } = useContext(NetworkContext);
+  const { networkVersion, network } = useContext(NetworkContext);
 
-  return networkVersion === '2.0' ? <TransactionDetail /> : <MainnetOneTransactionDetails />;
+  if (!networkVersion) {
+    return <></>;
+  }
+
+  return networkVersion === '2.0' ? (
+    <TransactionDetail network={network as Exclude<Network, 'mainnet1'>} />
+  ) : (
+    <MainnetOneTransactionDetails />
+  );
 };

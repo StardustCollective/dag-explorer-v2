@@ -9,6 +9,7 @@ type MetagraphTokensProps = {
   skeleton?: boolean;
   setSelectedMetagraph: (metagraph: AddressMetagraphResponse) => void;
   setTokenChanged: (changed: boolean) => void;
+  setSkeleton: (changed: boolean) => void
 };
 
 export const MetagraphTokensSection = ({
@@ -16,7 +17,8 @@ export const MetagraphTokensSection = ({
   selectedOption,
   skeleton,
   setSelectedMetagraph,
-  setTokenChanged
+  setTokenChanged,
+  setSkeleton
 }: MetagraphTokensProps) => {
   return (
     <div className={styles.metagraphTokensOverview}>
@@ -29,6 +31,7 @@ export const MetagraphTokensSection = ({
           selectedOption={selectedOption}
           setSelectedMetagraph={setSelectedMetagraph}
           setTokenChanged={setTokenChanged}
+          setSkeleton={setSkeleton}
         />
       )}
     </div>

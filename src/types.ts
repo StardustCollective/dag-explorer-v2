@@ -6,7 +6,10 @@ export type Snapshot = {
   lastSnapshotHash: string;
   blocks: string[];
   timestamp: string;
-  metagraphId?: string;
+  symbol?: string;
+  isMetagraphSnapshot?: boolean
+  metagraphId ?: string
+  metagraphName?: string;
 };
 
 export type MainnetOneSnapshot = {

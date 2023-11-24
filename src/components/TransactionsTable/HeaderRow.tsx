@@ -4,7 +4,15 @@ import { NetworkContext, NetworkContextType } from '../../context/NetworkContext
 import styles from './HeaderRow.module.scss';
 import clsx from 'clsx';
 
-export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean; headerCols?: string[] }) => {
+export const HeaderRow = ({
+  forSnapshots,
+  headerCols,
+  showMetagraphSymbol,
+}: {
+  forSnapshots?: boolean;
+  headerCols?: string[];
+  showMetagraphSymbol?: boolean;
+}) => {
   const location = useLocation();
   const { network } = useContext(NetworkContext) as NetworkContextType;
 
@@ -21,7 +29,6 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
       </>
     );
   }
-
   const columns = isHomePage ? (
     network === 'mainnet1' ? (
       <>
@@ -43,9 +50,14 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <div className={styles.headerColumn}>
           <p className={styles.headerText}>{'TIMESTAMP'}</p>
         </div>
-        <div className={`${styles.headerColumn} ${!forSnapshots ? styles.rightAligned : undefined}`}>
+        <div className={styles.headerColumn}>
           <p className={styles.headerText}>{forSnapshots ? 'BLOCKS' : 'AMOUNT'}</p>
         </div>
+        {forSnapshots && showMetagraphSymbol && (
+          <div className={styles.headerColumn}>
+            <p className={styles.headerText}>{'METAGRAPH'}</p>
+          </div>
+        )}
       </>
     )
   ) : network === 'mainnet1' && forSnapshots ? (
@@ -65,6 +77,32 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
         <p className={styles.headerText}>AMOUNT</p>
       </div>
     </>
+  ) : network === 'mainnet1' && !forSnapshots ? (
+    <>
+      <div className={`${styles.headerColumn} ${styles.topLeftBorder}`}>
+        <p className={styles.headerText}>TXN HASH</p>
+      </div>
+
+      <div className={clsx(styles.headerColumn, styles.timestamp)}>
+        <p className={styles.headerText}>TIMESTAMP</p>
+      </div>
+
+      <div className={`${styles.headerColumn}`}>
+        <p className={styles.headerText}>SNAPSHOT</p>
+      </div>
+
+      <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
+        <p className={styles.headerText}>FROM</p>
+      </div>
+
+      <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
+        <p className={styles.headerText}>TO</p>
+      </div>
+
+      <div className={clsx(styles.headerColumn, styles.topRightBorder, styles.rightAligned)}>
+        <p className={styles.headerText}>AMOUNT</p>
+      </div>
+    </>
   ) : (
     <>
       <div className={`${styles.headerColumn} ${styles.topLeftBorder}`}>
@@ -77,7 +115,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
 
       {!forSnapshots && (
         <div className={`${styles.headerColumn}`}>
-          <p className={styles.headerText}>{'SNAPSHOT'}</p>
+          <p className={styles.headerText}>SNAPSHOT</p>
         </div>
       )}
 
@@ -104,7 +142,7 @@ export const HeaderRow = ({ forSnapshots, headerCols }: { forSnapshots?: boolean
           <p className={styles.headerText}>FROM</p>
         </div>
       )}
-      
+
       {!forSnapshots && (
         <div className={`${styles.headerColumn} ${styles.direction}`}>
           <p className={styles.headerText}></p>

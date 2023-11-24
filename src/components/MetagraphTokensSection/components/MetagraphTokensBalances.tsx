@@ -1,6 +1,6 @@
 import { useComponentVisible } from '../../../utils/clickOutside';
 import { AddressMetagraphResponse } from '../../../types';
-import { formatAmount } from '../../../utils/numbers';
+import { fitStringInCell, formatAmount } from '../../../utils/numbers';
 import { ReactComponent as ChevronUpIcon } from '../../../assets/icons/chevron-up.svg';
 import { ReactComponent as ChevronDownIcon } from '../../../assets/icons/chevron-down.svg';
 import { ReactComponent as DefaultTokenIcon } from '../../../assets/icons/DefaultTokenIcon.svg';
@@ -13,6 +13,7 @@ type MetagraphTokensBalancesProps = {
   selectedOption: AddressMetagraphResponse;
   setSelectedMetagraph: (metagraph: AddressMetagraphResponse) => void;
   setTokenChanged: (changed: boolean) => void;
+  setSkeleton: (changed: boolean) => void;
 };
 
 export const MetagraphTokensBalances = ({
@@ -20,6 +21,7 @@ export const MetagraphTokensBalances = ({
   selectedOption,
   setSelectedMetagraph,
   setTokenChanged,
+  setSkeleton,
 }: MetagraphTokensBalancesProps) => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
 
@@ -34,7 +36,23 @@ export const MetagraphTokensBalances = ({
               onClick={() => setIsComponentVisible(!isComponentVisible)}
             >
               <div>
-                <span className={styles.name}>{selectedOption.metagraphName}</span>
+                {selectedOption.metagraphId === 'ALL_METAGRAPHS' ? (
+                  <span className={styles.name}>{selectedOption.metagraphName}</span>
+                ) : (
+                  <div className={styles.inputOptionSelected}>
+                     {selectedOption.metagraphIcon ? (
+                      <img src={selectedOption.metagraphIcon} />
+                    ) : selectedOption.metagraphSymbol === 'DAG' ? (
+                      <DAGToken />
+                    ) : (
+                      <DefaultTokenIcon />
+                    )}
+                    <span className={styles.name}>{fitStringInCell(selectedOption.metagraphName, 18, true)}</span>
+                    <span className={styles.selectedOptionBalance}>
+                      {formatAmount(selectedOption.balance, 6, false, selectedOption.metagraphSymbol)}
+                    </span>
+                  </div>
+                )}
               </div>
               {isComponentVisible ? (
                 <ChevronUpIcon width={24} height={24} />
@@ -52,8 +70,11 @@ export const MetagraphTokensBalances = ({
                   key={option.metagraphName}
                   onClick={() => {
                     setIsComponentVisible(!isComponentVisible);
-                    setSelectedMetagraph(option);
-                    setTokenChanged(true);
+                    if (option.metagraphId !== selectedOption.metagraphId) {
+                      setSelectedMetagraph(option);
+                      setTokenChanged(true);
+                      setSkeleton(true);
+                    }
                   }}
                 >
                   <div className={styles.nameList}>
@@ -64,7 +85,11 @@ export const MetagraphTokensBalances = ({
                     ) : (
                       <DefaultTokenIcon />
                     )}
-                    <span>{option.metagraphSymbol}</span>
+                    <span>
+                      {option.metagraphId === 'ALL_METAGRAPHS'
+                        ? option.metagraphName
+                        : fitStringInCell(option.metagraphName, 18, true)}
+                    </span>
                   </div>
                   {option.metagraphId !== 'ALL_METAGRAPHS' && (
                     <div className={styles.amountList}>

@@ -151,8 +151,6 @@
 @media screen and (min-width: $md) and (max-width: $lg) {
   .container {
     grid-template-columns: 1fr;
-    height: 2400px;
-    grid-template-rows: 4% 7% 4% 81% 5%;
   }
   .fullWidth {
     grid-column: 1 / span 8;

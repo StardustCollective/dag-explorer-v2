@@ -80,11 +80,12 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   };
 
   const handleFillMetagraphs = () => {
-    const metagraphsFormatted = allMetagraphTokens.slice(
+    const allMetagraphsToUse = allMetagraphTokens ?? [];
+    const metagraphsFormatted = allMetagraphsToUse.slice(
       offsetAddressMetagraphs,
       limitAddressMetagraphs + offsetAddressMetagraphs
     );
-    const metagraphsSize = allMetagraphTokens.length;
+    const metagraphsSize = allMetagraphsToUse.length;
 
     const totalBalance = metagraphsFormatted.reduce(function (accumulate, current) {
       return accumulate + current.balance;
@@ -99,7 +100,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       balance: totalBalance,
     };
     setSelectedMetagraph(defaultOption);
-    setMetagraphTokensDropdown([defaultOption, ...allMetagraphTokens]);
+    setMetagraphTokensDropdown([defaultOption, ...allMetagraphsToUse]);
   };
 
   useEffect(() => {
@@ -118,7 +119,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
           tx.symbol = isMetagraphTransaction ? selectedMetagraph.metagraphSymbol : 'DAG';
           tx.isMetagraphTransaction = isMetagraphTransaction;
           tx.direction = tx.destination === addressId ? 'IN' : 'OUT';
-          tx.metagraphId = selectedMetagraph.metagraphId
+          tx.metagraphId = selectedMetagraph.metagraphId;
 
           return tx;
         });
@@ -146,7 +147,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   useEffect(() => {
     if (!totalRewards.isFetching && !totalRewards.isError) {
       if (totalRewards.data.isValidator) {
-        setAllTimeRewards(totalRewards.data.totalAmount ?? 0);
+        setAllTimeRewards(totalRewards.data.totalAmount);
       } else {
         setAllTimeRewards(undefined);
       }
@@ -159,7 +160,12 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
         setError(addressInfo.error.message);
       }
       if (addressInfo.error.message === '404') {
-        handlePrevPage(true);
+        if (tokenChanged) {
+          setTxsSkeleton(false);
+          setAddressTxs([]);
+        } else {
+          handlePrevPage(true);
+        }
       }
     }
     if (addressBalance.isError) {
@@ -216,7 +222,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const options = [
     { value: 10, label: 10 },
     { value: 25, label: 25 },
-    { value: 50, label: 50 }
+    { value: 50, label: 50 },
   ];
 
   return (
@@ -269,6 +275,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   selectedOption={selectedMetagraph}
                   setSelectedMetagraph={setSelectedMetagraph}
                   setTokenChanged={setTokenChanged}
+                  setSkeleton={setTxsSkeleton}
                 />
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow
@@ -294,15 +301,15 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   className={clsx(styles.tab, selectedTable === 'transactions' && styles.selected)}
                   htmlFor="radio-1"
                 >
-                  Transactions
+                  {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
+                    ? 'DAG Transactions'
+                    : `${selectedMetagraph.metagraphSymbol} Transactions`}
                 </label>
                 <input type="radio" id="radio-1" name="tabs" onClick={() => setSelectedTable('transactions')} />
-
                 <label className={clsx(styles.tab, selectedTable === 'tokens' && styles.selected)} htmlFor="radio-2">
                   Tokens list
                 </label>
                 <input type="radio" id="radio-2" name="tabs" onClick={() => setSelectedTable('tokens')} />
-
                 <span className={styles.glider} />
               </div>
             </div>
@@ -316,7 +323,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 icon={<AddressShape />}
               />
             ) : (
-              <TokensTable metagraphTokens={metagraphTokensTable} amount={5} loading={!metagraphTokensTable} />
+              <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={!metagraphTokensTable} />
             )}
           </div>
           <div className={`${styles.row6}`}>
@@ -333,11 +340,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
               {selectedTable === 'transactions' ? (
                 <div className={styles.arrows}>
                   <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || txsSkeleton} />
-                  <ArrowButton
-                    forward
-                    handleClick={() => handleNextPage()}
-                    disabled={txsSkeleton || lastPage}
-                  />
+                  <ArrowButton forward handleClick={() => handleNextPage()} disabled={txsSkeleton || lastPage} />
                 </div>
               ) : (
                 <div className={styles.arrows}>

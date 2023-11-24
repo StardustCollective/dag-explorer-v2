@@ -156,9 +156,44 @@
   z-index: 3;
 }
 
+.inputOptionSelected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  img, svg {
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+
+    border: 0.5px solid $gray-300;
+    border-radius: 24px;
+    margin-right: 8px;
+  }
+}
+
+.selectedOptionBalance {
+  margin-left: 24px;
+  white-space: nowrap;
+  color: $gray-900;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
 @include respond-below(md) {
   .amountList {
     font-size: 10px;
     line-height: 15px;
+  }
+}
+
+@include respond-below(xlg) {
+  .selectedOptionBalance{
+    display: none;
+  }
+  .amountList {
+    display: none;
   }
 }

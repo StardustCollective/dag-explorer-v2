@@ -1,92 +1,150 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetAllSnapshots } from '../../api/block-explorer/global-snapshot';
-import { useGetLatestTransactions } from '../../api/block-explorer/transaction';
+import { useGetLatestDAGTransactions, useGetLatestMetagraphTransactions } from '../../api/block-explorer/transaction';
+import { useGetLatestDAGSnapshots, useGetLatestMetagraphSnapshots } from '../../api/block-explorer/snapshots';
 import { SnapshotShape } from '../../components/Shapes/SnapshotShape';
 import { TransactionShape } from '../../components/Shapes/TransactionShape';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { Snapshot, Transaction } from '../../types';
 import { NotFound } from '../NotFoundView/NotFound';
+import { Network } from '../../constants';
+
 import styles from './HomeView.module.scss';
 
 const HomeTables = ({
   limit,
-  handleError,
   refetchEvery,
+  network
 }: {
   limit: number;
-  handleError: () => void;
   refetchEvery: number;
+  network: Network;
 }) => {
   const navigate = useNavigate();
-  const snapshotsInfo = useGetAllSnapshots({ limit: limit }, refetchEvery);
-  const transactionsInfo = useGetLatestTransactions({ limit: limit }, refetchEvery);
 
-  const [transactions, setTransactions] = useState<Transaction[]>(null);
-  const [snapshots, setSnapshots] = useState<Snapshot[]>(null);
+  const dagSnapshotsInfo = useGetLatestDAGSnapshots({ limit: limit }, refetchEvery);
+  const metagraphSnapshotsInfo = useGetLatestMetagraphSnapshots({ limit: limit }, refetchEvery);
+
+  const dagTransactionsInfo = useGetLatestDAGTransactions({ limit: limit }, refetchEvery);
+  const metagraphTransactionsInfo = useGetLatestMetagraphTransactions({ limit: limit }, refetchEvery);
+
+  const [dagTransactions, setDagTransactions] = useState<Transaction[]>(null);
+  const [metagraphTransactions, setMetagraphTransactions] = useState<Transaction[]>(null);
+
+  const [dagSnapshots, setDagSnapshots] = useState<Snapshot[]>(null);
+  const [metagraphSnapshots, setMetagraphSnapshots] = useState<Snapshot[]>(null);
+
   const [error, setError] = useState<string>(undefined);
 
   useEffect(() => {
-    if (snapshotsInfo.isError) {
-      setError(snapshotsInfo.error.message);
-    }
-    if (transactionsInfo.isError) {
-      if (transactionsInfo.error.message !== '404') {
-        setError(transactionsInfo.error.message);
+    if (dagSnapshotsInfo.isError) {
+      if (dagSnapshotsInfo.error.message !== '404') {
+        setError(dagSnapshotsInfo.error.message);
       }
     }
-  }, [snapshotsInfo.isError, transactionsInfo.isError]);
+    if (metagraphSnapshotsInfo.isError) {
+      if (metagraphSnapshotsInfo.error.message !== '404') {
+        setError(metagraphSnapshotsInfo.error.message);
+      }
+    }
+    if (dagTransactionsInfo.isError) {
+      if (dagTransactionsInfo.error.message !== '404') {
+        setError(dagTransactionsInfo.error.message);
+      }
+    }
+    if (metagraphTransactionsInfo.isError) {
+      if (metagraphTransactionsInfo.error.message !== '404') {
+        setError(metagraphTransactionsInfo.error.message);
+      }
+    }
+  }, [
+    dagSnapshotsInfo.isError,
+    dagTransactionsInfo.isError,
+    metagraphTransactionsInfo.isError,
+    metagraphSnapshotsInfo.isError,
+  ]);
 
   useEffect(() => {
-    if (!transactionsInfo.isFetching && !transactionsInfo.isError) {
-      console.log(transactionsInfo.data.data)
-      setTransactions(transactionsInfo.data.data);
+    if (!dagTransactionsInfo.isFetching && !dagTransactionsInfo.isError) {
+      setDagTransactions(dagTransactionsInfo.data.data);
     }
-  }, [transactionsInfo.isFetching]);
+  }, [dagTransactionsInfo.isFetching]);
 
   useEffect(() => {
-    if (!snapshotsInfo.isFetching && !snapshotsInfo.isError) {
-      setSnapshots(snapshotsInfo.data.data);
+    if (!metagraphTransactionsInfo.isFetching && !metagraphTransactionsInfo.isError) {
+      setMetagraphTransactions(metagraphTransactionsInfo.data.data);
     }
-  }, [snapshotsInfo.isFetching]);
+  }, [metagraphTransactionsInfo.isFetching]);
 
   useEffect(() => {
-    if (error) {
-      handleError();
+    if (!dagSnapshotsInfo.isFetching && !dagSnapshotsInfo.isError) {
+      setDagSnapshots(dagSnapshotsInfo.data.data);
     }
-  }, [error]);
+  }, [dagSnapshotsInfo.isFetching]);
+
+  useEffect(() => {
+    if (!metagraphSnapshotsInfo.isFetching && !metagraphSnapshotsInfo.isError) {
+      setMetagraphSnapshots(metagraphSnapshotsInfo.data.data);
+    }
+  }, [metagraphSnapshotsInfo.isFetching]);
 
   return error ? (
     <NotFound entire={false} errorCode={error} notRow />
   ) : (
     <>
-      <TransactionsTable
-        skeleton={{ showSkeleton: !snapshots, headerCols: ['ORDINAL', 'TIMESTAMP', 'BLOCKS'] }}
-        limit={limit}
-        snapshots={snapshots}
-        icon={<SnapshotShape />}
-        headerText={'Latest snapshots'}
-      />
+      <div className={styles.tables}>
+        <TransactionsTable
+          skeleton={{ showSkeleton: !dagSnapshots, headerCols: ['ORDINAL', 'TIMESTAMP', 'BLOCKS'] }}
+          limit={limit}
+          snapshots={dagSnapshots}
+          icon={<SnapshotShape />}
+          headerText={'Latest DAG snapshots'}
+        />
 
-      {snapshots && snapshots.length > 0 && (
-        <div className={styles.viewAllMobile} onClick={() => navigate('/snapshots')}>
-          View all Snapshots
-        </div>
-      )}
-
-      <TransactionsTable
-        skeleton={{ showSkeleton: !transactions && transactionsInfo.isLoading && !transactionsInfo.isError }}
-        limit={limit}
-        transactions={transactions}
-        icon={<TransactionShape />}
-        headerText={'Latest transactions'}
-      />
-
-      {transactions && transactions.length > 0 && (
-        <div className={styles.viewAllMobile} onClick={() => navigate('/transactions')}>
-          View all Transactions
-        </div>
-      )}
+        <TransactionsTable
+          skeleton={{ showSkeleton: !dagTransactions && dagTransactionsInfo.isLoading && !dagTransactionsInfo.isError }}
+          limit={limit}
+          transactions={dagTransactions}
+          icon={<TransactionShape />}
+          headerText={'Latest DAG transactions'}
+        />
+      </div>
+      <div className={styles.viewAllContainer}>
+        {!error && (
+          <>
+            <div className={styles.viewAll} onClick={() => navigate('/snapshots')}>
+              View all Snapshots
+            </div>
+            <div className={styles.viewAll} onClick={() => navigate('/transactions')}>
+              View all Transactions
+            </div>
+          </>
+        )}
+      </div>
+      
+      <div className={styles.tables}>
+         <TransactionsTable
+           skeleton={{ showSkeleton: !metagraphSnapshots, headerCols: ['ORDINAL', 'TIMESTAMP', 'BLOCKS', 'METAGRAPH'] }}
+           limit={1}
+           snapshots={metagraphSnapshots}
+           icon={<SnapshotShape />}
+           headerText={'Latest Metagraph snapshots'}
+           showMetagraphSymbol
+         />
+ 
+         <TransactionsTable
+           skeleton={{
+             showSkeleton:
+               !metagraphTransactions && metagraphTransactionsInfo.isLoading && !metagraphTransactionsInfo.isError,
+           }}
+           limit={1}
+           transactions={metagraphTransactions}
+           icon={<TransactionShape />}
+           headerText={'Latest Metagraph transactions'}
+         />
+       </div>
+  
+     
     </>
   );
 };
