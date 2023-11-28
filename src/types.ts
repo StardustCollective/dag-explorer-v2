@@ -7,8 +7,8 @@ export type Snapshot = {
   blocks: string[];
   timestamp: string;
   symbol?: string;
-  isMetagraphSnapshot?: boolean
-  metagraphId ?: string
+  isMetagraphSnapshot?: boolean;
+  metagraphId?: string;
   metagraphName?: string;
 };
 
@@ -54,9 +54,9 @@ export type Transaction = {
   timestamp: string;
   transactionOriginal: null;
   symbol?: string;
-  isMetagraphTransaction?: boolean
-  metagraphId ?: string
-  direction?: string
+  isMetagraphTransaction?: boolean;
+  metagraphId?: string;
+  direction?: string;
 };
 
 type TransactionReference = {
@@ -155,7 +155,7 @@ export type MetagraphInfo = {
   metagraphName: string;
   metagraphSymbol: string;
   metagraphIcon: string;
-}
+};
 
 export type MetagraphTransactionResponse = {
   metagraph: MetagraphInfo;
@@ -163,5 +163,14 @@ export type MetagraphTransactionResponse = {
 };
 
 export type AddressMetagraphResponse = MetagraphInfo & {
-  balance: number
+  balance: number;
+};
+
+export type AddressRewardsResponse = {
+  address: string;
+  amount: number;
+  accruedAt: string;
+  ordinal: number;
+  metagraphId?: string;
+  symbol?: string;
 };

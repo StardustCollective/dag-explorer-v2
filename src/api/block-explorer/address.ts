@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Balance, Transaction } from '../../types';
+import { AddressRewardsResponse, Balance, Transaction } from '../../types';
 import { useFetch } from '../../utils/reactQuery';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import { Network } from '../../constants';
@@ -20,7 +20,7 @@ const getMetagraphUrl = (metagraphId: string) => {
 };
 
 export const useGetAddressTransactions = (address: string, metagraphId?: string, params?: any) => {
-  const baseUrl = (!metagraphId || metagraphId === 'ALL_METAGRAPHS') ? getUrl() : getMetagraphUrl(metagraphId);
+  const baseUrl = !metagraphId || metagraphId === 'ALL_METAGRAPHS' ? getUrl() : getMetagraphUrl(metagraphId);
   return useFetch<{ data: Transaction[]; meta?: any }>(
     baseUrl + '/' + address + '/transactions',
     params,
@@ -47,4 +47,44 @@ export const useGetAddressTotalRewards = (address: string, network: Exclude<Netw
   return useFetch<{ totalAmount: number; isValidator: boolean }>(
     REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewards'
   );
+};
+
+export const useGetAddressRewards = (
+  address: string,
+  network: Exclude<Network, 'mainnet1'>,
+  limit?: number,
+  offset?: number
+) => {
+  const response = useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
+    REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewardss',
+    { limit, offset },
+    undefined,
+    false
+  );
+
+  return { ...response, data: response?.data?.data, meta: response?.data?.meta };
+};
+
+export const useGetAddressMetagraphRewards = (
+  address: string,
+  metagraphId: string,
+  network: Exclude<Network, 'mainnet1'>,
+  limit?: number,
+  offset?: number
+) => {
+  const response = useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
+    REACT_APP_DAG_EXPLORER_API_URL +
+      '/' +
+      network +
+      '/addresses/' +
+      address +
+      '/metagraphs/' +
+      metagraphId +
+      '/rewards',
+    { limit, offset },
+    undefined,
+    false
+  );
+
+  return { ...response, data: response?.data?.data, meta: response?.data?.meta };
 };
