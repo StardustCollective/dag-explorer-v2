@@ -237,6 +237,8 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       setLimit(selectedOption.value);
       setLimitAddressMetagraphs(selectedOption.value);
       setLimitAddressRewards(selectedOption.value);
+      setOffsetAddressRewards(0);
+      setOffsetAddressMetagraphs(0);
     },
     [limit, limitAddressMetagraphs]
   );
