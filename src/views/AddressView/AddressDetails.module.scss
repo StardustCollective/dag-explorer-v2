@@ -100,10 +100,19 @@
     }
   }
 
+  input[id="radio-3"] {
+    &:checked {
+      & ~ .glider {
+        transform: translateX(calc(149%));
+        width: 123px;
+      }
+    }
+  }
+
   input[id="radio-2"] {
     &:checked {
       & ~ .glider {
-        transform: translateX(calc(140%));
+        transform: translateX(calc(268%));
         width: 121px;
       }
     }

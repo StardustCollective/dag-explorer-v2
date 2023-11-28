@@ -20,13 +20,18 @@ import { MetagraphTokensSection } from '../../components/MetagraphTokensSection/
 import { TokensTable } from '../../components/TokensTable/TokensTable';
 
 import { isValidAddress } from '../../utils/search';
-import { useGetAddressTotalRewards } from '../../api/block-explorer/address';
+import {
+  useGetAddressMetagraphRewards,
+  useGetAddressRewards,
+  useGetAddressTotalRewards,
+} from '../../api/block-explorer/address';
 import { useGetAdressMetagraphs } from '../../api/block-explorer/metagraph-address';
 import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
 import { handleFetchedData, handlePagination } from '../../utils/pagination';
 import { FetchedData, Params } from '../../types/requests';
 
 import styles from './AddressDetails.module.scss';
+import { RewardsTable } from '../../components/RewardsTable/RewardsTable';
 
 export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const { addressId } = useParams();
@@ -44,7 +49,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [modalOpen, setModalOpen] = useState(false);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
-  const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens'>('transactions');
+  const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens' | 'rewards'>('transactions');
 
   const addressMetagraphs = useGetAdressMetagraphs(addressId);
 
@@ -58,6 +63,18 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [selectedMetagraph, setSelectedMetagraph] = useState<AddressMetagraphResponse | null>(null);
   const [tokenChanged, setTokenChanged] = useState<boolean>(false);
   const addressInfo = useGetAddressTransactions(addressId, selectedMetagraph && selectedMetagraph.metagraphId, params);
+
+  const [limitAddressRewards, setLimitAddressRewards] = useState<number>(10);
+  const [offsetAddressRewards, setOffsetAddressRewards] = useState<number>(0);
+
+  const addressRewards = useGetAddressRewards(addressId, network, limitAddressRewards, offsetAddressRewards);
+  const addressMetagraphRewards = useGetAddressMetagraphRewards(
+    addressId,
+    selectedMetagraph && selectedMetagraph.metagraphId,
+    network,
+    limitAddressRewards,
+    offsetAddressRewards
+  );
 
   const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
     addressTxs,
@@ -77,6 +94,14 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
 
   const handleNextPageMetagraphsList = () => {
     setOffsetAddressMetagraphs(offsetAddressMetagraphs + limitAddressMetagraphs);
+  };
+
+  const handlePrevPageAddressRewards = () => {
+    setOffsetAddressRewards((offset) => offset - limitAddressMetagraphs);
+  };
+
+  const handleNextPageAddressRewards = () => {
+    setOffsetAddressRewards((offset) => offset + limitAddressMetagraphs);
   };
 
   const handleFillMetagraphs = () => {
@@ -196,6 +221,10 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     handleFillMetagraphs();
   }, [offsetAddressMetagraphs, allMetagraphTokens]);
 
+  useEffect(() => {
+    setOffsetAddressRewards(0);
+  }, [selectedMetagraph]);
+
   const handleExport = () => {
     setModalOpen(!modalOpen);
   };
@@ -207,6 +236,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     (selectedOption: { value: number; label: number }) => {
       setLimit(selectedOption.value);
       setLimitAddressMetagraphs(selectedOption.value);
+      setLimitAddressRewards(selectedOption.value);
     },
     [limit, limitAddressMetagraphs]
   );
@@ -243,10 +273,10 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
       {error ? (
         <NotFound entire={false} errorCode={error} />
       ) : (
-        <main className={clsx(selectedTable === 'transactions' ? styles.fullWidth3 : styles.fullWidth3)}>
-          <div className={`${styles.addressOverview}`}>
-            <div className={`${styles.subTitle}`}>
-              <div className={`${styles.flexRowBottom}`}>
+        <main className={styles.fullWidth3}>
+          <div className={styles.addressOverview}>
+            <div className={styles.subTitle}>
+              <div className={styles.flexRowBottom}>
                 <p className="overviewText">Overview</p>
               </div>
             </div>
@@ -306,25 +336,66 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                     : `${selectedMetagraph.metagraphSymbol} Transactions`}
                 </label>
                 <input type="radio" id="radio-1" name="tabs" onClick={() => setSelectedTable('transactions')} />
+
+                <label className={clsx(styles.tab, selectedTable === 'rewards' && styles.selected)} htmlFor="radio-3">
+                  {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
+                    ? 'DAG Rewards'
+                    : `${selectedMetagraph.metagraphSymbol} Rewards`}
+                </label>
+                <input type="radio" id="radio-3" name="tabs" onClick={() => setSelectedTable('rewards')} />
+
                 <label className={clsx(styles.tab, selectedTable === 'tokens' && styles.selected)} htmlFor="radio-2">
                   Tokens list
                 </label>
                 <input type="radio" id="radio-2" name="tabs" onClick={() => setSelectedTable('tokens')} />
+
                 <span className={styles.glider} />
               </div>
             </div>
           </div>
           <div className={styles.row5}>
-            {selectedTable === 'transactions' ? (
+            {selectedTable === 'transactions' && (
               <TransactionsTable
                 skeleton={{ showSkeleton: txsSkeleton }}
                 limit={addressTxs && addressTxs.length > 0 ? addressTxs.length : limit}
                 transactions={addressTxs}
                 icon={<AddressShape />}
               />
-            ) : (
+            )}
+            {selectedTable === 'tokens' && (
               <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={!metagraphTokensTable} />
             )}
+            {selectedTable === 'rewards' && (!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
+              <RewardsTable
+                skeleton={{ showSkeleton: addressRewards.isFetching }}
+                limit={addressRewards.data && addressRewards.data.length > 0 ? addressRewards.data.length : 1}
+                rewards={
+                  addressRewards?.data?.map((record) => ({
+                    ...record,
+                    symbol: 'DAG',
+                  })) ?? []
+                }
+                icon={<AddressShape />}
+              />
+            )}
+            {selectedTable === 'rewards' &&
+              !(!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
+                <RewardsTable
+                  skeleton={{ showSkeleton: addressMetagraphRewards.isFetching }}
+                  limit={
+                    addressMetagraphRewards.data && addressMetagraphRewards.data.length > 0
+                      ? addressMetagraphRewards.data.length
+                      : 1
+                  }
+                  rewards={
+                    addressMetagraphRewards?.data?.map((record) => ({
+                      ...record,
+                      symbol: selectedMetagraph.metagraphSymbol,
+                    })) ?? []
+                  }
+                  icon={<AddressShape />}
+                />
+              )}
           </div>
           <div className={`${styles.row6}`}>
             <div className={`${styles.flexRowTop}`}>
@@ -337,12 +408,13 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   onChange={handleSelectChange}
                 />
               </div>
-              {selectedTable === 'transactions' ? (
+              {selectedTable === 'transactions' && (
                 <div className={styles.arrows}>
                   <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || txsSkeleton} />
                   <ArrowButton forward handleClick={() => handleNextPage()} disabled={txsSkeleton || lastPage} />
                 </div>
-              ) : (
+              )}
+              {selectedTable === 'tokens' && (
                 <div className={styles.arrows}>
                   <ArrowButton
                     handleClick={handlePreviousPageMetagraphsList}
@@ -352,6 +424,21 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                     forward
                     handleClick={handleNextPageMetagraphsList}
                     disabled={offsetAddressMetagraphs + limitAddressMetagraphs >= allMetagraphTokens.length}
+                  />
+                </div>
+              )}
+              {selectedTable === 'rewards' && (
+                <div className={styles.arrows}>
+                  <ArrowButton handleClick={handlePrevPageAddressRewards} disabled={offsetAddressRewards === 0} />
+                  <ArrowButton
+                    forward
+                    handleClick={handleNextPageAddressRewards}
+                    disabled={
+                      offsetAddressRewards + limitAddressRewards >
+                      (!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
+                        ? addressRewards?.meta?.total ?? 0
+                        : addressMetagraphRewards?.meta?.total ?? 0)
+                    }
                   />
                 </div>
               )}
