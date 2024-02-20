@@ -185,7 +185,7 @@
   }
 }
 
-@media screen and (max-width: $sm) {
+@media screen and (max-width: $md) {
   .searchMobile {
     display: flex;
     flex-direction: column;
@@ -220,7 +220,7 @@
     input[id='radio-2'] {
       &:checked {
         & ~ .glider {
-          transform: translateX(calc(250%));
+          transform: translateX(calc(181%));
           width: 100px;
         }
       }
