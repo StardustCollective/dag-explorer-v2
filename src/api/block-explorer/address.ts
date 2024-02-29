@@ -57,7 +57,7 @@ export const useGetAddressRewards = (
 ) => {
   const response = useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
     REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewards',
-    { limit, offset },
+    { limit, offset, groupingMode: 'day' },
     undefined,
     false
   );

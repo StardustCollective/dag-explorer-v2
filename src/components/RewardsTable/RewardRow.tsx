@@ -65,6 +65,8 @@ export const RewardRow = ({
         <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
           {reward.metagraphId ? (
             <Link to={`/metagraphs/${reward.metagraphId}/snapshots/${reward.ordinal}`}>{reward.ordinal}</Link>
+          ) : reward.ordinal === -1 ? (
+            '---'
           ) : (
             <Link to={'/snapshots/' + reward.ordinal}>{reward.ordinal}</Link>
           )}

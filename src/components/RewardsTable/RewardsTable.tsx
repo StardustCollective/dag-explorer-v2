@@ -87,9 +87,11 @@ export const RewardsTable = ({
         toCopy: reward.address,
       });
       txCard.push({
-        value: reward.ordinal,
+        value: reward.ordinal === -1 ? '---' : reward.ordinal,
         linkTo: reward.metagraphId
           ? `/metagraphs/${reward.metagraphId}/snapshots/${reward.ordinal}`
+          : reward.ordinal === -1
+          ? undefined
           : '/snapshots/' + reward.ordinal,
       });
       txCard.push({ value: formatAmount(reward.amount, 8, false, reward.symbol) });
