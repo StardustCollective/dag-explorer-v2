@@ -149,6 +149,7 @@ export const TransactionsTable = ({
       });
       snapshotCard.push({ value: formatTime(snap.timestamp, 'relative'), dataTip: formatTime(snap.timestamp, 'full') });
       snapshotCard.push({ value: snap.blocks ? snap.blocks.length : 0});
+      snapshotCard.push({ value: snap.symbol});
       cardsSet.add(snapshotCard);
     });
   }
