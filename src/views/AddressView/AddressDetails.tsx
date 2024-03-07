@@ -32,6 +32,7 @@ import { FetchedData, Params } from '../../types/requests';
 
 import styles from './AddressDetails.module.scss';
 import { RewardsTable } from '../../components/RewardsTable/RewardsTable';
+import { Tabs } from '../../components/Tabs/Tabs';
 
 export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const { addressId } = useParams();
@@ -328,38 +329,21 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
           </div>
           <div className={`${styles.row3}`}>
             <div className={`${styles.flexRowBottom}`}>
-              <div className={`${styles.tableOptions}`}>
-                <label
-                  className={clsx(styles.tab, selectedTable === 'transactions' && styles.selected)}
-                  htmlFor="radio-1"
-                >
+              <Tabs value={selectedTable} onValue={(value) => setSelectedTable(value as any)}>
+                <Tabs.Tab id="transactions">
                   {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
                     ? 'DAG Transactions'
                     : `${selectedMetagraph.metagraphSymbol} Transactions`}
-                </label>
-                <input type="radio" id="radio-1" name="tabs" onClick={() => setSelectedTable('transactions')} />
-
+                </Tabs.Tab>
                 {!(!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
-                  <>
-                    <label
-                      className={clsx(styles.tab, selectedTable === 'rewards' && styles.selected)}
-                      htmlFor="radio-3"
-                    >
-                      {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
-                        ? 'DAG Rewards'
-                        : `${selectedMetagraph.metagraphSymbol} Rewards`}
-                    </label>
-                    <input type="radio" id="radio-3" name="tabs" onClick={() => setSelectedTable('rewards')} />
-                  </>
+                  <Tabs.Tab id="rewards">
+                    {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
+                      ? 'DAG Rewards'
+                      : `${selectedMetagraph.metagraphSymbol} Rewards`}
+                  </Tabs.Tab>
                 )}
-
-                <label className={clsx(styles.tab, selectedTable === 'tokens' && styles.selected)} htmlFor="radio-2">
-                  Tokens list
-                </label>
-                <input type="radio" id="radio-2" name="tabs" onClick={() => setSelectedTable('tokens')} />
-
-                <span className={styles.glider} />
-              </div>
+                <Tabs.Tab id="tokens">Tokens list</Tabs.Tab>
+              </Tabs>
             </div>
           </div>
           <div className={styles.row5}>

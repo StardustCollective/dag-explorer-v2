@@ -63,7 +63,13 @@ export const TransactionsTable = ({
     transactions &&
     transactions.length > 0 &&
     transactions.map((tx, idx) => (
-      <TransactionRow dagInfo={dagInfo} key={tx.hash} tx={tx} icon={icon} isLastRow={transactions.length >= limit && idx + 1 === transactions.length} />
+      <TransactionRow
+        dagInfo={dagInfo}
+        key={tx.hash}
+        tx={tx}
+        icon={icon}
+        isLastRow={transactions.length >= limit && idx + 1 === transactions.length}
+      />
     ));
 
   let snapRows =
@@ -82,7 +88,15 @@ export const TransactionsTable = ({
 
   const emptyRows = [];
   for (let i = 0; i < limit; i++) {
-    emptyRows.push(<TransactionRow key={i} tx={null} snapshot={null}  isLastRow={i + 1 === limit} showMetagraphSymbol={showMetagraphSymbol}/>);
+    emptyRows.push(
+      <TransactionRow
+        key={i}
+        tx={null}
+        snapshot={null}
+        isLastRow={i + 1 === limit}
+        showMetagraphSymbol={showMetagraphSymbol}
+      />
+    );
   }
   if (!transactions || transactions.length === 0) {
     txRows = emptyRows;
@@ -148,7 +162,8 @@ export const TransactionsTable = ({
         element: <SnapshotShape />,
       });
       snapshotCard.push({ value: formatTime(snap.timestamp, 'relative'), dataTip: formatTime(snap.timestamp, 'full') });
-      snapshotCard.push({ value: snap.blocks ? snap.blocks.length : 0});
+      snapshotCard.push({ value: snap.blocks ? snap.blocks.length : 0 });
+      snap.isMetagraphSnapshot && snapshotCard.push({ value: snap.symbol });
       cardsSet.add(snapshotCard);
     });
   }
