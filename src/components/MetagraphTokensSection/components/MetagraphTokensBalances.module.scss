@@ -184,16 +184,7 @@
 
 @include respond-below(md) {
   .amountList {
-    font-size: 10px;
+    font-size: 12px;
     line-height: 15px;
-  }
-}
-
-@include respond-below(xlg) {
-  .selectedOptionBalance{
-    display: none;
-  }
-  .amountList {
-    display: none;
   }
 }
