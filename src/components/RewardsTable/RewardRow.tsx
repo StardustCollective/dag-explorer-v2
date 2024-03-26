@@ -31,7 +31,7 @@ export const RewardRow = ({
   let txRow = undefined;
 
   if (reward) {
-    const date = formatTime(reward.accruedAt, 'relative');
+    const date = formatTime(reward.accruedAt, 'date');
     const fullDate = formatTime(reward.accruedAt, 'full');
     txRow = (
       <>
@@ -66,7 +66,7 @@ export const RewardRow = ({
           {reward.metagraphId ? (
             <Link to={`/metagraphs/${reward.metagraphId}/snapshots/${reward.ordinal}`}>{reward.ordinal}</Link>
           ) : reward.ordinal === -1 ? (
-            '---'
+            reward.rewardsCount
           ) : (
             <Link to={'/snapshots/' + reward.ordinal}>{reward.ordinal}</Link>
           )}

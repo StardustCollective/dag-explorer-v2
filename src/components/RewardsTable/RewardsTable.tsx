@@ -27,7 +27,7 @@ export const RewardsTable = ({
 }) => {
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
 
-  const titles = ['SENT TO', 'ORDINAL', 'AMOUNT', 'TIMESTAMP'];
+  const titles = ['SENT TO', 'REWARDS TXNS', 'DAILY TOTAL', 'DATE'];
 
   const needDagInfo = rewards && rewards.length > 0;
   const mql = window.matchMedia('(max-width: 580px)');
@@ -87,7 +87,7 @@ export const RewardsTable = ({
         toCopy: reward.address,
       });
       txCard.push({
-        value: reward.ordinal === -1 ? '---' : reward.ordinal,
+        value: reward.ordinal === -1 ? reward.rewardsCount : reward.ordinal,
         linkTo: reward.metagraphId
           ? `/metagraphs/${reward.metagraphId}/snapshots/${reward.ordinal}`
           : reward.ordinal === -1
@@ -95,7 +95,7 @@ export const RewardsTable = ({
           : '/snapshots/' + reward.ordinal,
       });
       txCard.push({ value: formatAmount(reward.amount, 8, false, reward.symbol) });
-      txCard.push({ value: formatTime(reward.accruedAt, 'relative'), dataTip: formatTime(reward.accruedAt, 'full') });
+      txCard.push({ value: formatTime(reward.accruedAt, 'date'), dataTip: formatTime(reward.accruedAt, 'full') });
 
       cardsSet.add(txCard);
     });

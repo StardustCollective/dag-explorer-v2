@@ -20,15 +20,15 @@ export const HeaderRow = ({ headerCols }: { headerCols?: string[] }) => {
       </div>
 
       <div className={`${styles.headerColumn}`}>
-        <p className={styles.headerText}>ORDINAL</p>
+        <p className={styles.headerText}>REWARDS TXNS</p>
       </div>
 
       <div className={clsx(styles.headerColumn, styles.topRightBorder)}>
-        <p className={styles.headerText}>AMOUNT</p>
+        <p className={styles.headerText}>DAILY TOTAL</p>
       </div>
 
       <div className={clsx(styles.headerColumn, styles.timestamp)}>
-        <p className={styles.headerText}>TIMESTAMP</p>
+        <p className={styles.headerText}>DATE</p>
       </div>
     </>
   );
