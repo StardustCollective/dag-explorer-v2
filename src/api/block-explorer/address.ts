@@ -81,7 +81,7 @@ export const useGetAddressMetagraphRewards = (
       '/metagraphs/' +
       metagraphId +
       '/rewards',
-    { limit, offset },
+    { limit, offset, groupingMode: 'day' },
     undefined,
     false
   );
