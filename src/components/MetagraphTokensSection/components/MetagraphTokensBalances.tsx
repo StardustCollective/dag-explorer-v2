@@ -29,38 +29,28 @@ export const MetagraphTokensBalances = ({
     <>
       {selectedOption && (
         <div className={`${styles.dropdown}`} ref={ref}>
-          {
-            <div
-              className={styles.dropdownInput}
-              tabIndex={0}
-              onClick={() => setIsComponentVisible(!isComponentVisible)}
-            >
-              <div>
-                {selectedOption.metagraphId === 'ALL_METAGRAPHS' ? (
-                  <span className={styles.name}>{selectedOption.metagraphName}</span>
-                ) : (
-                  <div className={styles.inputOptionSelected}>
-                     {selectedOption.metagraphIcon ? (
-                      <img src={selectedOption.metagraphIcon} />
-                    ) : selectedOption.metagraphSymbol === 'DAG' ? (
-                      <DAGToken />
-                    ) : (
-                      <DefaultTokenIcon />
-                    )}
-                    <span className={styles.name}>{fitStringInCell(selectedOption.metagraphName, 18, true)}</span>
-                    <span className={styles.selectedOptionBalance}>
-                      {formatAmount(selectedOption.balance, 6, false, selectedOption.metagraphSymbol)}
-                    </span>
-                  </div>
-                )}
-              </div>
-              {isComponentVisible ? (
-                <ChevronUpIcon width={24} height={24} />
+          <div className={styles.dropdownInput} tabIndex={0} onClick={() => setIsComponentVisible(!isComponentVisible)}>
+            <div>
+              {selectedOption.metagraphId === 'ALL_METAGRAPHS' ? (
+                <span className={styles.name}>{selectedOption.metagraphName}</span>
               ) : (
-                <ChevronDownIcon width={24} height={24} />
+                <div className={styles.inputOptionSelected}>
+                  {selectedOption.metagraphIcon ? (
+                    <img src={selectedOption.metagraphIcon} />
+                  ) : selectedOption.metagraphSymbol === 'DAG' ? (
+                    <DAGToken />
+                  ) : (
+                    <DefaultTokenIcon />
+                  )}
+                  <span className={styles.name}>{fitStringInCell(selectedOption.metagraphName, 18, true)}</span>
+                  <span className={styles.selectedOptionBalance}>
+                    {formatAmount(selectedOption.balance, 6, false, selectedOption.metagraphSymbol)}
+                  </span>
+                </div>
               )}
             </div>
-          }
+            {isComponentVisible ? <ChevronUpIcon width={24} height={24} /> : <ChevronDownIcon width={24} height={24} />}
+          </div>
 
           {isComponentVisible && (
             <div className={styles.dropdownContent}>
