@@ -76,10 +76,10 @@ const formatRelativeString = (date: string) => {
   return formatedDate;
 };
 
-export const formatTime = (timestamp: string | number, format: 'full' | 'relative') => {
+export const formatTime = (timestamp: string | number, format: 'full' | 'relative' | 'date') => {
   return format === 'full'
     ? dayjs(timestamp).utc().format('YYYY-MM-DD h:mm A +UTC')
-    : formatRelativeString(dayjs().to(dayjs(timestamp)));
+    : format === 'date' ? dayjs(timestamp).utc().format('YYYY/MM/DD') : formatRelativeString(dayjs().to(dayjs(timestamp)));
 };
 
 export const formatNumber = (number: number | string | undefined | null, format: NumberFormat): string => {

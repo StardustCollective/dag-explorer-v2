@@ -68,7 +68,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [limitAddressRewards, setLimitAddressRewards] = useState<number>(10);
   const [offsetAddressRewards, setOffsetAddressRewards] = useState<number>(0);
 
-  //const addressRewards = useGetAddressRewards(addressId, network, limitAddressRewards, offsetAddressRewards);
+  const addressRewards = useGetAddressRewards(addressId, network, limitAddressRewards, offsetAddressRewards);
   const addressMetagraphRewards = useGetAddressMetagraphRewards(
     addressId,
     selectedMetagraph && selectedMetagraph.metagraphId,
@@ -335,13 +335,11 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                     ? 'DAG Transactions'
                     : `${selectedMetagraph.metagraphSymbol} Transactions`}
                 </Tabs.Tab>
-                {!(!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
-                  <Tabs.Tab id="rewards">
-                    {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
-                      ? 'DAG Rewards'
-                      : `${selectedMetagraph.metagraphSymbol} Rewards`}
-                  </Tabs.Tab>
-                )}
+                <Tabs.Tab id="rewards">
+                  {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
+                    ? 'DAG Rewards'
+                    : `${selectedMetagraph.metagraphSymbol} Rewards`}
+                </Tabs.Tab>
                 <Tabs.Tab id="tokens">Tokens list</Tabs.Tab>
               </Tabs>
             </div>
@@ -358,7 +356,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
             {selectedTable === 'tokens' && (
               <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={!metagraphTokensTable} />
             )}
-            {/* selectedTable === 'rewards' && (!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
+            {selectedTable === 'rewards' && (!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
               <RewardsTable
                 skeleton={{ showSkeleton: addressRewards.isFetching }}
                 limit={addressRewards.data && addressRewards.data.length > 0 ? addressRewards.data.length : 1}
@@ -370,7 +368,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 }
                 icon={<AddressShape />}
               />
-            ) */}
+            )}
             {selectedTable === 'rewards' &&
               !(!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
                 <RewardsTable
@@ -429,7 +427,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                     disabled={
                       offsetAddressRewards + limitAddressRewards >
                       (!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
-                        ? /* addressRewards?.meta?.total ?? */ 0
+                        ? addressRewards?.meta?.total ?? 0
                         : addressMetagraphRewards?.meta?.total ?? 0)
                     }
                   />

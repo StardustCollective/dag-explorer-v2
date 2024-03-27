@@ -45,7 +45,7 @@ export const useGetAddressBalance = (address: string) => {
 
 export const useGetAddressTotalRewards = (address: string, network: Exclude<Network, 'mainnet1'>) => {
   return useFetch<{ totalAmount: number; isValidator: boolean }>(
-    REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewards'
+    REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/total-rewards'
   );
 };
 
@@ -56,8 +56,8 @@ export const useGetAddressRewards = (
   offset?: number
 ) => {
   const response = useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
-    REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewardss',
-    { limit, offset },
+    REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewards',
+    { limit, offset, groupingMode: 'day' },
     undefined,
     false
   );
@@ -81,7 +81,7 @@ export const useGetAddressMetagraphRewards = (
       '/metagraphs/' +
       metagraphId +
       '/rewards',
-    { limit, offset },
+    { limit, offset, groupingMode: 'day' },
     undefined,
     false
   );

@@ -171,6 +171,7 @@ export type AddressRewardsResponse = {
   amount: number;
   accruedAt: string;
   ordinal: number;
+  rewardsCount?: number;
   metagraphId?: string;
   symbol?: string;
 };
