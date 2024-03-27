@@ -31,7 +31,7 @@ export const RewardRow = ({
   let txRow = undefined;
 
   if (reward) {
-    const date = formatTime(reward.accruedAt, 'relative');
+    const date = formatTime(reward.accruedAt, 'date');
     const fullDate = formatTime(reward.accruedAt, 'full');
     txRow = (
       <>
@@ -63,7 +63,9 @@ export const RewardRow = ({
           </div>
         </div>
         <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
-          {reward.metagraphId ? (
+          {reward.ordinal === -1 ? (
+            reward.rewardsCount
+          ) : reward.metagraphId ? (
             <Link to={`/metagraphs/${reward.metagraphId}/snapshots/${reward.ordinal}`}>{reward.ordinal}</Link>
           ) : (
             <Link to={'/snapshots/' + reward.ordinal}>{reward.ordinal}</Link>
