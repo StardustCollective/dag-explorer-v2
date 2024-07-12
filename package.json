@@ -1,7 +1,10 @@
 {
-  "name": "demo-app",
+  "name": "dag-explorer",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
+  "private": false,
+  "repository": "https://github.com/StardustCollective/dag-explorer-v2",
+  "author": "Stardust Collective <info@stardustcollective.org>",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
