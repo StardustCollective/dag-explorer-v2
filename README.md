@@ -1,6 +1,6 @@
 # DAG Explorer Project (v2)
 
-DAG Explorer is an open-source tool designed for the Constellation Network to monitor transaction statuses and other important network information. This project is built with TypeScript and React.
+DAG Explorer is an open-source tool designed for the Constellation Network to monitor transaction statuses and other important network information. This project is built with TypeScript and React. You can find the live project at [dagexplorer.io](https://dagexplorer.io/).
 
 ## Features
 
@@ -31,6 +31,17 @@ cd dag-explorer-v2
 ```sh
 yarn install
 ```
+
+## Dependencies
+This repository relies on several private APIs to function effectively. Below are the details of these dependencies and their respective uses:
+
++ Firebase DAG Explorer Specialized Private API: This API is crucial for collecting data on MainNet 1.0, which is now deprecated. It provides detailed information about snapshots and transactions on this older network version.
+
++ Constellation Ecosystem Private API: This API is utilized to fetch information regarding token prices. It acts as a relay, connecting to the CoinGecko API to ensure accurate and up-to-date pricing data.
+
++ DAG Explorer Specialized Private API: This API is essential for obtaining comprehensive data about snapshots, transactions, metagraphs, rewards, node validators, and their rewards. It aggregates and processes information from the Constellation Block Explorer API, providing a optimized view of the network's activity.
+
+These dependencies are integral to the functionality of the DAG Explorer, ensuring it can provide detailed and accurate network information.
 
 ## Usage
 
