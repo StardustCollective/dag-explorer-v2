@@ -1,13 +1,14 @@
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Network, SearchableItem } from '../../constants';
-import { checkIfBEUrlExists, getSearchInputType } from '../../utils/search';
+import { checkIfBEUrlExists, getBEMetagraphTransactionMetagraphId, getSearchInputType } from '../../utils/search';
 
 import styles from './SearchBar.module.scss';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 
-
 export const handleSearch = async (searchText: string, performAction: (url: string) => void, network: Network) => {
+  searchText = String(searchText).trim()
+
   const inputType = getSearchInputType(searchText);
 
   switch (inputType) {
@@ -22,10 +23,21 @@ export const handleSearch = async (searchText: string, performAction: (url: stri
       break;
     }
     case SearchableItem.Hash: {
-      const snapshotUrl = `/global-snapshots/${searchText}`
-      const snapshotExists = await checkIfBEUrlExists(snapshotUrl, network)
-      if(snapshotExists){
+      const snapshotUrl = `/global-snapshots/${searchText}`;
+      const snapshotExists = await checkIfBEUrlExists(snapshotUrl, network);
+      if (snapshotExists) {
         const url = '/snapshots/' + searchText;
+        performAction(url);
+        break;
+      }
+
+      const metagraphTransactionMetagraphId = await getBEMetagraphTransactionMetagraphId(
+        searchText,
+        network
+      );
+
+      if (metagraphTransactionMetagraphId) {
+        const url = '/metagraphs/' + metagraphTransactionMetagraphId + '/transactions/' + searchText;
         performAction(url);
         break;
       }
