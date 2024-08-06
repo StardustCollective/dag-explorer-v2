@@ -10,6 +10,8 @@ import { BlockDetailsWrapper } from './views/BlocksView/Wrappers/BlockDetailsWra
 import { AddressDetailsWrapper } from './views/AddressView/Wrappers/AddressDetailsWrapper';
 import { NodeExplorerWrapper } from './views/NodeExplorerView/NodeExplorerWrapper';
 import { Search } from './components/Search/Search';
+import { MetagraphsView } from './views/MetagraphsView/view';
+import { MetagraphDetailsView } from './views/MetagraphsView/views';
 
 export const router = createBrowserRouter([
   {
@@ -17,26 +19,30 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <HomeView /> },
-      {path: 'transactions', element: <TransactionsWrapper/>},
-      {path: 'metagraphs/:metagraphId/transactions', element: <TransactionsWrapper/>},
 
-      {path: 'transactions/:transactionHash', element: <TransactionDetailsWrapper/>},
-      {path: 'metagraphs/:metagraphId/transactions/:transactionHash', element: <TransactionDetailsWrapper/>},
+      { path: 'metagraphs', element: <MetagraphsView /> },
+      { path: 'metagraphs/:metagraphId', element: <MetagraphDetailsView /> },
 
-      {path: 'snapshots', element: <SnapshotsWrapper/>},
-      {path: 'metagraphs/:metagraphId/snapshots', element: <SnapshotsWrapper/>},
+      { path: 'transactions', element: <TransactionsWrapper /> },
+      { path: 'metagraphs/:metagraphId/transactions', element: <TransactionsWrapper /> },
 
-      {path: 'snapshots/:snapshotHeight', element: <SnapshotDetailsWrapper/>},
-      {path: 'metagraphs/:metagraphId/snapshots/:snapshotHeight', element: <SnapshotDetailsWrapper/>},
+      { path: 'transactions/:transactionHash', element: <TransactionDetailsWrapper /> },
+      { path: 'metagraphs/:metagraphId/transactions/:transactionHash', element: <TransactionDetailsWrapper /> },
 
-      {path: 'blocks/:blockHash', element: <BlockDetailsWrapper/>},
-      {path: 'metagraphs/:metagraphId/blocks/:blockHash', element: <BlockDetailsWrapper/>},
+      { path: 'snapshots', element: <SnapshotsWrapper /> },
+      { path: 'metagraphs/:metagraphId/snapshots', element: <SnapshotsWrapper /> },
 
-      {path: 'address/:addressId', element: <AddressDetailsWrapper/>},
+      { path: 'snapshots/:snapshotHeight', element: <SnapshotDetailsWrapper /> },
+      { path: 'metagraphs/:metagraphId/snapshots/:snapshotHeight', element: <SnapshotDetailsWrapper /> },
 
-      {path: 'node-explorer', element: <NodeExplorerWrapper/>},
+      { path: 'blocks/:blockHash', element: <BlockDetailsWrapper /> },
+      { path: 'metagraphs/:metagraphId/blocks/:blockHash', element: <BlockDetailsWrapper /> },
 
-      {path: 'search', element: <Search/>},
+      { path: 'address/:addressId', element: <AddressDetailsWrapper /> },
+
+      { path: 'node-explorer', element: <NodeExplorerWrapper /> },
+
+      { path: 'search', element: <Search /> },
 
       { path: '*', element: <NotFound entire errorCode={'404'} /> },
     ],
