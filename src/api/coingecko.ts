@@ -15,6 +15,5 @@ export const useGetPrices = () => {
   };
   return useFetch(REACT_APP_ECOSYSTEM_API_URL + '/coin-prices', params, {
     refetchInterval: 30000,
-    cacheTime: 0,
   });
 };
