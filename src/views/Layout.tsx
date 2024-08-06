@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
 import { Nav } from '../components/Nav/Nav';
@@ -11,13 +11,6 @@ import { detectSubdomain } from '../utils/network';
 import { NetworkContext, NetworkContextType } from '../context/NetworkContext';
 
 export const Layout = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
-    },
-  });
   const { theme } = useContext(ThemeContext);
   const { changeNetwork } = useContext(NetworkContext) as NetworkContextType;
 
@@ -43,15 +36,13 @@ export const Layout = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <PricesProvider>
-        <div className={`${styles.container} ${theme}`}>
-          <Nav />
-          <Header />
-          <Outlet />
-          <Footer />
-        </div>
-      </PricesProvider>
-    </QueryClientProvider>
+    <PricesProvider>
+      <div className={`${styles.container} ${theme}`}>
+        <Nav />
+        <Header />
+        <Outlet />
+        <Footer />
+      </div>
+    </PricesProvider>
   );
 };
