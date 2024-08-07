@@ -155,6 +155,9 @@ export type MetagraphInfo = {
   metagraphName: string;
   metagraphSymbol: string;
   metagraphIcon: string;
+  metagraphSiteUrl: string | null;
+  metagraphStakingWalletAddress: string | null;
+  metagraphFeesWalletAddress: string | null;
 };
 
 export type MetagraphTransactionResponse = {

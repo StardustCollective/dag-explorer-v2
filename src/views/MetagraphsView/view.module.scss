@@ -1,0 +1,35 @@
+.main {
+  display: flex;
+  width: 100%;
+  grid-column: 1 / span 14;
+
+  flex-flow: column nowrap;
+  align-items: center;
+
+  a {
+    color: #174cd3;
+  }
+
+  .metagraphs {
+    display: flex;
+    width: 100%;
+    max-width: 1260px;
+
+    padding: 20px;
+
+    flex-flow: column nowrap;
+  }
+
+  .metagraphLink {
+    display: flex;
+
+    align-items: center;
+    gap: 12px;
+
+    img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+  }
+}
