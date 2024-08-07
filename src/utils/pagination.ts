@@ -1,3 +1,6 @@
+import { setServers } from 'dns';
+import { useEffect, useState } from 'react';
+
 interface DataFields {
   data: any;
   page: number;
@@ -5,7 +8,10 @@ interface DataFields {
   lastPage?: boolean;
 }
 
-function handlePagination<TData, TFetchedData extends DataFields[]>(
+/**
+ * @deprecated please use react-query constructs and the usePagination() hook
+ */
+export function handlePagination<TData, TFetchedData extends DataFields[]>(
   data: TData,
   setData: React.Dispatch<React.SetStateAction<TData>>,
   fetchedData: TFetchedData,
@@ -55,7 +61,10 @@ function handlePagination<TData, TFetchedData extends DataFields[]>(
   return [handlePrevPage, handleNextPage];
 }
 
-const handleFetchedData = (
+/**
+ * @deprecated please use react-query constructs and the usePagination() hook
+ */
+export const handleFetchedData = (
   setFetchedData: React.Dispatch<React.SetStateAction<DataFields[]>>,
   endpointData: any,
   currentPage: number,
@@ -89,4 +98,42 @@ const handleFetchedData = (
   setLastPage(!endpointData.data?.meta?.next);
 };
 
-export { handleFetchedData, handlePagination };
+export const usePagination = (pageSize = 10, defaultPage = 0) => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(defaultPage);
+  const [currentPageSize, setCurrentPageSize] = useState(pageSize);
+
+  const totalPages = Math.ceil(totalItems / currentPageSize);
+
+  const actions = {
+    currentPage,
+    currentPageSize,
+    limit: currentPageSize,
+    offset: currentPageSize * currentPage,
+    totalPages,
+    goNextPage: (numPages = 1) => {
+      return actions.goPage(currentPage + numPages);
+    },
+    goPreviousPage: (numPages = 1) => {
+      return actions.goPage(currentPage - numPages);
+    },
+    goPage: (page: number) => {
+      const newPage = Math.min(totalPages - 1, Math.max(0, page));
+      setCurrentPage(newPage);
+      return newPage;
+    },
+    setPageSize: (size: number) => {
+      setCurrentPage(0);
+      setCurrentPageSize(size);
+    },
+    setTotalItems,
+  };
+
+  useEffect(() => {
+    if (currentPageSize !== pageSize) {
+      actions.setPageSize(pageSize);
+    }
+  }, [pageSize]);
+
+  return actions;
+};

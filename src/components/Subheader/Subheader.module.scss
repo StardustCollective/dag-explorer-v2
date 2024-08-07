@@ -1,5 +1,6 @@
 @use '../../styles/colors' as *;
 @use '../../styles/_breakpoints' as *;
+
 .fullWidth {
   grid-column: 1 / span 14;
   display: grid;
@@ -19,10 +20,12 @@
   justify-content: space-between;
   width: 100%;
 }
+
 .subheaderItem {
   display: flex;
   align-items: center;
 }
+
 .buttonExport {
   box-sizing: border-box;
   display: flex;
