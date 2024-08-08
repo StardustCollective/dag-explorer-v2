@@ -113,12 +113,12 @@ export const MetagraphDetailsView = () => {
         <NodeLayerCard
           layerName="cL1"
           nodesOnline={metagraph.data?.metagraphNodes?.cl1.nodes}
-          nodeUrl={metagraph.data?.metagraphNodes?.l0.url}
+          nodeUrl={metagraph.data?.metagraphNodes?.cl1.url}
         />
         <NodeLayerCard
           layerName="dL1"
           nodesOnline={metagraph.data?.metagraphNodes?.dl1.nodes}
-          nodeUrl={metagraph.data?.metagraphNodes?.l0.url}
+          nodeUrl={metagraph.data?.metagraphNodes?.dl1.url}
         />
       </div>
       <Tabs value={selectedTable} onValue={(value) => setSelectedTable(value)}>
@@ -203,8 +203,12 @@ export const MetagraphDetailsView = () => {
                     ) + ` ${metagraph.data?.metagraphSymbol}`,
                   source: (value, record) => (
                     <div className={styles.fromToTransaction}>
-                      <Link to={`/address/${value}`}>From: {shorten(value)}</Link>
-                      <Link to={`/address/${record.destination}`}>To: {shorten(record.destination)}</Link>
+                      <Link to={`/address/${value}`}>
+                        From: <span>{shorten(value)}</span>
+                      </Link>
+                      <Link to={`/address/${record.destination}`}>
+                        To: <span>{shorten(record.destination)}</span>
+                      </Link>
                     </div>
                   ),
                   amount: (value) =>

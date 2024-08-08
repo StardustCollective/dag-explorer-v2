@@ -100,5 +100,13 @@
   .fromToTransaction {
     display: flex;
     flex-flow: column nowrap;
+
+    a {
+      color: #171a24;
+    }
+
+    span {
+      color: #174cd3;
+    }
   }
 }
