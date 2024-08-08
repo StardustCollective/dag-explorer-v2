@@ -11,7 +11,7 @@ export type ITableProps<
   DataKeys extends string,
   TitleKeys extends DataKeys,
   SortKeys extends DataKeys & TitleKeys,
-  DataRecord extends Record<DataKeys, any>
+  DataRecord extends { [K in DataKeys]?: any }
 > = {
   titles: Record<
     TitleKeys,
@@ -59,7 +59,7 @@ export const Table = <
   DataKeys extends string,
   TitleKeys extends DataKeys,
   SortKeys extends DataKeys & TitleKeys,
-  DataRecord extends Record<DataKeys, any>
+  DataRecord extends { [K in DataKeys]?: any }
 >({
   titles,
   data,
@@ -76,8 +76,8 @@ export const Table = <
   const [detailId, setDetailId] = useState<React.ReactNode | null>(null);
 
   return (
-    <table className={cls(styles.root, className?.root, variants?.includes('slim') && styles.vSlim)}>
-      <thead className={cls(styles.header, className?.header, variants?.includes('slim') && styles.vSlim)}>
+    <table className={cls(styles.root, className?.root, variants?.map(v=>styles[v]))}>
+      <thead className={cls(styles.header, className?.header, variants?.map(v=>styles[v]))}>
         <tr className={cls(styles.headerRow, className?.headerRow)}>
           {RecordEntries(titles).map(([key, { content, sortable }]) => {
             const headerCellClassNames = className?.cells?.header?.[key];
@@ -108,7 +108,7 @@ export const Table = <
           })}
         </tr>
       </thead>
-      <tbody className={cls(styles.body, className?.body, variants?.includes('slim') && styles.vSlim)}>
+      <tbody className={cls(styles.body, className?.body, variants?.map(v=>styles[v]))}>
         {data.length === 0 && emptyState && (
           <tr className={cls(styles.bodyRow, className?.bodyRow)}>
             {RecordEntries(titles).map(([key, { content: headerCellContent }]) => {
@@ -203,7 +203,7 @@ export const Table = <
           </>
         ))}
       </tbody>
-      <tfoot className={cls(styles.footer, className?.footer, variants?.includes('slim') && styles.vSlim)}></tfoot>
+      <tfoot className={cls(styles.footer, className?.footer, variants?.map(v=>styles[v]))}></tfoot>
     </table>
   );
 };

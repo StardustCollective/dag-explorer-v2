@@ -1,3 +1,5 @@
+@use '../../styles/breakpoints' as *;
+
 .main {
   display: flex;
   width: 100%;
@@ -30,6 +32,15 @@
       width: 32px;
       height: 32px;
       object-fit: contain;
+    }
+
+    @include respond-below(md) {
+      gap: 4px;
+
+      img {
+        width: 12px;
+        height: 12px;
+      }
     }
   }
 }

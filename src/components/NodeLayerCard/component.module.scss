@@ -1,0 +1,86 @@
+.main {
+  display: flex;
+
+  flex-flow: column nowrap;
+  padding: 20px;
+  row-gap: 24px;
+
+  align-items: center;
+
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+
+  a{
+    color: unset;
+  }
+
+  .layerInfo {
+    display: flex;
+    width: 100%;
+
+    flex-flow: column nowrap;
+    row-gap: 16px;
+
+    .title {
+      display: flex;
+      width: 100%;
+
+      flex-flow: row nowrap;
+      justify-content: space-between;
+
+      .validators {
+        display: flex;
+
+        flex-flow: row nowrap;
+        column-gap: 10px;
+
+        font-family: Inter;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24px;
+        text-align: left;
+        color: #0a0d14;
+      }
+
+      .layerName {
+        font-family: Inter;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 24px;
+        text-align: left;
+        color: #4b5563;
+      }
+    }
+
+    .nodes {
+      font-family: Inter;
+      font-size: 40px;
+      font-weight: 500;
+      line-height: 40px;
+      text-align: center;
+      color: #363bd3;
+    }
+  }
+
+  > span {
+    display: flex;
+
+    flex-flow: row nowrap;
+    align-items: center;
+    column-gap: 8px;
+
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+
+    color: #4b5563;
+
+    .copyIcon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

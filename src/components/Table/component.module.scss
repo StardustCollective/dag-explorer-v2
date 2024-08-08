@@ -1,6 +1,4 @@
-// @use 'common/styles/breakpoints' as *;
-// @use 'common/styles/colors' as *;
-// @use 'common/styles/mixins' as *;
+@use '../../styles/breakpoints' as *;
 
 .root {
   width: 100%;
@@ -8,9 +6,9 @@
 }
 
 .header {
-  // @include respond-below(md) {
-  //   display: none;
-  // }
+  @include respond-below(md) {
+    display: none;
+  }
 
   .headerRow {
     height: 44px;
@@ -46,14 +44,16 @@
     &:nth-child(n) {
       padding-left: 24px;
       padding-right: 24px;
-      // @include respond-below(md) {
-      //   padding-left: 0px;
-      //   padding-right: 0px;
-      // }
-      // @include respond-below(lg) {
-      //   padding-left: 12px;
-      //   padding-right: 12px;
-      // }
+
+      @include respond-below(md) {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      @include respond-below(lg) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
     }
 
     .headerCellContent {
@@ -68,7 +68,7 @@
     }
   }
 
-  &.vSlim {
+  &.slim {
     .headerRow {
       height: 52px;
 
@@ -90,31 +90,32 @@
 }
 
 .body {
-  // @include respond-below(md) {
-  //   display: grid;
-  //   height: unset;
+  @include respond-below(md) {
+    display: grid;
+    height: unset;
 
-  //   grid-template-columns: 1fr;
-  //   grid-auto-rows: 1fr;
-  //   row-gap: 16px;
-  // }
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+    row-gap: 16px;
+  }
 
   .bodyRow {
     height: 64px;
 
-    // @include respond-below(md) {
-    //   display: grid;
-    //   height: unset !important;
+    @include respond-below(md) {
+      display: grid;
+      height: unset !important;
 
-    //   grid-template-columns: 1fr;
-    //   grid-auto-rows: 1fr;
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      row-gap: 16px;
 
-    //   padding: 15px;
+      padding: 15px;
 
-    //   background-color: #242834;
-    //   border-radius: 8px;
-    //   border: 1px solid change-color($color: #fff, $alpha: 0.12);
-    // }
+      background-color: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #dcdfea;
+    }
 
     &:last-child .bodyCell {
       border-bottom: 1px solid #dcdfea;
@@ -147,28 +148,30 @@
     line-height: 20px;
     text-align: left;
 
-    // @include respond-below(md) {
-    //   display: grid;
+    @include respond-below(md) {
+      display: grid;
 
-    //   grid-template-columns: 1fr;
-    //   grid-template-rows: 1fr;
-    //   grid-auto-flow: column;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      grid-auto-flow: column;
 
-    //   height: unset;
-    //   border-bottom: none;
-    // }
+      height: unset;
+      border: none !important;
+    }
 
     &:nth-child(n) {
       padding-left: 24px;
       padding-right: 24px;
-      // @include respond-below(md) {
-      //   padding-left: 0px;
-      //   padding-right: 0px;
-      // }
-      // @include respond-below(lg) {
-      //   padding-left: 12px;
-      //   padding-right: 12px;
-      // }
+
+      @include respond-below(md) {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      @include respond-below(lg) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
     }
 
     &:nth-child(1) {
@@ -192,22 +195,22 @@
   .bodyCell > .headerCell {
     display: none;
 
-    // @include respond-below(md) {
-    //   display: flex;
-    //   align-items: center;
-    //   text-transform: uppercase;
+    @include respond-below(md) {
+      display: flex;
+      align-items: center;
 
-    //   font-family: 'TWK Lausanne';
-    //   font-style: normal;
-    //   font-weight: 600;
-    //   font-size: 10px;
-    //   line-height: 18px;
+      font-family: Inter;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      text-align: left;
+      color: #4b5563;
 
-    //   width: 100% !important;
-    // }
+      width: 100% !important;
+    }
   }
 
-  &.vSlim {
+  &.slim {
     .bodyRow {
       height: 61px;
 

@@ -1,0 +1,43 @@
+@use '../../styles/breakpoints' as *;
+
+.main {
+  display: flex;
+
+  flex-flow: column nowrap;
+  padding: 24px 20px;
+  row-gap: 24px;
+
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+
+  .row {
+    display: flex;
+    width: 100%;
+
+    flex-flow: row nowrap;
+    justify-content: space-between;
+
+    @include respond-below(md) {
+      flex-flow: column nowrap;
+      row-gap: 8px;
+    }
+  }
+
+  .label {
+    display: flex;
+
+    flex-flow: row nowrap;
+    align-items: center;
+    column-gap: 8px;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  a {
+    color: #363bd3;
+  }
+}
