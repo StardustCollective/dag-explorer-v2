@@ -10,7 +10,7 @@
 
 .section {
   height: 100px;
-  background-color: $grayCool-50;
+  background-color: rgba(0, 0, 0, 0);
   border-bottom: 1px solid $grayCool-200;
 
   @include respond-below(md) {
