@@ -141,10 +141,12 @@ export const MetagraphDetailsView = () => {
                 formatData={{
                   ordinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
                   timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
-                  sizeInKB: (value) => value + 'kb',
+                  sizeInKB: (value) => (value ?? '-- ') + 'kb',
                   fee: (value) =>
-                    formatNumber(new Decimal(value).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
-                    ' DAG',
+                    formatNumber(
+                      new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
+                      NumberFormat.DECIMALS_TRIMMED_EXPAND
+                    ) + ' DAG',
                 }}
               />
             ) : (
@@ -195,8 +197,10 @@ export const MetagraphDetailsView = () => {
                   timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
                   snapshotOrdinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
                   fee: (value) =>
-                    formatNumber(new Decimal(value).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
-                    ` ${metagraph.data?.metagraphSymbol}`,
+                    formatNumber(
+                      new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
+                      NumberFormat.DECIMALS_TRIMMED_EXPAND
+                    ) + ` ${metagraph.data?.metagraphSymbol}`,
                   source: (value, record) => (
                     <div className={styles.fromToTransaction}>
                       <Link to={`/address/${value}`}>From: {shorten(value)}</Link>
@@ -204,7 +208,7 @@ export const MetagraphDetailsView = () => {
                     </div>
                   ),
                   amount: (value) =>
-                    formatNumber(new Decimal(value).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
+                    formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
                     ` ${metagraph.data?.metagraphSymbol}`,
                 }}
               />
