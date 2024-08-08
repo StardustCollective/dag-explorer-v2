@@ -13,6 +13,7 @@ export const Nav = () => {
             <p className={styles.title}>DAG Explorer</p>
           </Link>
           <div className={styles.rightSide}>
+            <Link className={styles.metagraphsLink} to="/metagraphs">Metagraphs</Link>
             <NavDropdown />
             <p>USD</p>
           </div>
