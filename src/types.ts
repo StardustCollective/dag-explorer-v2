@@ -10,6 +10,10 @@ export type Snapshot = {
   isMetagraphSnapshot?: boolean;
   metagraphId?: string;
   metagraphName?: string;
+  fee?: number;
+  ownerAddress?: string;
+  stakingAddress?: string | null;
+  sizeInKB?: number;
 };
 
 export type MainnetOneSnapshot = {
@@ -150,14 +154,18 @@ export type MainnetOneClusterInfo = {
   reputation: number;
 };
 
+export type MetagraphNodeLayerInfo = { url: string | null; nodes: number };
+
 export type MetagraphInfo = {
   metagraphId: string;
   metagraphName: string;
+  metagraphDescription: string;
   metagraphSymbol: string;
   metagraphIcon: string;
   metagraphSiteUrl: string | null;
   metagraphStakingWalletAddress: string | null;
   metagraphFeesWalletAddress: string | null;
+  metagraphNodes?: { l0: MetagraphNodeLayerInfo; cl1: MetagraphNodeLayerInfo; dl1: MetagraphNodeLayerInfo };
 };
 
 export type MetagraphTransactionResponse = {
