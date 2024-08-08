@@ -80,7 +80,7 @@ export const MetagraphDetailsView = () => {
             {
               icon: <FlowDataIcon />,
               label: 'Metagraph ID',
-              content: <Link to={`/address/${metagraphId}`}>{shorten(metagraphId, 8, 8)}</Link>,
+              content: <Link to={`/metagraphs/${metagraphId}`}>{shorten(metagraphId, 8, 8)}</Link>,
             },
             {
               icon: <WalletIcon />,

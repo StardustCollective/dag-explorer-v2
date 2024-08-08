@@ -40,7 +40,7 @@ export const MetagraphsView = () => {
                   {value}
                 </Link>
               ),
-              metagraphId: (value) => <Link to={`/address/${value}`}>{shorten(value)}</Link>,
+              metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,
               metagraphSiteUrl: (value) => (
                 <a target="_blank" href={value} rel="noreferrer">
                   {value}
