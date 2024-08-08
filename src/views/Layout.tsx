@@ -9,6 +9,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import { PricesProvider } from '../context/PricesContext';
 import { detectSubdomain } from '../utils/network';
 import { NetworkContext, NetworkContextType } from '../context/NetworkContext';
+import clsx from 'clsx';
 
 export const Layout = () => {
   const { theme } = useContext(ThemeContext);
@@ -37,7 +38,7 @@ export const Layout = () => {
 
   return (
     <PricesProvider>
-      <div className={`${styles.container} ${theme}`}>
+      <div className={clsx(styles.container, theme)}>
         <Nav />
         <Header />
         <Outlet />
