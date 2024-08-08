@@ -22,6 +22,8 @@ import { ReactComponent as FlowDataIcon } from '../../../../assets/icons/FlowDat
 import { ReactComponent as WalletIcon } from '../../../../assets/icons/Wallet.svg';
 import { NodeLayerCard } from '../../../../components/NodeLayerCard/component';
 import { HorizontalBar } from '../../../../components/HorizontalBar/component';
+import { isAxiosError } from 'axios';
+import { NotFound } from '../../../NotFoundView/NotFound';
 
 export const MetagraphDetailsView = () => {
   const { metagraphId } = useParams();
@@ -57,6 +59,20 @@ export const MetagraphDetailsView = () => {
       transactionsPagination.setNextPageToken(transactions.data.meta.next);
     }
   }, [transactions.isFetched && transactions.data?.meta.next]);
+
+  if (metagraph.isError && isAxiosError(metagraph.error) && metagraph.error.response.status === 404) {
+    return (
+      <ViewLayout className={styles.main}>
+        <NavPath
+          segments={[
+            { name: 'Metagraphs', to: '/metagraphs' },
+            { name: metagraph.data?.metagraphName ?? 'Unknown', to: `/metagraphs/${metagraphId}` },
+          ]}
+        />
+        <NotFound entire={false} errorCode={`Unable to find metagraph with id ${shorten(metagraphId)}`} />
+      </ViewLayout>
+    );
+  }
 
   return (
     <ViewLayout className={styles.main}>
@@ -137,7 +153,7 @@ export const MetagraphDetailsView = () => {
                   sizeInKB: { content: 'Snapshot Size' },
                   fee: { content: 'Snapshot Fee' },
                 }}
-                data={snapshots.data.data}
+                data={snapshots.data?.data ?? []}
                 formatData={{
                   ordinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
                   timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
@@ -189,7 +205,7 @@ export const MetagraphDetailsView = () => {
                   source: { content: 'From / To' },
                   amount: { content: 'Amount' },
                 }}
-                data={transactions.data.data}
+                data={transactions.data?.data ?? []}
                 formatData={{
                   hash: (value) => (
                     <Link to={`/metagraphs/${metagraphId}/transactions/${value}`}>{shorten(value)}</Link>

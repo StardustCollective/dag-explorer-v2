@@ -426,7 +426,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                       sizeInKB: { content: 'Snapshot Size' },
                       fee: { content: 'Snapshot Fee' },
                     }}
-                    data={addressSnapshots.data.data}
+                    data={addressSnapshots.data?.data ?? []}
                     formatData={{
                       metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,
                       ordinal: (value, record) => (

@@ -32,7 +32,7 @@ export const MetagraphsView = () => {
               metagraphId: { content: 'Metagraph Id' },
               metagraphSiteUrl: { content: 'Website' },
             }}
-            data={metagraphs.data.data}
+            data={metagraphs.data?.data ?? []}
             formatData={{
               metagraphName: (value, record) => (
                 <Link to={`/metagraphs/${record.metagraphId}`} className={styles.metagraphLink}>
