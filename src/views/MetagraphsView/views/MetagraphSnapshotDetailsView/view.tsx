@@ -2,13 +2,9 @@ import { Link, useParams } from 'react-router-dom';
 import { useGetMetagraph } from '../../../../api/block-explorer/metagraphs';
 
 import styles from './view.module.scss';
-import { Tabs } from '../../../../components/Tabs/Tabs';
-import { useEffect, useState } from 'react';
-import {
-  useGetAllSnapshots,
-  useGetSnapshot,
-  useGetSnapshotTransactions,
-} from '../../../../api/block-explorer/global-snapshot';
+
+import { useEffect } from 'react';
+import { useGetSnapshot, useGetSnapshotTransactions } from '../../../../api/block-explorer/global-snapshot';
 import { useNextTokenPagination } from '../../../../utils/pagination';
 import { Table } from '../../../../components/Table';
 import dayjs from 'dayjs';
@@ -16,15 +12,12 @@ import Decimal from 'decimal.js';
 import { formatNumber, NumberFormat } from '../../../../utils/numbers';
 import { SkeletonSpan } from '../../../../components/SkeletonSpan/component';
 import { TablePagination } from '../../../../components/TablePagination/component';
-import { useGetAllTransactions } from '../../../../api/block-explorer/transaction';
+
 import { shorten } from '../../../../utils/shorten';
 import { InfoRowsCard } from '../../../../components/InfoRowsCard/component';
-import { NavPath } from '../../../../components/NavPath/component';
+
 import { ViewLayout } from '../../../../components/ViewLayout/component';
 
-import { ReactComponent as FlowDataIcon } from '../../../../assets/icons/FlowData.svg';
-import { ReactComponent as WalletIcon } from '../../../../assets/icons/Wallet.svg';
-import { HorizontalBar } from '../../../../components/HorizontalBar/component';
 import { Subheader } from '../../../../components/Subheader/Subheader';
 import { CopyableContent } from '../../../../components/CopyableContent/component';
 
@@ -51,7 +44,7 @@ export const MetagraphSnapshotDetailsView = () => {
 
   return (
     <ViewLayout className={styles.main}>
-      <Subheader text="Metagraph snapshot details" />
+      <Subheader text="Metagraph Snapshot Details" />
       <h3>Overview</h3>
       <div className={styles.snapshotData}>
         <InfoRowsCard
@@ -72,9 +65,8 @@ export const MetagraphSnapshotDetailsView = () => {
               icon: null,
               label: 'Metagraph ID',
               content: (
-                <Link className={styles.detailLink} to={`/address/${metagraphId}`}>
+                <Link className={styles.detailLink} to={`/metagraphs/${metagraphId}`}>
                   {shorten(metagraphId, 8, 8)}
-                  <CopyableContent content={metagraphId} />
                 </Link>
               ),
             },
