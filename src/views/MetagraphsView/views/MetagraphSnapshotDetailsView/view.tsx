@@ -152,7 +152,7 @@ export const MetagraphSnapshotDetailsView = () => {
               timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
               snapshotOrdinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
               fee: (value) =>
-                formatNumber(new Decimal(value).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
+                formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
                 ` ${metagraph.data?.metagraphSymbol}`,
               source: (value) => (
                 <Link to={`/address/${value}`}>
@@ -165,7 +165,7 @@ export const MetagraphSnapshotDetailsView = () => {
                 </Link>
               ),
               amount: (value) =>
-                formatNumber(new Decimal(value).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
+                formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
                 ` ${metagraph.data?.metagraphSymbol}`,
             }}
           />
