@@ -25,7 +25,7 @@ import {
   useGetAddressRewards,
   useGetAddressTotalRewards,
 } from '../../api/block-explorer/address';
-import { useGetAdressMetagraphs } from '../../api/block-explorer/metagraph-address';
+import { useGetAddressMetagraphs, useGetAddressMetagraphSnapshots } from '../../api/block-explorer/metagraph-address';
 import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
 import { handleFetchedData, handlePagination } from '../../utils/pagination';
 import { FetchedData, Params } from '../../types/requests';
@@ -33,6 +33,7 @@ import { FetchedData, Params } from '../../types/requests';
 import styles from './AddressDetails.module.scss';
 import { RewardsTable } from '../../components/RewardsTable/RewardsTable';
 import { Tabs } from '../../components/Tabs/Tabs';
+import { isAxiosError } from 'axios';
 
 export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const { addressId } = useParams();
@@ -50,9 +51,11 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [modalOpen, setModalOpen] = useState(false);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
-  const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens' | 'rewards'>('transactions');
+  const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens' | 'rewards' | 'snapshots'>(
+    'transactions'
+  );
 
-  const addressMetagraphs = useGetAdressMetagraphs(addressId);
+  const addressMetagraphs = useGetAddressMetagraphs(addressId);
 
   const [metagraphTokensDropdown, setMetagraphTokensDropdown] = useState<AddressMetagraphResponse[]>([]);
   const [metagraphTokensTable, setMetagraphTokensTable] = useState<AddressMetagraphResponse[]>([]);
@@ -68,6 +71,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [limitAddressRewards, setLimitAddressRewards] = useState<number>(10);
   const [offsetAddressRewards, setOffsetAddressRewards] = useState<number>(0);
 
+  const addressSnapshots = useGetAddressMetagraphSnapshots(addressId);
   const addressRewards = useGetAddressRewards(addressId, network, limitAddressRewards, offsetAddressRewards);
   const addressMetagraphRewards = useGetAddressMetagraphRewards(
     addressId,
@@ -76,6 +80,8 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     limitAddressRewards,
     offsetAddressRewards
   );
+
+  //console.log(addressSnapshots);
 
   const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
     addressTxs,
@@ -186,10 +192,11 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
 
   useEffect(() => {
     if (addressInfo.isError) {
-      if (addressInfo.error.message !== '404') {
+      if (isAxiosError(addressInfo.error) && addressInfo.error.response.status !== 404) {
         setError(addressInfo.error.message);
       }
-      if (addressInfo.error.message === '404') {
+
+      if (isAxiosError(addressInfo.error) && addressInfo.error.response.status === 404) {
         if (tokenChanged) {
           setTxsSkeleton(false);
           setAddressTxs([]);
