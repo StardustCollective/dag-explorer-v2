@@ -1,0 +1,29 @@
+@use '../../styles/breakpoints' as *;
+
+.main {
+  display: grid;
+  width: 100%;
+
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+  grid-column: 1 / span 14;
+
+  @include respond-below(md) {
+    display: flex;
+    flex-flow: column nowrap;
+
+    padding: 0px 24px;
+  }
+
+  &, * {
+    box-sizing: border-box;
+  }
+}
+
+.content {
+  display: flex;
+  width: 100%;
+
+  grid-column: 2 / span 12;
+  flex-flow: column nowrap;
+  row-gap: 24px;
+}

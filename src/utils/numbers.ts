@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
+import Decimal from 'decimal.js';
 import millify from 'millify';
 
 dayjs.extend(relativeTime);
@@ -11,6 +12,7 @@ export enum NumberFormat {
   WHOLE,
   DECIMALS,
   DECIMALS_TRIMMED,
+  DECIMALS_TRIMMED_EXPAND,
   MILLIFY_WHOLE,
   MILLIFY_EXPANDED,
 }
@@ -62,7 +64,6 @@ export const formatAmount = (amount: number, toFixed: number, forExport?: boolea
 export const fitStringInCell = (value: string, size: number = null, ignoreSuffix = false) =>
   value.slice(0, size ?? 5) + '...' + (ignoreSuffix ? '' : value.slice(value.length - (size ?? 5)));
 
-
 export const formatTotalSupply = () => 'Max Supply: 3,693,588,685';
 
 const formatRelativeString = (date: string) => {
@@ -79,12 +80,18 @@ const formatRelativeString = (date: string) => {
 export const formatTime = (timestamp: string | number, format: 'full' | 'relative' | 'date') => {
   return format === 'full'
     ? dayjs(timestamp).utc().format('YYYY-MM-DD h:mm A +UTC')
-    : format === 'date' ? dayjs(timestamp).utc().format('YYYY/MM/DD') : formatRelativeString(dayjs().to(dayjs(timestamp)));
+    : format === 'date'
+    ? dayjs(timestamp).utc().format('YYYY/MM/DD')
+    : formatRelativeString(dayjs().to(dayjs(timestamp)));
 };
 
-export const formatNumber = (number: number | string | undefined | null, format: NumberFormat): string => {
+export const formatNumber = (number: number | Decimal | string | undefined | null, format: NumberFormat): string => {
   if (number === '' || number === undefined || number === null || isNaN(<number>number)) {
     return '';
+  }
+
+  if (number instanceof Decimal) {
+    number = number.toNumber();
   }
 
   if (format === NumberFormat.MILLIFY) {
@@ -107,6 +114,12 @@ export const formatNumber = (number: number | string | undefined | null, format:
   if (format === NumberFormat.DECIMALS_TRIMMED) {
     return new Intl.NumberFormat('en-US', {
       maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+    }).format(<number>number);
+  }
+
+  if (format === NumberFormat.DECIMALS_TRIMMED_EXPAND) {
+    return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 0,
     }).format(<number>number);
   }
