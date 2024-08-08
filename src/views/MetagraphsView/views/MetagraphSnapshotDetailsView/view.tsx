@@ -72,7 +72,7 @@ export const MetagraphSnapshotDetailsView = () => {
               icon: null,
               label: 'Metagraph ID',
               content: (
-                <Link className={styles.detailLink} to={`/addresses/${metagraphId}`}>
+                <Link className={styles.detailLink} to={`/address/${metagraphId}`}>
                   {shorten(metagraphId, 8, 8)}
                   <CopyableContent content={metagraphId} />
                 </Link>
@@ -163,12 +163,12 @@ export const MetagraphSnapshotDetailsView = () => {
                 formatNumber(new Decimal(value).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
                 ` ${metagraph.data?.metagraphSymbol}`,
               source: (value) => (
-                <Link to={`/addresses/${value}`}>
+                <Link to={`/address/${value}`}>
                   {shorten(value)} <CopyableContent content={value} />
                 </Link>
               ),
               destination: (value) => (
-                <Link to={`/addresses/${value}`}>
+                <Link to={`/address/${value}`}>
                   {shorten(value)} <CopyableContent content={value} />
                 </Link>
               ),

@@ -80,13 +80,13 @@ export const MetagraphDetailsView = () => {
             {
               icon: <FlowDataIcon />,
               label: 'Metagraph ID',
-              content: <Link to={`/addresses/${metagraphId}`}>{shorten(metagraphId, 8, 8)}</Link>,
+              content: <Link to={`/address/${metagraphId}`}>{shorten(metagraphId, 8, 8)}</Link>,
             },
             {
               icon: <WalletIcon />,
               label: 'Staking',
               content: (
-                <Link to={`/addresses/${metagraph.data?.metagraphStakingWalletAddress}`}>
+                <Link to={`/address/${metagraph.data?.metagraphStakingWalletAddress}`}>
                   {shorten(metagraph.data?.metagraphStakingWalletAddress, 8, 8)}
                 </Link>
               ),
@@ -95,7 +95,7 @@ export const MetagraphDetailsView = () => {
               icon: <WalletIcon />,
               label: 'Snapshot fees',
               content: (
-                <Link to={`/addresses/${metagraph.data?.metagraphFeesWalletAddress}`}>
+                <Link to={`/address/${metagraph.data?.metagraphFeesWalletAddress}`}>
                   {shorten(metagraph.data?.metagraphFeesWalletAddress, 8, 8)}
                 </Link>
               ),
@@ -199,8 +199,8 @@ export const MetagraphDetailsView = () => {
                     ` ${metagraph.data?.metagraphSymbol}`,
                   source: (value, record) => (
                     <div className={styles.fromToTransaction}>
-                      <Link to={`/addresses/${value}`}>From: {shorten(value)}</Link>
-                      <Link to={`/addresses/${record.destination}`}>To: {shorten(record.destination)}</Link>
+                      <Link to={`/address/${value}`}>From: {shorten(value)}</Link>
+                      <Link to={`/address/${record.destination}`}>To: {shorten(record.destination)}</Link>
                     </div>
                   ),
                   amount: (value) =>
