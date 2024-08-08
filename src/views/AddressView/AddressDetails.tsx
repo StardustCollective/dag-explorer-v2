@@ -121,6 +121,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     const defaultOption = {
       metagraphId: 'ALL_METAGRAPHS',
       metagraphName: `All Metagraph Tokens (${metagraphsSize})`,
+      metagraphDescription: `All Metagraph Tokens (${metagraphsSize})`,
       metagraphSymbol: `All Metagraph Tokens (${metagraphsSize})`,
       metagraphIcon: '',
       metagraphSiteUrl: null,
