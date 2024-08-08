@@ -1,5 +1,6 @@
 @use '../../styles/colors' as *;
 @use '../../styles/_breakpoints' as *;
+
 .fullWidth {
   grid-column: 1 / span 14;
   display: grid;
@@ -8,8 +9,13 @@
 }
 
 .section {
-  background-color: $grayCool-50;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0);
   border-bottom: 1px solid $grayCool-200;
+
+  @include respond-below(md) {
+    width: 100%;
+  }
 }
 
 .subheader {
@@ -19,10 +25,12 @@
   justify-content: space-between;
   width: 100%;
 }
+
 .subheaderItem {
   display: flex;
   align-items: center;
 }
+
 .buttonExport {
   box-sizing: border-box;
   display: flex;

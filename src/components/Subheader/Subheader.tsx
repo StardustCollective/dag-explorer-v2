@@ -5,17 +5,14 @@ import { SnapshotShape } from '../Shapes/SnapshotShape';
 import { TransactionShape } from '../Shapes/TransactionShape';
 import { AddressShape } from '../Shapes/AddressShape';
 
-export const Subheader = ({
-  text,
-  item,
-  hasExport,
-  handleExport,
-}: {
+export type ISubheaderProps = {
   text: string;
-  item: IconType;
+  item?: IconType;
   hasExport?: boolean;
   handleExport?: () => void;
-}) => {
+};
+
+export const Subheader = ({ text, item, hasExport, handleExport }: ISubheaderProps) => {
   return (
     <section className={`${styles.fullWidth} ${styles.section}`}>
       <div className={`${styles.row} ${styles.subheader}`}>

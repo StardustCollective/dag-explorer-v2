@@ -7,10 +7,11 @@ import { SkeletonTransactionsTable } from './SkeletonTransactionsTable';
 import { useContext, cloneElement } from 'react';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { CardDataRow, TableCards } from './TableCards';
-import { fitStringInCell, formatAmount, formatTime } from '../../utils/numbers';
+import { fitStringInCell, formatAmount, formatNumber, formatTime, NumberFormat } from '../../utils/numbers';
 import { TransactionShape } from '../Shapes/TransactionShape';
 import { SnapshotShape } from '../Shapes/SnapshotShape';
 import styles from './TransactionsTable.module.scss';
+import Decimal from 'decimal.js';
 
 export const TransactionsTable = ({
   skeleton,
@@ -36,7 +37,7 @@ export const TransactionsTable = ({
   const titles = transactions
     ? ['TXN HASH', 'TIMESTAMP', 'SNAPSHOT', 'FROM', 'TO', 'AMOUNT']
     : showMetagraphSymbol
-    ? ['ORDINAL', 'TIMESTAMP', 'BLOCKS COUNT', 'METAGRAPH']
+    ? ['ORDINAL', 'TIMESTAMP', 'FEE', 'METAGRAPH']
     : ['ORDINAL', 'TIMESTAMP', 'BLOCKS COUNT'];
 
   const needDagInfo = transactions && transactions.length > 0;
@@ -162,7 +163,14 @@ export const TransactionsTable = ({
         element: <SnapshotShape />,
       });
       snapshotCard.push({ value: formatTime(snap.timestamp, 'relative'), dataTip: formatTime(snap.timestamp, 'full') });
-      snapshotCard.push({ value: snap.blocks ? snap.blocks.length : 0 });
+      snapshotCard.push({
+        value: snap.metagraphId
+          ? formatNumber(new Decimal(snap.fee ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
+            ' DAG'
+          : snap.blocks
+          ? snap.blocks.length
+          : 0,
+      });
       snap.isMetagraphSnapshot && snapshotCard.push({ value: snap.symbol });
       cardsSet.add(snapshotCard);
     });

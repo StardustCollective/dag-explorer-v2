@@ -51,7 +51,7 @@ export const HeaderRow = ({
           <p className={styles.headerText}>{'TIMESTAMP'}</p>
         </div>
         <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? 'BLOCKS' : 'AMOUNT'}</p>
+          <p className={styles.headerText}>{forSnapshots ? (showMetagraphSymbol ? 'FEE' : 'BLOCKS') : 'AMOUNT'}</p>
         </div>
         {forSnapshots && showMetagraphSymbol && (
           <div className={styles.headerColumn}>
