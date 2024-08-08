@@ -1,0 +1,260 @@
+@use '../../styles/breakpoints' as *;
+
+.root {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.header {
+  @include respond-below(md) {
+    display: none;
+  }
+
+  .headerRow {
+    height: 44px;
+
+    &:nth-child(1) .headerCell {
+      border-top: 1px solid #dcdfea;
+
+      &:nth-child(1) {
+        border-left: 1px solid #dcdfea;
+        border-radius: 6px 0px 0px 0px;
+      }
+
+      &:last-child {
+        border-right: 1px solid #dcdfea;
+        border-radius: 0px 6px 0px 0px;
+      }
+    }
+  }
+
+  .headerCell {
+    background-color: #dcdfea;
+    border-bottom: 1px solid #dcdfea;
+
+    color: #5d6b98;
+    //styleName: Caption/Bold;
+    font-family: Lausanne;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0.005em;
+    text-align: left;
+
+    &:nth-child(n) {
+      padding-left: 24px;
+      padding-right: 24px;
+
+      @include respond-below(md) {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      @include respond-below(lg) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    }
+
+    .headerCellContent {
+      display: flex;
+      width: 100%;
+      height: 100%;
+
+      justify-content: flex-start;
+      align-items: center;
+
+      text-transform: uppercase;
+    }
+  }
+
+  &.slim {
+    .headerRow {
+      height: 52px;
+
+      &:nth-child(1) .headerCell {
+        border-top: 1px solid #dcdfea;
+
+        &:nth-child(1) {
+          border-left: none;
+          border-radius: 0px;
+        }
+
+        &:last-child {
+          border-right: none;
+          border-radius: 0px;
+        }
+      }
+    }
+  }
+}
+
+.body {
+  @include respond-below(md) {
+    display: grid;
+    height: unset;
+
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+    row-gap: 16px;
+  }
+
+  .bodyRow {
+    height: 64px;
+
+    @include respond-below(md) {
+      display: grid;
+      height: unset !important;
+
+      grid-template-columns: 1fr;
+      grid-auto-rows: 1fr;
+      row-gap: 16px;
+
+      padding: 15px;
+
+      background-color: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #dcdfea;
+    }
+
+    &:last-child .bodyCell {
+      border-bottom: 1px solid #dcdfea;
+
+      &:nth-child(1) {
+        border-left: 1px solid #dcdfea;
+        border-radius: 0px 0px 0px 6px;
+      }
+
+      &:last-child {
+        border-right: 1px solid #dcdfea;
+        border-radius: 0px 0px 6px 0px;
+      }
+    }
+
+    &.withDetailKey {
+      cursor: pointer;
+    }
+  }
+
+  .bodyCell {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e8ebfb;
+
+    color: #171a24;
+    //styleName: Body 2/Lausanne/Regular;
+    font-family: Lausanne;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+
+    @include respond-below(md) {
+      display: grid;
+
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      grid-auto-flow: column;
+
+      height: unset;
+      border: none !important;
+    }
+
+    &:nth-child(n) {
+      padding-left: 24px;
+      padding-right: 24px;
+
+      @include respond-below(md) {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      @include respond-below(lg) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    }
+
+    &:nth-child(1) {
+      border-left: 1px solid #dcdfea;
+    }
+
+    &:last-child {
+      border-right: 1px solid #dcdfea;
+    }
+
+    .bodyCellContent {
+      display: flex;
+      width: 100%;
+      height: 100%;
+
+      justify-content: flex-start;
+      align-items: center;
+    }
+  }
+
+  .bodyCell > .headerCell {
+    display: none;
+
+    @include respond-below(md) {
+      display: flex;
+      align-items: center;
+
+      font-family: Inter;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      text-align: left;
+      color: #4b5563;
+
+      width: 100% !important;
+    }
+  }
+
+  &.slim {
+    .bodyRow {
+      height: 61px;
+
+      &:last-child .bodyCell {
+        border-bottom: 1px solid #dcdfea;
+
+        &:nth-child(1) {
+          border-left: none;
+          border-radius: 0px;
+        }
+
+        &:last-child {
+          border-right: none;
+          border-radius: 0px;
+        }
+      }
+    }
+
+    .bodyCell {
+      font-family: 'IBM Plex Mono';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: rgba(255, 255, 255, 0.96);
+
+      &:nth-child(1) {
+        border-left: none;
+      }
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+}
+
+.footer {
+}
+
+.sortable {
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+  }
+}

@@ -3,9 +3,17 @@ import clsx from 'clsx';
 import { Link, useLocation } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import { Snapshot, Transaction } from '../../types';
-import { formatPrice, formatAmount, fitStringInCell, formatTime } from '../../utils/numbers';
+import {
+  formatPrice,
+  formatAmount,
+  fitStringInCell,
+  formatTime,
+  formatNumber,
+  NumberFormat,
+} from '../../utils/numbers';
 import CopyIcon from '../../assets/icons/CopyNoBorder.svg';
 import styles from './TransactionRow.module.scss';
+import Decimal from 'decimal.js';
 
 export const TransactionRow = ({
   tx,
@@ -13,14 +21,14 @@ export const TransactionRow = ({
   snapshot,
   dagInfo,
   showMetagraphSymbol,
-  isLastRow
+  isLastRow,
 }: {
   tx?: Transaction;
   icon?: JSX.Element;
   snapshot?: Snapshot;
   dagInfo?: any;
   showMetagraphSymbol?: boolean;
-  isLastRow ?: boolean
+  isLastRow?: boolean;
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -44,7 +52,7 @@ export const TransactionRow = ({
     if (isHomePage) {
       txRow = (
         <>
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             <div className={styles.txContainer}>
               {icon && icon}
               {tx.isMetagraphTransaction && tx.metagraphId ? (
@@ -54,11 +62,11 @@ export const TransactionRow = ({
               )}
             </div>
           </div>
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)} ${styles.amount}`}>
+          <div className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.amount}`}>
             {dagInfo && !tx.isMetagraphTransaction && (
               <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>
             )}
@@ -69,7 +77,7 @@ export const TransactionRow = ({
     } else {
       txRow = (
         <>
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             <div className={`${styles.txContainer} ${styles.timestamp}`}>
               {icon && icon}
               {tx.isMetagraphTransaction && tx.metagraphId ? (
@@ -91,21 +99,27 @@ export const TransactionRow = ({
               </div>
             </div>
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)} ${styles.date} ${styles.timestamp}`}>
+          <div
+            className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.date} ${styles.timestamp}`}
+          >
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             {tx.isMetagraphTransaction && tx.metagraphId ? (
               <Link to={`/metagraphs/${tx.metagraphId}/snapshots/${tx.snapshotOrdinal}`}>{tx.snapshotOrdinal}</Link>
             ) : (
               <Link to={'/snapshots/' + tx.snapshotOrdinal}>{tx.snapshotOrdinal}</Link>
             )}
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)} ${styles.enoughSpace} ${styles.amount} ${styles.alignItemsLeft}`}>
+          <div
+            className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.enoughSpace} ${
+              styles.amount
+            } ${styles.alignItemsLeft}`}
+          >
             {formatAmount(tx.fee, 8, false, tx.symbol)}
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)} ${styles.stackFromTo}`}>
+          <div className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.stackFromTo}`}>
             <div className={styles.stackRow}>
               <div className={styles.alignRight}>
                 <div className={styles.copyLink}>
@@ -128,7 +142,7 @@ export const TransactionRow = ({
               </div>
             </div>
           </div>
-          <div className={clsx(isLastRow ? styles.txnCellLastRow :  styles.txnCell, styles.txnDirection)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell, styles.txnDirection)}>
             {tx.direction && (
               <div
                 className={clsx(
@@ -139,7 +153,7 @@ export const TransactionRow = ({
               </div>
             )}
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)} ${styles.stackFromTo}`}>
+          <div className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.stackFromTo}`}>
             <div className={styles.stackRow}>
               <div className={styles.alignRight}>
                 <div className={styles.copyLink}>
@@ -166,7 +180,7 @@ export const TransactionRow = ({
               </div>
             </div>
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)} ${styles.amount}`}>
+          <div className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.amount}`}>
             {dagInfo && !tx.isMetagraphTransaction && (
               <div className={styles.usd}>{'($' + formatPrice(tx.amount, dagInfo, 2) + ' USD)'}</div>
             )}
@@ -184,7 +198,7 @@ export const TransactionRow = ({
     if (isHomePage) {
       snapRow = (
         <>
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             <div className={styles.txContainer}>
               {icon && icon}
               {snapshot.metagraphId ? (
@@ -194,15 +208,24 @@ export const TransactionRow = ({
               )}
             </div>
           </div>
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
-            <div className={styles.dag}>{snapshot.blocks.length}</div>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
+            <div className={styles.dag}>
+              {snapshot.metagraphId
+                ? formatNumber(
+                    new Decimal(snapshot.fee ?? 0).div(Decimal.pow(10, 8)),
+                    NumberFormat.DECIMALS_TRIMMED_EXPAND
+                  ) + ' DAG'
+                : snapshot.blocks
+                ? snapshot.blocks.length
+                : 0}
+            </div>
           </div>
           {showMetagraphSymbol && (
-            <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+            <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
               <div className={styles.dag}>{snapshot.symbol}</div>
             </div>
           )}
@@ -211,7 +234,7 @@ export const TransactionRow = ({
     } else {
       snapRow = (
         <>
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             <div className={styles.txContainer}>
               {icon && icon}
               {snapshot.metagraphId ? (
@@ -223,12 +246,12 @@ export const TransactionRow = ({
               )}
             </div>
           </div>
-          <div className={`${clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)} ${styles.date}`}>
+          <div className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.date}`}>
             <p data-tip={fullDate}>{date}</p>
             <ReactTooltip />
           </div>
 
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             {snapshot.metagraphId ? (
               <Link to={`/metagraphs/${snapshot.metagraphId}/snapshots/${snapshot.ordinal}`}>{snapshot.ordinal}</Link>
             ) : (
@@ -236,7 +259,7 @@ export const TransactionRow = ({
             )}
           </div>
 
-          <div className={clsx( isLastRow ? styles.txnCellLastRow :  styles.txnCell)}>{snapshot.blocks.length}</div>
+          <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>{snapshot.blocks.length}</div>
         </>
       );
     }
@@ -246,25 +269,25 @@ export const TransactionRow = ({
     if (isHomePage) {
       snapRow = (
         <>
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow, styles.gray)} > — </div>
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow, styles.gray)} > — </div>
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow, styles.gray)} > — </div>
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow, styles.gray)}> — </div>
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow, styles.gray)}> — </div>
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow, styles.gray)}> — </div>
           {showMetagraphSymbol && (
-            <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow, styles.gray)} > — </div>
+            <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow, styles.gray)}> — </div>
           )}
         </>
       );
     } else {
       snapRow = (
         <>
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
-          <div className={clsx(isLastRow ? styles.txnEmptyLastRow :  styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow)} />
+          <div className={clsx(isLastRow ? styles.txnEmptyLastRow : styles.txnEmptyRow)} />
         </>
       );
     }
