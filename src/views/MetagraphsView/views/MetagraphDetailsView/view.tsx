@@ -113,12 +113,12 @@ export const MetagraphDetailsView = () => {
         <NodeLayerCard
           layerName="cL1"
           nodesOnline={metagraph.data?.metagraphNodes?.cl1.nodes}
-          nodeUrl={metagraph.data?.metagraphNodes?.l0.url}
+          nodeUrl={metagraph.data?.metagraphNodes?.cl1.url}
         />
         <NodeLayerCard
           layerName="dL1"
           nodesOnline={metagraph.data?.metagraphNodes?.dl1.nodes}
-          nodeUrl={metagraph.data?.metagraphNodes?.l0.url}
+          nodeUrl={metagraph.data?.metagraphNodes?.dl1.url}
         />
       </div>
       <Tabs value={selectedTable} onValue={(value) => setSelectedTable(value)}>
