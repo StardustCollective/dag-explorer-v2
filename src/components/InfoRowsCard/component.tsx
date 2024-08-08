@@ -9,15 +9,21 @@ export type IInfoRow = {
   content: React.ReactNode;
 };
 
-export type IInfoRowsCardProps = { className?: string; rows: IInfoRow[] };
+export type IInfoRowsCardProps = { className?: string; variants?: 'border-record'[]; rows: IInfoRow[] };
 
-export const InfoRowsCard = ({ className, rows }: IInfoRowsCardProps) => {
+export const InfoRowsCard = ({ className, variants, rows }: IInfoRowsCardProps) => {
   return (
-    <div className={clsx(styles.main, className)}>
+    <div
+      className={clsx(
+        styles.main,
+        className,
+        variants?.map((v) => styles[v])
+      )}
+    >
       {rows.map((row, idx) => (
         <div key={idx} className={styles.row}>
           <span className={styles.label}>
-            <div className={styles.icon}>{row.icon}</div>
+            {row.icon && <div className={styles.icon}>{row.icon}</div>}
             {row.label}
           </span>
           <span className={styles.content}>{row.content}</span>
