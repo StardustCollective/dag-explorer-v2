@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import Select from 'react-select';
 
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetAddressBalance, useGetAddressTransactions } from '../../api/block-explorer';
 import { AddressMetagraphResponse, Transaction } from '../../types';
 import { ArrowButton } from '../../components/Buttons/ArrowButton';
@@ -11,7 +11,7 @@ import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType, Network } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatAmount, formatPrice, formatPriceWithSymbol } from '../../utils/numbers';
+import { formatAmount, formatNumber, formatPrice, formatPriceWithSymbol, NumberFormat } from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { ExportModal } from '../../components/Modals/ExportModal';
@@ -25,14 +25,21 @@ import {
   useGetAddressRewards,
   useGetAddressTotalRewards,
 } from '../../api/block-explorer/address';
-import { useGetAdressMetagraphs } from '../../api/block-explorer/metagraph-address';
+import { useGetAddressMetagraphs, useGetAddressMetagraphSnapshots } from '../../api/block-explorer/metagraph-address';
 import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
-import { handleFetchedData, handlePagination } from '../../utils/pagination';
+import { handleFetchedData, handlePagination, usePagination } from '../../utils/pagination';
 import { FetchedData, Params } from '../../types/requests';
 
 import styles from './AddressDetails.module.scss';
 import { RewardsTable } from '../../components/RewardsTable/RewardsTable';
 import { Tabs } from '../../components/Tabs/Tabs';
+import { isAxiosError } from 'axios';
+
+import { SkeletonSpan } from '../../components/SkeletonSpan/component';
+import { Table } from '../../components/Table';
+import { shorten } from '../../utils/shorten';
+import dayjs from 'dayjs';
+import Decimal from 'decimal.js';
 
 export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const { addressId } = useParams();
@@ -50,9 +57,11 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [modalOpen, setModalOpen] = useState(false);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
   const [lastPage, setLastPage] = useState(false);
-  const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens' | 'rewards'>('transactions');
+  const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens' | 'rewards' | 'snapshots'>(
+    'transactions'
+  );
 
-  const addressMetagraphs = useGetAdressMetagraphs(addressId);
+  const addressMetagraphs = useGetAddressMetagraphs(addressId);
 
   const [metagraphTokensDropdown, setMetagraphTokensDropdown] = useState<AddressMetagraphResponse[]>([]);
   const [metagraphTokensTable, setMetagraphTokensTable] = useState<AddressMetagraphResponse[]>([]);
@@ -68,6 +77,12 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   const [limitAddressRewards, setLimitAddressRewards] = useState<number>(10);
   const [offsetAddressRewards, setOffsetAddressRewards] = useState<number>(0);
 
+  const addressSnapshotsPagination = usePagination(10);
+  const addressSnapshots = useGetAddressMetagraphSnapshots(addressId, {
+    limit: addressSnapshotsPagination.limit,
+    offset: addressSnapshotsPagination.offset,
+  });
+
   const addressRewards = useGetAddressRewards(addressId, network, limitAddressRewards, offsetAddressRewards);
   const addressMetagraphRewards = useGetAddressMetagraphRewards(
     addressId,
@@ -76,6 +91,8 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     limitAddressRewards,
     offsetAddressRewards
   );
+
+  console.log(addressSnapshots);
 
   const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
     addressTxs,
@@ -121,8 +138,12 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     const defaultOption = {
       metagraphId: 'ALL_METAGRAPHS',
       metagraphName: `All Metagraph Tokens (${metagraphsSize})`,
+      metagraphDescription: `All Metagraph Tokens (${metagraphsSize})`,
       metagraphSymbol: `All Metagraph Tokens (${metagraphsSize})`,
       metagraphIcon: '',
+      metagraphSiteUrl: null,
+      metagraphStakingWalletAddress: null,
+      metagraphFeesWalletAddress: null,
       balance: totalBalance,
     };
     setSelectedMetagraph(defaultOption);
@@ -182,10 +203,11 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
 
   useEffect(() => {
     if (addressInfo.isError) {
-      if (addressInfo.error.message !== '404') {
+      if (isAxiosError(addressInfo.error) && addressInfo.error.response.status !== 404) {
         setError(addressInfo.error.message);
       }
-      if (addressInfo.error.message === '404') {
+
+      if (isAxiosError(addressInfo.error) && addressInfo.error.response.status === 404) {
         if (tokenChanged) {
           setTxsSkeleton(false);
           setAddressTxs([]);
@@ -225,6 +247,10 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   useEffect(() => {
     setOffsetAddressRewards(0);
   }, [selectedMetagraph]);
+
+  useEffect(() => {
+    addressSnapshots.isFetched && addressSnapshotsPagination.setTotalItems(addressSnapshots.data.meta.total);
+  }, [addressSnapshots.isFetched && addressSnapshots.data.meta.total]);
 
   const handleExport = () => {
     setModalOpen(!modalOpen);
@@ -340,6 +366,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                     ? 'DAG Rewards'
                     : `${selectedMetagraph.metagraphSymbol} Rewards`}
                 </Tabs.Tab>
+                {(addressSnapshots.data?.data.length ?? 0) > 0 && <Tabs.Tab id="snapshots">Snapshots</Tabs.Tab>}
                 <Tabs.Tab id="tokens">Tokens list</Tabs.Tab>
               </Tabs>
             </div>
@@ -387,6 +414,54 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   icon={<AddressShape />}
                 />
               )}
+            {selectedTable === 'snapshots' && (
+              <>
+                {addressSnapshots.isFetched ? (
+                  <Table
+                    primaryKey="ordinal"
+                    titles={{
+                      metagraphId: { content: 'Metagraph Id' },
+                      ordinal: { content: 'Ordinal' },
+                      timestamp: { content: 'Timestamp' },
+                      sizeInKB: { content: 'Snapshot Size' },
+                      fee: { content: 'Snapshot Fee' },
+                    }}
+                    data={addressSnapshots.data?.data ?? []}
+                    formatData={{
+                      metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,
+                      ordinal: (value, record) => (
+                        <Link to={`/metagraphs/${record.metagraphId}/snapshots/${value}`}>{value}</Link>
+                      ),
+                      timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
+                      sizeInKB: (value) => (value ?? '-- ') + 'kb',
+                      fee: (value) =>
+                        formatNumber(
+                          new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
+                          NumberFormat.DECIMALS_TRIMMED_EXPAND
+                        ) + ' DAG',
+                    }}
+                  />
+                ) : (
+                  <Table
+                    primaryKey="ordinal"
+                    titles={{
+                      metagraphId: { content: 'Metagraph Id' },
+                      ordinal: { content: 'Ordinal' },
+                      timestamp: { content: 'Timestamp' },
+                      sizeInKB: { content: 'Snapshot Size' },
+                      fee: { content: 'Snapshot Fee' },
+                    }}
+                    data={SkeletonSpan.generateTableRecords(addressSnapshotsPagination.currentPageSize, [
+                      'metagraphId',
+                      'ordinal',
+                      'timestamp',
+                      'sizeInKB',
+                      'fee',
+                    ])}
+                  />
+                )}
+              </>
+            )}
           </div>
           <div className={`${styles.row6}`}>
             <div className={`${styles.flexRowTop}`}>

@@ -5,7 +5,6 @@ import { NetworkContext, NetworkContextType } from '../../context/NetworkContext
 
 const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
-
 export const useGetLatestDAGSnapshots = (params?: any, refetchInterval?: number) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   const url = REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/dag/latest-snapshots';
@@ -13,7 +12,6 @@ export const useGetLatestDAGSnapshots = (params?: any, refetchInterval?: number)
     url,
     params,
     {
-      keepPreviousData: true,
       refetchInterval: refetchInterval,
       retry: false,
     },
@@ -28,7 +26,6 @@ export const useGetLatestMetagraphSnapshots = (params?: any, refetchInterval?: n
     url,
     params,
     {
-      keepPreviousData: true,
       refetchInterval: refetchInterval,
       retry: false,
     },

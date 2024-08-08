@@ -8,7 +8,7 @@ const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 const getUrl = () => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   const url = `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/metagraphs`;
-  return url
+  return url;
 };
 
 export const useGetAllMetagraphs = (params?: any, refetchInterval?: number) => {
@@ -16,7 +16,6 @@ export const useGetAllMetagraphs = (params?: any, refetchInterval?: number) => {
     getUrl(),
     params,
     {
-      keepPreviousData: true,
       refetchInterval: refetchInterval,
       retry: false,
     },
@@ -29,7 +28,7 @@ export const useGetMetagraph = (metagraphId?: string) => {
     `${getUrl()}/${metagraphId}`,
     {},
     {
-      enabled: !!metagraphId
+      enabled: !!metagraphId,
     }
   );
-}
+};

@@ -1,37 +1,44 @@
-import { api } from './api';
-import { useQuery, UseQueryOptions } from 'react-query';
-import { QueryFunctionContext } from 'react-query/types/core/types';
+import { QueryFunctionContext, useQuery, UseQueryOptions } from '@tanstack/react-query';
+import axios from 'axios';
 
 type QueryKeyT = [string, object | undefined];
 
-export const fetcher = async <T>({ queryKey }: QueryFunctionContext<QueryKeyT>, afterFetch?: (any) => Promise<T> ): Promise<T> => {
+export const fetcher = async <T>(
+  { queryKey }: QueryFunctionContext<QueryKeyT>,
+  afterFetch?: (response: T) => Promise<T>
+): Promise<T> => {
   const [url, params] = queryKey;
-  const res = await api.get<T>(url, { ...params });
+
+  const res = await axios.get<T>(url, { params });
 
   if (afterFetch) {
-    return afterFetch(res);
+    return afterFetch(res.data);
   }
 
-  return res;
+  return res.data;
 };
 
-export const useFetch = <T>(url: string | null, params?: object, config?: UseQueryOptions<T, Error, T, QueryKeyT>, dataOnly = true) => {
-  const context = useQuery<T, Error, T, QueryKeyT>(
-    [url, params],
-    ({ queryKey }) => {
-      return fetcher({ queryKey, meta: undefined }, (res: any) => {
+export const useFetch = <T>(
+  url: string | null,
+  params?: object,
+  config?: Omit<UseQueryOptions<T, Error, T, QueryKeyT>, 'queryKey'>,
+  dataOnly = true
+) => {
+  const context = useQuery<T, Error, T, QueryKeyT>({
+    queryKey: [url, params],
+    queryFn: (context) => {
+      return fetcher(context, (res: any) => {
         // return only data key from {data: {}, meta: {}} response structure
-        if (dataOnly && res.data ) {
+        if (dataOnly && res.data) {
           return res.data;
         }
+
         return res;
       });
     },
-    {
-      enabled: !!url,
-      ...config,
-    }
-  );
+    enabled: !!url,
+    ...config,
+  });
 
   return context;
 };

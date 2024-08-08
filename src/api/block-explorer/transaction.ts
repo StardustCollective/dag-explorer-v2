@@ -28,8 +28,7 @@ export const useGetAllTransactions = (params?: any, refetchInterval?: number, me
     getUrl(metagraphId),
     params,
     {
-      keepPreviousData: true,
-      refetchInterval: refetchInterval,
+      refetchInterval,
       retry: false,
     },
     false
@@ -43,8 +42,7 @@ export const useGetLatestDAGTransactions = (params?: any, refetchInterval?: numb
     url,
     params,
     {
-      keepPreviousData: true,
-      refetchInterval: refetchInterval,
+      refetchInterval,
       retry: false,
     },
     false
@@ -58,8 +56,7 @@ export const useGetLatestMetagraphTransactions = (params?: any, refetchInterval?
     url,
     params,
     {
-      keepPreviousData: true,
-      refetchInterval: refetchInterval,
+      refetchInterval,
       retry: false,
     },
     false

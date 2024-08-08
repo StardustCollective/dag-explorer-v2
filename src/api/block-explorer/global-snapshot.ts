@@ -4,7 +4,6 @@ import { RewardTransaction, Snapshot, Transaction } from '../../types';
 import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
 import { getBEUrl } from '../../utils/networkUrls';
 
-
 const getUrl = (metagraphId?: string) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   const url = getBEUrl(network);
@@ -20,34 +19,27 @@ export const useGetSnapshot = (hashOrOrdinal: string | number, metagraphId?: str
 };
 
 export const useGetAllSnapshots = (params?: any, refetchInterval?: number, metagraphId?: string) => {
-  return useFetch<{ data: Snapshot[]; meta?: any }>(
-    getUrl(metagraphId),
-    params,
-    { keepPreviousData: true, refetchInterval: refetchInterval },
-    false
-  );
+  return useFetch<{ data: Snapshot[]; meta?: any }>(getUrl(metagraphId), params, { refetchInterval }, false);
 };
 
-export const useGetLatestSnapshotRewards = (metagraphId ?: string) => {
+export const useGetLatestSnapshotRewards = (metagraphId?: string) => {
   return useFetch<RewardTransaction[]>(getUrl(metagraphId) + '/latest/rewards');
 };
 
-export const useGetSnapshotRewards = (hashOrOrdinal: string | number, metagraphId ?: string) => {
+export const useGetSnapshotRewards = (hashOrOrdinal: string | number, metagraphId?: string) => {
   return useFetch<RewardTransaction[]>(getUrl(metagraphId) + '/' + hashOrOrdinal + '/rewards');
 };
 
-export const useGetLatestSnapshotTransactions = (metagraphId ?: string) => {
+export const useGetLatestSnapshotTransactions = (metagraphId?: string) => {
   return useFetch<Transaction[]>(getUrl(metagraphId) + '/latest/transactions');
 };
 
-export const useGetSnapshotTransactions = (hashOrOrdinal: string | number, params?: any, metagraphId ?: string) => {
+export const useGetSnapshotTransactions = (hashOrOrdinal: string | number, params?: any, metagraphId?: string) => {
   return hashOrOrdinal
     ? useFetch<{ data: Transaction[]; meta: any }>(
         getUrl(metagraphId) + '/' + hashOrOrdinal + '/transactions',
         params,
-        {
-          keepPreviousData: true,
-        },
+        {},
         false
       )
     : null;
