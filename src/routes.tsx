@@ -12,6 +12,7 @@ import { NodeExplorerWrapper } from './views/NodeExplorerView/NodeExplorerWrappe
 import { Search } from './components/Search/Search';
 import { MetagraphsView } from './views/MetagraphsView/view';
 import { MetagraphDetailsView } from './views/MetagraphsView/views';
+import { MetagraphSnapshotDetailsView } from './views/MetagraphsView/views/MetagraphSnapshotDetailsView/view';
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
       { path: 'metagraphs/:metagraphId/snapshots', element: <SnapshotsWrapper /> },
 
       { path: 'snapshots/:snapshotHeight', element: <SnapshotDetailsWrapper /> },
-      { path: 'metagraphs/:metagraphId/snapshots/:snapshotHeight', element: <SnapshotDetailsWrapper /> },
+      { path: 'metagraphs/:metagraphId/snapshots/:snapshotOrdinal', element: <MetagraphSnapshotDetailsView /> },
 
       { path: 'blocks/:blockHash', element: <BlockDetailsWrapper /> },
       { path: 'metagraphs/:metagraphId/blocks/:blockHash', element: <BlockDetailsWrapper /> },
