@@ -28,8 +28,8 @@
   font-family: 'IBM Plex Mono';
   font-style: normal;
   font-weight: 700;
-  font-size: 192px;
-  line-height: 168px;
+  font-size: 40px;
+  
 }
 
 .homeButton {
@@ -120,11 +120,5 @@
       padding-bottom: 1rem;
       height: auto;
     }
-  }
-}
-
-@media screen and (min-width: $sm) {
-  .notFound {
-    font-size: 150px;
   }
 }
