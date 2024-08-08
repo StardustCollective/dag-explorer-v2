@@ -18,5 +18,16 @@ export const SkeletonSpan = Object.assign(SkeletonSpanBase, {
       return record;
     });
   },
+  generateEmptyTableRecords: <K extends string>(size: number, keys: K[], filler = ''): Record<K, React.ReactNode>[] => {
+    return new Array(size).fill(null).map((_, idx) => {
+      const record = {} as Record<K, React.ReactNode>;
+
+      for (const key of keys) {
+        record[key] = filler;
+      }
+
+      return record;
+    });
+  },
   displayName: 'SkeletonSpan',
 });

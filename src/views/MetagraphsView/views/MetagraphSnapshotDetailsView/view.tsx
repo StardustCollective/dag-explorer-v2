@@ -135,40 +135,62 @@ export const MetagraphSnapshotDetailsView = () => {
       <h3>Transactions</h3>
       <div className={styles.tables}>
         {transactions.isFetched ? (
-          <Table
-            primaryKey="hash"
-            titles={{
-              hash: { content: 'Txn Hash' },
-              timestamp: { content: 'Timestamp' },
-              snapshotOrdinal: { content: 'Snapshot' },
-              fee: { content: 'Fee' },
-              source: { content: 'From' },
-              destination: { content: 'To' },
-              amount: { content: 'Amount' },
-            }}
-            data={transactions.data.data}
-            formatData={{
-              hash: (value) => <Link to={`/metagraphs/${metagraphId}/transactions/${value}`}>{shorten(value)}</Link>,
-              timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
-              snapshotOrdinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
-              fee: (value) =>
-                formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
-                ` ${metagraph.data?.metagraphSymbol}`,
-              source: (value) => (
-                <Link to={`/address/${value}`}>
-                  {shorten(value)} <CopyableContent content={value} />
-                </Link>
-              ),
-              destination: (value) => (
-                <Link to={`/address/${value}`}>
-                  {shorten(value)} <CopyableContent content={value} />
-                </Link>
-              ),
-              amount: (value) =>
-                formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
-                ` ${metagraph.data?.metagraphSymbol}`,
-            }}
-          />
+          transactions.data?.data.length > 0 ? (
+            <Table
+              primaryKey="hash"
+              titles={{
+                hash: { content: 'Txn Hash' },
+                timestamp: { content: 'Timestamp' },
+                snapshotOrdinal: { content: 'Snapshot' },
+                fee: { content: 'Fee' },
+                source: { content: 'From' },
+                destination: { content: 'To' },
+                amount: { content: 'Amount' },
+              }}
+              data={transactions.data.data}
+              formatData={{
+                hash: (value) => <Link to={`/metagraphs/${metagraphId}/transactions/${value}`}>{shorten(value)}</Link>,
+                timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
+                snapshotOrdinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
+                fee: (value) =>
+                  formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
+                  ` ${metagraph.data?.metagraphSymbol}`,
+                source: (value) => (
+                  <Link to={`/address/${value}`}>
+                    {shorten(value)} <CopyableContent content={value} />
+                  </Link>
+                ),
+                destination: (value) => (
+                  <Link to={`/address/${value}`}>
+                    {shorten(value)} <CopyableContent content={value} />
+                  </Link>
+                ),
+                amount: (value) =>
+                  formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
+                  ` ${metagraph.data?.metagraphSymbol}`,
+              }}
+            />
+          ) : (
+            <Table
+              primaryKey="hash"
+              titles={{
+                hash: { content: 'Txn Hash' },
+                timestamp: { content: 'Timestamp' },
+                snapshotOrdinal: { content: 'Snapshot' },
+                fee: { content: 'Fee' },
+                source: { content: 'From / To' },
+                amount: { content: 'Amount' },
+              }}
+              data={SkeletonSpan.generateEmptyTableRecords(transactionsPagination.currentPageSize, [
+                'hash',
+                'timestamp',
+                'snapshotOrdinal',
+                'fee',
+                'source',
+                'amount',
+              ])}
+            />
+          )
         ) : (
           <Table
             primaryKey="hash"
