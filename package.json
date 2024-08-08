@@ -54,6 +54,7 @@
     "axios": "^1.6.0",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.3",
+    "decimal.js": "^10.4.3",
     "dotenv": "^16.0.1",
     "millify": "^4.0.0",
     "phosphor-react": "^1.4.1",
@@ -65,6 +66,7 @@
     "react-router-dom": "^6.26.0",
     "react-select": "^5.7.3",
     "react-spinners-kit": "^1.9.1",
-    "react-tooltip": "^4.5.1"
+    "react-tooltip": "^4",
+    "react-tooltip-v5": "npm:react-tooltip"
   }
 }
