@@ -24,7 +24,7 @@ export const NodeLayerCard = ({ className, layerName, nodesOnline, nodeUrl }: IN
         </div>
       </div>
       <span>
-        <a href={nodeUrl}>{nodeUrl}</a>
+        <span>{nodeUrl}</span>
         <CopyableContent className={styles.copyIcon} content={nodeUrl} />
       </span>
     </div>
