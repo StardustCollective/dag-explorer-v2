@@ -61,19 +61,16 @@ const StatsSection = () => {
         badge={dagInfo ? dagInfo.usd_24h_change : ''}
         headerText={'DAG PRICE'}
         value={dagInfo ? '$' + dagInfo.usd : ''}
-        info={dagInfo ? formatDagPrice(dagInfo, btcInfo) : ''}
       />
       <Card
         skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
         headerText={'MARKET CAP'}
         value={dagInfo ? '$' + formater.format(dagInfo.usd_market_cap) : ''}
-        info={dagInfo ? formatMarketVol(formater, dagInfo) : ''}
       />
       <Card
         skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
         headerText={'CIRCULATING SUPPLY'}
         value={formatAmount(dagTotalSupply, 0).replace('DAG', '')}
-        info={formatTotalSupply()}
       />
       <Card
         skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
