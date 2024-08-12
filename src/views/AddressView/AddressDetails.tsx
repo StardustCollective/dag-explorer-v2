@@ -1,17 +1,20 @@
-import clsx from 'clsx';
-import Select from 'react-select';
-
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useGetAddressBalance, useGetAddressTransactions } from '../../api/block-explorer';
 import { AddressMetagraphResponse, Transaction } from '../../types';
-import { ArrowButton } from '../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { IconType, Network } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatAmount, formatNumber, formatPrice, formatPriceWithSymbol, NumberFormat } from '../../utils/numbers';
+import {
+  formatAmount,
+  formatNumber,
+  formatPrice,
+  formatPriceWithSymbol,
+  formatTime,
+  NumberFormat,
+} from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { ExportModal } from '../../components/Modals/ExportModal';
@@ -27,55 +30,57 @@ import {
 } from '../../api/block-explorer/address';
 import { useGetAddressMetagraphs, useGetAddressMetagraphSnapshots } from '../../api/block-explorer/metagraph-address';
 import { SPECIAL_ADDRESSES_LIST } from '../../constants/specialAddresses';
-import { handleFetchedData, handlePagination, usePagination } from '../../utils/pagination';
-import { FetchedData, Params } from '../../types/requests';
+import { useNextTokenPagination, usePagination } from '../../utils/pagination';
 
 import styles from './AddressDetails.module.scss';
-import { RewardsTable } from '../../components/RewardsTable/RewardsTable';
 import { Tabs } from '../../components/Tabs/Tabs';
 import { isAxiosError } from 'axios';
 
-import { SkeletonSpan } from '../../components/SkeletonSpan/component';
 import { Table } from '../../components/Table';
 import { shorten } from '../../utils/shorten';
 import dayjs from 'dayjs';
 import Decimal from 'decimal.js';
+import { TablePagination } from '../../components/TablePagination/component';
 
 export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
   const { addressId } = useParams();
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<Transaction[] | undefined>(undefined);
-  const [fetchedData, setFetchedData] = useState<FetchedData<Transaction>[] | undefined>([]);
-  const [balance, setBalance] = useState<number | undefined>(undefined);
-  const [currentPage, setCurrentPage] = useState(0);
+
   const [allTimeRewards, setAllTimeRewards] = useState<number | undefined>(undefined);
-  const [limit, setLimit] = useState<number>(10);
-  const [params, setParams] = useState<Params>({ limit });
   const addressBalance = useGetAddressBalance(addressId);
   const totalRewards = useGetAddressTotalRewards(addressId, network);
   const [error, setError] = useState<string>(undefined);
   const [modalOpen, setModalOpen] = useState(false);
-  const [txsSkeleton, setTxsSkeleton] = useState(false);
-  const [lastPage, setLastPage] = useState(false);
+
   const [selectedTable, setSelectedTable] = useState<'transactions' | 'tokens' | 'rewards' | 'snapshots'>(
     'transactions'
   );
 
+  const addressMetagraphsPagination = usePagination(10);
   const addressMetagraphs = useGetAddressMetagraphs(addressId);
 
   const [metagraphTokensDropdown, setMetagraphTokensDropdown] = useState<AddressMetagraphResponse[]>([]);
   const [metagraphTokensTable, setMetagraphTokensTable] = useState<AddressMetagraphResponse[]>([]);
   const [allMetagraphTokens, setAllMetagraphTokens] = useState<AddressMetagraphResponse[]>([]);
 
-  const [limitAddressMetagraphs, setLimitAddressMetagraphs] = useState<number>(10);
-  const [offsetAddressMetagraphs, setOffsetAddressMetagraphs] = useState<number>(0);
+  const [limitAddressMetagraphs] = useState<number>(10);
+  const [offsetAddressMetagraphs] = useState<number>(0);
 
   const [selectedMetagraph, setSelectedMetagraph] = useState<AddressMetagraphResponse | null>(null);
   const [tokenChanged, setTokenChanged] = useState<boolean>(false);
-  const addressInfo = useGetAddressTransactions(addressId, selectedMetagraph && selectedMetagraph.metagraphId, params);
 
-  const [limitAddressRewards, setLimitAddressRewards] = useState<number>(10);
-  const [offsetAddressRewards, setOffsetAddressRewards] = useState<number>(0);
+  const isInMetagraphPage = selectedMetagraph && selectedMetagraph.metagraphId !== 'ALL_METAGRAPHS';
+
+  const addressTransactionsPagination = useNextTokenPagination(10);
+  const addressTransactions = useGetAddressTransactions(
+    addressId,
+    isInMetagraphPage && selectedMetagraph?.metagraphId,
+    {
+      limit: addressTransactionsPagination.currentPageSize,
+      next: addressTransactionsPagination.pageToken,
+    }
+  );
 
   const addressSnapshotsPagination = usePagination(10);
   const addressSnapshots = useGetAddressMetagraphSnapshots(addressId, {
@@ -83,44 +88,20 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     offset: addressSnapshotsPagination.offset,
   });
 
-  const addressRewards = useGetAddressRewards(addressId, network, limitAddressRewards, offsetAddressRewards);
-  const addressMetagraphRewards = useGetAddressMetagraphRewards(
-    addressId,
-    selectedMetagraph && selectedMetagraph.metagraphId,
-    network,
-    limitAddressRewards,
-    offsetAddressRewards
-  );
+  const addressRewardsPagination = usePagination(10);
+  const addressRewards = useGetAddressRewards(addressId, network, {
+    limit: addressRewardsPagination.limit,
+    offset: addressRewardsPagination.offset,
+  });
 
-  console.log(addressSnapshots);
+  const addressMetagraphRewardsPagination = usePagination(10);
+  const addressMetagraphRewards = useGetAddressMetagraphRewards(addressId, selectedMetagraph?.metagraphId, network, {
+    limit: addressMetagraphRewardsPagination.limit,
+    offset: addressMetagraphRewardsPagination.offset,
+  });
 
-  const [handlePrevPage, handleNextPage] = handlePagination<Transaction[], FetchedData<Transaction>[]>(
-    addressTxs,
-    setAddressTxs,
-    fetchedData,
-    currentPage,
-    setCurrentPage,
-    setParams,
-    setLastPage,
-    setTxsSkeleton,
-    limit
-  );
-
-  const handlePreviousPageMetagraphsList = () => {
-    setOffsetAddressMetagraphs(offsetAddressMetagraphs - limitAddressMetagraphs);
-  };
-
-  const handleNextPageMetagraphsList = () => {
-    setOffsetAddressMetagraphs(offsetAddressMetagraphs + limitAddressMetagraphs);
-  };
-
-  const handlePrevPageAddressRewards = () => {
-    setOffsetAddressRewards((offset) => offset - limitAddressMetagraphs);
-  };
-
-  const handleNextPageAddressRewards = () => {
-    setOffsetAddressRewards((offset) => offset + limitAddressMetagraphs);
-  };
+  const skeleton = addressBalance.isFetching || totalRewards.isFetching || !dagInfo;
+  const metagraphSkeleton = addressMetagraphs.isFetching || metagraphTokensDropdown.length === 0;
 
   const handleFillMetagraphs = () => {
     const allMetagraphsToUse = allMetagraphTokens ?? [];
@@ -150,40 +131,15 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
     setMetagraphTokensDropdown([defaultOption, ...allMetagraphsToUse]);
   };
 
+  const handleExport = () => {
+    setModalOpen(!modalOpen);
+  };
+
   useEffect(() => {
     if (!isValidAddress.test(addressId) && !SPECIAL_ADDRESSES_LIST.includes(addressId)) {
       setError('404');
     }
   }, []);
-
-  useEffect(() => {
-    if (!addressInfo.isLoading && !addressInfo.isFetching && !addressInfo.isError) {
-      if (addressInfo.data?.data.length > 0) {
-        const { data } = addressInfo.data;
-        const transactions = data.map((tx) => {
-          const isMetagraphTransaction = selectedMetagraph && selectedMetagraph.metagraphId !== 'ALL_METAGRAPHS';
-
-          tx.symbol = isMetagraphTransaction ? selectedMetagraph.metagraphSymbol : 'DAG';
-          tx.isMetagraphTransaction = isMetagraphTransaction;
-          tx.direction = tx.destination === addressId ? 'IN' : 'OUT';
-          tx.metagraphId = selectedMetagraph.metagraphId;
-
-          return tx;
-        });
-        setAddressTxs(transactions);
-      }
-
-      handleFetchedData(setFetchedData, addressInfo, currentPage, setLastPage, tokenChanged);
-      setTokenChanged(false);
-      setTxsSkeleton(false);
-    }
-  }, [addressInfo.isLoading, addressInfo.isFetching]);
-
-  useEffect(() => {
-    if (!addressBalance.isFetching && !addressBalance.isError) {
-      setBalance(addressBalance.data.balance);
-    }
-  }, [addressBalance.isFetching]);
 
   useEffect(() => {
     if (!addressMetagraphs.isFetching && !addressMetagraphs.isError) {
@@ -202,87 +158,45 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
   }, [totalRewards.isFetching]);
 
   useEffect(() => {
-    if (addressInfo.isError) {
-      if (isAxiosError(addressInfo.error) && addressInfo.error.response.status !== 404) {
-        setError(addressInfo.error.message);
-      }
+    if (isAxiosError(addressTransactions.error) && addressTransactions.error.response.status !== 404) {
+      setError(addressTransactions.error.message);
+    }
 
-      if (isAxiosError(addressInfo.error) && addressInfo.error.response.status === 404) {
-        if (tokenChanged) {
-          setTxsSkeleton(false);
-          setAddressTxs([]);
-        } else {
-          handlePrevPage(true);
-        }
+    if (isAxiosError(addressTransactions.error) && addressTransactions.error.response.status === 404) {
+      if (tokenChanged) {
+        setAddressTxs([]);
       }
     }
+
     if (addressBalance.isError) {
       setError(addressBalance.error.message);
     }
+
     if (addressMetagraphs.isError) {
       setError(addressMetagraphs.error.message);
     }
-  }, [addressInfo.isError, addressBalance.isError, addressMetagraphs.isError]);
+  }, [addressTransactions.isError, addressBalance.isError, addressMetagraphs.isError]);
 
   useEffect(() => {
     if (tokenChanged) {
-      setCurrentPage(0);
-      setFetchedData([]);
-      setTxsSkeleton(true);
-      setParams({ limit });
+      addressTransactionsPagination.goPage(0);
     }
   }, [tokenChanged]);
-
-  useEffect(() => {
-    setTxsSkeleton(true);
-    setParams({ limit });
-    setFetchedData([]);
-    setCurrentPage(0);
-  }, [limit]);
 
   useEffect(() => {
     handleFillMetagraphs();
   }, [offsetAddressMetagraphs, allMetagraphTokens]);
 
   useEffect(() => {
-    setOffsetAddressRewards(0);
-  }, [selectedMetagraph]);
-
-  useEffect(() => {
     addressSnapshots.isFetched && addressSnapshotsPagination.setTotalItems(addressSnapshots.data.meta.total);
   }, [addressSnapshots.isFetched && addressSnapshots.data.meta.total]);
 
-  const handleExport = () => {
-    setModalOpen(!modalOpen);
-  };
-
-  const skeleton = addressBalance.isFetching || totalRewards.isFetching || !dagInfo;
-  const metagraphSkeleton = addressMetagraphs.isFetching || metagraphTokensDropdown.length === 0;
-
-  const handleSelectChange = useCallback(
-    (selectedOption: { value: number; label: number }) => {
-      setLimit(selectedOption.value);
-      setLimitAddressMetagraphs(selectedOption.value);
-      setLimitAddressRewards(selectedOption.value);
-      setOffsetAddressRewards(0);
-      setOffsetAddressMetagraphs(0);
-    },
-    [limit, limitAddressMetagraphs]
-  );
-
-  const pageSizeSelectorStyles = {
-    indicatorSeparator: (styles) => ({ ...styles, display: 'none' }),
-    valueContainer: (styles) => ({ ...styles, svg: { fill: 'black' } }),
-    indicatorsContainer: (styles) => ({ ...styles, svg: { fill: 'black' } }),
-    container: (styles) => ({ ...styles, borderRadius: '24px' }),
-    control: (styles) => ({ ...styles, borderRadius: '24px' }),
-  };
-
-  const options = [
-    { value: 10, label: 10 },
-    { value: 25, label: 25 },
-    { value: 50, label: 50 },
-  ];
+  useEffect(() => {
+    addressTransactionsPagination.setTotalItems(null);
+    if (addressTransactions.isFetched && addressTransactions.data?.meta?.next) {
+      addressTransactionsPagination.setNextPageToken(addressTransactions.data.meta?.next);
+    }
+  }, [addressTransactions.isFetched && addressTransactions.data?.meta?.next]);
 
   return (
     <>
@@ -324,8 +238,18 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 <DetailRow
                   borderBottom
                   title={'Balance'}
-                  value={skeleton ? '' : balance ? formatAmount(balance, 8) : '0 DAG'}
-                  subValue={skeleton ? '' : `(${formatPriceWithSymbol(balance || 0, dagInfo, 2, '$', 'USD')})`}
+                  value={
+                    skeleton
+                      ? ''
+                      : addressBalance.isFetching
+                      ? '... DAG'
+                      : formatAmount(addressBalance.data?.balance ?? 0, 8)
+                  }
+                  subValue={
+                    skeleton
+                      ? ''
+                      : `(${formatPriceWithSymbol(addressBalance.data?.balance ?? 0, dagInfo, 2, '$', 'USD')})`
+                  }
                   skeleton={skeleton}
                 />
                 <MetagraphTokensSection
@@ -334,7 +258,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   selectedOption={selectedMetagraph}
                   setSelectedMetagraph={setSelectedMetagraph}
                   setTokenChanged={setTokenChanged}
-                  setSkeleton={setTxsSkeleton}
+                  setSkeleton={() => void 0}
                 />
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow
@@ -357,14 +281,10 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
             <div className={`${styles.flexRowBottom}`}>
               <Tabs value={selectedTable} onValue={(value) => setSelectedTable(value as any)}>
                 <Tabs.Tab id="transactions">
-                  {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
-                    ? 'DAG Transactions'
-                    : `${selectedMetagraph.metagraphSymbol} Transactions`}
+                  {!isInMetagraphPage ? 'DAG Transactions' : `${selectedMetagraph.metagraphSymbol} Transactions`}
                 </Tabs.Tab>
                 <Tabs.Tab id="rewards">
-                  {!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
-                    ? 'DAG Rewards'
-                    : `${selectedMetagraph.metagraphSymbol} Rewards`}
+                  {!isInMetagraphPage ? 'DAG Rewards' : `${selectedMetagraph.metagraphSymbol} Rewards`}
                 </Tabs.Tab>
                 {(addressSnapshots.data?.data.length ?? 0) > 0 && <Tabs.Tab id="snapshots">Snapshots</Tabs.Tab>}
                 <Tabs.Tab id="tokens">Tokens list</Tabs.Tab>
@@ -374,141 +294,174 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
           <div className={styles.row5}>
             {selectedTable === 'transactions' && (
               <TransactionsTable
-                skeleton={{ showSkeleton: txsSkeleton }}
-                limit={addressTxs && addressTxs.length > 0 ? addressTxs.length : limit}
-                transactions={addressTxs}
+                skeleton={{ showSkeleton: addressTransactions.isFetching }}
+                limit={
+                  addressTxs && addressTxs.length > 0
+                    ? addressTxs.length
+                    : addressTransactionsPagination.currentPageSize
+                }
+                transactions={(addressTransactions.data?.data ?? []).map((transaction) => ({
+                  ...transaction,
+                  symbol: isInMetagraphPage ? selectedMetagraph.metagraphSymbol : 'DAG',
+                  isMetagraphTransaction: isInMetagraphPage,
+                  direction: transaction.destination === addressId ? 'IN' : 'OUT',
+                  metagraphId: isInMetagraphPage ? selectedMetagraph.metagraphId : 'ALL_METAGRAPHS',
+                }))}
                 icon={<AddressShape />}
               />
             )}
             {selectedTable === 'tokens' && (
-              <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={!metagraphTokensTable} />
+              <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={addressMetagraphs.isFetching} />
             )}
-            {selectedTable === 'rewards' && (!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
-              <RewardsTable
-                skeleton={{ showSkeleton: addressRewards.isFetching }}
-                limit={addressRewards.data && addressRewards.data.length > 0 ? addressRewards.data.length : 1}
-                rewards={
-                  addressRewards?.data?.map((record) => ({
-                    ...record,
-                    symbol: 'DAG',
-                  })) ?? []
-                }
-                icon={<AddressShape />}
-              />
-            )}
-            {selectedTable === 'rewards' &&
-              !(!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS') && (
-                <RewardsTable
-                  skeleton={{ showSkeleton: addressMetagraphRewards.isFetching }}
-                  limit={
-                    addressMetagraphRewards.data && addressMetagraphRewards.data.length > 0
-                      ? addressMetagraphRewards.data.length
-                      : 1
-                  }
-                  rewards={
-                    addressMetagraphRewards?.data?.map((record) => ({
-                      ...record,
-                      symbol: selectedMetagraph.metagraphSymbol,
-                    })) ?? []
-                  }
-                  icon={<AddressShape />}
-                />
-              )}
-            {selectedTable === 'snapshots' && (
-              <>
-                {addressSnapshots.isFetched ? (
-                  <Table
-                    primaryKey="ordinal"
-                    titles={{
-                      metagraphId: { content: 'Metagraph Id' },
-                      ordinal: { content: 'Ordinal' },
-                      timestamp: { content: 'Timestamp' },
-                      sizeInKB: { content: 'Snapshot Size' },
-                      fee: { content: 'Snapshot Fee' },
-                    }}
-                    data={addressSnapshots.data?.data ?? []}
-                    formatData={{
-                      metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,
-                      ordinal: (value, record) => (
-                        <Link to={`/metagraphs/${record.metagraphId}/snapshots/${value}`}>{value}</Link>
-                      ),
-                      timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
-                      sizeInKB: (value) => (value ?? '-- ') + 'kb',
-                      fee: (value) =>
-                        formatNumber(
+            {selectedTable === 'rewards' && !isInMetagraphPage && (
+              <Table
+                primaryKey="ordinal"
+                titles={{
+                  address: { content: 'Sent To' },
+                  rewardsCount: { content: 'Rewards Txns' },
+                  amount: { content: 'Daily Total' },
+                  accruedAt: { content: 'Date' },
+                }}
+                showSkeleton={!addressRewards.isFetched ? { size: addressRewardsPagination.currentPageSize } : null}
+                showEmptyRecords={(addressRewards.data?.data ?? []).length === 0 ? { size: 1 } : null}
+                data={addressRewards.data?.data ?? []}
+                formatData={{
+                  address: (value) => <Link to={`/address/${value}`}>{(console.log(value), shorten(value))}</Link>,
+                  amount: (value) => (
+                    <span className={styles.rewardAmountCell}>
+                      <span className={styles.total}>
+                        {formatNumber(
                           new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
                           NumberFormat.DECIMALS_TRIMMED_EXPAND
-                        ) + ' DAG',
-                    }}
-                  />
-                ) : (
-                  <Table
-                    primaryKey="ordinal"
-                    titles={{
-                      metagraphId: { content: 'Metagraph Id' },
-                      ordinal: { content: 'Ordinal' },
-                      timestamp: { content: 'Timestamp' },
-                      sizeInKB: { content: 'Snapshot Size' },
-                      fee: { content: 'Snapshot Fee' },
-                    }}
-                    data={SkeletonSpan.generateTableRecords(addressSnapshotsPagination.currentPageSize, [
-                      'metagraphId',
-                      'ordinal',
-                      'timestamp',
-                      'sizeInKB',
-                      'fee',
-                    ])}
-                  />
-                )}
-              </>
+                        ) + ' DAG'}
+                      </span>
+                      <span className={styles.converted}>
+                        (
+                        {formatNumber(
+                          new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
+                          NumberFormat.DECIMALS_TRIMMED_EXPAND
+                        ) + ' DAG'}
+                        )
+                      </span>
+                    </span>
+                  ),
+                  accruedAt: (value) => formatTime(value, 'date'),
+                }}
+              />
+            )}
+            {selectedTable === 'rewards' && isInMetagraphPage && (
+              <Table
+                primaryKey="ordinal"
+                titles={{
+                  address: { content: 'Sent To' },
+                  rewardsCount: { content: 'Rewards Txns' },
+                  amount: { content: 'Daily Total' },
+                  accruedAt: { content: 'Date' },
+                }}
+                showSkeleton={
+                  !addressMetagraphRewards.isFetched
+                    ? { size: addressMetagraphRewardsPagination.currentPageSize }
+                    : null
+                }
+                showEmptyRecords={(addressMetagraphRewards.data?.data ?? []).length === 0 ? { size: 1 } : null}
+                data={addressMetagraphRewards.data?.data ?? []}
+                formatData={{
+                  address: (value) => <Link to={`/address/${value}`}>{shorten(value)}</Link>,
+                  amount: (value) => (
+                    <span className={styles.rewardAmountCell}>
+                      <span className={styles.total}>
+                        {formatNumber(
+                          new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
+                          NumberFormat.DECIMALS_TRIMMED_EXPAND
+                        ) + ' DAG'}
+                      </span>
+                    </span>
+                  ),
+                  accruedAt: (value) => formatTime(value, 'date'),
+                }}
+              />
+            )}
+            {selectedTable === 'snapshots' && (
+              <Table
+                primaryKey="ordinal"
+                titles={{
+                  metagraphId: { content: 'Metagraph Id' },
+                  ordinal: { content: 'Ordinal' },
+                  timestamp: { content: 'Timestamp' },
+                  sizeInKB: { content: 'Snapshot Size' },
+                  fee: { content: 'Snapshot Fee' },
+                }}
+                showSkeleton={!addressSnapshots.isFetched ? { size: addressSnapshotsPagination.currentPageSize } : null}
+                data={addressSnapshots.data?.data ?? []}
+                formatData={{
+                  metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,
+                  ordinal: (value, record) => (
+                    <Link to={`/metagraphs/${record.metagraphId}/snapshots/${value}`}>{value}</Link>
+                  ),
+                  timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
+                  sizeInKB: (value) => (value ?? '-- ') + 'kb',
+                  fee: (value) =>
+                    formatNumber(
+                      new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
+                      NumberFormat.DECIMALS_TRIMMED_EXPAND
+                    ) + ' DAG',
+                }}
+              />
             )}
           </div>
-          <div className={`${styles.row6}`}>
-            <div className={`${styles.flexRowTop}`}>
-              <div className={styles.selectorContainer}>
-                <span>Show</span>
-                <Select
-                  styles={pageSizeSelectorStyles}
-                  options={options}
-                  defaultValue={options['0']}
-                  onChange={handleSelectChange}
-                />
-              </div>
-              {selectedTable === 'transactions' && (
-                <div className={styles.arrows}>
-                  <ArrowButton handleClick={handlePrevPage} disabled={currentPage === 0 || txsSkeleton} />
-                  <ArrowButton forward handleClick={() => handleNextPage()} disabled={txsSkeleton || lastPage} />
-                </div>
-              )}
-              {selectedTable === 'tokens' && (
-                <div className={styles.arrows}>
-                  <ArrowButton
-                    handleClick={handlePreviousPageMetagraphsList}
-                    disabled={offsetAddressMetagraphs === 0}
-                  />
-                  <ArrowButton
-                    forward
-                    handleClick={handleNextPageMetagraphsList}
-                    disabled={offsetAddressMetagraphs + limitAddressMetagraphs >= allMetagraphTokens.length}
-                  />
-                </div>
-              )}
-              {selectedTable === 'rewards' && (
-                <div className={styles.arrows}>
-                  <ArrowButton handleClick={handlePrevPageAddressRewards} disabled={offsetAddressRewards === 0} />
-                  <ArrowButton
-                    forward
-                    handleClick={handleNextPageAddressRewards}
-                    disabled={
-                      offsetAddressRewards + limitAddressRewards >
-                      (!selectedMetagraph || selectedMetagraph.metagraphId === 'ALL_METAGRAPHS'
-                        ? addressRewards?.meta?.total ?? 0
-                        : addressMetagraphRewards?.meta?.total ?? 0)
-                    }
-                  />
-                </div>
-              )}
-            </div>
+          <div className={styles.row6}>
+            {selectedTable === 'transactions' && (
+              <TablePagination
+                currentPage={addressTransactionsPagination.currentPage}
+                totalPages={addressTransactionsPagination.totalPages}
+                currentSize={addressTransactionsPagination.currentPageSize}
+                pageSizes={[10, 15, 20]}
+                onPageSizeChange={(size) => addressTransactionsPagination.setPageSize(size)}
+                onPageChange={(page) => addressTransactionsPagination.goPage(page)}
+                useNextPageToken
+                nextPageToken={addressTransactionsPagination.nextPageToken}
+              />
+            )}
+            {selectedTable === 'rewards' && !isInMetagraphPage && (
+              <TablePagination
+                currentPage={addressRewardsPagination.currentPage}
+                totalPages={addressRewardsPagination.totalPages}
+                currentSize={addressRewardsPagination.currentPageSize}
+                pageSizes={[10, 15, 20]}
+                onPageSizeChange={(size) => addressRewardsPagination.setPageSize(size)}
+                onPageChange={(page) => addressRewardsPagination.goPage(page)}
+              />
+            )}
+            {selectedTable === 'rewards' && isInMetagraphPage && (
+              <TablePagination
+                currentPage={addressMetagraphRewardsPagination.currentPage}
+                totalPages={addressMetagraphRewardsPagination.totalPages}
+                currentSize={addressMetagraphRewardsPagination.currentPageSize}
+                pageSizes={[10, 15, 20]}
+                onPageSizeChange={(size) => addressMetagraphRewardsPagination.setPageSize(size)}
+                onPageChange={(page) => addressMetagraphRewardsPagination.goPage(page)}
+              />
+            )}
+            {selectedTable === 'snapshots' && (
+              <TablePagination
+                currentPage={addressSnapshotsPagination.currentPage}
+                totalPages={addressSnapshotsPagination.totalPages}
+                currentSize={addressSnapshotsPagination.currentPageSize}
+                pageSizes={[10, 15, 20]}
+                onPageSizeChange={(size) => addressSnapshotsPagination.setPageSize(size)}
+                onPageChange={(page) => addressSnapshotsPagination.goPage(page)}
+              />
+            )}
+            {selectedTable === 'tokens' && (
+              <TablePagination
+                currentPage={addressMetagraphsPagination.currentPage}
+                totalPages={addressMetagraphsPagination.totalPages}
+                currentSize={addressMetagraphsPagination.currentPageSize}
+                pageSizes={[10, 15, 20]}
+                onPageSizeChange={(size) => addressMetagraphsPagination.setPageSize(size)}
+                onPageChange={(page) => addressMetagraphsPagination.goPage(page)}
+              />
+            )}
           </div>
         </main>
       )}
