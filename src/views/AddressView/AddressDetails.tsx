@@ -286,7 +286,9 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 <Tabs.Tab id="rewards">
                   {!isInMetagraphPage ? 'DAG Rewards' : `${selectedMetagraph.metagraphSymbol} Rewards`}
                 </Tabs.Tab>
-                {(addressSnapshots.data?.data.length ?? 0) > 0 && <Tabs.Tab id="snapshots">Snapshots</Tabs.Tab>}
+                {(addressSnapshots.data?.data.length ?? 0) > 0 && !isInMetagraphPage && (
+                  <Tabs.Tab id="snapshots">Snapshots</Tabs.Tab>
+                )}
                 <Tabs.Tab id="tokens">Tokens list</Tabs.Tab>
               </Tabs>
             </div>
@@ -381,7 +383,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                 }}
               />
             )}
-            {selectedTable === 'snapshots' && (
+            {selectedTable === 'snapshots' && !isInMetagraphPage && (
               <Table
                 primaryKey="ordinal"
                 titles={{
