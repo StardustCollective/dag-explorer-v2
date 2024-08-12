@@ -24,6 +24,7 @@ import { NodeLayerCard } from '../../../../components/NodeLayerCard/component';
 import { HorizontalBar } from '../../../../components/HorizontalBar/component';
 import { isAxiosError } from 'axios';
 import { NotFound } from '../../../NotFoundView/NotFound';
+import { CopyableContent } from '../../../../components/CopyableContent/component';
 
 export const MetagraphDetailsView = () => {
   const { metagraphId } = useParams();
@@ -96,7 +97,12 @@ export const MetagraphDetailsView = () => {
             {
               icon: <FlowDataIcon />,
               label: 'Metagraph ID',
-              content: <Link to={`/metagraphs/${metagraphId}`}>{shorten(metagraphId, 8, 8)}</Link>,
+              content: (
+                <span className={styles.metagraphId}>
+                  {shorten(metagraphId, 8, 8)}
+                  <CopyableContent content={metagraphId} />
+                </span>
+              ),
             },
             {
               icon: <WalletIcon />,
