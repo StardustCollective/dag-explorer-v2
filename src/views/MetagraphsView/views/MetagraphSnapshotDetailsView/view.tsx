@@ -99,17 +99,20 @@ export const MetagraphSnapshotDetailsView = () => {
               icon: null,
               label: 'Snapshot Hash',
               content: (
-                <Link className={styles.detailLink} to={`/metagraphs/${metagraphId}/snapshots/${snapshotOrdinal}`}>
+                <span className={styles.detailLink}>
                   {shorten(snapshot.data?.hash)}
                   <CopyableContent content={snapshot.data?.hash} />
-                </Link>
+                </span>
               ),
             },
             {
               icon: null,
               label: 'Last Snapshot Hash',
               content: (
-                <Link className={styles.detailLink} to={`/metagraphs/${metagraphId}/snapshots/${snapshotOrdinal}`}>
+                <Link
+                  className={styles.detailLink}
+                  to={`/metagraphs/${metagraphId}/snapshots/${parseInt(snapshotOrdinal) - 1}`}
+                >
                   {shorten(snapshot.data?.lastSnapshotHash)}
                   <CopyableContent content={snapshot.data?.lastSnapshotHash} />
                 </Link>
