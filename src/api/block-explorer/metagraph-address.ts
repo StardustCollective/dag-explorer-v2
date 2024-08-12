@@ -15,20 +15,21 @@ const getMetagraphSnapshotsUrl = (address: string) => {
   return `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/addresses/${address}/metagraph-snapshots`;
 };
 
-export const useGetAddressMetagraphs = (address: string) => {
+export const useGetAddressMetagraphs = (address: string, params?: any) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  return useFetch<AddressMetagraphResponse[]>(
-    getMetagraphsUrl(address),
-    {},
-    {
-      enabled: true,
-    }
-  );
+  return useFetch<AddressMetagraphResponse[]>(getMetagraphsUrl(address), params, {
+    enabled: true,
+  });
 };
 
 export const useGetAddressMetagraphSnapshots = (address?: string, params?: any) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
-  return useFetch<{ data: Snapshot[]; meta?: any }>(getMetagraphSnapshotsUrl(address), params, {
-    enabled: !!address,
-  }, false);
+  return useFetch<{ data: Snapshot[]; meta?: any }>(
+    getMetagraphSnapshotsUrl(address),
+    params,
+    {
+      enabled: !!address,
+    },
+    false
+  );
 };
