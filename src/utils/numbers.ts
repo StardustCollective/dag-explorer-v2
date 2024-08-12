@@ -79,9 +79,9 @@ const formatRelativeString = (date: string) => {
 
 export const formatTime = (timestamp: string | number, format: 'full' | 'relative' | 'date') => {
   return format === 'full'
-    ? dayjs(timestamp).utc().format('YYYY-MM-DD h:mm A +UTC')
+    ? dayjs(timestamp).utc().toISOString()
     : format === 'date'
-    ? dayjs(timestamp).utc().format('YYYY/MM/DD')
+    ? dayjs(timestamp).utc().format('YYYY-MM-DD')
     : formatRelativeString(dayjs().to(dayjs(timestamp)));
 };
 
