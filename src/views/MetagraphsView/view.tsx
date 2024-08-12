@@ -42,7 +42,7 @@ export const MetagraphsView = () => {
               ),
               metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,
               metagraphSiteUrl: (value) => (
-                <a target="_blank" href={value} rel="noreferrer">
+                <a className={styles.metagraphSiteLink} target="_blank" href={value} rel="noreferrer">
                   {value}
                 </a>
               ),
