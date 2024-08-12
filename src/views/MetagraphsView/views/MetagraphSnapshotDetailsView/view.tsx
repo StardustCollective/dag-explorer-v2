@@ -212,7 +212,6 @@ export const MetagraphSnapshotDetailsView = () => {
             ])}
           />
         )}
-
         <TablePagination
           currentPage={transactionsPagination.currentPage}
           totalPages={transactionsPagination.totalPages}
@@ -220,6 +219,8 @@ export const MetagraphSnapshotDetailsView = () => {
           pageSizes={[10, 15, 20]}
           onPageSizeChange={(size) => transactionsPagination.setPageSize(size)}
           onPageChange={(page) => transactionsPagination.goPage(page)}
+          useNextPageToken
+          nextPageToken={transactionsPagination.nextPageToken}
         />
       </div>
     </ViewLayout>

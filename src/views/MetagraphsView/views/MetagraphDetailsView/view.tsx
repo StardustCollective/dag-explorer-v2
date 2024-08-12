@@ -207,6 +207,8 @@ export const MetagraphDetailsView = () => {
               pageSizes={[10, 15, 20]}
               onPageSizeChange={(size) => snapshotsPagination.setPageSize(size)}
               onPageChange={(page) => snapshotsPagination.goPage(page)}
+              useNextPageToken
+              nextPageToken={snapshotsPagination.nextPageToken}
             />
           </>
         )}
@@ -302,6 +304,8 @@ export const MetagraphDetailsView = () => {
               pageSizes={[10, 15, 20]}
               onPageSizeChange={(size) => transactionsPagination.setPageSize(size)}
               onPageChange={(page) => transactionsPagination.goPage(page)}
+              useNextPageToken
+              nextPageToken={transactionsPagination.nextPageToken}
             />
           </>
         )}
