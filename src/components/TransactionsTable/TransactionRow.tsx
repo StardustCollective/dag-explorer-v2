@@ -200,7 +200,9 @@ export const TransactionRow = ({
         <>
           {showMetagraphSymbol && (
             <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
-              <div className={styles.dag}>{snapshot.symbol}</div>
+              <Link to={`/metagraphs/${snapshot.metagraphId}`} className={styles.dag}>
+                {snapshot.symbol}
+              </Link>
             </div>
           )}
           <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>

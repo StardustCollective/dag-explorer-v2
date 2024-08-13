@@ -157,7 +157,7 @@ export const TransactionsTable = ({
   if (snapshots) {
     snapshots.forEach((snap) => {
       const snapshotCard: CardDataRow[] = [];
-      snap.isMetagraphSnapshot && snapshotCard.push({ value: snap.symbol });
+      snap.isMetagraphSnapshot && snapshotCard.push({ value: snap.symbol, linkTo: `/metagraphs/${snap.metagraphId}` });
       snapshotCard.push({
         value: snap.ordinal,
         linkTo: snap.metagraphId
