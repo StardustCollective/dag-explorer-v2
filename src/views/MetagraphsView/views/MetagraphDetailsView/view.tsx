@@ -107,20 +107,20 @@ export const MetagraphDetailsView = () => {
             {
               icon: <WalletIcon />,
               label: 'Staking',
-              content: (
+              content: metagraph.data?.metagraphStakingWalletAddress ? (
                 <Link to={`/address/${metagraph.data?.metagraphStakingWalletAddress}`}>
                   {shorten(metagraph.data?.metagraphStakingWalletAddress, 8, 8)}
                 </Link>
-              ),
+              ) : null,
             },
             {
               icon: <WalletIcon />,
               label: 'Snapshot fees',
-              content: (
+              content: metagraph.data?.metagraphFeesWalletAddress ? (
                 <Link to={`/address/${metagraph.data?.metagraphFeesWalletAddress}`}>
                   {shorten(metagraph.data?.metagraphFeesWalletAddress, 8, 8)}
                 </Link>
-              ),
+              ) : null,
             },
           ]}
         />
@@ -242,7 +242,8 @@ export const MetagraphDetailsView = () => {
                       <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>
                     ),
                     fee: (value) =>
-                      formatNumber(new Decimal(value ?? 0), NumberFormat.WHOLE) + ` d${metagraph.data?.metagraphSymbol}`,
+                      formatNumber(new Decimal(value ?? 0), NumberFormat.WHOLE) +
+                      ` d${metagraph.data?.metagraphSymbol}`,
                     source: (value, record) => (
                       <div className={styles.fromToTransaction}>
                         <Link to={`/address/${value}`}>
