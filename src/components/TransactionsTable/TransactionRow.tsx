@@ -117,7 +117,7 @@ export const TransactionRow = ({
               styles.amount
             } ${styles.alignItemsLeft}`}
           >
-            {formatNumber(tx.fee, NumberFormat.WHOLE) + ' d' + tx.symbol}
+            {formatNumber(tx.fee, NumberFormat.WHOLE) + ' d' + (tx.symbol ?? 'DAG')}
           </div>
           <div className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.stackFromTo}`}>
             <div className={styles.stackRow}>

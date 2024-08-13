@@ -157,7 +157,7 @@ export const TransactionDetail = ({ network }: { network: Exclude<Network, 'main
                           !skeleton
                             ? formatNumber(transaction.fee, NumberFormat.WHOLE) +
                                 ' d' +
-                                metagraphInfo.metagraphSymbol || 'DAG'
+                                metagraphInfo.metagraphSymbol ?? 'DAG'
                             : ''
                         }
                         subValue={

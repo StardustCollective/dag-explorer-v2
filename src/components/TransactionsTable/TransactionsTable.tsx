@@ -149,7 +149,7 @@ export const TransactionsTable = ({
         toCopy: tx.destination,
       });
       txCard.push({ value: formatAmount(tx.amount, 8, false, tx.symbol) });
-      txCard.push({ value: formatNumber(tx.fee, NumberFormat.WHOLE) + ' d' + tx.symbol });
+      txCard.push({ value: formatNumber(tx.fee, NumberFormat.WHOLE) + ' d' + (tx.symbol ?? 'DAG') });
       cardsSet.add(txCard);
     });
   }
