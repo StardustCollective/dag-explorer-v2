@@ -45,17 +45,19 @@ export const HeaderRow = ({
     ) : (
       <>
         <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? 'ORDINAL' : 'TXN HASH'}</p>
+          <p className={styles.headerText}>{forSnapshots ? 'METAGRAPH' : 'TXN HASH'}</p>
         </div>
         <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{'TIMESTAMP'}</p>
+          <p className={styles.headerText}>{'ORDINAL'}</p>
         </div>
         <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? (showMetagraphSymbol ? 'FEE' : 'BLOCKS') : 'AMOUNT'}</p>
+          <p className={styles.headerText}>
+            {forSnapshots ? (showMetagraphSymbol ? 'TIMESTAMP' : 'BLOCKS') : 'AMOUNT'}
+          </p>
         </div>
         {forSnapshots && showMetagraphSymbol && (
           <div className={styles.headerColumn}>
-            <p className={styles.headerText}>{'METAGRAPH'}</p>
+            <p className={styles.headerText}>{'FEE'}</p>
           </div>
         )}
       </>

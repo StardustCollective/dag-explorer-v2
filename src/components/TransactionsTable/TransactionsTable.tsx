@@ -37,7 +37,7 @@ export const TransactionsTable = ({
   const titles = transactions
     ? ['TXN HASH', 'TIMESTAMP', 'SNAPSHOT', 'FROM', 'TO', 'AMOUNT', 'FEE']
     : showMetagraphSymbol
-    ? ['ORDINAL', 'TIMESTAMP', 'FEE', 'METAGRAPH']
+    ? ['METAGRAPH', 'ORDINAL', 'TIMESTAMP', 'FEE']
     : ['ORDINAL', 'TIMESTAMP', 'BLOCKS COUNT'];
 
   const needDagInfo = transactions && transactions.length > 0;
@@ -157,6 +157,7 @@ export const TransactionsTable = ({
   if (snapshots) {
     snapshots.forEach((snap) => {
       const snapshotCard: CardDataRow[] = [];
+      snap.isMetagraphSnapshot && snapshotCard.push({ value: snap.symbol });
       snapshotCard.push({
         value: snap.ordinal,
         linkTo: snap.metagraphId
@@ -173,7 +174,6 @@ export const TransactionsTable = ({
           ? snap.blocks.length
           : 0,
       });
-      snap.isMetagraphSnapshot && snapshotCard.push({ value: snap.symbol });
       cardsSet.add(snapshotCard);
     });
   }

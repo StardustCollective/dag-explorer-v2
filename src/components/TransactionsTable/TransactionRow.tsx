@@ -198,6 +198,11 @@ export const TransactionRow = ({
     if (isHomePage) {
       snapRow = (
         <>
+          {showMetagraphSymbol && (
+            <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
+              <div className={styles.dag}>{snapshot.symbol}</div>
+            </div>
+          )}
           <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             <div className={styles.txContainer}>
               {icon && icon}
@@ -224,11 +229,6 @@ export const TransactionRow = ({
                 : 0}
             </div>
           </div>
-          {showMetagraphSymbol && (
-            <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
-              <div className={styles.dag}>{snapshot.symbol}</div>
-            </div>
-          )}
         </>
       );
     } else {
