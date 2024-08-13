@@ -37,7 +37,7 @@ export const TransactionsTable = ({
   const titles = transactions
     ? ['TXN HASH', 'TIMESTAMP', 'SNAPSHOT', 'FROM', 'TO', 'AMOUNT', 'FEE']
     : showMetagraphSymbol
-    ? ['METAGRAPH', 'ORDINAL', 'TIMESTAMP', 'FEE']
+    ? ['METAGRAPH', 'ORDINAL', 'TIMESTAMP', 'SNAPSHOT FEE']
     : ['ORDINAL', 'TIMESTAMP', 'BLOCKS COUNT'];
 
   const needDagInfo = transactions && transactions.length > 0;

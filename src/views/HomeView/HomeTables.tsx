@@ -116,7 +116,7 @@ const HomeTables = ({ limit, refetchEvery, network }: { limit: number; refetchEv
 
       <div className={styles.tables}>
         <TransactionsTable
-          skeleton={{ showSkeleton: !metagraphSnapshots, headerCols: ['METAGRAPH', 'ORDINAL', 'TIMESTAMP', 'FEE'] }}
+          skeleton={{ showSkeleton: !metagraphSnapshots, headerCols: ['METAGRAPH', 'ORDINAL', 'TIMESTAMP', 'SNAPSHOT FEE'] }}
           limit={1}
           snapshots={metagraphSnapshots}
           icon={<SnapshotShape />}
