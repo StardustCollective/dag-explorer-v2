@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import { MainnetOneTransaction } from '../../types';
-import { fitStringInCell, formatAmount, formatPrice, formatTime } from '../../utils/numbers';
+import { fitStringInCell, formatAmount, formatNumber, formatPrice, formatTime, NumberFormat } from '../../utils/numbers';
 import styles from './SnapshotRow.module.scss';
 
 export const TransactionRow = ({
@@ -67,7 +67,7 @@ export const TransactionRow = ({
             <Link to={'/snapshots/' + transaction.snapshot}>{fitStringInCell(transaction.snapshot)}</Link>
           </div>
           <div className={`${styles.txnCell} ${styles.enoughSpace} ${styles.amount} ${styles.alignItemsLeft}`}>
-            {formatAmount(transaction.fee, 8)}
+            {formatNumber(transaction.fee, NumberFormat.WHOLE) + ' dDAG'}
           </div>
           <div className={`${styles.txnCell} ${styles.stackFromTo}`}>
             <div className={styles.stackRow}>

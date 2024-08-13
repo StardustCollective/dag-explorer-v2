@@ -42,7 +42,7 @@ export const formatPriceWithSymbol = (
   return `${prefixSymbol || ''}${formatPrice(amount, dagInfo, toFixed)} ${suffixSymbol || ''}`;
 };
 
-export const formatAmount = (amount: number, toFixed: number, forExport?: boolean, suffix = 'DAG') => {
+export const formatAmount = (amount: number, toFixed: number, forExport?: boolean, suffix = 'DAG', isFee=false) => {
   const formatedValue = (amount / Math.pow(10, 8)).toFixed(toFixed);
   const regex = formatedValue.match('^(\\d+\\.\\d*?)(0+)$');
   let toReturn: string;

@@ -10,7 +10,14 @@ import { useGetTransaction } from '../../../api/mainnet_1/block-explorer';
 import { useGetPrices } from '../../../api/coingecko';
 import { SkeletonCard } from '../../../components/Card/SkeletonCard';
 import { Card } from '../../../components/Card/Card';
-import { formatAmount, formatDagPrice, formatPrice, formatTime } from '../../../utils/numbers';
+import {
+  formatAmount,
+  formatDagPrice,
+  formatNumber,
+  formatPrice,
+  formatTime,
+  NumberFormat,
+} from '../../../utils/numbers';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { AddressShape } from '../../../components/Shapes/AddressShape';
 import { TransactionShape } from '../../../components/Shapes/TransactionShape';
@@ -85,7 +92,7 @@ export const MainnetOneTransactionDetails = () => {
                       />
                       <DetailRow
                         title={'TRANSACTION FEE'}
-                        value={!skeleton ? formatAmount(transaction.fee, 8) : ''}
+                        value={!skeleton ? formatNumber(transaction.fee, NumberFormat.WHOLE) + ' dDAG' : ''}
                         skeleton={skeleton}
                       />
                     </div>

@@ -92,11 +92,11 @@ export const HeaderRow = ({
       </div>
 
       <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
-        <p className={styles.headerText}>FROM</p>
+        <p className={styles.headerText}>FEE</p>
       </div>
 
       <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
-        <p className={styles.headerText}>TO</p>
+        <p className={styles.headerText}>FROM / TO</p>
       </div>
 
       <div className={clsx(styles.headerColumn, styles.topRightBorder, styles.rightAligned)}>

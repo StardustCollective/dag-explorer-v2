@@ -35,7 +35,7 @@ export const TransactionsTable = ({
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
 
   const titles = transactions
-    ? ['TXN HASH', 'TIMESTAMP', 'SNAPSHOT', 'FROM', 'TO', 'AMOUNT']
+    ? ['TXN HASH', 'TIMESTAMP', 'SNAPSHOT', 'FROM', 'TO', 'AMOUNT', 'FEE']
     : showMetagraphSymbol
     ? ['ORDINAL', 'TIMESTAMP', 'FEE', 'METAGRAPH']
     : ['ORDINAL', 'TIMESTAMP', 'BLOCKS COUNT'];
@@ -122,6 +122,7 @@ export const TransactionsTable = ({
       i++;
     }
   }
+
   const cardsSet = new Set<CardDataRow[]>();
   if (transactions) {
     transactions.forEach((tx) => {
@@ -148,6 +149,7 @@ export const TransactionsTable = ({
         toCopy: tx.destination,
       });
       txCard.push({ value: formatAmount(tx.amount, 8, false, tx.symbol) });
+      txCard.push({ value: formatNumber(tx.fee, NumberFormat.WHOLE) + ' d' + tx.symbol });
       cardsSet.add(txCard);
     });
   }

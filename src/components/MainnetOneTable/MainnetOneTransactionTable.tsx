@@ -8,7 +8,7 @@ import { cloneElement, useContext } from 'react';
 import { PricesContext, PricesContextType } from '../../context/PricesContext';
 import { CardDataRow, TableCards } from '../TransactionsTable/TableCards';
 import { TransactionShape } from '../Shapes/TransactionShape';
-import { fitStringInCell, formatAmount, formatTime } from '../../utils/numbers';
+import { fitStringInCell, formatAmount, formatNumber, formatTime, NumberFormat } from '../../utils/numbers';
 
 export const MainnetOneTransactionTable = ({
   skeleton,
@@ -27,7 +27,7 @@ export const MainnetOneTransactionTable = ({
   const isHomePage = location.pathname === '/';
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const mql = window.matchMedia('(max-width: 580px)');
-  const titles = ['TXN HASH', 'TIMESTAMP', 'FROM', 'TO', 'AMOUNT'];
+  const titles = ['TXN HASH', 'TIMESTAMP', 'FROM', 'TO', 'AMOUNT', 'FEE'];
 
   if (skeleton && skeleton.showSkeleton) {
     return mql.matches ? (
@@ -81,6 +81,7 @@ export const MainnetOneTransactionTable = ({
         toCopy: tx.receiver,
       });
       txCard.push({ value: formatAmount(tx.amount, 8) });
+      txCard.push({ value: formatNumber(tx.fee, NumberFormat.WHOLE) + ' dDAG' });
       transactionCards.add(txCard);
     });
   }
