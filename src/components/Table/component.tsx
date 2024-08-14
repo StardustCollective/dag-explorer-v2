@@ -23,7 +23,7 @@ export type ITableProps<
   >;
   data: DataRecord[];
   showSkeleton?: { size: number } | null;
-  showEmptyRecords?: { size: number } | null;
+  emptyStateLabel?: string;
   primaryKey: keyof DataRecord;
   detailKey?: keyof DataRecord;
   formatData?: Partial<{
@@ -64,7 +64,7 @@ export const Table = <
   titles,
   data,
   showSkeleton,
-  showEmptyRecords,
+  emptyStateLabel,
   primaryKey,
   detailKey,
   formatData,
@@ -78,12 +78,7 @@ export const Table = <
 
   if (showSkeleton) {
     data = SkeletonSpan.generateTableRecords(showSkeleton.size, Object.keys(titles)) as DataRecord[];
-    formatData = {}
-  }
-
-  if (showEmptyRecords) {
-    data = SkeletonSpan.generateEmptyTableRecords(showEmptyRecords.size, Object.keys(titles)) as DataRecord[];
-    formatData = {}
+    formatData = {};
   }
 
   return (
@@ -138,6 +133,16 @@ export const Table = <
           variants?.map((v) => styles[v])
         )}
       >
+        {data.length === 0 && (
+          <tr className={cls(styles.bodyRow, className?.bodyRow, detailKey && styles.withDetailKey)}>
+            <td
+              className={cls(styles.emptyStateBodyCell, styles.bodyCell, className?.bodyCell)}
+              colSpan={RecordEntries(titles).length}
+            >
+              <div className={cls(styles.bodyCellContent, className?.bodyCellContent)}>{emptyStateLabel}</div>
+            </td>
+          </tr>
+        )}
         {data.map((dataRecord, index) => (
           <>
             <tr

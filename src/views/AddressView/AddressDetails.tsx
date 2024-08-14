@@ -310,10 +310,11 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   metagraphId: isInMetagraphPage ? selectedMetagraph.metagraphId : 'ALL_METAGRAPHS',
                 }))}
                 icon={<AddressShape />}
+                emptyStateLabel='No transactions detected'
               />
             )}
             {selectedTable === 'tokens' && (
-              <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={addressMetagraphs.isFetching} />
+              <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={addressMetagraphs.isFetching} emptyStateLabel='No tokens detected' />
             )}
             {selectedTable === 'rewards' && !isInMetagraphPage && (
               <Table
@@ -325,7 +326,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   accruedAt: { content: 'Date' },
                 }}
                 showSkeleton={!addressRewards.isFetched ? { size: addressRewardsPagination.currentPageSize } : null}
-                showEmptyRecords={(addressRewards.data?.data ?? []).length === 0 ? { size: 1 } : null}
+                emptyStateLabel="No rewards detected"
                 data={addressRewards.data?.data ?? []}
                 formatData={{
                   address: (value) => <Link to={`/address/${value}`}>{(console.log(value), shorten(value))}</Link>,
@@ -365,7 +366,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                     ? { size: addressMetagraphRewardsPagination.currentPageSize }
                     : null
                 }
-                showEmptyRecords={(addressMetagraphRewards.data?.data ?? []).length === 0 ? { size: 1 } : null}
+                emptyStateLabel="No rewards detected"
                 data={addressMetagraphRewards.data?.data ?? []}
                 formatData={{
                   address: (value) => <Link to={`/address/${value}`}>{shorten(value)}</Link>,
@@ -394,6 +395,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   fee: { content: 'Snapshot Fee' },
                 }}
                 showSkeleton={!addressSnapshots.isFetched ? { size: addressSnapshotsPagination.currentPageSize } : null}
+                emptyStateLabel="No snapshots detected"
                 data={addressSnapshots.data?.data ?? []}
                 formatData={{
                   metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,

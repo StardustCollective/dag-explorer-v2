@@ -199,8 +199,9 @@ export const SnapshotDetails = () => {
                   <TransactionsTable
                     skeleton={{ showSkeleton: txsSkeleton }}
                     limit={LIMIT}
-                    transactions={snapshotTxs}
+                    transactions={snapshotTxs ?? []}
                     icon={<SnapshotShape />}
+                    emptyStateLabel='No transactions detected'
                   />
                 )}
               </div>

@@ -6,7 +6,6 @@ import { TablePagination } from '../../components/TablePagination/component';
 import { Table } from '../../components/Table';
 import { shorten } from '../../utils/shorten';
 import { Link, Navigate } from 'react-router-dom';
-import { SkeletonSpan } from '../../components/SkeletonSpan/component';
 import { usePagination } from '../../utils/pagination';
 import { useContext, useEffect } from 'react';
 import { ViewLayout } from '../../components/ViewLayout/component';
@@ -30,48 +29,33 @@ export const MetagraphsView = () => {
     <ViewLayout className={styles.main}>
       <Subheader text="Metagraphs" />
       <div className={styles.metagraphs}>
-        {metagraphs.isFetched ? (
-          <Table
-            primaryKey="metagraphId"
-            titles={{
-              metagraphName: { content: 'Metagraph' },
-              metagraphSymbol: { content: 'Symbol' },
-              metagraphId: { content: 'Metagraph Id' },
-              metagraphSiteUrl: { content: 'Website' },
-            }}
-            data={metagraphs.data?.data ?? []}
-            formatData={{
-              metagraphName: (value, record) => (
-                <Link to={`/metagraphs/${record.metagraphId}`} className={styles.metagraphLink}>
-                  <img src={record.metagraphIcon} />
-                  {value}
-                </Link>
-              ),
-              metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,
-              metagraphSiteUrl: (value) => (
-                <a className={styles.metagraphSiteLink} target="_blank" href={value} rel="noreferrer">
-                  {value}
-                </a>
-              ),
-            }}
-          />
-        ) : (
-          <Table
-            primaryKey="metagraphId"
-            titles={{
-              metagraphName: { content: 'Metagraph' },
-              metagraphSymbol: { content: 'Symbol' },
-              metagraphId: { content: 'Metagraph Id' },
-              metagraphSiteUrl: { content: 'Website' },
-            }}
-            data={SkeletonSpan.generateTableRecords(metagraphsPagination.currentPageSize, [
-              'metagraphName',
-              'metagraphSymbol',
-              'metagraphId',
-              'metagraphSiteUrl',
-            ])}
-          />
-        )}
+        <Table
+          primaryKey="metagraphId"
+          titles={{
+            metagraphName: { content: 'Metagraph' },
+            metagraphSymbol: { content: 'Symbol' },
+            metagraphId: { content: 'Metagraph Id' },
+            metagraphSiteUrl: { content: 'Website' },
+          }}
+          showSkeleton={!metagraphs.isFetched ? { size: metagraphsPagination.currentPageSize } : null}
+          emptyStateLabel="No metagraphs detected"
+          data={metagraphs.data?.data ?? []}
+          formatData={{
+            metagraphName: (value, record) => (
+              <Link to={`/metagraphs/${record.metagraphId}`} className={styles.metagraphLink}>
+                <img src={record.metagraphIcon} />
+                {value}
+              </Link>
+            ),
+            metagraphId: (value) => <Link to={`/metagraphs/${value}`}>{shorten(value)}</Link>,
+            metagraphSiteUrl: (value) => (
+              <a className={styles.metagraphSiteLink} target="_blank" href={value} rel="noreferrer">
+                {value}
+              </a>
+            ),
+          }}
+        />
+
         <TablePagination
           currentPage={metagraphsPagination.currentPage}
           totalPages={metagraphsPagination.totalPages}

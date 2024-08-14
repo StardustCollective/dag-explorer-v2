@@ -20,6 +20,7 @@ export const TransactionsTable = ({
   snapshots,
   headerText,
   limit,
+  emptyStateLabel,
   showMetagraphSymbol,
 }: {
   skeleton?: Skeleton;
@@ -28,6 +29,7 @@ export const TransactionsTable = ({
   snapshots?: Snapshot[];
   headerText?: string;
   limit?: number;
+  emptyStateLabel?: string;
   showMetagraphSymbol?: boolean;
 }) => {
   const location = useLocation();
@@ -87,27 +89,13 @@ export const TransactionsTable = ({
       />
     ));
 
-  const emptyRows = [];
-  for (let i = 0; i < limit; i++) {
-    emptyRows.push(
-      <TransactionRow
-        key={i}
-        tx={null}
-        snapshot={null}
-        isLastRow={i + 1 === limit}
-        showMetagraphSymbol={showMetagraphSymbol}
-      />
-    );
-  }
   if (!transactions || transactions.length === 0) {
-    txRows = emptyRows;
-  }
-
-  if (!snapshots || snapshots.length === 0) {
-    snapRows = emptyRows;
-  }
-
-  if (txRows && limit && txRows.length < limit) {
+    txRows = [
+      <div key="emptystate" className={styles.emptyStateLabel}>
+        {emptyStateLabel}
+      </div>,
+    ];
+  } else if (txRows && limit && txRows.length < limit) {
     let i = 0;
     while (txRows.length < limit) {
       txRows.push(<TransactionRow key={i} />);
@@ -115,7 +103,13 @@ export const TransactionsTable = ({
     }
   }
 
-  if (snapRows && limit && snapRows.length < limit) {
+  if (!snapshots || snapshots.length === 0) {
+    snapRows = [
+      <div key="emptystate" className={styles.emptyStateLabel}>
+        {emptyStateLabel}
+      </div>,
+    ];
+  } else if (snapRows && limit && snapRows.length < limit) {
     let i = 0;
     while (snapRows.length < limit) {
       snapRows.push(<TransactionRow key={i} />);
@@ -199,10 +193,15 @@ export const TransactionsTable = ({
         <HeaderRow forSnapshots={snapshots && !transactions} showMetagraphSymbol={showMetagraphSymbol} />
         {transactions && txRows}
         {snapshots && snapRows}
-        {!transactions && !snapshots && emptyRows}
       </div>
       <div className={styles.cards}>
-        <TableCards titles={titles} elements={cardsSet} headerText={headerText} icon={icon} />
+        <TableCards
+          titles={titles}
+          elements={cardsSet}
+          headerText={headerText}
+          icon={icon}
+          emptyStateLabel={emptyStateLabel}
+        />
       </div>
     </>
   );

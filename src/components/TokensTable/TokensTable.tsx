@@ -13,10 +13,12 @@ export const TokensTable = ({
   metagraphTokens,
   amount,
   loading,
+  emptyStateLabel
 }: {
   metagraphTokens: AddressMetagraphResponse[];
   amount: number;
   loading: boolean;
+  emptyStateLabel?: string;
 }) => {
   const [rows, setRows] = useState<AddressMetagraphResponse[]>([]);
   const [elements, setElements] = useState<Set<CardDataRow[]>>(new Set<[]>);
@@ -45,10 +47,11 @@ export const TokensTable = ({
     }
   }, [rows]);
 
-  const emptyRows = [];
-  for (let i = 0; i < amount; i++) {
-    emptyRows.push(<TokenRow key={i} />);
-  }
+  const emptyRows = [
+    <div key="emptystate" className={styles.emptyStateLabel}>
+      {emptyStateLabel}
+    </div>,
+  ];
 
   return (
     <>
@@ -73,7 +76,7 @@ export const TokensTable = ({
         </div>
       </div>
       <div className={styles.tableCards}>
-        <TableCards limit={amount} showSkeleton={loading} titles={HEADERS} elements={elements}/>
+        <TableCards limit={amount} showSkeleton={loading} titles={HEADERS} elements={elements} emptyStateLabel={emptyStateLabel}/>
       </div>
     </>
   );

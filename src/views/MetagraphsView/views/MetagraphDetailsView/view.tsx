@@ -10,7 +10,6 @@ import { Table } from '../../../../components/Table';
 import dayjs from 'dayjs';
 import Decimal from 'decimal.js';
 import { formatNumber, NumberFormat } from '../../../../utils/numbers';
-import { SkeletonSpan } from '../../../../components/SkeletonSpan/component';
 import { TablePagination } from '../../../../components/TablePagination/component';
 import { useGetAllTransactions } from '../../../../api/block-explorer/transaction';
 import { shorten } from '../../../../utils/shorten';
@@ -150,62 +149,26 @@ export const MetagraphDetailsView = () => {
       <div className={styles.tables}>
         {selectedTable === 'snapshots' && (
           <>
-            {snapshots.isFetched ? (
-              snapshots.data?.data.length > 0 ? (
-                <Table
-                  primaryKey="ordinal"
-                  titles={{
-                    ordinal: { content: 'Ordinal' },
-                    timestamp: { content: 'Timestamp' },
-                    sizeInKB: { content: 'Snapshot Size' },
-                    fee: { content: 'Snapshot Fee' },
-                  }}
-                  data={snapshots.data?.data ?? []}
-                  formatData={{
-                    ordinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
-                    timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
-                    sizeInKB: (value) => (value ?? '-- ') + 'kb',
-                    fee: (value) =>
-                      formatNumber(
-                        new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
-                        NumberFormat.DECIMALS_TRIMMED_EXPAND
-                      ) + ' DAG',
-                  }}
-                />
-              ) : (
-                <Table
-                  primaryKey="ordinal"
-                  titles={{
-                    ordinal: { content: 'Ordinal' },
-                    timestamp: { content: 'Timestamp' },
-                    sizeInKB: { content: 'Snapshot Size' },
-                    fee: { content: 'Snapshot Fee' },
-                  }}
-                  data={SkeletonSpan.generateEmptyTableRecords(snapshotsPagination.currentPageSize, [
-                    'ordinal',
-                    'timestamp',
-                    'sizeInKB',
-                    'fee',
-                  ])}
-                />
-              )
-            ) : (
-              <Table
-                primaryKey="ordinal"
-                titles={{
-                  ordinal: { content: 'Ordinal' },
-                  timestamp: { content: 'Timestamp' },
-                  sizeInKB: { content: 'Snapshot Size' },
-                  fee: { content: 'Snapshot Fee' },
-                }}
-                data={SkeletonSpan.generateTableRecords(snapshotsPagination.currentPageSize, [
-                  'ordinal',
-                  'timestamp',
-                  'sizeInKB',
-                  'fee',
-                ])}
-              />
-            )}
+            <Table
+              primaryKey="ordinal"
+              titles={{
+                ordinal: { content: 'Ordinal' },
+                timestamp: { content: 'Timestamp' },
+                sizeInKB: { content: 'Snapshot Size' },
+                fee: { content: 'Snapshot Fee' },
+              }}
+              showSkeleton={!snapshots.isFetched ? { size: snapshotsPagination.currentPageSize } : null}
+              emptyStateLabel="No snapshots detected"
+              data={snapshots.data?.data ?? []}
+              formatData={{
+                ordinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
+                timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
+                sizeInKB: (value) => (value ?? '-- ') + 'kb',
+                fee: (value) =>
+                  formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
+                  ' DAG',
+              }}
+            />
             <TablePagination
               currentPage={snapshotsPagination.currentPage}
               totalPages={snapshotsPagination.totalPages}
@@ -220,87 +183,40 @@ export const MetagraphDetailsView = () => {
         )}
         {selectedTable === 'transactions' && (
           <>
-            {transactions.isFetched ? (
-              transactions.data?.data.length > 0 ? (
-                <Table
-                  primaryKey="hash"
-                  titles={{
-                    hash: { content: 'Txn Hash' },
-                    timestamp: { content: 'Timestamp' },
-                    snapshotOrdinal: { content: 'Snapshot' },
-                    fee: { content: 'Fee' },
-                    source: { content: 'From / To' },
-                    amount: { content: 'Amount' },
-                  }}
-                  data={transactions.data?.data ?? []}
-                  formatData={{
-                    hash: (value) => (
-                      <Link to={`/metagraphs/${metagraphId}/transactions/${value}`}>{shorten(value)}</Link>
-                    ),
-                    timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
-                    snapshotOrdinal: (value) => (
-                      <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>
-                    ),
-                    fee: (value) =>
-                      formatNumber(new Decimal(value ?? 0), NumberFormat.WHOLE) +
-                      ` d${metagraph.data?.metagraphSymbol}`,
-                    source: (value, record) => (
-                      <div className={styles.fromToTransaction}>
-                        <Link to={`/address/${value}`}>
-                          From: <span>{shorten(value)}</span>
-                        </Link>
-                        <Link to={`/address/${record.destination}`}>
-                          To: <span>{shorten(record.destination)}</span>
-                        </Link>
-                      </div>
-                    ),
-                    amount: (value) =>
-                      formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
-                      ` ${metagraph.data?.metagraphSymbol}`,
-                  }}
-                />
-              ) : (
-                <Table
-                  primaryKey="hash"
-                  titles={{
-                    hash: { content: 'Txn Hash' },
-                    timestamp: { content: 'Timestamp' },
-                    snapshotOrdinal: { content: 'Snapshot' },
-                    fee: { content: 'Fee' },
-                    source: { content: 'From / To' },
-                    amount: { content: 'Amount' },
-                  }}
-                  data={SkeletonSpan.generateEmptyTableRecords(transactionsPagination.currentPageSize, [
-                    'hash',
-                    'timestamp',
-                    'snapshotOrdinal',
-                    'fee',
-                    'source',
-                    'amount',
-                  ])}
-                />
-              )
-            ) : (
-              <Table
-                primaryKey="hash"
-                titles={{
-                  hash: { content: 'Txn Hash' },
-                  timestamp: { content: 'Timestamp' },
-                  snapshotOrdinal: { content: 'Snapshot' },
-                  fee: { content: 'Fee' },
-                  source: { content: 'From / To' },
-                  amount: { content: 'Amount' },
-                }}
-                data={SkeletonSpan.generateTableRecords(transactionsPagination.currentPageSize, [
-                  'hash',
-                  'timestamp',
-                  'snapshotOrdinal',
-                  'fee',
-                  'source',
-                  'amount',
-                ])}
-              />
-            )}
+            <Table
+              primaryKey="hash"
+              titles={{
+                hash: { content: 'Txn Hash' },
+                timestamp: { content: 'Timestamp' },
+                snapshotOrdinal: { content: 'Snapshot' },
+                fee: { content: 'Fee' },
+                source: { content: 'From / To' },
+                amount: { content: 'Amount' },
+              }}
+              showSkeleton={!transactions.isFetched ? { size: transactionsPagination.currentPageSize } : null}
+              emptyStateLabel="No transactions detected"
+              data={transactions.data?.data ?? []}
+              formatData={{
+                hash: (value) => <Link to={`/metagraphs/${metagraphId}/transactions/${value}`}>{shorten(value)}</Link>,
+                timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
+                snapshotOrdinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
+                fee: (value) =>
+                  formatNumber(new Decimal(value ?? 0), NumberFormat.WHOLE) + ` d${metagraph.data?.metagraphSymbol}`,
+                source: (value, record) => (
+                  <div className={styles.fromToTransaction}>
+                    <Link to={`/address/${value}`}>
+                      From: <span>{shorten(value)}</span>
+                    </Link>
+                    <Link to={`/address/${record.destination}`}>
+                      To: <span>{shorten(record.destination)}</span>
+                    </Link>
+                  </div>
+                ),
+                amount: (value) =>
+                  formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
+                  ` ${metagraph.data?.metagraphSymbol}`,
+              }}
+            />
             <TablePagination
               currentPage={transactionsPagination.currentPage}
               totalPages={transactionsPagination.totalPages}
