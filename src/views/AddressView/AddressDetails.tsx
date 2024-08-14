@@ -252,16 +252,9 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   }
                   skeleton={skeleton}
                 />
-                <MetagraphTokensSection
-                  skeleton={metagraphSkeleton}
-                  metagraphTokens={metagraphTokensDropdown}
-                  selectedOption={selectedMetagraph}
-                  setSelectedMetagraph={setSelectedMetagraph}
-                  setTokenChanged={setTokenChanged}
-                  setSkeleton={() => void 0}
-                />
                 {!totalRewards.isFetching && !totalRewards.isLoading && allTimeRewards !== undefined && (
                   <DetailRow
+                    borderBottom
                     title={'ALL-TIME REWARDS RECEIVED'}
                     value={skeleton ? '' : allTimeRewards ? formatAmount(allTimeRewards, 6) : '0 DAG'}
                     subValue={
@@ -274,6 +267,14 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                     skeleton={totalRewards.isLoading || !dagInfo}
                   />
                 )}
+                <MetagraphTokensSection
+                  skeleton={metagraphSkeleton}
+                  metagraphTokens={metagraphTokensDropdown}
+                  selectedOption={selectedMetagraph}
+                  setSelectedMetagraph={setSelectedMetagraph}
+                  setTokenChanged={setTokenChanged}
+                  setSkeleton={() => void 0}
+                />
               </div>
             </div>
           </div>
