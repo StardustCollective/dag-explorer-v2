@@ -310,11 +310,16 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                   metagraphId: isInMetagraphPage ? selectedMetagraph.metagraphId : 'ALL_METAGRAPHS',
                 }))}
                 icon={<AddressShape />}
-                emptyStateLabel='No transactions detected'
+                emptyStateLabel="No transactions detected"
               />
             )}
             {selectedTable === 'tokens' && (
-              <TokensTable metagraphTokens={metagraphTokensTable} amount={1} loading={addressMetagraphs.isFetching} emptyStateLabel='No tokens detected' />
+              <TokensTable
+                metagraphTokens={metagraphTokensTable}
+                amount={1}
+                loading={addressMetagraphs.isFetching}
+                emptyStateLabel="No tokens detected"
+              />
             )}
             {selectedTable === 'rewards' && !isInMetagraphPage && (
               <Table
@@ -376,7 +381,7 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                         {formatNumber(
                           new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
                           NumberFormat.DECIMALS_TRIMMED_EXPAND
-                        ) + ' DAG'}
+                        ) + ` ${selectedMetagraph.metagraphSymbol}`}
                       </span>
                     </span>
                   ),
