@@ -35,10 +35,11 @@ export const TokensTable = ({
           const tokenCard: CardDataRow[] = [];
           tokenCard.push({
             value: node.metagraphName,
+            linkTo: `/metagraphs/${node.metagraphId}`,
             element: <img src={node.metagraphIcon} className={styles.metagraphIcon}/>
           });
           tokenCard.push({value: node.metagraphSymbol});
-          tokenCard.push({value: fitStringInCell(node.metagraphId, 8), toCopy: node.metagraphId});
+          tokenCard.push({value: fitStringInCell(node.metagraphId, 8), toCopy: node.metagraphId, linkTo: `/metagraphs/${node.metagraphId}`,});
           tokenCard.push({value: formatAmount(node.balance, 6, false, '')});
           tokensCards.add(tokenCard);
         }        
