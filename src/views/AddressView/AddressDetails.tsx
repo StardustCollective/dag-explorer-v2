@@ -343,14 +343,6 @@ export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet
                           NumberFormat.DECIMALS_TRIMMED_EXPAND
                         ) + ' DAG'}
                       </span>
-                      <span className={styles.converted}>
-                        (
-                        {formatNumber(
-                          new Decimal(value ?? 0).div(Decimal.pow(10, 8)),
-                          NumberFormat.DECIMALS_TRIMMED_EXPAND
-                        ) + ' DAG'}
-                        )
-                      </span>
                     </span>
                   ),
                   accruedAt: (value) => formatTime(value, 'date'),
