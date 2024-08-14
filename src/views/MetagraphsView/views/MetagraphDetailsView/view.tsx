@@ -9,7 +9,7 @@ import { useNextTokenPagination } from '../../../../utils/pagination';
 import { Table } from '../../../../components/Table';
 import dayjs from 'dayjs';
 import Decimal from 'decimal.js';
-import { formatNumber, NumberFormat } from '../../../../utils/numbers';
+import { formatNumber, formatTime, NumberFormat } from '../../../../utils/numbers';
 import { TablePagination } from '../../../../components/TablePagination/component';
 import { useGetAllTransactions } from '../../../../api/block-explorer/transaction';
 import { shorten } from '../../../../utils/shorten';
@@ -24,6 +24,7 @@ import { HorizontalBar } from '../../../../components/HorizontalBar/component';
 import { isAxiosError } from 'axios';
 import { NotFound } from '../../../NotFoundView/NotFound';
 import { CopyableContent } from '../../../../components/CopyableContent/component';
+import { Tooltip } from 'react-tooltip-v5';
 
 export const MetagraphDetailsView = () => {
   const { metagraphId } = useParams();
@@ -76,6 +77,7 @@ export const MetagraphDetailsView = () => {
 
   return (
     <ViewLayout className={styles.main}>
+      <Tooltip id="metagraph-detail" />
       <NavPath
         segments={[
           { name: 'Metagraphs', to: '/metagraphs' },
@@ -162,7 +164,11 @@ export const MetagraphDetailsView = () => {
               data={snapshots.data?.data ?? []}
               formatData={{
                 ordinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
-                timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
+                timestamp: (value) => (
+                  <span data-tooltip-id="metagraph-detail" data-tooltip-content={formatTime(value, 'full')}>
+                    {dayjs(value).fromNow()}
+                  </span>
+                ),
                 sizeInKB: (value) => (value ?? '-- ') + 'kb',
                 fee: (value) =>
                   formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
@@ -198,7 +204,11 @@ export const MetagraphDetailsView = () => {
               data={transactions.data?.data ?? []}
               formatData={{
                 hash: (value) => <Link to={`/metagraphs/${metagraphId}/transactions/${value}`}>{shorten(value)}</Link>,
-                timestamp: (value) => <span title={value}>{dayjs(value).fromNow()}</span>,
+                timestamp: (value) => (
+                  <span data-tooltip-id="metagraph-detail" data-tooltip-content={formatTime(value, 'full')}>
+                    {dayjs(value).fromNow()}
+                  </span>
+                ),
                 snapshotOrdinal: (value) => <Link to={`/metagraphs/${metagraphId}/snapshots/${value}`}>{value}</Link>,
                 fee: (value) =>
                   formatNumber(new Decimal(value ?? 0), NumberFormat.WHOLE) + ` d${metagraph.data?.metagraphSymbol}`,
