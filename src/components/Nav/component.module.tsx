@@ -58,7 +58,13 @@ export const NavHeader = () => {
           </div>
 
           <div className={styles.mobileControls}>
-            <div className={styles.networkSelector} onClick={() => setNetworkSelectOpen((s) => !s)}>
+            <div
+              className={styles.networkSelector}
+              onClick={() => {
+                setNetworkSelectOpen((s) => !s);
+                setLinksSelectOpen(false);
+              }}
+            >
               {NetworkOptions.find((option) => option.network === network)?.content}
               {networkSelectOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
               <SelectMenu
@@ -70,7 +76,13 @@ export const NavHeader = () => {
                 }))}
               />
             </div>
-            <div className={styles.linksSelector} onClick={() => setLinksSelectOpen((s) => !s)}>
+            <div
+              className={styles.linksSelector}
+              onClick={() => {
+                setLinksSelectOpen((s) => !s);
+                setNetworkSelectOpen(false);
+              }}
+            >
               {linksSelectOpen ? <CloseIcon /> : <MenuIcon />}
               <SelectMenu
                 open={linksSelectOpen}
