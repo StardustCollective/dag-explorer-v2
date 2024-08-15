@@ -44,21 +44,60 @@ export const HeaderRow = ({
       </>
     ) : (
       <>
-        <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? 'METAGRAPH' : 'TXN HASH'}</p>
-        </div>
-        <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{'ORDINAL'}</p>
-        </div>
-        <div className={styles.headerColumn}>
-          <p className={styles.headerText}>
-            {forSnapshots ? (showMetagraphSymbol ? 'TIMESTAMP' : 'BLOCKS') : 'AMOUNT'}
-          </p>
-        </div>
+        {forSnapshots && !showMetagraphSymbol && (
+          <>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>ORDINAL</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TIMESTAMP</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>BLOCKS</p>
+            </div>
+          </>
+        )}
         {forSnapshots && showMetagraphSymbol && (
-          <div className={styles.headerColumn}>
-            <p className={styles.headerText}>{'SNAPSHOT FEE'}</p>
-          </div>
+          <>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>METAGRAPH</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>ORDINAL</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TIMESTAMP</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>SNAPSHOT FEE</p>
+            </div>
+          </>
+        )}
+        {!forSnapshots && showMetagraphSymbol && (
+          <>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TXN HASH</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TIMESTAMP</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>AMOUNT</p>
+            </div>
+          </>
+        )}
+        {!forSnapshots && !showMetagraphSymbol && (
+          <>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TXN HASH</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TIMESTAMP</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>AMOUNT</p>
+            </div>
+          </>
         )}
       </>
     )
