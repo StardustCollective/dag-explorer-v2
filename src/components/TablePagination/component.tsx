@@ -57,7 +57,7 @@ export const TablePagination = ({
         <ArrowButton
           forward
           handleClick={() => onPageChange(Math.min((totalPages ?? Infinity) - 1, currentPage + 1))}
-          disabled={currentPage === (totalPages ?? 0) - 1 || disabled || (useNextPageToken && !!nextPageToken)}
+          disabled={currentPage === (totalPages ?? 0) - 1 || disabled || (useNextPageToken && !nextPageToken)}
         />
       </div>
     </div>
