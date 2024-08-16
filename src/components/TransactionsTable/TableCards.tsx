@@ -17,6 +17,7 @@ export const TableCards = ({
   headerText,
   icon,
   elements,
+  emptyStateLabel,
 }: {
   showSkeleton?: boolean;
   titles?: string[];
@@ -24,6 +25,7 @@ export const TableCards = ({
   headerText?: string;
   icon?: JSX.Element;
   elements?: Set<CardDataRow[]>;
+  emptyStateLabel?: string;
 }) => {
   const header = headerText && (
     <div className={styles.headerCards} key={'headerText'}>
@@ -46,9 +48,9 @@ export const TableCards = ({
   }
 
   if ((header && content.length === 1) || content.length === 0) {
-    content.push(
-      <div className="overviewText" key={'noTxs'}>
-        <p>There are no transactions</p>
+    return (
+      <div className={styles.emptyStateLabel}>
+        {emptyStateLabel}
       </div>
     );
   }

@@ -26,6 +26,7 @@ export const SkeletonTransactionsTable = ({
   const isHomePage = location.pathname === '/';
   const { networkVersion } = useContext(NetworkContext) as NetworkContextType;
   const transactions = Array.from({ length: rows });
+
   return (
     <div
       className={
@@ -62,67 +63,67 @@ const SkeletonTransactionRow = ({
   isHomePage,
   forSnapshots,
   showMetagraphSymbol,
-  isLastRow
+  isLastRow,
 }: {
   isHomePage: boolean;
   forSnapshots?: boolean;
   showMetagraphSymbol?: boolean;
-  isLastRow ?: boolean
+  isLastRow?: boolean;
 }) => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
   return isHomePage ? (
     <>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
       {showMetagraphSymbol && (
-        <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+        <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
           <div className={clsx(styles.skeleton, styles.value)} />
         </div>
       )}
     </>
   ) : network === 'mainnet1' || forSnapshots ? (
     <>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
     </>
   ) : (
     <>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
-      <div className={clsx( isLastRow ? styles2.txnCellLastRow :  styles2.txnCell)}>
+      <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>
         <div className={clsx(styles.skeleton, styles.value)} />
       </div>
     </>

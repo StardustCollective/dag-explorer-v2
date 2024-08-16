@@ -8,7 +8,14 @@ import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
 import { IconType, Network } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
-import { formatAmount, formatDagPrice, formatPriceWithSymbol, formatTime } from '../../utils/numbers';
+import {
+  formatAmount,
+  formatDagPrice,
+  formatNumber,
+  formatPriceWithSymbol,
+  formatTime,
+  NumberFormat,
+} from '../../utils/numbers';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { useGetClusterInfo } from '../../api/l0-node';
 import { AddressShape } from '../../components/Shapes/AddressShape';
@@ -148,7 +155,9 @@ export const TransactionDetail = ({ network }: { network: Exclude<Network, 'main
                         title={'Transaction Fee'}
                         value={
                           !skeleton
-                            ? formatAmount(transaction.fee, 8, false, metagraphInfo.metagraphSymbol || 'DAG')
+                            ? formatNumber(transaction.fee, NumberFormat.WHOLE) +
+                                ' d' +
+                                metagraphInfo.metagraphSymbol ?? 'DAG'
                             : ''
                         }
                         subValue={

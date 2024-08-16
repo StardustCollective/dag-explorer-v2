@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
-import { Nav } from '../components/Nav/Nav';
+import { NavHeader } from '../components/Nav/component.module';
 import styles from './Layout.module.scss';
 import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
@@ -39,7 +39,7 @@ export const Layout = () => {
   return (
     <PricesProvider>
       <div className={clsx(styles.container, theme)}>
-        <Nav />
+        <NavHeader />
         <Header />
         <Outlet />
         <Footer />

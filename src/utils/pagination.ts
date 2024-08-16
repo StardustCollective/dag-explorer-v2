@@ -156,6 +156,7 @@ export const useNextTokenPagination = (pageSize = 10) => {
     currentPageSize,
     limit: currentPageSize,
     pageToken: pageTokens[currentPage] ?? null,
+    nextPageToken: pageTokens[currentPage + 1] ?? null,
     totalPages,
     goNextPage: (numPages = 1) => {
       return actions.goPage(currentPage + numPages);
@@ -175,6 +176,7 @@ export const useNextTokenPagination = (pageSize = 10) => {
     },
     setPageSize: (size: number) => {
       setCurrentPage(0);
+      setPageTokens({});
       setCurrentPageSize(size);
     },
     setNextPageToken: (token: string) => {
