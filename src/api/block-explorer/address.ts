@@ -52,27 +52,23 @@ export const useGetAddressTotalRewards = (address: string, network: Exclude<Netw
 export const useGetAddressRewards = (
   address: string,
   network: Exclude<Network, 'mainnet1'>,
-  limit?: number,
-  offset?: number
+  params?: Record<any, any>
 ) => {
-  const response = useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
+  return useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
     REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewards',
-    { limit, offset, groupingMode: 'day' },
+    { ...params, groupingMode: 'day' },
     undefined,
     false
   );
-
-  return { ...response, data: response?.data?.data, meta: response?.data?.meta };
 };
 
 export const useGetAddressMetagraphRewards = (
   address: string,
   metagraphId: string,
   network: Exclude<Network, 'mainnet1'>,
-  limit?: number,
-  offset?: number
+  params?: Record<any, any>
 ) => {
-  const response = useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
+  return useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
     REACT_APP_DAG_EXPLORER_API_URL +
       '/' +
       network +
@@ -81,10 +77,8 @@ export const useGetAddressMetagraphRewards = (
       '/metagraphs/' +
       metagraphId +
       '/rewards',
-    { limit, offset, groupingMode: 'day' },
+    { ...params, groupingMode: 'day' },
     undefined,
     false
   );
-
-  return { ...response, data: response?.data?.data, meta: response?.data?.meta };
 };

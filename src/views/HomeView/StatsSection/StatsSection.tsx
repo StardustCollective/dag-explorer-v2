@@ -75,9 +75,7 @@ const StatsSection = () => {
       <Card
         skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
         headerText={'NODE OPERATORS'}
-        info={'View Node Explorer'}
         value={clusterData ? clusterData.length + ' validators' : ''}
-        infoLink={'/node-explorer/'}
       />
     </div>
   );

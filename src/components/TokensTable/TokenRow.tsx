@@ -10,6 +10,7 @@ import { ReactComponent as DAGToken } from '../../assets/icons/DAGToken.svg';
 import CopyIcon from '../../assets/icons/CopyNoBorder.svg';
 
 import styles from './TokenRow.module.scss';
+import { Link } from 'react-router-dom';
 
 export const TokenRow = ({
   metagraphToken,
@@ -34,7 +35,7 @@ export const TokenRow = ({
       {metagraphToken ? (
         <>
           <div className={styles.tokenCell}>
-            <p className={clsx(classCell, styles.black)}>
+            <Link to={`/metagraphs/${metagraphToken.metagraphId}`} className={clsx(classCell, styles.link)}>
               {metagraphToken.metagraphIcon ? (
                 <img className={styles.tokenIcon} src={metagraphToken.metagraphIcon} />
               ) : metagraphToken.metagraphSymbol === 'DAG' ? (
@@ -43,13 +44,15 @@ export const TokenRow = ({
                 <DefaultTokenIcon className={styles.tokenIcon} />
               )}
               {metagraphToken.metagraphName}
-            </p>
+            </Link>
           </div>
           <div className={styles.tokenCell}>
             <p className={clsx(classCell, styles.gray)}>{metagraphToken.metagraphSymbol}</p>
           </div>
           <div className={styles.tokenCell}>
-            <p className={clsx(classCell, styles.gray)}>{fitStringInCell(metagraphToken.metagraphId, 8)}</p>
+            <Link to={`/metagraphs/${metagraphToken.metagraphId}`} className={clsx(classCell, styles.link)}>
+              {fitStringInCell(metagraphToken.metagraphId, 8)}
+            </Link>
             {!copied && (
               <img
                 className={`${styles.copy}`}
@@ -77,10 +80,10 @@ export const TokenRow = ({
         </>
       ) : (
         <>
-          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
-          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
-          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
-          <div className={clsx(classCell, styles.tokenCell, styles.gray)}>  —  </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}> — </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}> — </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}> — </div>
+          <div className={clsx(classCell, styles.tokenCell, styles.gray)}> — </div>
         </>
       )}
     </div>

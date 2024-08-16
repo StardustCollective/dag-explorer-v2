@@ -46,6 +46,10 @@
 .row6 {
   display: flex;
   margin-bottom: 50px;
+
+  @include respond-below(md){
+    margin: 0 2em;
+  }
 }
 
 %flexRow {

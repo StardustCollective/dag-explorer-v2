@@ -13,10 +13,12 @@ export const TokensTable = ({
   metagraphTokens,
   amount,
   loading,
+  emptyStateLabel
 }: {
   metagraphTokens: AddressMetagraphResponse[];
   amount: number;
   loading: boolean;
+  emptyStateLabel?: string;
 }) => {
   const [rows, setRows] = useState<AddressMetagraphResponse[]>([]);
   const [elements, setElements] = useState<Set<CardDataRow[]>>(new Set<[]>);
@@ -33,10 +35,11 @@ export const TokensTable = ({
           const tokenCard: CardDataRow[] = [];
           tokenCard.push({
             value: node.metagraphName,
+            linkTo: `/metagraphs/${node.metagraphId}`,
             element: <img src={node.metagraphIcon} className={styles.metagraphIcon}/>
           });
           tokenCard.push({value: node.metagraphSymbol});
-          tokenCard.push({value: fitStringInCell(node.metagraphId, 8), toCopy: node.metagraphId});
+          tokenCard.push({value: fitStringInCell(node.metagraphId, 8), toCopy: node.metagraphId, linkTo: `/metagraphs/${node.metagraphId}`,});
           tokenCard.push({value: formatAmount(node.balance, 6, false, '')});
           tokensCards.add(tokenCard);
         }        
@@ -45,10 +48,11 @@ export const TokensTable = ({
     }
   }, [rows]);
 
-  const emptyRows = [];
-  for (let i = 0; i < amount; i++) {
-    emptyRows.push(<TokenRow key={i} />);
-  }
+  const emptyRows = [
+    <div key="emptystate" className={styles.emptyStateLabel}>
+      {emptyStateLabel}
+    </div>,
+  ];
 
   return (
     <>
@@ -73,7 +77,7 @@ export const TokensTable = ({
         </div>
       </div>
       <div className={styles.tableCards}>
-        <TableCards limit={amount} showSkeleton={loading} titles={HEADERS} elements={elements}/>
+        <TableCards limit={amount} showSkeleton={loading} titles={HEADERS} elements={elements} emptyStateLabel={emptyStateLabel}/>
       </div>
     </>
   );

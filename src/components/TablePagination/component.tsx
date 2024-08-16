@@ -19,6 +19,8 @@ export type ITablePaginationProps = {
   currentSize: number;
   pageSizes: number[];
   disabled?: boolean;
+  useNextPageToken?: boolean;
+  nextPageToken?: string;
   onPageSizeChange: (size: number) => void;
   onPageChange: (page: number) => void;
 };
@@ -29,6 +31,8 @@ export const TablePagination = ({
   currentSize,
   pageSizes,
   disabled,
+  useNextPageToken,
+  nextPageToken,
   onPageSizeChange,
   onPageChange,
 }: ITablePaginationProps) => {
@@ -53,7 +57,7 @@ export const TablePagination = ({
         <ArrowButton
           forward
           handleClick={() => onPageChange(Math.min((totalPages ?? Infinity) - 1, currentPage + 1))}
-          disabled={currentPage === (totalPages ?? 0) - 1 || disabled}
+          disabled={currentPage === (totalPages ?? 0) - 1 || disabled || (useNextPageToken && !nextPageToken)}
         />
       </div>
     </div>

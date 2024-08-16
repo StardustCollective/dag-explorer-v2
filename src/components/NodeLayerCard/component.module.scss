@@ -1,5 +1,6 @@
 .main {
   display: flex;
+  width: 100%;
 
   flex-flow: column nowrap;
   padding: 20px;
@@ -64,10 +65,10 @@
   }
 
   > span {
-    display: flex;
+    display: grid;
+    width: 100%;
 
-    flex-flow: row nowrap;
-    align-items: center;
+    grid-template-columns: 1fr 20px;
     column-gap: 8px;
 
     font-family: Inter;
@@ -77,6 +78,12 @@
     text-align: left;
 
     color: #4b5563;
+
+    > span {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
 
     .copyIcon {
       width: 20px;
