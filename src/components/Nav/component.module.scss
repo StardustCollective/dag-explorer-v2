@@ -1,0 +1,160 @@
+@use '../../styles/colors' as *;
+@use '../../styles/breakpoints' as *;
+
+.main {
+  &,
+  * {
+    box-sizing: border-box;
+  }
+
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 6.9rem)) 1fr;
+
+  grid-column: 1 / -1;
+  padding: 0px 48px;
+
+  background-color: #3e4fea;
+
+  @include respond-below(md) {
+    display: flex;
+    height: 56px;
+
+    padding: 16px;
+  }
+
+  .track {
+    display: flex;
+    width: 100%;
+
+    grid-column: 2 / -2;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .leftSide {
+    display: flex;
+
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 12px;
+
+    //styleName: H6/Lausanne/Medium;
+    font-family: Lausanne;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 32px;
+    text-align: left;
+    color: #fff;
+
+    @include respond-below(md) {
+      gap: 6px;
+
+      font-family: Inter;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      letter-spacing: -0.23999999463558197px;
+      text-align: left;
+    }
+
+    img {
+      height: 30px;
+      object-fit: contain;
+
+      @include respond-below(md) {
+        height: 24px;
+      }
+    }
+  }
+
+  .rightSide {
+    .desktopControls {
+      display: flex;
+
+      flex-flow: row nowrap;
+      align-items: center;
+      gap: 16px;
+
+      > a {
+        padding: 0px 18px;
+        //styleName: Inter/md/medium;
+        font-family: Inter;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24px;
+        text-align: left;
+        color: #fff;
+      }
+
+      @include respond-below(md) {
+        display: none;
+      }
+    }
+
+    .mobileControls {
+      display: none;
+
+      flex-flow: row nowrap;
+      align-items: center;
+      gap: 12px;
+
+      @include respond-below(md) {
+        display: flex;
+      }
+    }
+
+    .networkSelector {
+      display: flex;
+      position: relative;
+
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+
+      border: 1px solid #fff;
+      border-radius: 48px;
+
+      //styleName: Body 2/Medium;
+      font-family: Lausanne;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      text-align: left;
+      color: #fff;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      @include respond-below(md) {
+        padding: 2px 14px;
+
+        font-family: Inter;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 24px;
+        letter-spacing: -0.0024em;
+        text-align: left;
+
+        svg {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    .linksSelector {
+      position: relative;
+
+      svg {
+        color: #fff;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}

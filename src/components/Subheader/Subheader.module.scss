@@ -15,6 +15,8 @@
 
   @include respond-below(md) {
     width: 100%;
+    height: unset;
+    padding-bottom: 1em;
   }
 }
 
@@ -24,6 +26,10 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+
+  @include respond-below(md) {
+    flex-flow: column nowrap;
+  }
 }
 
 .subheaderItem {
@@ -61,21 +67,11 @@
   .fullWidth {
     display: flex;
   }
-  .subheader {
-    margin-left: 1.5rem;
-  }
 }
 
 @media screen and (max-width: $sm) {
   .fullWidth {
     grid-template-columns: none;
     width: 100%;
-  }
-}
-
-@media screen and (max-width: $xlg) {
-  .fullWidth {
-    padding-left: 1rem;
-    padding-right: 1rem;
   }
 }

@@ -22,6 +22,17 @@
     flex-flow: column nowrap;
   }
 
+  .metagraphSiteLink {
+    width: 150px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    @include respond-below(md) {
+      width: 110px;
+    }
+  }
+
   .metagraphLink {
     display: flex;
 

@@ -117,7 +117,7 @@ export const TransactionRow = ({
               styles.amount
             } ${styles.alignItemsLeft}`}
           >
-            {formatAmount(tx.fee, 8, false, tx.symbol)}
+            {formatNumber(tx.fee, NumberFormat.WHOLE) + ' d' + (tx.symbol ?? 'DAG')}
           </div>
           <div className={`${clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)} ${styles.stackFromTo}`}>
             <div className={styles.stackRow}>
@@ -198,6 +198,13 @@ export const TransactionRow = ({
     if (isHomePage) {
       snapRow = (
         <>
+          {showMetagraphSymbol && (
+            <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
+              <Link to={`/metagraphs/${snapshot.metagraphId}`} className={styles.dag}>
+                {snapshot.symbol}
+              </Link>
+            </div>
+          )}
           <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
             <div className={styles.txContainer}>
               {icon && icon}
@@ -224,11 +231,6 @@ export const TransactionRow = ({
                 : 0}
             </div>
           </div>
-          {showMetagraphSymbol && (
-            <div className={clsx(isLastRow ? styles.txnCellLastRow : styles.txnCell)}>
-              <div className={styles.dag}>{snapshot.symbol}</div>
-            </div>
-          )}
         </>
       );
     } else {

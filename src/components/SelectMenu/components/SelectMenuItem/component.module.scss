@@ -1,0 +1,29 @@
+.main {
+  display: flex;
+  width: 100%;
+
+  flex-flow: row nowrap;
+  padding: 12px;
+  justify-content: space-between;
+  align-items: center;
+
+  border: 1px solid hsla(0, 0%, 0%, 0);
+  border-radius: 6px;
+  cursor: pointer;
+
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #363bd3;
+
+  &.selected {
+    border: 1px solid #798ef6;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}

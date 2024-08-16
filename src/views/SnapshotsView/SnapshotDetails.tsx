@@ -27,7 +27,6 @@ export const SnapshotDetails = () => {
   const [fetchedData, setFetchedData] = useState<FetchedData<Transaction>[] | undefined>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const snapshotTransactions = useGetSnapshotTransactions(snapshotHeight, params, metagraphId);
-  //const snapshotRewards = useGetSnapshotRewards(snapshotHeight);
   const snapshotInfo = useGetSnapshot(snapshotHeight, metagraphId);
   const [error, setError] = useState<string>(undefined);
   const [txsSkeleton, setTxsSkeleton] = useState(false);
@@ -57,9 +56,7 @@ export const SnapshotDetails = () => {
     }
 
     if (!snapshotTransactions.isFetching && !snapshotTransactions.isError) {
-      if (snapshotTransactions.data?.data.length > 0) {
-        setSnapshotTxs(snapshotTransactions.data.data);
-      }
+      setSnapshotTxs(snapshotTransactions.data.data);
       setLastPage(!snapshotTransactions.data?.meta?.next);
       handleFetchedData(setFetchedData, snapshotTransactions, currentPage, setLastPage);
       setTxsSkeleton(false);
@@ -199,8 +196,9 @@ export const SnapshotDetails = () => {
                   <TransactionsTable
                     skeleton={{ showSkeleton: txsSkeleton }}
                     limit={LIMIT}
-                    transactions={snapshotTxs}
+                    transactions={snapshotTxs ?? []}
                     icon={<SnapshotShape />}
+                    emptyStateLabel="No transactions detected"
                   />
                 )}
               </div>

@@ -18,6 +18,10 @@
     grid-template-columns: 2fr 1fr;
     column-gap: 24px;
 
+    @include respond-below(md) {
+      grid-template-columns: 1fr;
+    }
+
     .content {
       display: flex;
       width: 100%;
@@ -35,6 +39,10 @@
         letter-spacing: -0.12399999797344208px;
         text-align: left;
         color: #0a0d14;
+
+        @include respond-below(md) {
+          margin: 1em 0;
+        }
       }
     }
 
@@ -72,8 +80,11 @@
       }
     }
 
-    @include respond-below(md) {
-      grid-template-columns: 1fr;
+    .rowsCard {
+      .metagraphId {
+        display: inline-flex;
+        column-gap: 4px;
+      }
     }
   }
 

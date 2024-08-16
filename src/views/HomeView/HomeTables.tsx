@@ -11,15 +11,7 @@ import { Network } from '../../constants';
 
 import styles from './HomeView.module.scss';
 
-const HomeTables = ({
-  limit,
-  refetchEvery,
-  network
-}: {
-  limit: number;
-  refetchEvery: number;
-  network: Network;
-}) => {
+const HomeTables = ({ limit, refetchEvery, network }: { limit: number; refetchEvery: number; network: Network }) => {
   const navigate = useNavigate();
 
   const dagSnapshotsInfo = useGetLatestDAGSnapshots({ limit: limit }, refetchEvery);
@@ -121,30 +113,28 @@ const HomeTables = ({
           </>
         )}
       </div>
-      
+
       <div className={styles.tables}>
-         <TransactionsTable
-           skeleton={{ showSkeleton: !metagraphSnapshots, headerCols: ['ORDINAL', 'TIMESTAMP', 'BLOCKS', 'METAGRAPH'] }}
-           limit={1}
-           snapshots={metagraphSnapshots}
-           icon={<SnapshotShape />}
-           headerText={'Latest Metagraph snapshots'}
-           showMetagraphSymbol
-         />
- 
-         <TransactionsTable
-           skeleton={{
-             showSkeleton:
-               !metagraphTransactions && metagraphTransactionsInfo.isLoading && !metagraphTransactionsInfo.isError,
-           }}
-           limit={1}
-           transactions={metagraphTransactions}
-           icon={<TransactionShape />}
-           headerText={'Latest Metagraph transactions'}
-         />
-       </div>
-  
-     
+        <TransactionsTable
+          skeleton={{ showSkeleton: !metagraphSnapshots, headerCols: ['METAGRAPH', 'ORDINAL', 'TIMESTAMP', 'SNAPSHOT FEE'] }}
+          limit={1}
+          snapshots={metagraphSnapshots}
+          icon={<SnapshotShape />}
+          headerText={'Latest Metagraph snapshots'}
+          showMetagraphSymbol
+        />
+
+        <TransactionsTable
+          skeleton={{
+            showSkeleton:
+              !metagraphTransactions && metagraphTransactionsInfo.isLoading && !metagraphTransactionsInfo.isError,
+          }}
+          limit={1}
+          transactions={metagraphTransactions}
+          icon={<TransactionShape />}
+          headerText={'Latest Metagraph transactions'}
+        />
+      </div>
     </>
   );
 };

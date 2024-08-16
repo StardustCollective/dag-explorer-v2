@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import cls from 'classnames';
 
 import styles from './component.module.scss';
+import { SkeletonSpan } from '../SkeletonSpan/component';
 
 const RecordEntries = <K extends string, V>(record: Record<K, V>): [K, V][] => {
   return Object.entries(record) as any;
@@ -21,11 +22,10 @@ export type ITableProps<
     }
   >;
   data: DataRecord[];
+  showSkeleton?: { size: number } | null;
+  emptyStateLabel?: string;
   primaryKey: keyof DataRecord;
   detailKey?: keyof DataRecord;
-  emptyState?: {
-    [Prop in TitleKeys]?: React.ReactNode;
-  };
   formatData?: Partial<{
     [Prop in TitleKeys]: (value: DataRecord[Prop], record: DataRecord) => React.ReactNode;
   }>;
@@ -63,9 +63,10 @@ export const Table = <
 >({
   titles,
   data,
+  showSkeleton,
+  emptyStateLabel,
   primaryKey,
   detailKey,
-  emptyState,
   formatData,
   sortedColumn,
   sortedColumnType,
@@ -75,9 +76,26 @@ export const Table = <
 }: ITableProps<DataKeys, TitleKeys, SortKeys, DataRecord>): JSX.Element => {
   const [detailId, setDetailId] = useState<React.ReactNode | null>(null);
 
+  if (showSkeleton) {
+    data = SkeletonSpan.generateTableRecords(showSkeleton.size, Object.keys(titles)) as DataRecord[];
+    formatData = {};
+  }
+
   return (
-    <table className={cls(styles.root, className?.root, variants?.map(v=>styles[v]))}>
-      <thead className={cls(styles.header, className?.header, variants?.map(v=>styles[v]))}>
+    <table
+      className={cls(
+        styles.root,
+        className?.root,
+        variants?.map((v) => styles[v])
+      )}
+    >
+      <thead
+        className={cls(
+          styles.header,
+          className?.header,
+          variants?.map((v) => styles[v])
+        )}
+      >
         <tr className={cls(styles.headerRow, className?.headerRow)}>
           {RecordEntries(titles).map(([key, { content, sortable }]) => {
             const headerCellClassNames = className?.cells?.header?.[key];
@@ -108,37 +126,21 @@ export const Table = <
           })}
         </tr>
       </thead>
-      <tbody className={cls(styles.body, className?.body, variants?.map(v=>styles[v]))}>
-        {data.length === 0 && emptyState && (
-          <tr className={cls(styles.bodyRow, className?.bodyRow)}>
-            {RecordEntries(titles).map(([key, { content: headerCellContent }]) => {
-              const headerCellClassNames = className?.cells?.header?.[key];
-
-              const bodyCellClassNames = className?.cells?.body?.[key];
-
-              const content = emptyState[key] ?? '';
-
-              return (
-                <td className={cls(styles.bodyCell, className?.bodyCell, bodyCellClassNames?.cell)} key={key}>
-                  <div className={cls(styles.headerCell, className?.headerCell, headerCellClassNames?.cell)} key={key}>
-                    <span
-                      className={cls(
-                        styles.headerCellContent,
-                        className?.headerCellContent,
-                        headerCellClassNames?.cellContent
-                      )}
-                    >
-                      {headerCellContent}
-                    </span>
-                  </div>
-                  <div
-                    className={cls(styles.bodyCellContent, className?.bodyCellContent, bodyCellClassNames?.cellContent)}
-                  >
-                    {content}
-                  </div>
-                </td>
-              );
-            })}
+      <tbody
+        className={cls(
+          styles.body,
+          className?.body,
+          variants?.map((v) => styles[v])
+        )}
+      >
+        {data.length === 0 && (
+          <tr className={cls(styles.bodyRow, className?.bodyRow, detailKey && styles.withDetailKey)}>
+            <td
+              className={cls(styles.emptyStateBodyCell, styles.bodyCell, className?.bodyCell)}
+              colSpan={RecordEntries(titles).length}
+            >
+              <div className={cls(styles.bodyCellContent, className?.bodyCellContent)}>{emptyStateLabel}</div>
+            </td>
           </tr>
         )}
         {data.map((dataRecord, index) => (
@@ -203,7 +205,13 @@ export const Table = <
           </>
         ))}
       </tbody>
-      <tfoot className={cls(styles.footer, className?.footer, variants?.map(v=>styles[v]))}></tfoot>
+      <tfoot
+        className={cls(
+          styles.footer,
+          className?.footer,
+          variants?.map((v) => styles[v])
+        )}
+      ></tfoot>
     </table>
   );
 };

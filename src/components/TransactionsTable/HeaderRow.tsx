@@ -44,19 +44,60 @@ export const HeaderRow = ({
       </>
     ) : (
       <>
-        <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? 'ORDINAL' : 'TXN HASH'}</p>
-        </div>
-        <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{'TIMESTAMP'}</p>
-        </div>
-        <div className={styles.headerColumn}>
-          <p className={styles.headerText}>{forSnapshots ? (showMetagraphSymbol ? 'FEE' : 'BLOCKS') : 'AMOUNT'}</p>
-        </div>
+        {forSnapshots && !showMetagraphSymbol && (
+          <>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>ORDINAL</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TIMESTAMP</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>BLOCKS</p>
+            </div>
+          </>
+        )}
         {forSnapshots && showMetagraphSymbol && (
-          <div className={styles.headerColumn}>
-            <p className={styles.headerText}>{'METAGRAPH'}</p>
-          </div>
+          <>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>METAGRAPH</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>ORDINAL</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TIMESTAMP</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>SNAPSHOT FEE</p>
+            </div>
+          </>
+        )}
+        {!forSnapshots && showMetagraphSymbol && (
+          <>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TXN HASH</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TIMESTAMP</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>AMOUNT</p>
+            </div>
+          </>
+        )}
+        {!forSnapshots && !showMetagraphSymbol && (
+          <>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TXN HASH</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>TIMESTAMP</p>
+            </div>
+            <div className={styles.headerColumn}>
+              <p className={styles.headerText}>AMOUNT</p>
+            </div>
+          </>
         )}
       </>
     )
@@ -92,11 +133,11 @@ export const HeaderRow = ({
       </div>
 
       <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
-        <p className={styles.headerText}>FROM</p>
+        <p className={styles.headerText}>FEE</p>
       </div>
 
       <div className={`${styles.headerColumn} ${styles.stackFromTo}`}>
-        <p className={styles.headerText}>TO</p>
+        <p className={styles.headerText}>FROM / TO</p>
       </div>
 
       <div className={clsx(styles.headerColumn, styles.topRightBorder, styles.rightAligned)}>

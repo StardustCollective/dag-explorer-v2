@@ -27,6 +27,7 @@ export const MainnetOneSnapshotDetails = () => {
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(false);
   const [error, setError] = useState<string>(undefined);
+  
   useEffect(() => {
     if (!snapshotTransactions.isLoading && !snapshotTransactions.isFetching && !snapshotTransactions.isError) {
       if (snapshotTransactions.data) {
