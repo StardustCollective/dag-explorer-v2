@@ -1,4 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
+import * as Sentry from '@sentry/react';
+
 import { Layout } from './views/Layout';
 import { HomeView } from './views/HomeView/HomeView';
 import { NotFound } from './views/NotFoundView/NotFound';
@@ -14,7 +16,7 @@ import { MetagraphsView } from './views/MetagraphsView/view';
 import { MetagraphDetailsView } from './views/MetagraphsView/views';
 import { MetagraphSnapshotDetailsView } from './views/MetagraphsView/views/MetagraphSnapshotDetailsView/view';
 
-export const router = createBrowserRouter([
+export const router = Sentry.wrapCreateBrowserRouter(createBrowserRouter)([
   {
     path: '/',
     element: <Layout />,
