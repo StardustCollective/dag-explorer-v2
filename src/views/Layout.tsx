@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useRouteError } from 'react-router-dom';
 
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
@@ -10,10 +10,13 @@ import { PricesProvider } from '../context/PricesContext';
 import { detectSubdomain } from '../utils/network';
 import { NetworkContext, NetworkContextType } from '../context/NetworkContext';
 import clsx from 'clsx';
+import { ErrorView } from './ErrorView/view';
 
-export const Layout = () => {
+export const Layout = ({ renderError }: { renderError?: boolean }) => {
   const { theme } = useContext(ThemeContext);
   const { changeNetwork } = useContext(NetworkContext) as NetworkContextType;
+
+  const error = useRouteError()
 
   useEffect(() => {
     const detectedSubdomain = detectSubdomain();
@@ -42,6 +45,7 @@ export const Layout = () => {
         <NavHeader />
         <Header />
         <Outlet />
+        {renderError && <ErrorView error={error}/>}
         <Footer />
       </div>
     </PricesProvider>

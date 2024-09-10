@@ -20,6 +20,7 @@ export const router = Sentry.wrapCreateBrowserRouter(createBrowserRouter)([
   {
     path: '/',
     element: <Layout />,
+    errorElement: <Layout renderError />,
     children: [
       { index: true, element: <HomeView /> },
 
