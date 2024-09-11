@@ -10,26 +10,20 @@
 }
 
 .stats {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
   width: 100%;
 
-  @include respond-below(md) {
-    flex-flow: column nowrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 30px;
-    gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+
+  @include respond-below(tb) {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  > * {
-    width: 20%;
-
-    @include respond-below(md) {
-      width: 100%;
-    }
+  @include respond-below(md) {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+    gap: 16px;
   }
 }
 
