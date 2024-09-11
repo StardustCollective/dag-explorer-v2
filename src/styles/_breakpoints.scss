@@ -1,12 +1,14 @@
 //TODO WE SHOULD REFACTOR ALL CODEBASE TO USE @mixin
 $sm: 300px;
 $md: 580px;
+$tb: 800px;
 $lg: 1070px;
 $xlg: 1400px;
 
 $breakpoints: (
   sm: 300px,
   md: 580px,
+  tb: 800px,
   lg: 1070px,
   xlg: 1400px
 );
