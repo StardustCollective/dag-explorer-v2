@@ -7,8 +7,10 @@ import { NetworkProvider } from './context/NetworkContext';
 import { initializeReactGaLib } from './utils/reactGoogleAnalytics';
 import { router } from './routes';
 import { TanstackQueryProvider } from './context/TanstackQueryContext';
+import { initializeReactSentryLib } from './utils/reactSentry';
 
 initializeReactGaLib();
+initializeReactSentryLib();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
