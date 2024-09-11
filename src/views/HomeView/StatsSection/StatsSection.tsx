@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useGetPrices } from '../../../api/coingecko';
 import { useGetClusterInfo, useGetLatestSnapshotTotalDagSupply } from '../../../api/l0-node';
-import { Card } from '../../../components/Card/Card';
+
 import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
-import { formatAmount, formatDagPrice, formatMarketVol, formatTotalSupply } from '../../../utils/numbers';
+import { formatAmount } from '../../../utils/numbers';
 import { MainnetStats } from './MainnetStats';
 import styles from './StatsSection.module.scss';
+import { StatCard } from '../../../components/StatCard/component';
 
 const StatsSection = () => {
   const { network } = useContext(NetworkContext) as NetworkContextType;
@@ -25,8 +26,6 @@ const StatsSection = () => {
   }, [clusterInfo.isFetching]);
 
   const prices = useGetPrices();
-
-  const formater = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 
   useEffect(() => {
     if (!prices.isFetching) {
@@ -56,26 +55,35 @@ const StatsSection = () => {
 
   return (
     <div className={styles.stats}>
-      <Card
-        skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
-        badge={dagInfo ? dagInfo.usd_24h_change : ''}
-        headerText={'DAG PRICE'}
-        value={dagInfo ? '$' + dagInfo.usd : ''}
+      <StatCard
+        title="DAG PRICE"
+        content={dagInfo ? '$' + dagInfo.usd : ''}
+        showSkeleton={!dagInfo || !clusterData || !dagTotalSupply}
+        changeLabel={
+          dagInfo
+            ? new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }).format(Math.abs(dagInfo.usd_24h_change))
+            : undefined
+        }
+        changeLabelDirection={(dagInfo?.usd_24h_change ?? 0) >= 0 ? 'up' : 'down'}
       />
-      <Card
-        skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
-        headerText={'MARKET CAP'}
-        value={dagInfo ? '$' + formater.format(dagInfo.usd_market_cap) : ''}
+      <StatCard
+        title="MARKET CAP"
+        content={
+          dagInfo
+            ? '$' + new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(dagInfo.usd_market_cap)
+            : ''
+        }
+        showSkeleton={!dagInfo || !clusterData || !dagTotalSupply}
       />
-      <Card
-        skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
-        headerText={'CIRCULATING SUPPLY'}
-        value={formatAmount(dagTotalSupply, 0).replace('DAG', '')}
+      <StatCard
+        title="CIRCULATING SUPPLY"
+        content={formatAmount(dagTotalSupply, 0).replace('DAG', '')}
+        showSkeleton={!dagInfo || !clusterData || !dagTotalSupply}
       />
-      <Card
-        skeleton={{ showSkeleton: !dagInfo || !clusterData || !dagTotalSupply }}
-        headerText={'NODE OPERATORS'}
-        value={clusterData ? clusterData.length + ' validators' : ''}
+      <StatCard
+        title="NODE OPERATORS"
+        content={clusterData ? clusterData.length + ' validators' : ''}
+        showSkeleton={!dagInfo || !clusterData || !dagTotalSupply}
       />
     </div>
   );

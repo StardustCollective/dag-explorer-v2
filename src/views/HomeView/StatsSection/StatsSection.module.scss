@@ -1,81 +1,44 @@
 @use '../../../styles/breakpoints' as *;
 
-.stats {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+.stats,
+.mainnetStats {
+  box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
-.stats > * {
-  width: 20%;
+.stats {
+  display: grid;
+  width: 100%;
+
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+
+  @include respond-below(tb) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-below(md) {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+    gap: 16px;
+  }
 }
 
 .mainnetStats {
   display: flex;
   justify-content: space-between;
   width: 100%;
-}
 
-@media screen and (max-width: $sm) {
-  .stats {
+  @include respond-below(md) {
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    width: 100%;
-    margin-left: 1rem;
-  }
-  .stats > * {
-    width: 100%;
-  }
 
-  .mainnetStats {
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    margin-left: 1rem;
-    gap: 98px;
-  }
-}
-
-@media screen and (max-width: $lg) {
-  .stats {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .stats > div {
-    flex: 50%;
-  }
-
-  .mainnetStats {
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-}
-
-@media screen and (max-width: $md) {
-  .stats {
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    margin-left: 1rem;
-    margin-bottom: 1rem;
-  }
-  .stats > * {
-    width: 100%;
-  }
-  .mainnetStats {
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    margin-left: 1rem;
-    margin-bottom: 1rem;
-  }
-  .mainnetStats > * {
-    width: 100%;
+    > * {
+      width: 100%;
+    }
   }
 }
