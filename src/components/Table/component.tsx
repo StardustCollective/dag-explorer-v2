@@ -14,6 +14,7 @@ export type ITableProps<
   SortKeys extends DataKeys & TitleKeys,
   DataRecord extends { [K in DataKeys]?: any }
 > = {
+  header?: React.ReactNode;
   titles: Record<
     TitleKeys,
     {
@@ -61,6 +62,7 @@ export const Table = <
   SortKeys extends DataKeys & TitleKeys,
   DataRecord extends { [K in DataKeys]?: any }
 >({
+  header,
   titles,
   data,
   showSkeleton,
@@ -96,6 +98,13 @@ export const Table = <
           variants?.map((v) => styles[v])
         )}
       >
+        {header && (
+          <tr className={cls(styles.tableHeader)}>
+            <th className={cls(styles.tableHeader)} colSpan={RecordEntries(titles).length}>
+              {header}
+            </th>
+          </tr>
+        )}
         <tr className={cls(styles.headerRow, className?.headerRow)}>
           {RecordEntries(titles).map(([key, { content, sortable }]) => {
             const headerCellClassNames = className?.cells?.header?.[key];
