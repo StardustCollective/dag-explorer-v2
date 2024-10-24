@@ -7,7 +7,7 @@ import styles from './Layout.module.scss';
 import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
 import { PricesProvider } from '../context/PricesContext';
-import { detectSubdomain } from '../utils/network';
+import { detectSubdomain, getNetworkContextFromLocation } from '../utils/network';
 import { NetworkContext, NetworkContextType } from '../context/NetworkContext';
 import clsx from 'clsx';
 import { ErrorView } from './ErrorView/view';
@@ -17,7 +17,7 @@ export const Layout = ({ renderError }: { renderError?: boolean }) => {
   const { theme } = useContext(ThemeContext);
   const { changeNetwork } = useContext(NetworkContext) as NetworkContextType;
 
-  const error = useRouteError()
+  const error = useRouteError();
 
   useEffect(() => {
     const detectedSubdomain = detectSubdomain();
@@ -40,13 +40,17 @@ export const Layout = ({ renderError }: { renderError?: boolean }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const networkContext = getNetworkContextFromLocation();
+  }, []);
+
   return (
     <PricesProvider>
       <div className={clsx(styles.container, theme)}>
         <NavHeader />
         <Header />
         <Outlet />
-        {renderError && <ErrorView error={error}/>}
+        {renderError && <ErrorView error={error} />}
         <Footer />
       </div>
     </PricesProvider>

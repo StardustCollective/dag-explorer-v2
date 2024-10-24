@@ -25,6 +25,14 @@ export enum HgtpNetwork {
 
 export const isHgtpNetwork = (value: any): value is HgtpNetwork => Object.values(HgtpNetwork).includes(value);
 
+export enum AppStage {
+  PRODUCTION = 'production',
+  STAGING = 'staging',
+  LOCAL = 'local',
+}
+
+export const isAppStage = (value: any): value is AppStage => Object.values(AppStage).includes(value);
+
 export type NetworkVersion = '1.0' | '2.0';
 export const AVAILABLE_NETWORKS: Record<HgtpNetwork, string> = {
   mainnet1: 'MainNet 1',
