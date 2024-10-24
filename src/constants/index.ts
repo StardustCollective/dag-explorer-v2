@@ -6,7 +6,7 @@ export const COIN_IDS = {
 export enum SearchableItem {
   Address = 'ADDRESS',
   Snapshot = 'SNAPSHOT',
-  Hash = 'HASH'
+  Hash = 'HASH',
 }
 
 export enum IconType {
@@ -16,11 +16,19 @@ export enum IconType {
   Block = 'BlockShape',
 }
 
-export type Network = 'testnet' | 'mainnet1' | 'mainnet' | 'integrationnet';
+export enum HgtpNetwork {
+  MAINNET_1 = 'mainnet1',
+  MAINNET = 'mainnet',
+  INTEGRATIONNET = 'integrationnet',
+  TESTNET = 'testnet',
+}
+
+export const isHgtpNetwork = (value: any): value is HgtpNetwork => Object.values(HgtpNetwork).includes(value);
+
 export type NetworkVersion = '1.0' | '2.0';
-export const AVAILABLE_NETWORKS: Record<Network, string> = {
+export const AVAILABLE_NETWORKS: Record<HgtpNetwork, string> = {
   mainnet1: 'MainNet 1',
   testnet: 'TestNet',
   mainnet: 'MainNet',
-  integrationnet: 'IntegrationNet'
+  integrationnet: 'IntegrationNet',
 };

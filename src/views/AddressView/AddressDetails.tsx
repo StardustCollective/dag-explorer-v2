@@ -5,7 +5,7 @@ import { AddressMetagraphResponse, Transaction } from '../../types';
 import { DetailRow } from '../../components/DetailRow/DetailRow';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
-import { IconType, Network } from '../../constants';
+import { IconType, HgtpNetwork } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
 import {
   formatAmount,
@@ -42,7 +42,7 @@ import dayjs from 'dayjs';
 import Decimal from 'decimal.js';
 import { TablePagination } from '../../components/TablePagination/component';
 
-export const AddressDetails = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
+export const AddressDetails = ({ network }: { network: Exclude<HgtpNetwork, 'mainnet1'> }) => {
   const { addressId } = useParams();
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<Transaction[] | undefined>(undefined);

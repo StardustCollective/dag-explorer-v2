@@ -1,11 +1,11 @@
 import React from 'react';
 import { createContext, useState } from 'react';
-import { Network, NetworkVersion } from '../constants';
+import { HgtpNetwork, NetworkVersion } from '../constants';
 
 export type NetworkContextType = {
-  network: Network;
+  network: HgtpNetwork;
   networkVersion: NetworkVersion;
-  changeNetwork: (network: Network) => void;
+  changeNetwork: (network: HgtpNetwork) => void;
 };
 
 export const NetworkContext = createContext<NetworkContextType | null>(null);
@@ -13,12 +13,12 @@ export const NetworkContext = createContext<NetworkContextType | null>(null);
 const PROD_BASE_URL = 'https://dagexplorer.io/';
 
 export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [network, setNetwork] = useState<Network>(null);
+  const [network, setNetwork] = useState<HgtpNetwork>(null);
   const [networkVersion, setNetworkVersion] = useState<NetworkVersion>(null);
 
-  const handleChange = (toNetwork: Network) => {
+  const handleChange = (toNetwork: HgtpNetwork) => {
     const environment = process.env.REACT_APP_ENVIRONMENT;
-    let switchToNetwork = toNetwork;
+    let switchToNetwork: string = toNetwork;
     if (environment !== 'production') {
       switchToNetwork += '-staging';
     }

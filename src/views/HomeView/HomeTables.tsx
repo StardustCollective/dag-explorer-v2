@@ -7,11 +7,11 @@ import { TransactionShape } from '../../components/Shapes/TransactionShape';
 import { TransactionsTable } from '../../components/TransactionsTable/TransactionsTable';
 import { Snapshot, Transaction } from '../../types';
 import { NotFound } from '../NotFoundView/NotFound';
-import { Network } from '../../constants';
+import { HgtpNetwork } from '../../constants';
 
 import styles from './HomeView.module.scss';
 
-const HomeTables = ({ limit, refetchEvery, network }: { limit: number; refetchEvery: number; network: Network }) => {
+const HomeTables = ({ limit, refetchEvery, network }: { limit: number; refetchEvery: number; network: HgtpNetwork }) => {
   const navigate = useNavigate();
 
   const dagSnapshotsInfo = useGetLatestDAGSnapshots({ limit: limit }, refetchEvery);

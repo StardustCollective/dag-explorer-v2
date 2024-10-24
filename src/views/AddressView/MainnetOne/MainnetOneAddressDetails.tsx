@@ -4,7 +4,7 @@ import { MainnetOneTransaction } from '../../../types';
 import { ArrowButton } from '../../../components/Buttons/ArrowButton';
 import { DetailRow } from '../../../components/DetailRow/DetailRow';
 import { Subheader } from '../../../components/Subheader/Subheader';
-import { IconType } from '../../../constants';
+import { HgtpNetwork, IconType } from '../../../constants';
 import { NotFound } from '../../NotFoundView/NotFound';
 import { useGetTransactionsByAddress } from '../../../api/mainnet_1/block-explorer';
 import { MainnetOneTransactionTable } from '../../../components/MainnetOneTable/MainnetOneTransactionTable';
@@ -128,7 +128,7 @@ export const MainnetOneAddressDetails = () => {
                   title={'BALANCE'}
                   value={!skeleton ? 'Transferred to ' : ''}
                   onlyLink={
-                    <span className={styles.spanLink} onClick={() => changeNetwork('mainnet')}>
+                    <span className={styles.spanLink} onClick={() => changeNetwork(HgtpNetwork.MAINNET)}>
                       MainNet 2.0
                     </span>
                   }

@@ -11,6 +11,7 @@ import { detectSubdomain } from '../utils/network';
 import { NetworkContext, NetworkContextType } from '../context/NetworkContext';
 import clsx from 'clsx';
 import { ErrorView } from './ErrorView/view';
+import { HgtpNetwork } from '../constants';
 
 export const Layout = ({ renderError }: { renderError?: boolean }) => {
   const { theme } = useContext(ThemeContext);
@@ -23,18 +24,18 @@ export const Layout = ({ renderError }: { renderError?: boolean }) => {
     switch (detectedSubdomain) {
       case 'testnet-staging':
       case 'testnet':
-        changeNetwork('testnet');
+        changeNetwork(HgtpNetwork.TESTNET);
         break;
       case 'integrationnet-staging':
       case 'integrationnet':
-        changeNetwork('integrationnet');
+        changeNetwork(HgtpNetwork.INTEGRATIONNET);
         break;
       case 'mainnet1-staging':
       case 'mainnet1':
-        changeNetwork('mainnet1');
+        changeNetwork(HgtpNetwork.MAINNET_1);
         break;
       default:
-        changeNetwork('mainnet');
+        changeNetwork(HgtpNetwork.MAINNET);
         break;
     }
   }, []);
