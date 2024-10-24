@@ -122,9 +122,9 @@
     @include respond-below(md) {
       gap: 4px;
 
-      img {
-        width: 12px;
-        height: 12px;
+      img, svg {
+        width: 20px;
+        height: 20px;
       }
     }
   }
