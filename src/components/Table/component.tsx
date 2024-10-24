@@ -101,7 +101,7 @@ export const Table = <
         {header && (
           <tr className={cls(styles.tableHeader)}>
             <th className={cls(styles.tableHeader)} colSpan={RecordEntries(titles).length}>
-              {header}
+              <span>{header}</span>
             </th>
           </tr>
         )}
