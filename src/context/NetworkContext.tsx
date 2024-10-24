@@ -30,8 +30,6 @@ export const NetworkProvider = ({ children }: { children: React.ReactNode }) => 
       '.' +
       currentNetworkContext.baseDomain;
 
-    // console.log({ baseDomain, prevOriginURL: prevOriginURL.href, nextOriginURL: nextOriginURL.href });
-
     if (prevOriginURL.origin !== nextOriginURL.origin) {
       location.href = nextOriginURL.href;
     }
