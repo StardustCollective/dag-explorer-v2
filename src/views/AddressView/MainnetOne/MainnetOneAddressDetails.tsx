@@ -12,15 +12,16 @@ import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import { PricesContext, PricesContextType } from '../../../context/PricesContext';
 import { TransactionShape } from '../../../components/Shapes/TransactionShape';
 import { isValidAddress } from '../../../utils/search';
-import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
+
 import { SPECIAL_ADDRESSES_LIST } from '../../../constants/specialAddresses';
 
 import styles from './MainnetOneAddressDetails.module.scss';
+import { useNetwork } from '../../../context/NetworkContext';
 
 const LIMIT = 10;
 
 export const MainnetOneAddressDetails = () => {
-  const { changeNetwork } = useContext(NetworkContext) as NetworkContextType;
+  const { changeNetwork } = useNetwork();
   const { addressId } = useParams();
   const { dagInfo } = useContext(PricesContext) as PricesContextType;
   const [addressTxs, setAddressTxs] = useState<MainnetOneTransaction[] | undefined>(undefined);

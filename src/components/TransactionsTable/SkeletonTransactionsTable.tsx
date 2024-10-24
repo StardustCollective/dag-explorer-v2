@@ -3,8 +3,8 @@ import { HeaderRow } from './HeaderRow';
 import styles from './TransactionsTable.module.scss';
 import styles2 from './TransactionRow.module.scss';
 import styles3 from '../MainnetOneTable/MainnetOneTable.module.scss';
-import { cloneElement, useContext } from 'react';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { cloneElement } from 'react';
+import { useNetwork } from '../../context/NetworkContext';
 import { useLocation } from 'react-router-dom';
 
 export const SkeletonTransactionsTable = ({
@@ -24,7 +24,7 @@ export const SkeletonTransactionsTable = ({
 }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  const { networkVersion } = useContext(NetworkContext) as NetworkContextType;
+  const { networkVersion } = useNetwork();
   const transactions = Array.from({ length: rows });
 
   return (
@@ -70,7 +70,7 @@ const SkeletonTransactionRow = ({
   showMetagraphSymbol?: boolean;
   isLastRow?: boolean;
 }) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   return isHomePage ? (
     <>
       <div className={clsx(isLastRow ? styles2.txnCellLastRow : styles2.txnCell)}>

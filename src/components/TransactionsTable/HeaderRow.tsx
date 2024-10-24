@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import styles from './HeaderRow.module.scss';
 import clsx from 'clsx';
 
@@ -14,7 +13,7 @@ export const HeaderRow = ({
   showMetagraphSymbol?: boolean;
 }) => {
   const location = useLocation();
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
 
   const isHomePage = location.pathname === '/';
 

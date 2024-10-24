@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { Snapshot } from '../../types';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import { getL0Url } from '../../utils/networkUrls';
 
 const getUrl = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = getL0Url(network); 
   return `${url}/global-snapshot`;
 }

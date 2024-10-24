@@ -1,10 +1,10 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import cls from 'classnames';
 import { isWithinInterval } from 'date-fns';
 import { CSVLink } from 'react-csv';
 
 import styles from './ExportModal.module.scss';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import { Button } from '../Buttons/Button';
 import { api } from '../../utils/api';
 import { Transaction } from '../../types';
@@ -34,7 +34,7 @@ export const ExportModal = ({
   hasRewards: boolean;
   loadingRewards: boolean;
 }) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [maxDate, setMaxDate] = useState<Date | null>(null);

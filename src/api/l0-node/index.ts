@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { Peer, ValidatorNode } from '../../types';
 import { HgtpNetwork } from '../../constants';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import { getL0Url } from '../../utils/networkUrls';
 
 export { useGetLatestSnapshot, useGetSnapshot, useGetLatestSnapshotOrdinal } from './global-snapshot';
@@ -20,12 +19,12 @@ const getUrl = (network: HgtpNetwork) => {
 };
 
 export const useGetClusterInfo = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   return useFetch<Peer[]>(getUrl(network) + '/cluster/info', {}, { enabled: !!network });
 };
 
 export const useGetMetric = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   return useFetch<string>(getUrl(network) + '/metric', {}, { enabled: !!network });
 };
 

@@ -1,18 +1,17 @@
-import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { MetagraphInfo, MetagraphProject } from '../../types';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 
 const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
 const getUrl = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/metagraphs`;
   return url;
 };
 
 const getProjectsUrl = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/metagraph-projects`;
   return url;
 };

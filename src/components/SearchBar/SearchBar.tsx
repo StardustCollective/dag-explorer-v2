@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { HgtpNetwork, SearchableItem } from '../../constants';
 import { checkIfBEUrlExists, getSearchInputType } from '../../utils/search';
 
 import styles from './SearchBar.module.scss';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 
 
 export const handleSearch = async (searchText: string, performAction: (url: string) => void, network: HgtpNetwork) => {
@@ -46,7 +46,7 @@ export const handleSearch = async (searchText: string, performAction: (url: stri
 export const SearchBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
 
   const [searchText, setSearchText] = useState<string>('');
 

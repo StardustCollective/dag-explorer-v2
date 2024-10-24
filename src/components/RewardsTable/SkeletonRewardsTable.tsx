@@ -3,8 +3,8 @@ import { HeaderRow } from './HeaderRow';
 import styles from './RewardsTable.module.scss';
 import styles2 from './RewardRow.module.scss';
 import styles3 from '../MainnetOneTable/MainnetOneTable.module.scss';
-import { cloneElement, useContext } from 'react';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { cloneElement } from 'react';
+import { useNetwork } from '../../context/NetworkContext';
 
 export const SkeletonTransactionsTable = ({
   rows,
@@ -19,7 +19,7 @@ export const SkeletonTransactionsTable = ({
   headerCols?: string[];
   showMetagraphSymbol?: boolean;
 }) => {
-  const { networkVersion } = useContext(NetworkContext) as NetworkContextType;
+  const { networkVersion } = useNetwork();
   const transactions = Array.from({ length: rows });
   return (
     <div className={networkVersion === '2.0' ? styles.container : styles3.container}>

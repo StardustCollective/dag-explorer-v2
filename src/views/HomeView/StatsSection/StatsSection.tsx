@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useGetPrices } from '../../../api/coingecko';
 import { useGetLatestSnapshotTotalDagSupply } from '../../../api/l0-node';
-import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
+
 import { MainnetStats } from './MainnetStats';
 import styles from './StatsSection.module.scss';
 import { StatCard } from '../../../components/StatCard/component';
 import { useGetNetworkStats } from '../../../api/block-explorer';
+import { useNetwork } from '../../../context/NetworkContext';
 
 const StatsSection = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
 
   const [dagInfo, setDagInfo] = useState(null);
   const [btcInfo, setBtcInfo] = useState(null);

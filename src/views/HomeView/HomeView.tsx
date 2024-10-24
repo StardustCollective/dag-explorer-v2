@@ -1,13 +1,12 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import StatsSection from './StatsSection/StatsSection';
 import { Link, useNavigate } from 'react-router-dom';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import MainnetOneHomeTables from './MainnetOneHomeTables';
 import HomeTables from './HomeTables';
 
 import styles from './HomeView.module.scss';
-import { Subheader } from '../../components/Subheader/Subheader';
 
 import { useGetAllMetagraphProjects } from '../../api/block-explorer';
 import { ReactComponent as ConstellationGrayIcon } from '../../assets/icons/constellation-gray.svg';
@@ -18,7 +17,7 @@ const REFETCH_EVERY = 15000;
 
 export const HomeView = () => {
   const navigate = useNavigate();
-  const { networkVersion, network } = useContext(NetworkContext) as NetworkContextType;
+  const { networkVersion, network } = useNetwork();
 
   const [error, setError] = useState(false);
 

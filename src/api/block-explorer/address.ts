@@ -1,20 +1,19 @@
-import { useContext } from 'react';
 import { AddressRewardsResponse, Balance, Transaction } from '../../types';
 import { useFetch } from '../../utils/reactQuery';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import { HgtpNetwork } from '../../constants';
 import { getBEUrl } from '../../utils/networkUrls';
 
 const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
 const getUrl = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = getBEUrl(network);
   return `${url}/addresses`;
 };
 
 const getMetagraphUrl = (metagraphId: string) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = getBEUrl(network);
   return `${url}/currency/${metagraphId}/addresses`;
 };
