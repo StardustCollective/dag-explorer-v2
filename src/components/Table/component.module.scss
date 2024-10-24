@@ -3,11 +3,38 @@
 .root {
   width: 100%;
   border-spacing: 0;
+
+  &,
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .header {
   @include respond-below(md) {
     display: none;
+  }
+
+  tr.tableHeader {
+    background-color: #ffffff;
+    border-radius: 6px 6px 0px 0px;
+  }
+
+  th.tableHeader {
+    border-radius: 6px 6px 0px 0px;
+    border: 1px solid #d1d5db;
+
+    span {
+      display: inline-flex;
+      width: 100%;
+      padding: 14px 24px;
+
+      font-family: Inter;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 28px;
+      text-align: left;
+    }
   }
 
   .headerRow {
@@ -17,13 +44,21 @@
       border-top: 1px solid #dcdfea;
 
       &:nth-child(1) {
-        border-left: 1px solid #dcdfea;
         border-radius: 6px 0px 0px 0px;
       }
 
       &:last-child {
-        border-right: 1px solid #dcdfea;
         border-radius: 0px 6px 0px 0px;
+      }
+    }
+
+    .headerCell {
+      &:nth-child(1) {
+        border-left: 1px solid #dcdfea;
+      }
+
+      &:last-child {
+        border-right: 1px solid #dcdfea;
       }
     }
   }

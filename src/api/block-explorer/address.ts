@@ -1,20 +1,19 @@
-import { useContext } from 'react';
 import { AddressRewardsResponse, Balance, Transaction } from '../../types';
 import { useFetch } from '../../utils/reactQuery';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
-import { Network } from '../../constants';
+import { useNetwork } from '../../context/NetworkContext';
+import { HgtpNetwork } from '../../constants';
 import { getBEUrl } from '../../utils/networkUrls';
 
 const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
 const getUrl = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = getBEUrl(network);
   return `${url}/addresses`;
 };
 
 const getMetagraphUrl = (metagraphId: string) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = getBEUrl(network);
   return `${url}/currency/${metagraphId}/addresses`;
 };
@@ -43,7 +42,7 @@ export const useGetAddressBalance = (address: string) => {
   return useFetch<Balance>(getUrl() + '/' + address + '/balance');
 };
 
-export const useGetAddressTotalRewards = (address: string, network: Exclude<Network, 'mainnet1'>) => {
+export const useGetAddressTotalRewards = (address: string, network: Exclude<HgtpNetwork, 'mainnet1'>) => {
   return useFetch<{ totalAmount: number; isValidator: boolean }>(
     REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/total-rewards'
   );
@@ -51,7 +50,7 @@ export const useGetAddressTotalRewards = (address: string, network: Exclude<Netw
 
 export const useGetAddressRewards = (
   address: string,
-  network: Exclude<Network, 'mainnet1'>,
+  network: Exclude<HgtpNetwork, 'mainnet1'>,
   params?: Record<any, any>
 ) => {
   return useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(
@@ -65,7 +64,7 @@ export const useGetAddressRewards = (
 export const useGetAddressMetagraphRewards = (
   address: string,
   metagraphId: string,
-  network: Exclude<Network, 'mainnet1'>,
+  network: Exclude<HgtpNetwork, 'mainnet1'>,
   params?: Record<any, any>
 ) => {
   return useFetch<{ data: AddressRewardsResponse[]; meta: { limit: number; offset: number; total: number } }>(

@@ -15,8 +15,9 @@ module.exports = {
   extends: [
     'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
+    'plugin:import/recommended',
   ],
-  plugins: ['prettier', 'react', 'react-hooks', '@typescript-eslint'],
+  plugins: ['prettier', 'react', 'react-hooks', '@typescript-eslint', 'unused-imports'],
   rules: {
     quotes: ['error', 'single'],
     'no-return-await': 'off',
@@ -25,10 +26,6 @@ module.exports = {
     'no-console': 'off',
     'func-names': 'off',
     'spaced-comment': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'import/no-unresolved': 'off',
-    'import/extensions': 'off',
-    'import/prefer-default-export': 'off',
     'no-promise-executor-return': 'off',
     'no-restricted-syntax': 'off',
     'no-plusplus': 'off',
@@ -39,6 +36,9 @@ module.exports = {
     'react/function-component-definition': ['warn', { namedComponents: 'arrow-function' }],
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': ['warn', { extensions: ['.jsx', '.tsx'] }],
+    'import/no-duplicates': 'error',
+    'import/no-unresolved': 'off',
+    'unused-imports/no-unused-imports': 'error',
   },
   globals: {
     it: 'readonly',

@@ -1,6 +1,5 @@
 import React from 'react';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClientProvider , QueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 declare module '@tanstack/react-query' {

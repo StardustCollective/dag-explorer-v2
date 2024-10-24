@@ -1,29 +1,28 @@
-import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { AddressMetagraphResponse, Snapshot } from '../../types';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 
 const { REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
 const getMetagraphsUrl = (address: string) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   return `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/addresses/${address}/metagraphs`;
 };
 
 const getMetagraphSnapshotsUrl = (address: string) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   return `${REACT_APP_DAG_EXPLORER_API_URL}/${network}/addresses/${address}/metagraph-snapshots`;
 };
 
 export const useGetAddressMetagraphs = (address: string, params?: any) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   return useFetch<AddressMetagraphResponse[]>(getMetagraphsUrl(address), params, {
     enabled: true,
   });
 };
 
 export const useGetAddressMetagraphSnapshots = (address?: string, params?: any) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   return useFetch<{ data: Snapshot[]; meta?: any }>(
     getMetagraphSnapshotsUrl(address),
     params,

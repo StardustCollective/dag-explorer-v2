@@ -11,14 +11,14 @@ import { NetworkContext } from '../../context/NetworkContext';
 import { SelectMenu } from '../SelectMenu/component';
 
 import styles from './component.module.scss';
-import { Network } from '../../constants';
+import { HgtpNetwork } from '../../constants';
 import { ISelectMenuItemProps } from '../SelectMenu/components/SelectMenuItem/component';
 
-const NetworkOptions: (ISelectMenuItemProps & { network: Network })[] = [
-  { content: 'MainNet 2.0', network: 'mainnet' },
-  { content: 'IntegrationNet 2.0', network: 'integrationnet' },
-  { content: 'TestNet 2.0', network: 'testnet' },
-  { content: 'MainNet 1.0', network: 'mainnet1' },
+const NetworkOptions: (ISelectMenuItemProps & { network: HgtpNetwork })[] = [
+  { content: 'MainNet 2.0', network: HgtpNetwork.MAINNET },
+  { content: 'IntegrationNet 2.0', network: HgtpNetwork.INTEGRATIONNET },
+  { content: 'TestNet 2.0', network: HgtpNetwork.TESTNET },
+  { content: 'MainNet 1.0', network: HgtpNetwork.MAINNET_1 },
 ];
 
 export const NavHeader = () => {

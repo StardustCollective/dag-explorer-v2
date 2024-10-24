@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { RewardTransaction, Snapshot, Transaction } from '../../types';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import { getBEUrl } from '../../utils/networkUrls';
 
 const getUrl = (metagraphId?: string) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = getBEUrl(network);
   return !metagraphId ? `${url}/global-snapshots` : `${url}/currency/${metagraphId}/snapshots`;
 };

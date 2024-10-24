@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AVAILABLE_NETWORKS } from '../../constants';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import { SearchBar } from '../SearchBar/SearchBar';
 import styles from './Header.module.scss';
 import { AddressShape } from '../Shapes/AddressShape';
@@ -11,7 +10,7 @@ import { Warning } from 'phosphor-react';
 
 export const Header = () => {
   const { pathname } = useLocation();
-  const { network, networkVersion } = useContext(NetworkContext) as NetworkContextType;
+  const { network, networkVersion } = useNetwork();
 
   return (
     <header className={`${styles.fullWidth} ${styles.bgGray}`}>

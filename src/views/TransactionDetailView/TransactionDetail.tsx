@@ -6,7 +6,7 @@ import { MetagraphInfo, Transaction } from '../../types';
 import { Subheader } from '../../components/Subheader/Subheader';
 import { useGetPrices } from '../../api/coingecko';
 import { SkeletonCard } from '../../components/Card/SkeletonCard';
-import { IconType, Network } from '../../constants';
+import { IconType, HgtpNetwork } from '../../constants';
 import { NotFound } from '../NotFoundView/NotFound';
 import {
   formatAmount,
@@ -28,7 +28,7 @@ import DefaultTokenIcon from '../../assets/icons/DefaultTokenIcon.svg';
 import styles from './TransactionDetail.module.scss';
 import { useGetTransaction } from '../../api/block-explorer';
 
-export const TransactionDetail = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
+export const TransactionDetail = ({ network }: { network: Exclude<HgtpNetwork, 'mainnet1'> }) => {
   const { transactionHash, metagraphId } = useParams();
 
   const rawTransaction = useGetTransaction(transactionHash, metagraphId);
