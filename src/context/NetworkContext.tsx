@@ -15,18 +15,20 @@ export const NetworkProvider = ({ children }: { children: React.ReactNode }) => 
   const [networkVersion, setNetworkVersion] = useState<NetworkVersion>('2.0');
 
   const changeNetwork = (network: HgtpNetwork, stage?: AppStage) => {
-    stage =
-      stage ?? (isAppStage(process.env.REACT_APP_ENVIRONMENT) ? process.env.REACT_APP_ENVIRONMENT : AppStage.LOCAL);
-
     const prevOriginURL = new URL(location.href);
     const nextOriginURL = new URL(prevOriginURL);
 
-    const { baseDomain } = getNetworkContextFromDomain(prevOriginURL.hostname);
+    const currentNetworkContext = getNetworkContextFromDomain(prevOriginURL.hostname);
+
+    stage =
+      stage ??
+      (currentNetworkContext.stage ||
+        (isAppStage(process.env.REACT_APP_ENVIRONMENT) ? process.env.REACT_APP_ENVIRONMENT : AppStage.LOCAL));
 
     nextOriginURL.hostname =
       [network, stage === AppStage.PRODUCTION ? null : stage].filter((element) => element !== null).join('-') +
       '.' +
-      baseDomain;
+      currentNetworkContext.baseDomain;
 
     // console.log({ baseDomain, prevOriginURL: prevOriginURL.href, nextOriginURL: nextOriginURL.href });
 
