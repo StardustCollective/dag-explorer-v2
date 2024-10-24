@@ -1,9 +1,23 @@
-export const detectSubdomain = () => {
-  let subdomain;
+import { AppStage, HgtpNetwork, isAppStage, isHgtpNetwork } from '../constants';
 
-  const host = window.location.host;
-  const arr = host.split('.').slice(0, host.includes('localhost') ? -1 : -2);
+export type INetworkContext = {
+  baseDomain: string | false;
+  stage: AppStage | false;
+  network: HgtpNetwork | false;
+};
 
-  if (arr.length > 0) subdomain = arr[0];
-  return subdomain;
+export const getNetworkContextFromDomain = (domain: string): INetworkContext => {
+  const pattern = /(?:(\w+)(?:-(\w+))?)?\.?(dagexplorer\.io|localhost)(?::\d+)?/i;
+  const match = pattern.exec(domain);
+
+  return {
+    baseDomain: match[3] ?? false,
+    stage: isAppStage(match[1]) ? match[1] : isAppStage(match[2]) ? match[2] : false,
+    network: isHgtpNetwork(match[1]) ? match[1] : false,
+  };
+};
+
+export const getNetworkContextFromLocation = () => {
+  const hostname = window.location.hostname;
+  return getNetworkContextFromDomain(hostname);
 };

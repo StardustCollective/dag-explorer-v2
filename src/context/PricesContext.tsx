@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { createContext, useState } from 'react';
+import React, { useEffect , createContext, useState } from 'react';
 import { useGetPrices } from '../api/coingecko';
 
 export type PricesContextType = {

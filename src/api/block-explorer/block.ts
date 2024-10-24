@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { Block } from '../../types';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import { getBEUrl } from '../../utils/networkUrls';
 
-const getUrl = (metagraphId ?: string) => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+const getUrl = (metagraphId?: string) => {
+  const { network } = useNetwork();
   const url = getBEUrl(network);
   return metagraphId ? `${url}/currency/${metagraphId}/blocks` : `${url}/blocks`;
 };

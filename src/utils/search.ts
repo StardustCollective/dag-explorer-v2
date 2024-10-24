@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Network, SearchableItem } from '../constants';
+import { HgtpNetwork, SearchableItem } from '../constants';
 import { SPECIAL_ADDRESSES_LIST } from '../constants/specialAddresses';
 import { getBEUrl } from './networkUrls';
 
@@ -23,7 +23,7 @@ export const getSearchInputType = (input: string): SearchableItem | undefined =>
   return undefined;
 };
 
-export const checkIfBEUrlExists = async (path: string, network: Network): Promise<boolean> => {
+export const checkIfBEUrlExists = async (path: string, network: HgtpNetwork): Promise<boolean> => {
   try {
     const url = `${getBEUrl(network)}/${path}`;
     const response = await axios.get(url);

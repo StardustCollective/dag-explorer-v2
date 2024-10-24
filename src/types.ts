@@ -168,6 +168,19 @@ export type MetagraphInfo = {
   metagraphNodes?: { l0: MetagraphNodeLayerInfo; cl1: MetagraphNodeLayerInfo; dl1: MetagraphNodeLayerInfo };
 };
 
+export type MetagraphProject = {
+  id: string;
+  metagraphId: string | null;
+  network: string;
+  name: string;
+  icon_url: string | null;
+  type: 'public' | 'private';
+  snapshots90d: number | null;
+  fees90d: number | null;
+  snapshotsTotal: number | null;
+  feesTotal: number | null;
+};
+
 export type MetagraphTransactionResponse = {
   metagraph: MetagraphInfo;
   transaction?: Transaction;

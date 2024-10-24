@@ -1,13 +1,12 @@
-import { useContext } from 'react';
 import { useFetch } from '../../utils/reactQuery';
 import { Balance, TotalSupply } from '../../types';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 import { getL0Url } from '../../utils/networkUrls';
 
 const { REACT_APP_MAINNET_TWO_L0_NODE_URL } = process.env;
 
 const getUrl = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
   const url = getL0Url(network);
   return `${url}/dag`;
 };

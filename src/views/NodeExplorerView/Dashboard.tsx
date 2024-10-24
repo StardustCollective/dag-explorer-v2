@@ -4,7 +4,7 @@ import { useGetClusterInfo, useGetClusterRewards, useGetValidatorNodes } from '.
 import { InfoTable } from '../../components/InfoTable/InfoTable';
 import TableController from '../../components/ValidatorsTable/TableController';
 import { ValidatorsTable } from '../../components/ValidatorsTable/ValidatorsTable';
-import { Network } from '../../constants';
+import { HgtpNetwork } from '../../constants';
 import { ValidatorNode } from '../../types';
 import { NotFound } from '../NotFoundView/NotFound';
 import styles from './Dashboard.module.scss';
@@ -16,7 +16,7 @@ const orderNodes = (nodes: ValidatorNode[]) => {
   return ordered.concat(nodes.filter((node) => node.status === 'Offline'));
 };
 
-export const Dashboard = ({ network }: { network: Exclude<Network, 'mainnet1'> }) => {
+export const Dashboard = ({ network }: { network: Exclude<HgtpNetwork, 'mainnet1'> }) => {
   const validatorNodes = useGetValidatorNodes(network);
   const [nodes, setNodes] = useState<ValidatorNode[]>([]);
   const [pages, setPages] = useState(1);
