@@ -1,4 +1,4 @@
-import React, { useContext, useEffect , createContext, useState } from 'react';
+import React, { useContext, useEffect, createContext, useState } from 'react';
 import { AppStage, HgtpNetwork, isAppStage, NetworkVersion } from '../constants';
 import { getNetworkContextFromDomain, getNetworkContextFromLocation } from '../utils/network';
 
@@ -28,7 +28,7 @@ export const NetworkProvider = ({ children }: { children: React.ReactNode }) => 
       '.' +
       baseDomain;
 
-    console.log({ baseDomain, prevOriginURL: prevOriginURL.href, nextOriginURL: nextOriginURL.href });
+    // console.log({ baseDomain, prevOriginURL: prevOriginURL.href, nextOriginURL: nextOriginURL.href });
 
     if (prevOriginURL.origin !== nextOriginURL.origin) {
       location.href = nextOriginURL.href;
