@@ -1,4 +1,3 @@
-import { setServers } from 'dns';
 import { useEffect, useState } from 'react';
 
 interface DataFields {

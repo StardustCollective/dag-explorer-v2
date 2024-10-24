@@ -1,6 +1,6 @@
 import React from 'react';
 import cls from 'classnames';
-import ReactTooltip, { Place } from 'react-tooltip';
+import ReactTooltip, { type Place } from 'react-tooltip';
 
 import { DatePickerRow } from './components';
 import styles from './component.module.scss';

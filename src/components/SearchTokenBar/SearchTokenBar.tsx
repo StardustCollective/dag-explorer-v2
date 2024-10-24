@@ -1,14 +1,14 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Network, SearchableItem } from '../../constants';
+import { HgtpNetwork, SearchableItem } from '../../constants';
 import { checkIfBEUrlExists, getSearchInputType } from '../../utils/search';
 
 import styles from './SearchTokenBar.module.scss';
-import { NetworkContext, NetworkContextType } from '../../context/NetworkContext';
+import { useNetwork } from '../../context/NetworkContext';
 
-export const handleSearch = async (searchText: string, performAction: (url: string) => void, network: Network) => {
+export const handleSearch = async (searchText: string, performAction: (url: string) => void, network: HgtpNetwork) => {
   const inputType = getSearchInputType(searchText);
   switch (inputType) {
     case SearchableItem.Address: {
@@ -45,7 +45,7 @@ export const handleSearch = async (searchText: string, performAction: (url: stri
 export const SearchTokenBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
 
   const [searchText, setSearchText] = useState<string>('');
 

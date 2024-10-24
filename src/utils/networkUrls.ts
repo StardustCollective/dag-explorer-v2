@@ -1,4 +1,4 @@
-import { Network } from '../constants';
+import { HgtpNetwork } from '../constants';
 
 const {
   REACT_APP_TESTNET_BE_URL,
@@ -21,10 +21,10 @@ const l0Urls = {
   integrationnet: REACT_APP_INTEGRATIONNET_TWO_L0_NODE_URL,
 };
 
-export const getBEUrl = (network: Network): string => {
+export const getBEUrl = (network: HgtpNetwork): string => {
   return beUrls[network];
 };
 
-export const getL0Url = (network: Network): string => {
+export const getL0Url = (network: HgtpNetwork): string => {
   return l0Urls[network];
 };

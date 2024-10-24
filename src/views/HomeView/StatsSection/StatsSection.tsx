@@ -1,29 +1,22 @@
-import { useContext, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useGetPrices } from '../../../api/coingecko';
-import { useGetClusterInfo, useGetLatestSnapshotTotalDagSupply } from '../../../api/l0-node';
+import { useGetLatestSnapshotTotalDagSupply } from '../../../api/l0-node';
 
-import { NetworkContext, NetworkContextType } from '../../../context/NetworkContext';
-import { formatAmount } from '../../../utils/numbers';
 import { MainnetStats } from './MainnetStats';
 import styles from './StatsSection.module.scss';
 import { StatCard } from '../../../components/StatCard/component';
+import { useGetNetworkStats } from '../../../api/block-explorer';
+import { useNetwork } from '../../../context/NetworkContext';
 
 const StatsSection = () => {
-  const { network } = useContext(NetworkContext) as NetworkContextType;
+  const { network } = useNetwork();
 
   const [dagInfo, setDagInfo] = useState(null);
   const [btcInfo, setBtcInfo] = useState(null);
   const [dagTotalSupply, setDagTotalSupply] = useState(null);
 
-  const [clusterData, setClusterData] = useState(null);
-  const clusterInfo = useGetClusterInfo();
   const totalSupplyInfo = useGetLatestSnapshotTotalDagSupply();
-
-  useEffect(() => {
-    if (!clusterInfo.isFetching) {
-      setClusterData(clusterInfo.data);
-    }
-  }, [clusterInfo.isFetching]);
+  const networkStats = useGetNetworkStats({}, 2 * 60 * 1000);
 
   const prices = useGetPrices();
 
@@ -53,37 +46,29 @@ const StatsSection = () => {
     );
   }
 
+  const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+
   return (
     <div className={styles.stats}>
       <StatCard
-        title="DAG PRICE"
-        content={dagInfo ? '$' + dagInfo.usd : ''}
-        showSkeleton={!dagInfo || !clusterData || !dagTotalSupply}
-        changeLabel={
-          dagInfo
-            ? new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }).format(Math.abs(dagInfo.usd_24h_change))
-            : undefined
-        }
-        changeLabelDirection={(dagInfo?.usd_24h_change ?? 0) >= 0 ? 'up' : 'down'}
+        title="TOTAL SNAPSHOTS"
+        content={numberFormat.format(networkStats.data?.data.snapshotsTotal ?? 0)}
+        showSkeleton={networkStats.isPending}
       />
       <StatCard
-        title="MARKET CAP"
-        content={
-          dagInfo
-            ? '$' + new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(dagInfo.usd_market_cap)
-            : ''
-        }
-        showSkeleton={!dagInfo || !clusterData || !dagTotalSupply}
+        title="TOTAL DAG LOCKED"
+        content={numberFormat.format((networkStats.data?.data.totalLockedInDatum ?? 0) / 1e8) + ' DAG'}
+        showSkeleton={networkStats.isPending}
       />
       <StatCard
-        title="CIRCULATING SUPPLY"
-        content={formatAmount(dagTotalSupply, 0).replace('DAG', '')}
-        showSkeleton={!dagInfo || !clusterData || !dagTotalSupply}
+        title="TOTAL SNAPSHOTS FEES (90D)"
+        content={numberFormat.format((networkStats.data?.data.fees90d ?? 0) / 1e8) + ' DAG'}
+        showSkeleton={networkStats.isPending}
       />
       <StatCard
-        title="NODE OPERATORS"
-        content={clusterData ? clusterData.length + ' validators' : ''}
-        showSkeleton={!dagInfo || !clusterData || !dagTotalSupply}
+        title="TOTAL SNAPSHOTS FEES"
+        content={numberFormat.format((networkStats.data?.data.feesTotal ?? 0) / 1e8) + ' DAG'}
+        showSkeleton={networkStats.isPending}
       />
     </div>
   );
