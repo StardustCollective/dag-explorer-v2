@@ -94,6 +94,10 @@ export const formatNumber = (number: number | Decimal | string | undefined | nul
     number = number.toNumber();
   }
 
+  if(number === 0){
+    format = NumberFormat.DECIMALS
+  }
+
   if (format === NumberFormat.MILLIFY) {
     return millify(<number>number);
   }
@@ -121,6 +125,7 @@ export const formatNumber = (number: number | Decimal | string | undefined | nul
   if (format === NumberFormat.DECIMALS_TRIMMED_EXPAND) {
     return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 0,
+      maximumFractionDigits: 20
     }).format(<number>number);
   }
 
