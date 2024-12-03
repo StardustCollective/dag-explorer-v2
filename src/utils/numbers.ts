@@ -42,7 +42,7 @@ export const formatPriceWithSymbol = (
   return `${prefixSymbol || ''}${formatPrice(amount, dagInfo, toFixed)} ${suffixSymbol || ''}`;
 };
 
-export const formatAmount = (amount: number, toFixed: number, forExport?: boolean, suffix = 'DAG', isFee=false) => {
+export const formatAmount = (amount: number, toFixed: number, forExport?: boolean, suffix = 'DAG', isFee = false) => {
   const formatedValue = (amount / Math.pow(10, 8)).toFixed(toFixed);
   const regex = formatedValue.match('^(\\d+\\.\\d*?)(0+)$');
   let toReturn: string;
@@ -94,10 +94,6 @@ export const formatNumber = (number: number | Decimal | string | undefined | nul
     number = number.toNumber();
   }
 
-  if(number === 0){
-    format = NumberFormat.DECIMALS
-  }
-
   if (format === NumberFormat.MILLIFY) {
     return millify(<number>number);
   }
@@ -125,7 +121,7 @@ export const formatNumber = (number: number | Decimal | string | undefined | nul
   if (format === NumberFormat.DECIMALS_TRIMMED_EXPAND) {
     return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 0,
-      maximumFractionDigits: 20
+      maximumFractionDigits: 20,
     }).format(<number>number);
   }
 
