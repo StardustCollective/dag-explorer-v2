@@ -7,7 +7,7 @@ import styles from './ExportModal.module.scss';
 import { useNetwork } from '../../context/NetworkContext';
 import { Button } from '../Buttons/Button';
 import { api } from '../../utils/api';
-import { Transaction } from '../../types';
+import { AddressRewardsResponse, Transaction } from '../../types';
 import { formatAmount } from '../../utils/numbers';
 import { InputRow } from '../InputRow';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,10 +16,7 @@ import { ImpulseSpinner } from 'react-spinners-kit';
 import CalendarIcon from '../../assets/icons/CalendarBlank.svg';
 import { getBEUrl } from '../../utils/networkUrls';
 
-const {
-  REACT_APP_MAINNET_ONE_BE_URL,
-  REACT_APP_DAG_EXPLORER_API_URL,
-} = process.env;
+const { REACT_APP_MAINNET_ONE_BE_URL, REACT_APP_DAG_EXPLORER_API_URL } = process.env;
 
 export const ExportModal = ({
   open,
@@ -72,70 +69,66 @@ export const ExportModal = ({
   }, [data]);
 
   const handleDownload = async () => {
-    if (startDate && endDate) {
-      if (dataSet.value === 'rewards') {
-        setHeaders(['date', 'amount']);
-        const data = await getData(async () => {
-          const result = await api.get<{
-            data: {
-              rewards: { rewardAmount: string; date: string }[];
-              isValidator: boolean;
-            };
-          }>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/validator-nodes/' + address + '/rewards', {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-          });
+    if (!startDate || !endDate) {
+      return;
+    }
 
-          const data = result.data as {
-            rewards: { rewardAmount: string; date: string }[];
-            isValidator: boolean;
+    if (dataSet.value === 'rewards') {
+      setHeaders(['date', 'amount']);
+      const data = await getData(async () => {
+        const response = await api.get<{
+          data: AddressRewardsResponse[];
+        }>(REACT_APP_DAG_EXPLORER_API_URL + '/' + network + '/addresses/' + address + '/rewards', {
+          groupingMode: 'day',
+          startDate: startDate.toISOString().split('T')[0],
+          endDate: endDate.toISOString().split('T')[0],
+        });
+
+        return response.data.map((reward) => {
+          return {
+            date: reward.accruedAt,
+            amount: formatAmount(reward.amount, 8, true),
           };
-          return data.rewards.map((reward) => {
-            return {
-              date: new Date(reward.date).toISOString().replaceAll('/', '-'),
-              amount: formatAmount(Number.parseInt(reward.rewardAmount), 8, true),
-            };
-          });
         });
-        setData(data);
+      });
+      setData(data);
+    }
+
+    if (dataSet.value === 'transactions') {
+      let URL: string;
+
+      if (network === 'mainnet1') {
+        URL = REACT_APP_MAINNET_ONE_BE_URL + '/address/' + address + '/transaction';
+        setHeaders(['amount', 'checkpointBlock', 'fee', 'hash', 'receiver', 'sender', 'snapshotHash', 'timestamp']);
+      } else {
+        const base = getBEUrl(network);
+        URL = base + '/addresses/' + address + '/transactions';
+        setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
       }
 
-      if (dataSet.value === 'transactions') {
-        let URL: string;
+      const data = await getData(async () => {
+        try {
+          const result = await api.get<any>(URL, { limit: 3370 });
 
-        if (network === 'mainnet1') {
-          URL = REACT_APP_MAINNET_ONE_BE_URL + '/address/' + address + '/transaction';
-          setHeaders(['amount', 'checkpointBlock', 'fee', 'hash', 'receiver', 'sender', 'snapshotHash', 'timestamp']);
-        } else {
-          const base = getBEUrl(network)
-          URL = base + '/addresses/' + address + '/transactions';
-          setHeaders(['hash', 'amount', 'source', 'destination', 'fee', 'blockHash', 'snapshotOrdinal', 'timestamp']);
-        }
-
-        const data = await getData(async () => {
-          try {
-            const result = await api.get<any>(URL, { limit: 3370 });
-
-            const data = result.data as Transaction[];
-            return data
-              .filter((tx) => {
-                const date = new Date(tx.timestamp);
-                const endDateToUse = new Date(endDate);
-                endDateToUse.setDate(endDateToUse.getDate() + 1);
-                return isWithinInterval(date, {
-                  start: startDate,
-                  end: endDateToUse,
-                });
-              })
-              .map((tx) => {
-                return { ...tx, amount: formatAmount(tx.amount, 8, true), fee: formatAmount(tx.fee, 8, true) };
+          const data = result.data as Transaction[];
+          return data
+            .filter((tx) => {
+              const date = new Date(tx.timestamp);
+              const endDateToUse = new Date(endDate);
+              endDateToUse.setDate(endDateToUse.getDate() + 1);
+              return isWithinInterval(date, {
+                start: startDate,
+                end: endDateToUse,
               });
-          } catch (e) {
-            console.log(e);
-          }
-        });
-        setData(data);
-      }
+            })
+            .map((tx) => {
+              return { ...tx, amount: formatAmount(tx.amount, 8, true), fee: formatAmount(tx.fee, 8, true) };
+            });
+        } catch (e) {
+          console.log(e);
+        }
+      });
+      setData(data);
     }
   };
 

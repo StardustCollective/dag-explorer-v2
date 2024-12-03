@@ -167,7 +167,7 @@ export const MetagraphSnapshotDetailsView = () => {
               </Link>
             ),
             amount: (value) =>
-              formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS) +
+              formatNumber(new Decimal(value ?? 0).div(Decimal.pow(10, 8)), NumberFormat.DECIMALS_TRIMMED_EXPAND) +
               ` ${metagraph.data?.metagraphSymbol}`,
           }}
         />
