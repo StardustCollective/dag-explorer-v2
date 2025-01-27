@@ -147,7 +147,7 @@ export const TransactionDetail = ({ network }: { network: Exclude<HgtpNetwork, '
                           metagraphInfo.metagraphSymbol === 'DAG' &&
                           transaction &&
                           dagInfo &&
-                          `(${formatPriceWithSymbol(transaction.amount || 0, { usd: 0 }, 2, '$', 'USD')})`
+                          `(${formatPriceWithSymbol(transaction.amount || 0, dagInfo, 2, '$', 'USD')})`
                         }
                         skeleton={skeleton}
                       />
