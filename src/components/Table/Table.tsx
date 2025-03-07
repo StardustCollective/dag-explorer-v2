@@ -1,0 +1,120 @@
+import clsx from "clsx";
+import React from "react";
+
+import { ITablePaginationProps, TablePagination } from "./TablePagination";
+
+const getEntries = <K extends string, V>(record: { [P in K]?: V }): [
+  K,
+  V
+][] => {
+  return Object.entries(record) as any;
+};
+
+export type ITableProps<R extends Record<string, any>> = {
+  titles: {
+    [P in R extends Record<infer K, any> ? K : never]?: React.ReactNode;
+  };
+  data: R[];
+  primaryKey: R extends Record<any, any> ? keyof R : never;
+  format?: {
+    [P in R extends Record<infer K, any> ? K : never]?: (
+      value: R[P],
+      record: R
+    ) => React.ReactNode;
+  };
+  loading?: boolean;
+  loadingState?: React.ReactNode;
+  emptyState?: React.ReactNode;
+  pagination?: ITablePaginationProps;
+  className?: string;
+};
+
+export const Table = <R extends Record<string, any>>({
+  data,
+  primaryKey,
+  titles,
+  format,
+  loading,
+  loadingState,
+  emptyState,
+  pagination,
+  className,
+}: ITableProps<R>) => {
+  return (
+    <table
+      className={clsx(
+        "card rounded-xl border-separate border-spacing-0",
+        className
+      )}
+    >
+      <thead>
+        <tr>
+          {getEntries(titles).map(([key, value]) => (
+            <th
+              className={clsx(
+                "py-5.5 px-4 uppercase bg-c1f5",
+                "first:pl-6 last:pr-6",
+                "first:rounded-tl-xl last:rounded-tr-xl",
+                data.length === 0 &&
+                  !emptyState &&
+                  "first:rounded-bl-xl last:rounded-br-xl"
+              )}
+              style={{ width: `${100 / getEntries(titles).length}%` }}
+              key={key}
+            >
+              <div className="flex flex-row flex-nowrap w-full items-center gap-1.5 text-xs font-semibold text-gray-600">
+                {value}
+              </div>
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {!loading &&
+          data.map((record, idx) => (
+            <tr key={String(record[primaryKey])}>
+              {getEntries(titles).map(([key]) => {
+                const value = record[key];
+                return (
+                  <td
+                    className={clsx(
+                      "border-t border-gray-200",
+                      "py-5.5 px-4",
+                      "first:pl-6 last:pr-6",
+                      idx % 2 === 0 && "bg-cafa",
+                      idx === data.length - 1 &&
+                        "first:rounded-bl-xl last:rounded-br-xl"
+                    )}
+                    style={{ width: `${100 / getEntries(titles).length}%` }}
+                    key={`${record[primaryKey]}:${key}`}
+                  >
+                    <div>{format?.[key]?.(value, record) ?? value}</div>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        {!loading && data.length === 0 && (
+          <tr>
+            <td colSpan={getEntries(titles).length}>{emptyState}</td>
+          </tr>
+        )}
+        {loading && (
+          <tr>
+            <td colSpan={getEntries(titles).length}>{loadingState}</td>
+          </tr>
+        )}
+        {pagination && (
+          <tr className="border-t-0.5 border-gray-600">
+            <td
+              className="first:rounded-bl-xl last:rounded-br-xl"
+              colSpan={getEntries(titles).length}
+            >
+              <TablePagination {...pagination} />
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
+};
