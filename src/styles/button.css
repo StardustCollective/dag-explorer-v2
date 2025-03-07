@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+.button {
+  @apply flex flex-row flex-nowrap gap-1.5;
+  @apply justify-center items-center;
+  @apply font-semibold;
+  @apply cursor-pointer;
+
+  outline: none;
+  box-shadow: 0px 2px 4px -1px #0000000a, 0px 4px 6px -1px #00000014;
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.6;
+  }
+}
+
+.button.primary {
+  @apply bg-white;
+  @apply text-hgtp-blue-600;
+  @apply border border-white rounded-5xl;
+
+  &:hover:not(:disabled, .disabled),
+  &.hover:not(:disabled, .disabled) {
+    @apply bg-transparent;
+  }
+}
+
+.button.outline {
+  @apply bg-transparent;
+  @apply text-white;
+  @apply border border-white rounded-5xl;
+
+  &:hover:not(:disabled, .disabled),
+  &.hover:not(:disabled, .disabled) {
+    @apply bg-white;
+  }
+}
+
+.button.secondary {
+  @apply bg-transparent;
+  @apply text-hgtp-blue-600;
+  @apply border border-hgtp-blue-600 rounded-5xl;
+
+  &:hover:not(:disabled, .disabled),
+  &.hover:not(:disabled, .disabled) {
+    @apply bg-hgtp-blue-600;
+    @apply text-white;
+  }
+}
+
+.button.text {
+  &:hover:not(:disabled, .disabled),
+  &.hover:not(:disabled, .disabled) {
+    @apply underline text-hgtp-blue-600;
+  }
+}
+
+.button.xs {
+  @apply px-4 py-2;
+  @apply text-xs;
+}
+
+.button.sm {
+  @apply px-6 py-2;
+  @apply text-sm;
+}
+
+.button.md {
+  @apply px-6 py-2.5;
+  @apply text-base;
+}
+
+.button.lg {
+  @apply px-6 py-3;
+  @apply text-lg;
+}
+
+.button.xl {
+  @apply px-6 py-3.5;
+  @apply text-xl;
+}

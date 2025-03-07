@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+.card {
+  @apply border-[0.5px] border-gray-300 rounded-lg;
+  @apply shadow-sm;
+  @apply bg-white;
+}
+
+.card > .header{
+  @apply min-h-4;
+  @apply border-b-[0.5px] border-gray-300;
+}
