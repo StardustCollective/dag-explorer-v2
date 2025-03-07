@@ -19,7 +19,7 @@ export const Header = ({}: IHeaderProps) => {
         </Link>
         <Link
           className="flex gap-2 items-center h-9 px-4.5"
-          href="/delegated-staking"
+          href="/staking"
         >
           Delegated staking
         </Link>

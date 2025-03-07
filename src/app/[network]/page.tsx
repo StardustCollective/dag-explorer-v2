@@ -35,7 +35,7 @@ export const generateStaticParams = async () => {
   }));
 };
 
-export default async function Page({
+export default async function DashboardPage({
   params,
 }: {
   params: Promise<{ network: string }>;
