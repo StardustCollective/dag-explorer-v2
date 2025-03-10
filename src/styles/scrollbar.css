@@ -1,0 +1,25 @@
+/* General scrollbar styles */
+::-webkit-scrollbar {
+  width: 4px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(from #3e4fea r g b / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(from #3e4fea r g b / 0.5);
+}
+
+/* Firefox-specific styling */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(from #3e4fea r g b / 0.3) transparent; /* Black thumb on transparent track */
+  scrollbar-gutter: stable;
+}
