@@ -23,6 +23,7 @@
   &:hover:not(:disabled, .disabled),
   &.hover:not(:disabled, .disabled) {
     @apply bg-transparent;
+    @apply text-white;
   }
 }
 
@@ -34,6 +35,7 @@
   &:hover:not(:disabled, .disabled),
   &.hover:not(:disabled, .disabled) {
     @apply bg-white;
+    @apply text-hgtp-blue-600;
   }
 }
 
