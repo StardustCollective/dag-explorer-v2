@@ -10,3 +10,24 @@ export type IMetagraphProject = {
   snapshotsTotal: number | null;
   feesTotal: number | null;
 };
+
+export type IMetagraphNodeLayer = {
+  url: string | null;
+  nodes: number;
+};
+
+export type IMetagraph = {
+  metagraphId: string;
+  metagraphName: string;
+  metagraphDescription: string;
+  metagraphSymbol: string;
+  metagraphIcon: string;
+  metagraphSiteUrl: string | null;
+  metagraphStakingWalletAddress: string | null;
+  metagraphFeesWalletAddress: string | null;
+  metagraphNodes?: {
+    l0: IMetagraphNodeLayer;
+    cl1: IMetagraphNodeLayer;
+    dl1: IMetagraphNodeLayer;
+  };
+};

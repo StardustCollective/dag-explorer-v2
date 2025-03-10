@@ -3,9 +3,11 @@ import { HgtpNetwork } from "@/common/consts";
 import {
   IAPIResponse,
   IAPIResponseArray,
+  IMetagraph,
   IMetagraphProject,
   IPaginationOptions,
 } from "@/types";
+import { isAxiosError } from "axios";
 
 export const getMetagraphs = async (
   network: HgtpNetwork,
@@ -21,4 +23,23 @@ export const getMetagraphs = async (
   return Object.assign(response.data.data, {
     total: response.data.meta?.total ?? -1,
   });
+};
+
+export const getMetagraph = async (
+  network: HgtpNetwork,
+  currencyId: string
+): Promise<IMetagraph | null> => {
+  try {
+    const response = await DagExplorerAPI.get<IAPIResponse<IMetagraph>>(
+      `/${network}/metagraphs/${currencyId}`
+    );
+
+    return response.data.data;
+  } catch (e) {
+    if (isAxiosError(e) && e.status === 404) {
+      return null;
+    }
+
+    throw e;
+  }
 };
