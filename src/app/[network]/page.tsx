@@ -29,6 +29,8 @@ import dayjs from "dayjs";
 
 export const revalidate = 15;
 
+export const dynamicParams = false;
+
 export const generateStaticParams = async () => {
   return Object.values(HgtpNetwork).map((network) => ({
     network,
