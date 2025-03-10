@@ -12,7 +12,9 @@ export const Header = ({}: IHeaderProps) => {
           "flex justify-between items-center h-20 px-20 text-white font-medium",
       }}
     >
-      <div className="flex gap-2.5 font-twk-laus font-medium text-2xl">DAG Explorer</div>
+      <Link className="flex gap-2.5 font-twk-laus font-medium text-2xl" href="/">
+        DAG Explorer
+      </Link>
       <div className="flex gap-4">
         <Link className="flex gap-2 items-center h-9 px-4.5" href="/metagraphs">
           Metagraphs
