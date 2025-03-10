@@ -228,7 +228,7 @@ export default async function DashboardPage({
               hash: (value, record) => (
                 <Link
                   className="text-hgtp-blue-600"
-                  href={`/metagraphs/${record.metagraphId}/transactions/${value}`}
+                  href={`/transactions/${value}`}
                 >
                   {shortenString(value)}
                 </Link>
