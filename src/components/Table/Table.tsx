@@ -22,6 +22,9 @@ export type ITableProps<R extends Record<string, any>> = {
       record: R
     ) => React.ReactNode;
   };
+  colWidths?: {
+    [P in R extends Record<infer K, any> ? K : never]?: number;
+  };
   loading?: boolean;
   loadingState?: React.ReactNode;
   emptyState?: React.ReactNode;
@@ -34,12 +37,18 @@ export const Table = <R extends Record<string, any>>({
   primaryKey,
   titles,
   format,
+  colWidths,
   loading,
   loadingState,
   emptyState,
   pagination,
   className,
 }: ITableProps<R>) => {
+  const totalWidth = getEntries(titles).reduce(
+    (pv, [key]) => pv + (colWidths?.[key] ?? 1),
+    0
+  );
+
   return (
     <table
       className={clsx(
@@ -52,6 +61,7 @@ export const Table = <R extends Record<string, any>>({
           {getEntries(titles).map(([key, value]) => (
             <th
               className={clsx(
+                "whitespace-nowrap",
                 "py-5.5 px-4 uppercase bg-c1f5",
                 "first:pl-6 last:pr-6",
                 "first:rounded-tl-xl last:rounded-tr-xl",
@@ -59,7 +69,9 @@ export const Table = <R extends Record<string, any>>({
                   !emptyState &&
                   "first:rounded-bl-xl last:rounded-br-xl"
               )}
-              style={{ width: `${100 / getEntries(titles).length}%` }}
+              style={{
+                width: `${(colWidths?.[key] ?? 1) / totalWidth * 100}%`,
+              }}
               key={key}
             >
               <div className="flex flex-row flex-nowrap w-full items-center gap-1.5 text-xs font-semibold text-gray-600">
@@ -78,6 +90,7 @@ export const Table = <R extends Record<string, any>>({
                 return (
                   <td
                     className={clsx(
+                      "whitespace-nowrap",
                       "border-t border-gray-200",
                       "py-5.5 px-4",
                       "first:pl-6 last:pr-6",
