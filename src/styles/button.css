@@ -22,13 +22,25 @@
 
   &:hover:not(:disabled, .disabled),
   &.hover:not(:disabled, .disabled) {
-    @apply bg-transparent;
+    @apply bg-hgtp-blue-600;
     @apply text-white;
   }
 }
 
-.button.outline {
-  @apply bg-transparent;
+.button.primary.outlined {
+  @apply bg-white;
+  @apply text-hgtp-blue-600;
+  @apply border border-hgtp-blue-600 rounded-5xl;
+
+  &:hover:not(:disabled, .disabled),
+  &.hover:not(:disabled, .disabled) {
+    @apply !bg-hgtp-blue-600;
+    @apply text-white;
+  }
+}
+
+.button.secondary {
+  @apply bg-hgtp-blue-600;
   @apply text-white;
   @apply border border-white rounded-5xl;
 
@@ -39,15 +51,15 @@
   }
 }
 
-.button.secondary {
-  @apply bg-transparent;
-  @apply text-hgtp-blue-600;
-  @apply border border-hgtp-blue-600 rounded-5xl;
+.button.secondary.outlined {
+  @apply bg-hgtp-blue-600;
+  @apply text-white;
+  @apply border border-white rounded-5xl;
 
   &:hover:not(:disabled, .disabled),
   &.hover:not(:disabled, .disabled) {
-    @apply bg-hgtp-blue-600;
-    @apply text-white;
+    @apply !bg-white;
+    @apply text-hgtp-blue-600;
   }
 }
 
