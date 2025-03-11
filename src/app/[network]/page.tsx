@@ -26,6 +26,7 @@ import ConstellationGrayIcon from "@/assets/logos/constellation-gray.svg";
 import Link from "next/link";
 import clsx from "clsx";
 import dayjs from "dayjs";
+import { SkeletonSpan } from "@/components/SkeletonSpan";
 
 export const revalidate = 15;
 
@@ -48,19 +49,19 @@ export default async function DashboardPage({
     throw new Error("Network not found");
   }
 
-  const metagraphs = await getMetagraphs(network, { pagination: { limit: 5 } });
+  const metagraphs = getMetagraphs(network, { pagination: { limit: 5 } });
 
-  const dagSnapshots = await getLatestSnapshots(network, {
+  const dagSnapshots = getLatestSnapshots(network, {
     pagination: { limit: 5 },
   });
-  const dagTransactions = await getLatestTransactions(network, {
+  const dagTransactions = getLatestTransactions(network, {
     pagination: { limit: 5 },
   });
 
-  const metagraphSnapshots = await getLatestMetagraphSnapshots(network, {
+  const metagraphSnapshots = getLatestMetagraphSnapshots(network, {
     pagination: { limit: 5 },
   });
-  const metagraphTransactions = await getLatestMetagraphTransactions(network, {
+  const metagraphTransactions = getLatestMetagraphTransactions(network, {
     pagination: { limit: 5 },
   });
 
@@ -111,9 +112,11 @@ export default async function DashboardPage({
         />
       </Section>
       <Section title="Top projects">
-        <Table
+        <Table.Suspense
           className="w-full [&_td]:text-sm"
-          data={metagraphs.sort((a, b) => a.type.localeCompare(b.type))}
+          data={metagraphs.then((data) =>
+            data.sort((a, b) => a.type.localeCompare(b.type))
+          )}
           primaryKey="id"
           titles={{
             name: "Projects",
@@ -122,6 +125,13 @@ export default async function DashboardPage({
             fees90d: "Fees (90D)",
             feesTotal: "Total Fees",
           }}
+          loadingData={SkeletonSpan.generateTableRecords(5, [
+            "name",
+            "type",
+            "snapshots90d",
+            "fees90d",
+            "feesTotal",
+          ])}
           format={{
             name: (value, record) => (
               <Link
@@ -187,7 +197,7 @@ export default async function DashboardPage({
           title="Latest DAG snapshots"
           className={{ wrapper: "w-1/2", children: "flex flex-col gap-5" }}
         >
-          <Table
+          <Table.Suspense
             className="w-full [&_td]:text-sm"
             data={dagSnapshots}
             primaryKey="ordinal"
@@ -196,6 +206,11 @@ export default async function DashboardPage({
               timestamp: "Timestamp",
               blocks: "Blocks",
             }}
+            loadingData={SkeletonSpan.generateTableRecords(5, [
+              "ordinal",
+              "timestamp",
+              "blocks",
+            ])}
             format={{
               ordinal: (value) => (
                 <Link
@@ -209,7 +224,10 @@ export default async function DashboardPage({
               blocks: (value) => <span>{value.length}</span>,
             }}
           />
-          <Link href="/snapshots" className="button primary outlined md w-full bg-transparent">
+          <Link
+            href="/snapshots"
+            className="button primary outlined md w-full bg-transparent"
+          >
             View all DAG snapshots
           </Link>
         </Section>
@@ -217,7 +235,7 @@ export default async function DashboardPage({
           title="Latest DAG transactions"
           className={{ wrapper: "w-1/2", children: "flex flex-col gap-5" }}
         >
-          <Table
+          <Table.Suspense
             className="w-full [&_td]:text-sm"
             data={dagTransactions}
             primaryKey="hash"
@@ -226,6 +244,11 @@ export default async function DashboardPage({
               timestamp: "Timestamp",
               amount: "Amount",
             }}
+            loadingData={SkeletonSpan.generateTableRecords(5, [
+              "hash",
+              "timestamp",
+              "amount",
+            ])}
             format={{
               hash: (value) => (
                 <Link
@@ -246,7 +269,10 @@ export default async function DashboardPage({
               ),
             }}
           />
-          <Link href="/transactions" className="button primary outlined md w-full bg-transparent">
+          <Link
+            href="/transactions"
+            className="button primary outlined md w-full bg-transparent"
+          >
             View all DAG transactions
           </Link>
         </Section>
@@ -256,7 +282,7 @@ export default async function DashboardPage({
           title="Latest metagraph snapshots"
           className={{ wrapper: "w-1/2", children: "flex flex-col gap-5" }}
         >
-          <Table
+          <Table.Suspense
             className="w-full [&_td]:text-sm"
             data={metagraphSnapshots}
             primaryKey="ordinal"
@@ -266,6 +292,12 @@ export default async function DashboardPage({
               timestamp: "Timestamp",
               blocks: "Blocks",
             }}
+            loadingData={SkeletonSpan.generateTableRecords(5, [
+              "metagraphName",
+              "ordinal",
+              "timestamp",
+              "blocks",
+            ])}
             format={{
               metagraphName: (value, record) => (
                 <Link
@@ -295,7 +327,7 @@ export default async function DashboardPage({
           title="Latest metagraph transactions"
           className={{ wrapper: "w-1/2", children: "flex flex-col gap-5" }}
         >
-          <Table
+          <Table.Suspense
             className="w-full [&_td]:text-sm"
             data={metagraphTransactions}
             primaryKey="hash"
@@ -304,6 +336,11 @@ export default async function DashboardPage({
               timestamp: "Timestamp",
               amount: "Amount",
             }}
+            loadingData={SkeletonSpan.generateTableRecords(5, [
+              "hash",
+              "timestamp",
+              "amount",
+            ])}
             format={{
               hash: (value, record) => (
                 <Link
