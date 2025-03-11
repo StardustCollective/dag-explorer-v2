@@ -3,6 +3,8 @@ import React, { use } from "react";
 
 import { ITablePaginationProps, TablePagination } from "./TablePagination";
 import { isPromiseLike } from "@/utils";
+import { ErrorBoundary } from "react-error-boundary";
+import { RouterRefreshButton } from "../RouterRefresh";
 
 const getEntries = <K extends string, V>(record: { [P in K]?: V }): [
   K,
@@ -170,11 +172,29 @@ const TableSuspense = <R extends Record<string, any>>(
   props: ITableProps<R>
 ) => {
   return (
-    <React.Suspense
-      fallback={<TableBase {...props} loading={true} data={[]} />}
+    <ErrorBoundary
+      fallback={
+        <TableBase
+          {...props}
+          loading={false}
+          data={[]}
+          emptyState={
+            <div className="flex flex-col gap-2 justify-center items-center p-3">
+              <span>There was an error while loading this table data</span>
+              <RouterRefreshButton className="button primary outlined sm w-80">
+                Retry
+              </RouterRefreshButton>
+            </div>
+          }
+        />
+      }
     >
-      <TableBase {...props} loading={false} />
-    </React.Suspense>
+      <React.Suspense
+        fallback={<TableBase {...props} loading={true} data={[]} />}
+      >
+        <TableBase {...props} loading={false} />
+      </React.Suspense>
+    </ErrorBoundary>
   );
 };
 
