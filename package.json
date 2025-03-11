@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@stardust-collective/dag4": "^2.2.2",
     "@stardust-collective/web3-react-stargazer-connector": "^3.0.1",
     "@tanstack/react-query": "^5.67.1",
     "axios": "^1.8.1",
