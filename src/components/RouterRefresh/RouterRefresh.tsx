@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export type IAutoRefreshProps = { interval: number };
+export type IRouterRefreshProps = { interval: number };
 
-export const AutoRefresh = ({ interval }: IAutoRefreshProps) => {
+export const RouterRefresh = ({ interval }: IRouterRefreshProps) => {
   const router = useRouter();
 
   useEffect(() => {

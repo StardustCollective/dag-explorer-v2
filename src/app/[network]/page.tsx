@@ -1,10 +1,10 @@
 import { HgtpNetwork } from "@/common/consts/network";
 import { getNetworkFromParams } from "@/common/network";
-import { AutoRefresh } from "@/components/AutoRefresh";
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
 
 import { StatCard } from "@/components/StatCard";
+import { RouterRefresh } from "@/components/RouterRefresh";
 import { Table } from "@/components/Table";
 import { ValidatorCard } from "@/components/ValidatorCard";
 import {
@@ -67,7 +67,7 @@ export default async function DashboardPage({
 
   return (
     <PageLayout className="flex flex-col gap-10 px-20 py-8" renderAs={"main"}>
-      <AutoRefresh interval={1000 * 15} />
+      <RouterRefresh interval={1000 * 15} />
       <Section title="Explorer stats" className="flex flex-nowrap gap-6">
         <StatCard label="Total Snapshots">
           {formatNumberWithDecimals(Date.now() / 1000, { max: 0 })}
