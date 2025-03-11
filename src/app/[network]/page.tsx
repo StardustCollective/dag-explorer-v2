@@ -227,7 +227,7 @@ export default async function DashboardPage({
               amount: "Amount",
             }}
             format={{
-              hash: (value, record) => (
+              hash: (value) => (
                 <Link
                   className="text-hgtp-blue-600"
                   href={`/transactions/${value}`}
@@ -285,6 +285,9 @@ export default async function DashboardPage({
               ),
               timestamp: (value) => <span>{dayjs(value).fromNow()}</span>,
               blocks: (value) => <span>{value.length}</span>,
+            }}
+            colWidths={{
+              timestamp: 1.5,
             }}
           />
           <Link
