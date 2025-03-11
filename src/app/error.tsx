@@ -28,7 +28,7 @@ export default function ClientErrorPage({
         <pre className="text-xs font-ibm-mono font-medium max-w-180 text-center overflow-auto border border-hgtp-blue-600 bg-hgtp-blue-600/5 rounded-md">
           {[error.digest, error.message, error.stack].join("\n")}
         </pre>
-        <Link className="button secondary xl" href="/">
+        <Link className="button primary outlined xl" href="/">
           Go back to the home page
         </Link>
       </Section>

@@ -12,7 +12,7 @@ export default async function NotFoundPage() {
           Sorry, the page you are looking for doesn&apos;t exist. Please check
           back soon.
         </p>
-        <Link className="button secondary xl" href="/">
+        <Link className="button primary outlined xl" href="/">
           Go back to the home page
         </Link>
       </Section>

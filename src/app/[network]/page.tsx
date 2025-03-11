@@ -209,7 +209,7 @@ export default async function DashboardPage({
               blocks: (value) => <span>{value.length}</span>,
             }}
           />
-          <Link href="/snapshots" className="button secondary md w-full">
+          <Link href="/snapshots" className="button primary outlined md w-full bg-transparent">
             View all DAG snapshots
           </Link>
         </Section>
@@ -246,7 +246,7 @@ export default async function DashboardPage({
               ),
             }}
           />
-          <Link href="/transactions" className="button secondary md w-full">
+          <Link href="/transactions" className="button primary outlined md w-full bg-transparent">
             View all DAG transactions
           </Link>
         </Section>
@@ -290,12 +290,6 @@ export default async function DashboardPage({
               timestamp: 1.5,
             }}
           />
-          <Link
-            href="/metagraphs/snapshots"
-            className="button secondary md w-full"
-          >
-            View all metagraph snapshots
-          </Link>
         </Section>
         <Section
           title="Latest metagraph transactions"
@@ -330,12 +324,6 @@ export default async function DashboardPage({
               ),
             }}
           />
-          <Link
-            href="/metagraphs/transactions"
-            className="button secondary md w-full"
-          >
-            View all metagraph transactions
-          </Link>
         </Section>
       </div>
     </PageLayout>
