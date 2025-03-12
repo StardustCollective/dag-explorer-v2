@@ -1,11 +1,10 @@
-<svg width="1000" height="1000" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="500" cy="500" r="500" fill="#2D3DD0" />
-    <path d="M499.943 379.072L400.332 437.371V554.086L499.943 612.617L599.554 554.086V437.371L499.943 379.072Z"
-        fill="white" />
-    <path d="M216.496 680.305L492.307 842.455L584.282 680.305H216.496Z" fill="white" />
-    <path d="M213.191 323.554L300.835 477.937L475.895 169.286L213.191 323.554Z" fill="white" />
-    <path d="M415.604 311.268H765.724L503.248 157L415.604 311.268Z" fill="white" />
-    <path d="M614.826 329.233L790 637.885V329.233H614.826Z" fill="white" />
-    <path d="M698.937 513.752L524.105 822.403L786.467 668.135L698.937 513.752Z" fill="white" />
-    <path d="M210 662.456H385.06L210 353.805V662.456Z" fill="white" />
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.1519 7.77545L8.66415 9.81671V13.9033L12.1519 15.9527L15.6396 13.9033V9.81671L12.1519 7.77545Z"
+        fill="currentColor" />
+    <path d="M2.22746 18.3226L11.8845 24L15.1048 18.3226H2.22746Z" fill="currentColor" />
+    <path d="M2.11173 5.83159L5.18044 11.2371L11.3099 0.430166L2.11173 5.83159Z" fill="currentColor" />
+    <path d="M9.19888 5.40142H21.4577L12.2676 0L9.19888 5.40142Z" fill="currentColor" />
+    <path d="M16.1743 6.03044L22.3077 16.8373V6.03044H16.1743Z" fill="currentColor" />
+    <path d="M19.1193 12.491L12.9978 23.2979L22.184 17.8965L19.1193 12.491Z" fill="currentColor" />
+    <path d="M2 17.6977H8.12942L2 6.89077V17.6977Z" fill="currentColor" />
 </svg>
