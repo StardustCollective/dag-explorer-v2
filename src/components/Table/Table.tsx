@@ -31,6 +31,7 @@ export type ITableProps<R extends Record<string, any>> = {
   loading?: boolean;
   loadingData?: Record<keyof R, any>[];
   loadingState?: React.ReactNode;
+  header?: React.ReactNode;
   emptyState?: React.ReactNode;
   pagination?: ITablePaginationProps;
   className?: string;
@@ -45,6 +46,7 @@ const TableBase = <R extends Record<string, any>>({
   loading,
   loadingData,
   loadingState,
+  header,
   emptyState,
   pagination,
   className,
@@ -66,6 +68,11 @@ const TableBase = <R extends Record<string, any>>({
       )}
     >
       <thead>
+        {header && (
+          <tr>
+            <td colSpan={getEntries(titles).length}>{header}</td>
+          </tr>
+        )}
         <tr>
           {getEntries(titles).map(([key, value]) => (
             <th
@@ -73,7 +80,8 @@ const TableBase = <R extends Record<string, any>>({
                 "whitespace-nowrap",
                 "py-5.5 px-4 uppercase bg-c1f5",
                 "first:pl-6 last:pr-6",
-                "first:rounded-tl-xl last:rounded-tr-xl",
+                header && "border-t border-gray-200",
+                !header && "first:rounded-tl-xl last:rounded-tr-xl",
                 [
                   !loading && data.length === 0 && !emptyState,
                   loading && (loadingData?.length ?? 0) === 0,
@@ -180,7 +188,12 @@ const TableSuspense = <R extends Record<string, any>>(
           data={[]}
           emptyState={
             <div className="flex flex-col gap-2 justify-center items-center p-3">
-              <span>There was an error while loading this table data</span>
+              <span className="text-center">
+                There was an error while loading this table data, please retry.
+                <br />
+                If the problem persists please contact our customer support
+                channels.
+              </span>
               <RouterRefreshButton className="button primary outlined sm w-80">
                 Retry
               </RouterRefreshButton>
