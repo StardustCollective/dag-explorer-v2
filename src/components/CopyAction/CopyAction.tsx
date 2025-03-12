@@ -1,6 +1,6 @@
 "use client";
 
-import SquareBehindSquareIcon from "@/assets/icons/square_behind_square.svg";
+import SquareBehindSquareIcon from "@/assets/icons/square-behind-square-6.svg";
 
 import React from "react";
 
