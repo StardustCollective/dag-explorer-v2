@@ -1,6 +1,6 @@
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import clsx from "clsx";
 
 import { HgtpNetwork } from "@/common/consts/network";
 import { getNetworkFromParams } from "@/common/network";
@@ -15,6 +15,7 @@ import {
   formatNumberWithDecimals,
   stringFormat,
 } from "@/utils";
+
 import ConstellationGrayIcon from "@/assets/logos/constellation-gray.svg";
 
 

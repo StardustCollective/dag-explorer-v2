@@ -1,17 +1,17 @@
 "use client";
-import type { Metadata } from "next";
 import clsx from "clsx";
-import { useEffect } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { useEffect } from "react";
 
-import { Header } from "@/components/Header";
-import { fontVariables } from "@/common/fonts";
-import "@/styles/globals.css";
-import { QueryProvider } from "@/providers/QueryProvider";
-import { WalletProvider } from "@/providers/WalletProvider";
 import { initDayJsLibrary } from "@/common/dayjs";
+import { fontVariables } from "@/common/fonts";
+import { Header } from "@/components/Header";
+import "@/styles/globals.css";
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
+import { QueryProvider } from "@/providers/QueryProvider";
+import { WalletProvider } from "@/providers/WalletProvider";
 
 initDayJsLibrary();
 

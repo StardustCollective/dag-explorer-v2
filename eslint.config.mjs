@@ -46,11 +46,20 @@ const eslintConfig = [
           "newlines-between": "always",
           pathGroups: [
             {
-              pattern: "@/**",
-              group: "internal",
-              position: "after",
+              "pattern": "@/assets/**",
+              "group": "internal",
+              "position": "after"
             },
+            {
+              "pattern": "@/**",
+              "group": "internal",
+              "position": "before"
+            }
           ],
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
         },
       ],
       "unused-imports/no-unused-imports": "error",

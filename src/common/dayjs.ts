@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import utc_plugin from "dayjs/plugin/utc";
-import relativeTime_plugin from "dayjs/plugin/relativeTime";
 import duration_plugin from "dayjs/plugin/duration";
+import relativeTime_plugin from "dayjs/plugin/relativeTime";
+import utc_plugin from "dayjs/plugin/utc";
 
 export const initDayJsLibrary = () => {
   dayjs.extend(utc_plugin);

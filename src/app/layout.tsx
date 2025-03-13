@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
 import clsx from "clsx";
+import type { Metadata } from "next";
 import { headers } from "next/headers";
 
+import { initDayJsLibrary } from "@/common/dayjs";
+import { fontVariables } from "@/common/fonts";
+import { getNetworkFromHeaders } from "@/common/network";
 import { Header } from "@/components/Header";
 import { NetworkHeader } from "@/components/NetworkHeader";
-import { fontVariables } from "@/common/fonts";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { WalletProvider } from "@/providers/WalletProvider";
-import { getNetworkFromHeaders } from "@/common/network";
-import { initDayJsLibrary } from "@/common/dayjs";
 import "@/styles/globals.css";
 
 initDayJsLibrary();

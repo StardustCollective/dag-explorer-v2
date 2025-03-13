@@ -3,6 +3,7 @@ import Decimal from "decimal.js";
 import { HgtpNetwork } from "@/common/consts/network";
 import { getNetworkFromParams } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
+import { PageTitle } from "@/components/PageTitle";
 import { Section } from "@/components/Section";
 import { StatCard } from "@/components/StatCard";
 import { ValidatorCard } from "@/components/ValidatorCard";
@@ -10,7 +11,6 @@ import {
   formatCurrencyWithDecimals,
   shortenString,
 } from "@/utils";
-import { PageTitle } from "@/components/PageTitle";
 
 export const revalidate = 15;
 

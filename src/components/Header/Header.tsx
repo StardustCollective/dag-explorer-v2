@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { PageLayout } from "../PageLayout";
 import { MenuCard } from "../MenuCard";
+import { PageLayout } from "../PageLayout";
 
 import { useWalletProvider } from "@/providers/WalletProvider";
 import { shortenString } from "@/utils";

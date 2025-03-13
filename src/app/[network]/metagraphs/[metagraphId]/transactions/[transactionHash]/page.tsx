@@ -1,17 +1,18 @@
+import dayjs from "dayjs";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import dayjs from "dayjs";
 
 import { getNetworkFromParams } from "@/common/network";
+import { getKnownUsdPrice } from "@/common/prices";
+import { CopyAction } from "@/components/CopyAction";
+import { DetailsCard } from "@/components/DetailsCard";
 import { PageLayout } from "@/components/PageLayout";
+import { PageTitle } from "@/components/PageTitle";
 import { Section } from "@/components/Section";
 import { getMetagraph, getMetagraphTransaction } from "@/queries";
 import { formatCurrencyWithDecimals, shortenString } from "@/utils";
-import { PageTitle } from "@/components/PageTitle";
-import { DetailsCard } from "@/components/DetailsCard";
-import { CopyAction } from "@/components/CopyAction";
+
 import CalendarClock4Icon from "@/assets/icons/calendar_clock_4.svg";
-import { getKnownUsdPrice } from "@/common/prices";
 
 export const revalidate = 86_400; // 24 hours - These should not change, almost immutable
 

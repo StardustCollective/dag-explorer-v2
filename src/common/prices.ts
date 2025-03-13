@@ -1,6 +1,6 @@
 import { ConstellationEcosystemAPI } from "./apis";
-import { HgtpNetwork } from "./consts/network";
 import { KnownCoinIds } from "./consts";
+import { HgtpNetwork } from "./consts/network";
 
 import { ITokenPriceData , IAPIResponse } from "@/types";
 

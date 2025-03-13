@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import localFont from "next/font/local";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 export const inter = Inter({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
