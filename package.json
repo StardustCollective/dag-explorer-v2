@@ -19,7 +19,8 @@
     "next": "15.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-error-boundary": "^5.0.0"
+    "react-error-boundary": "^5.0.0",
+    "react-tooltip": "^5.28.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -30,6 +31,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
+    "eslint-plugin-import": "^2.31.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
