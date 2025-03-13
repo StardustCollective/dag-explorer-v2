@@ -1,9 +1,10 @@
 "use client";
 
-import { PageLayout } from "@/components/PageLayout";
-import { Section } from "@/components/Section";
 import Link from "next/link";
 import { useEffect } from "react";
+
+import { PageLayout } from "@/components/PageLayout";
+import { Section } from "@/components/Section";
 
 export default function ClientErrorPage({
   error,

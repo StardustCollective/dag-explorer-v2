@@ -1,8 +1,13 @@
+import Decimal from "decimal.js";
+import Image from "next/image";
+import Link from "next/link";
+import clsx from "clsx";
+import dayjs from "dayjs";
+
 import { HgtpNetwork } from "@/common/consts/network";
 import { getNetworkFromParams } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
-
 import { StatCard } from "@/components/StatCard";
 import { RouterRefresh } from "@/components/RouterRefresh";
 import { Table } from "@/components/Table";
@@ -20,12 +25,7 @@ import {
   shortenString,
   stringFormat,
 } from "@/utils";
-import Decimal from "decimal.js";
-import Image from "next/image";
 import ConstellationGrayIcon from "@/assets/logos/constellation-gray.svg";
-import Link from "next/link";
-import clsx from "clsx";
-import dayjs from "dayjs";
 import { SkeletonSpan } from "@/components/SkeletonSpan";
 
 export const revalidate = 15;

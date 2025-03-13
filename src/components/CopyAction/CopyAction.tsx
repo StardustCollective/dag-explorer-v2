@@ -1,10 +1,10 @@
 "use client";
 
-import SquareBehindSquareIcon from "@/assets/icons/square-behind-square-6.svg";
 
 import React from "react";
-
 import clsx from "clsx";
+
+import SquareBehindSquareIcon from "@/assets/icons/square-behind-square-6.svg";
 
 export type ICopyAction = {
   value?: any;

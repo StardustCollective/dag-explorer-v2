@@ -1,8 +1,11 @@
+import Image from "next/image";
+import Link from "next/link";
+import clsx from "clsx";
+
 import { HgtpNetwork } from "@/common/consts/network";
 import { getNetworkFromParams } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
-
 import { Table } from "@/components/Table";
 import {
   getMetagraphs,
@@ -12,10 +15,8 @@ import {
   formatNumberWithDecimals,
   stringFormat,
 } from "@/utils";
-import Image from "next/image";
 import ConstellationGrayIcon from "@/assets/logos/constellation-gray.svg";
-import Link from "next/link";
-import clsx from "clsx";
+
 
 export const revalidate = 15;
 

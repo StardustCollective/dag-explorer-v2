@@ -1,16 +1,15 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import dayjs from "dayjs";
+
 import { getNetworkFromParams } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
-
 import { getTransaction } from "@/queries";
 import { formatCurrencyWithDecimals, shortenString } from "@/utils";
-import Link from "next/link";
-
 import { PageTitle } from "@/components/PageTitle";
-import { notFound } from "next/navigation";
 import { DetailsCard } from "@/components/DetailsCard";
 import { CopyAction } from "@/components/CopyAction";
-import dayjs from "dayjs";
 import CalendarClock4Icon from "@/assets/icons/calendar_clock_4.svg";
 import { getKnownUsdPrice } from "@/common/prices";
 

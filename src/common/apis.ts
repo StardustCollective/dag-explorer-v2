@@ -1,6 +1,8 @@
-import { DeploymentStage, EnvironmentContext } from "@/runtime";
 import axios, { AxiosInstance } from "axios";
-import { HgtpNetwork } from "./consts"; 
+
+import { HgtpNetwork } from "./consts";
+ 
+import { DeploymentStage, EnvironmentContext } from "@/runtime";
 
 export const DagExplorerAPI = axios.create({
   baseURL: `https://${

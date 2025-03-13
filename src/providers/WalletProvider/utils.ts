@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 // Sort object by keys
 export const sortKeysFromObject = (
   srcObj: Record<any, any>,

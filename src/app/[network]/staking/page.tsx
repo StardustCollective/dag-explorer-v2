@@ -1,31 +1,15 @@
+import Decimal from "decimal.js";
+
 import { HgtpNetwork } from "@/common/consts/network";
 import { getNetworkFromParams } from "@/common/network";
-import { AutoRefresh } from "@/components/AutoRefresh";
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
-
 import { StatCard } from "@/components/StatCard";
-import { Table } from "@/components/Table";
 import { ValidatorCard } from "@/components/ValidatorCard";
 import {
-  getLatestMetagraphSnapshots,
-  getLatestMetagraphTransactions,
-  getLatestSnapshots,
-  getLatestTransactions,
-  getMetagraphs,
-} from "@/queries";
-import {
   formatCurrencyWithDecimals,
-  formatNumberWithDecimals,
   shortenString,
-  stringFormat,
 } from "@/utils";
-import Decimal from "decimal.js";
-import Image from "next/image";
-import ConstellationGrayIcon from "@/assets/logos/constellation-gray.svg";
-import Link from "next/link";
-import clsx from "clsx";
-import dayjs from "dayjs";
 import { PageTitle } from "@/components/PageTitle";
 
 export const revalidate = 15;

@@ -1,7 +1,8 @@
 import clsx from "clsx";
+import { useRef } from "react";
 
 import { MenuCardOption } from "./MenuCardOption";
-import { useRef } from "react";
+
 import { useClickOutside } from "@/hooks";
 
 export type IMenuCardProps = {

@@ -1,9 +1,10 @@
 "use client";
 // import ChevronLeftIcon from "@/assets/icons/chevron_left.svg";
 // import ChevronRightIcon from "@/assets/icons/chevron_right.svg";
-import { useClientPagination } from "@/hooks";
 import clsx from "clsx";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+
+import { useClientPagination } from "@/hooks";
 
 const PaginationNumber = ({
   content,

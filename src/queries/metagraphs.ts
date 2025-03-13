@@ -1,3 +1,5 @@
+import { isAxiosError } from "axios";
+
 import { DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
@@ -7,7 +9,6 @@ import {
   IMetagraphProject,
   IPaginationOptions,
 } from "@/types";
-import { isAxiosError } from "axios";
 
 export const getMetagraphs = async (
   network: HgtpNetwork,

@@ -1,7 +1,8 @@
+import { isAxiosError } from "axios";
+
 import { BlockExplorerAPI, DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import { IAPIMetagraphBalance, IAPIResponse, IBEAddressBalance } from "@/types";
-import { isAxiosError } from "axios";
 
 export const getAddressBalance = async (
   network: HgtpNetwork,

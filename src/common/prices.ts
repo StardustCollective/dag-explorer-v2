@@ -1,8 +1,8 @@
-import { IAPIResponse } from "@/types";
 import { ConstellationEcosystemAPI } from "./apis";
 import { HgtpNetwork } from "./consts/network";
-import { ITokenPriceData } from "@/types";
 import { KnownCoinIds } from "./consts";
+
+import { ITokenPriceData , IAPIResponse } from "@/types";
 
 export const getKnownUsdPrice = async (
   network: HgtpNetwork,

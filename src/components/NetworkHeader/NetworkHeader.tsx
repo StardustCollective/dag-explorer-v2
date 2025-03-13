@@ -1,6 +1,7 @@
-import { HgtpNetwork } from "@/common/consts";
 import { PageLayout } from "../PageLayout";
 import { SearchBar } from "../SearchBar";
+
+import { HgtpNetwork } from "@/common/consts";
 import { stringFormat } from "@/utils";
 
 export type INetworkHeaderProps = {

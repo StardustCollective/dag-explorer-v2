@@ -1,7 +1,6 @@
 import { DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
-import { IAPIResponse, IAPIResponseArray, IPaginationOptions } from "@/types";
-import { ISnapshot } from "@/types";
+import { IAPIResponse, IAPIResponseArray, IPaginationOptions , ISnapshot } from "@/types";
 
 export const getLatestSnapshots = async (
   network: HgtpNetwork,

@@ -1,6 +1,7 @@
-import { formatCurrencyWithDecimals } from "@/utils";
 import clsx from "clsx";
 import Decimal from "decimal.js";
+
+import { formatCurrencyWithDecimals } from "@/utils";
 
 export type IValidatorCardProps = {
   type?: "metagraph" | "validator";

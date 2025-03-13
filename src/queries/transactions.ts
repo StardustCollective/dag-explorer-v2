@@ -1,3 +1,5 @@
+import { isAxiosError } from "axios";
+
 import { BlockExplorerAPI, DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
@@ -6,9 +8,7 @@ import {
   IBETransaction,
   IBETransaction_V1,
   IPaginationOptions,
-} from "@/types";
-import { IAPITransaction } from "@/types";
-import { isAxiosError } from "axios";
+ IAPITransaction } from "@/types";
 
 export const getLatestTransactions = async (
   network: HgtpNetwork,

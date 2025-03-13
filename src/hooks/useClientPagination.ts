@@ -1,6 +1,7 @@
 "use client";
-import { parseNumberOrDefault } from "@/utils";
 import { ReadonlyURLSearchParams, useSearchParams } from "next/navigation";
+
+import { parseNumberOrDefault } from "@/utils";
 
 export type IClientPaginationHookOptions = {
   pageSize?: number;

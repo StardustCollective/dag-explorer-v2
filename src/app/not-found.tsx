@@ -1,7 +1,8 @@
+import Link from "next/link";
+
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
 
-import Link from "next/link";
 
 export default async function NotFoundPage() {
   return (

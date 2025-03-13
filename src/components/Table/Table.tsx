@@ -1,10 +1,12 @@
 import clsx from "clsx";
 import React, { use } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+
+import { RouterRefreshButton } from "../RouterRefresh";
 
 import { ITablePaginationProps, TablePagination } from "./TablePagination";
+
 import { isPromiseLike } from "@/utils";
-import { ErrorBoundary } from "react-error-boundary";
-import { RouterRefreshButton } from "../RouterRefresh";
 
 const getEntries = <K extends string, V>(record: { [P in K]?: V }): [
   K,

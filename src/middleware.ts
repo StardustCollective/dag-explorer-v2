@@ -1,5 +1,6 @@
-import { getNetworkFromHeaders } from "@/common/network";
 import { NextRequest, NextResponse } from "next/server";
+
+import { getNetworkFromHeaders } from "@/common/network";
 
 export const middleware = async (req: NextRequest) => {
   const network = await getNetworkFromHeaders(req.headers);
