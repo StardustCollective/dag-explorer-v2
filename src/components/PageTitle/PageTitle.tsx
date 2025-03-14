@@ -16,7 +16,7 @@ export const PageTitle = ({ icon, className, children }: IPageTitleProps) => {
         children: clsx("flex flex-nowrap gap-2 px-20 py-5", className),
       }}
     >
-      <h1 className="text-hgtp-blue-900 font-medium text-2.5xl">{icon} {children}</h1>
+      <h1 className="flex items-center gap-2 text-hgtp-blue-900 font-medium text-2.5xl">{icon} {children}</h1>
     </PageLayout>
   );
 };
