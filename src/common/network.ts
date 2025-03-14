@@ -1,13 +1,7 @@
-import { isHgtpNetwork } from "./consts/network";
+import { HgtpNetwork, isHgtpNetwork } from "./consts/network";
 
-export const getNetworkFromHeaders = async (headersList: Headers) => {
-  const host = headersList.get("host");
-
-  if (!host) {
-    return null;
-  }
-
-  const network = host.split(".")[0];
+export const getNetworkFromHostname = (hostname: string) => {
+  const network = hostname.split(".")[0];
 
   if (!isHgtpNetwork(network)) {
     return null;
@@ -16,7 +10,19 @@ export const getNetworkFromHeaders = async (headersList: Headers) => {
   return network;
 };
 
-export const getNetworkFromParams = async (params: Promise<{ network: string }>) => {
+export const getNetworkFromHeaders = async (headersList: Headers) => {
+  const host = headersList.get("host");
+
+  if (!host) {
+    return null;
+  }
+
+  return getNetworkFromHostname(host);
+};
+
+export const getNetworkFromParams = async (
+  params: Promise<{ network: string }>
+) => {
   const { network } = await params;
 
   if (!isHgtpNetwork(network)) {
@@ -24,4 +30,12 @@ export const getNetworkFromParams = async (params: Promise<{ network: string }>)
   }
 
   return network;
+};
+
+export const getNetworkUrl = (network: HgtpNetwork, prevUrl: string | URL) => {
+  const nextUrl = new URL(prevUrl);
+  nextUrl.hostname = getNetworkFromHostname(nextUrl.hostname)
+    ? `${network}.${nextUrl.hostname.split(/\.(.+)/)[1]}`
+    : `${network}.${nextUrl.hostname}`;
+  return nextUrl;
 };
