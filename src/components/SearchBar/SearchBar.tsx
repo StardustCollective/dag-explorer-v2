@@ -2,6 +2,9 @@
 import clsx from "clsx";
 import { useState } from "react";
 
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
+import MagnifyingGlass2Icon from "@/assets/icons/magnifying-glass-2.svg";
+
 export type ISearchBarProps = Omit<
   React.JSX.IntrinsicElements["input"],
   "className"
@@ -23,13 +26,14 @@ export const SearchBar = ({
   return (
     <div
       className={clsx(
-        "flex py-3.5 px-4 bg-white border rounded-5xl",
+        "flex py-2.5 px-4 bg-white border rounded-5xl items-center",
         !focus && "border-gray-300",
         focus && "border-hgtp-blue-600",
         className.wrapper
       )}
     >
       <div className="flex gap-3 grow">
+        <MagnifyingGlass2Icon className="size-6" />
         <input
           className={clsx(
             "h-fit outline-none border-none grow placeholder:text-gray-600 text-cd14",
@@ -37,11 +41,11 @@ export const SearchBar = ({
           )}
           onFocus={(e) => {
             setFocus(true);
-            onFocus && onFocus(e);
+            onFocus?.(e);
           }}
           onBlur={(e) => {
             setFocus(false);
-            onBlur && onBlur(e);
+            onBlur?.(e);
           }}
           ref={ref}
           {...props}
@@ -49,12 +53,12 @@ export const SearchBar = ({
       </div>
       <div
         className={clsx(
-          "flex justify-center items-center size-6 bg-hgtp-blue-600 rounded-full",
+          "flex justify-center items-center size-8 bg-hgtp-blue-600 border border-white/25 rounded-full",
           !focus && "opacity-50"
         )}
       >
         <span className="text-white text-center align-middle">
-          {"-"}
+          <ArrowRightIcon className="size-6" />
         </span>
       </div>
     </div>
