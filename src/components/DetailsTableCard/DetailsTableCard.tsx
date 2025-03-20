@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-export type IDetailsCardProps = {
+export type IDetailsTableCardProps = {
   rows: (
     | { label?: React.ReactNode; value?: React.ReactNode }
     | null
@@ -9,7 +9,7 @@ export type IDetailsCardProps = {
   className?: string;
 };
 
-export const DetailsCard = ({ rows, className }: IDetailsCardProps) => {
+export const DetailsTableCard = ({ rows, className }: IDetailsTableCardProps) => {
   return (
     <table
       className={clsx(
