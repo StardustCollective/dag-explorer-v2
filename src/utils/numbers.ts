@@ -1,7 +1,29 @@
 import Decimal from "decimal.js";
 
+export const encodeDecimal = <T extends IDecimal | undefined | null>(
+  value: T
+) => {
+  if (value === undefined || value === null) {
+    return value as T extends IDecimal ? Exclude<IDecimal, Decimal> : T;
+  }
+
+  return new Decimal(value).toFixed() as T extends IDecimal
+    ? Exclude<IDecimal, Decimal>
+    : T;
+};
+
+export const decodeDecimal = <T extends IDecimal | undefined | null>(
+  value: T
+): T extends IDecimal ? Decimal : T => {
+  if (value === undefined || value === null) {
+    return value as T extends IDecimal ? Decimal : T;
+  }
+
+  return new Decimal(value) as T extends IDecimal ? Decimal : T;
+};
+
 export const formatNumber = (
-  value?: string | Decimal | number | null,
+  value?: IDecimal | null,
   formatter?: Intl.NumberFormat
 ) => {
   formatter =
@@ -20,7 +42,7 @@ export const formatNumber = (
 };
 
 export const formatNumberWithDecimals = (
-  value?: string | Decimal | number | null,
+  value?: IDecimal | null,
   decimals?: { min?: number; max?: number }
 ) =>
   formatNumber(
@@ -33,7 +55,7 @@ export const formatNumberWithDecimals = (
 
 export const formatCurrencyWithDecimals = (
   currencyName: string,
-  value?: string | Decimal | number | null,
+  value?: IDecimal | null,
   decimals?: { min?: number; max?: number }
 ) => `${formatNumberWithDecimals(value, decimals)} ${currencyName}`;
 
