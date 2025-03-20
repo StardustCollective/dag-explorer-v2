@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 import { HgtpNetwork } from "./consts";
- 
+
 import { DeploymentStage, EnvironmentContext } from "@/runtime";
 
 export const DagExplorerAPI = axios.create({
@@ -32,5 +32,35 @@ export const BlockExplorerAPI: Record<HgtpNetwork, AxiosInstance> = {
   }),
   [HgtpNetwork.MAINNET_1]: axios.create({
     baseURL: `https://block-explorer.constellationnetwork.io`,
+  }),
+};
+
+export const BlockExplorerAPI_Exp: Record<HgtpNetwork, AxiosInstance> = {
+  [HgtpNetwork.MAINNET]: axios.create({
+    baseURL: `https://8kiu9tfle8.execute-api.us-west-1.amazonaws.com`,
+  }),
+  [HgtpNetwork.INTEGRATIONNET]: axios.create({
+    baseURL: `https://8kiu9tfle8.execute-api.us-west-1.amazonaws.com`,
+  }),
+  [HgtpNetwork.TESTNET]: axios.create({
+    baseURL: `https://8kiu9tfle8.execute-api.us-west-1.amazonaws.com`,
+  }),
+  [HgtpNetwork.MAINNET_1]: axios.create({
+    baseURL: `https://8kiu9tfle8.execute-api.us-west-1.amazonaws.com`,
+  }),
+};
+
+export const L0NodesAPI: Record<HgtpNetwork, AxiosInstance> = {
+  [HgtpNetwork.MAINNET]: axios.create({
+    baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
+  }),
+  [HgtpNetwork.INTEGRATIONNET]: axios.create({
+    baseURL: `https://l0-lb-integrationnet.constellationnetwork.io`,
+  }),
+  [HgtpNetwork.TESTNET]: axios.create({
+    baseURL: `https://l0-lb-testnet.constellationnetwork.io`,
+  }),
+  [HgtpNetwork.MAINNET_1]: axios.create({
+    baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
   }),
 };
