@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { MenuCard } from "../MenuCard";
 import { PageLayout } from "../PageLayout";
 
 import { HgtpNetwork, NetworkNames } from "@/common/consts/network";
-import { getNetworkFromHostname, getNetworkUrl } from "@/common/network";
+import { getNetworkUrl } from "@/common/network";
+import { useNetworkContext } from "@/providers/NetworkProvider";
 import { useWalletProvider } from "@/providers/WalletProvider";
 import { shortenString } from "@/utils";
 
@@ -25,10 +25,7 @@ export type IHeaderProps = Record<string, never>;
 
 export const Header = ({}: IHeaderProps) => {
   const { wallet } = useWalletProvider();
-  const network = getNetworkFromHostname(
-    globalThis?.window?.location?.hostname ?? ''
-  );
-  usePathname();
+  const network = useNetworkContext();
 
   const [walletDropdownOpen, setWalletDropdownOpen] = useState(false);
   const [networkDropdownOpen, setNetworkDropdownOpen] = useState(false);
