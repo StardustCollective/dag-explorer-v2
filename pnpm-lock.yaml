@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@faker-js/faker':
+        specifier: ^9.6.0
+        version: 9.6.0
       '@stardust-collective/dag4':
         specifier: ^2.2.2
         version: 2.2.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -41,6 +44,9 @@ importers:
       react-error-boundary:
         specifier: ^5.0.0
         version: 5.0.0(react@19.0.0)
+      react-number-format:
+        specifier: ^5.4.3
+        version: 5.4.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-tooltip:
         specifier: ^5.28.0
         version: 5.28.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -48,6 +54,9 @@ importers:
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.3.0
+      '@noble/secp256k1':
+        specifier: ^2.2.3
+        version: 2.2.3
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.8.2)
@@ -705,6 +714,10 @@ packages:
     resolution: {integrity: sha512-zQ0IqbdX8FZ9aw11vP+dZkKDkS+kgIvQPHnSAXzP9pLu+Rfu3D3XEeLbicvoXJTYnhZiPmsZUxgdzXwNKxRPbA==}
     engines: {node: '>=14'}
 
+  '@faker-js/faker@9.6.0':
+    resolution: {integrity: sha512-3vm4by+B5lvsFPSyep3ELWmZfE3kicDtmemVpuwl1yH7tqtnHdsA6hG8fbXedMVdkzgtvzWoRgjSB4Q+FHnZiw==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+
   '@floating-ui/core@1.6.9':
     resolution: {integrity: sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==}
 
@@ -1032,6 +1045,9 @@ packages:
 
   '@noble/secp256k1@1.7.1':
     resolution: {integrity: sha512-hOUk6AyBFmqVrv7k5WAw/LpszxVbj9gGN4JRkIX52fdFAj1UA61KXmZDvqVEm+pOyec3+fIeZB02LYa/pWOArw==}
+
+  '@noble/secp256k1@2.2.3':
+    resolution: {integrity: sha512-l7r5oEQym9Us7EAigzg30/PQAvynhMt2uoYtT3t26eGDVm9Yii5mZ5jWSWmZ/oSIR2Et0xfc6DXrG0bZ787V3w==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3437,6 +3453,12 @@ packages:
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
+  react-number-format@5.4.3:
+    resolution: {integrity: sha512-VCY5hFg/soBighAoGcdE+GagkJq0230qN6jcS5sp8wQX1qy1fYN/RX7/BXkrs0oyzzwqR8/+eSUrqXbGeywdUQ==}
+    peerDependencies:
+      react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   react-tooltip@5.28.0:
     resolution: {integrity: sha512-R5cO3JPPXk6FRbBHMO0rI9nkUG/JKfalBSQfZedZYzmqaZQgq7GLzF8vcCWx6IhUCKg0yPqJhXIzmIO5ff15xg==}
     peerDependencies:
@@ -5038,6 +5060,8 @@ snapshots:
       ethereum-cryptography: 2.2.1
       micro-ftch: 0.3.1
 
+  '@faker-js/faker@9.6.0': {}
+
   '@floating-ui/core@1.6.9':
     dependencies:
       '@floating-ui/utils': 0.2.9
@@ -5406,6 +5430,8 @@ snapshots:
   '@noble/hashes@1.7.1': {}
 
   '@noble/secp256k1@1.7.1': {}
+
+  '@noble/secp256k1@2.2.3': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -8464,6 +8490,11 @@ snapshots:
       react: 19.0.0
 
   react-is@16.13.1: {}
+
+  react-number-format@5.4.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   react-tooltip@5.28.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
