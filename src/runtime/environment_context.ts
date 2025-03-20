@@ -1,5 +1,5 @@
 import { DeploymentStage } from "./deployment";
-import { getEnvOrError } from "./get_env";
+import { getEnvOrDefault } from "./get_env";
 
 const makeEnvironmentContext = <E extends Record<string, () => any>>(
   envDefinition: E
@@ -28,7 +28,10 @@ const expandByCommonClientPrefixes = expandByPrefixes([
 ]);
 
 export const EnvironmentContext = makeEnvironmentContext({
-  nodeEnv: () => getEnvOrError<string>("NODE_ENV"),
+  nodeEnv: () => getEnvOrDefault<string>(process.env.NODE_ENV, "NODE_ENV"),
   stage: () =>
-    getEnvOrError<DeploymentStage>(...expandByCommonClientPrefixes("STAGE")),
+    getEnvOrDefault<DeploymentStage>(
+      process.env.NEXT_PUBLIC_STAGE as DeploymentStage,
+      ...expandByCommonClientPrefixes("STAGE")
+    ),
 });
