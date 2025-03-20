@@ -7,8 +7,11 @@ import { fontVariables } from "@/common/fonts";
 import { getNetworkFromHeaders } from "@/common/network";
 import { Header } from "@/components/Header";
 import { NetworkHeader } from "@/components/NetworkHeader";
+import { NetworkProvider } from "@/providers/NetworkProvider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { WalletProvider } from "@/providers/WalletProvider";
+
+
 import "@/styles/globals.css";
 
 initDayJsLibrary();
@@ -49,13 +52,15 @@ export default async function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={clsx(fontVariables, "font-inter bg-cafb")}>
-        <QueryProvider>
-          <WalletProvider>
-            <Header />
-            <NetworkHeader network={network} />
-            {children}
-          </WalletProvider>
-        </QueryProvider>
+        <NetworkProvider>
+          <QueryProvider>
+            <WalletProvider>
+              <Header />
+              <NetworkHeader network={network} />
+              {children}
+            </WalletProvider>
+          </QueryProvider>
+        </NetworkProvider>
       </body>
     </html>
   );
