@@ -63,6 +63,30 @@
   }
 }
 
+.button.tertiary {
+  @apply bg-black/15;
+  @apply text-black;
+  @apply border border-black/5 rounded-5xl;
+
+  &:hover:not(:disabled, .disabled),
+  &.hover:not(:disabled, .disabled) {
+    @apply bg-black/20;
+    @apply text-black;
+  }
+}
+
+.button.tertiary.outlined {
+  @apply bg-white;
+  @apply text-black;
+  @apply border border-black/5 rounded-5xl;
+
+  &:hover:not(:disabled, .disabled),
+  &.hover:not(:disabled, .disabled) {
+    @apply !bg-black/15;
+    @apply text-black;
+  }
+}
+
 .button.text {
   &:hover:not(:disabled, .disabled),
   &.hover:not(:disabled, .disabled) {
