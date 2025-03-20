@@ -3,7 +3,8 @@
 @import "./scrollbar.css" layer(components);
 @import "./card.css" layer(components);
 @import "./button.css" layer(components);
-
+@import "./modal.css" layer(components);
+@import "./chip.css" layer(components);
 @theme inline {
   --font-inter: var(--font-inter);
   --font-ibm-mono: var(--font-ibm-plex-mono);
@@ -15,9 +16,11 @@
   --text-4\.5xl: 2.5rem;
   --text-4\.5xl--line-height: 48px;
 
-  --color-hgtp-blue-50: #EBEFFF;
-  --color-hgtp-blue-400: #798EF6;
+  --color-hgtp-blue-50: #ebefff;
+  --color-hgtp-blue-100: #D9E0FD;
+  --color-hgtp-blue-400: #798ef6;
   --color-hgtp-blue-600: #3e4fea;
+  --color-hgtp-blue-700: #363bd3;
   --color-hgtp-blue-900: #20275b;
   --color-hgtp-blue-950: #151832;
 
@@ -28,6 +31,8 @@
   --color-cafb: #f9fafb;
   --color-c1f5: #eff1f5;
   --color-cafa: #fafafa;
+  --color-cef6: #798ef6;
+  --color-cfff: #ebefff;
 
   --spacing-4\.5: calc(var(--spacing) * 4.5);
   --spacing-5\.5: calc(var(--spacing) * 5.5);
