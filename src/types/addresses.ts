@@ -11,3 +11,14 @@ export type IAPIMetagraphBalance = {
   metagraphIcon: string;
   balance: number;
 };
+
+export type IBEAddressAction = {
+  type: "SpendTransaction" | "AllowSpend";
+  currencyId: string | null;
+  hash: string;
+  amount: number;
+  source: string;
+  parentHash?: string;
+  unlockEpoch?: number;
+  timestamp: string;
+};
