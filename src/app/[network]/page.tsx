@@ -1,11 +1,13 @@
+import { dag4 } from "@stardust-collective/dag4";
 import clsx from "clsx";
 import dayjs from "dayjs";
-import Decimal from "decimal.js";
 import Image from "next/image";
 import Link from "next/link";
 
 import { HgtpNetwork } from "@/common/consts/network";
+import { datumToDag } from "@/common/currencies";
 import { getNetworkFromParamsOrFail } from "@/common/network";
+import { FormatCurrency } from "@/components/FormatCurrency";
 import { PageLayout } from "@/components/PageLayout";
 import { RouterRefresh } from "@/components/RouterRefresh";
 import { Section } from "@/components/Section";
@@ -18,9 +20,12 @@ import {
   getLatestMetagraphTransactions,
   getLatestSnapshots,
   getLatestTransactions,
+  getMetagraphCurrencySymbol,
   getMetagraphs,
+  getStakingDelegators,
 } from "@/queries";
 import {
+  encodeDecimal,
   formatCurrencyWithDecimals,
   formatNumberWithDecimals,
   shortenString,
@@ -62,6 +67,8 @@ export default async function DashboardPage({
     pagination: { limit: 5 },
   });
 
+  const validators = await getStakingDelegators(network);
+
   return (
     <PageLayout className="flex flex-col gap-10 px-20 py-8" renderAs={"main"}>
       <RouterRefresh interval={1000 * 15} />
@@ -80,33 +87,23 @@ export default async function DashboardPage({
         </StatCard>
       </Section>
       <Section title="Top validators" className="flex flex-nowrap gap-6">
-        <ValidatorCard
-          type="metagraph"
-          subtitle="Panasonic"
-          title={shortenString("DAG6Yxge8Tzd8DJDJeL4hMLntnhheHGR4DYSPQvf")}
-          logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
-          delegatedAmount={new Decimal(1e6)}
-          commissionPercentage={5}
-          description="Block of description text will go here. It will be 2 to 3 lines maximum before we start truncating the paragraph. This should give us enough space to describe the node..."
-        />
-        <ValidatorCard
-          type="metagraph"
-          subtitle="DOR"
-          title={shortenString("DAG6Yxge8Tzd8DJDJeL4hMLntnhheHGR4DYSPQvf")}
-          logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
-          delegatedAmount={new Decimal(1e6)}
-          commissionPercentage={5}
-          description="Powering the Constellation Network with secure, high-performance validation. Maximizing uptime, optimizing rewards, and decentralizing the future..."
-        />
-        <ValidatorCard
-          type="validator"
-          subtitle="Panasonic"
-          title="Joao's node"
-          logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
-          delegatedAmount={new Decimal(1e5)}
-          commissionPercentage={5}
-          description="Block of description text will go here. It will be 2 to 3 lines maximum before we start truncating the paragraph. This should give us enough space to describe the node..."
-        />
+        {validators.slice(0, 3).map((validator) => (
+          <ValidatorCard
+            key={validator.node}
+            nodeId={validator.node}
+            type={"validator"}
+            subtitle={validator.nodeMetadataParameters.name}
+            title={shortenString(
+              dag4.keyStore.getDagAddressFromPublicKey(validator.node)
+            )}
+            logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
+            delegatedAmountInDAG={encodeDecimal(validator.totalStaked / 1e8)}
+            commissionPercentage={
+              validator.delegatedStakeRewardParameters.rewardFraction / 1000
+            }
+            description={validator.nodeMetadataParameters.description}
+          />
+        ))}
       </Section>
       <Section title="Top projects">
         <Table.Suspense
@@ -150,7 +147,7 @@ export default async function DashboardPage({
                     />
                   )}
                   {!record.icon_url && (
-                    <ConstellationGrayIcon className="size-8" />
+                    <ConstellationCircleGrayIcon className="size-8" />
                   )}
                 </div>
                 {value}
@@ -257,12 +254,13 @@ export default async function DashboardPage({
               ),
               timestamp: (value) => <span>{dayjs(value).fromNow()}</span>,
               amount: (value, record) => (
-                <span>
-                  {formatCurrencyWithDecimals(
-                    record.symbol ?? "--",
-                    value / 1e8
+                <FormatCurrency
+                  value={datumToDag(value)}
+                  currency={getMetagraphCurrencySymbol(
+                    network,
+                    record.metagraphId
                   )}
-                </span>
+                />
               ),
             }}
           />
@@ -349,12 +347,13 @@ export default async function DashboardPage({
               ),
               timestamp: (value) => <span>{dayjs(value).fromNow()}</span>,
               amount: (value, record) => (
-                <span>
-                  {formatCurrencyWithDecimals(
-                    record.symbol ?? "--",
-                    value / 1e8
+                <FormatCurrency
+                  value={datumToDag(value)}
+                  currency={getMetagraphCurrencySymbol(
+                    network,
+                    record.metagraphId
                   )}
-                </span>
+                />
               ),
             }}
           />
