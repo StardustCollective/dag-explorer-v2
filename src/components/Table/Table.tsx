@@ -33,6 +33,7 @@ export type ITableProps<R extends Record<string, any>> = {
   loading?: boolean;
   loadingData?: Record<keyof R, any>[];
   loadingState?: React.ReactNode;
+  noCardStyle?: boolean;
   header?: React.ReactNode;
   emptyState?: React.ReactNode;
   pagination?: ITablePaginationProps;
@@ -48,6 +49,7 @@ const TableBase = <R extends Record<string, any>>({
   loading,
   loadingData,
   loadingState,
+  noCardStyle,
   header,
   emptyState,
   pagination,
@@ -65,7 +67,8 @@ const TableBase = <R extends Record<string, any>>({
   return (
     <table
       className={clsx(
-        "card rounded-xl border-separate border-spacing-0",
+        !noCardStyle && "card",
+        "border-separate border-spacing-0",
         className
       )}
     >
