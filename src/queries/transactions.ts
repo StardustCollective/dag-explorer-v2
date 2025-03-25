@@ -8,7 +8,9 @@ import {
   IBETransaction,
   IBETransaction_V1,
   IPaginationOptions,
- IAPITransaction } from "@/types";
+  IAPITransaction,
+} from "@/types";
+import { buildAPIResponseArray } from "@/utils";
 
 export const getLatestTransactions = async (
   network: HgtpNetwork,
@@ -21,9 +23,11 @@ export const getLatestTransactions = async (
     }
   );
 
-  return Object.assign(response.data.data, {
-    total: response.data.meta?.total ?? -1,
-  });
+  return buildAPIResponseArray(
+    response.data.data,
+    response.data.meta?.total ?? -1,
+    response.data.meta?.next
+  );
 };
 
 export const getLatestMetagraphTransactions = async (
@@ -37,9 +41,11 @@ export const getLatestMetagraphTransactions = async (
     }
   );
 
-  return Object.assign(response.data.data, {
-    total: response.data.meta?.total ?? -1,
-  });
+  return buildAPIResponseArray(
+    response.data.data,
+    response.data.meta?.total ?? -1,
+    response.data.meta?.next
+  );
 };
 
 export const getTransaction = async (

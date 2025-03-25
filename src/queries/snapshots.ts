@@ -1,6 +1,12 @@
 import { DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
-import { IAPIResponse, IAPIResponseArray, IPaginationOptions , ISnapshot } from "@/types";
+import {
+  IAPIResponse,
+  IAPIResponseArray,
+  IPaginationOptions,
+  ISnapshot,
+} from "@/types";
+import { buildAPIResponseArray } from "@/utils";
 
 export const getLatestSnapshots = async (
   network: HgtpNetwork,
@@ -13,9 +19,11 @@ export const getLatestSnapshots = async (
     }
   );
 
-  return Object.assign(response.data.data, {
-    total: response.data.meta?.total ?? -1,
-  });
+  return buildAPIResponseArray(
+    response.data.data,
+    response.data.meta?.total ?? -1,
+    response.data.meta?.next
+  );
 };
 
 export const getLatestMetagraphSnapshots = async (
@@ -29,7 +37,9 @@ export const getLatestMetagraphSnapshots = async (
     }
   );
 
-  return Object.assign(response.data.data, {
-    total: response.data.meta?.total ?? -1,
-  });
+  return buildAPIResponseArray(
+    response.data.data,
+    response.data.meta?.total ?? -1,
+    response.data.meta?.next
+  );
 };

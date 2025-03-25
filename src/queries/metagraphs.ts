@@ -9,6 +9,7 @@ import {
   IMetagraphProject,
   IPaginationOptions,
 } from "@/types";
+import { buildAPIResponseArray } from "@/utils";
 
 export const getMetagraphs = async (
   network: HgtpNetwork,
@@ -21,18 +22,20 @@ export const getMetagraphs = async (
     }
   );
 
-  return Object.assign(response.data.data, {
-    total: response.data.meta?.total ?? -1,
-  });
+  return buildAPIResponseArray(
+    response.data.data,
+    response.data.meta?.total ?? -1,
+    response.data.meta?.next
+  );
 };
 
 export const getMetagraph = async (
   network: HgtpNetwork,
-  currencyId: string
+  metagraphId: string
 ): Promise<IMetagraph | null> => {
   try {
     const response = await DagExplorerAPI.get<IAPIResponse<IMetagraph>>(
-      `/${network}/metagraphs/${currencyId}`
+      `/${network}/metagraphs/${metagraphId}`
     );
 
     return response.data.data;
