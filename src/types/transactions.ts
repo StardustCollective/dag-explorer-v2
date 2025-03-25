@@ -34,11 +34,6 @@ export type IBETransaction = {
   timestamp: string;
 };
 
-
-export type IAPITransaction = IBETransaction &{
-  symbol?: string;
-  isMetagraphTransaction?: boolean;
+export type IAPITransaction = IBETransaction & {
   metagraphId?: string;
-  direction?: string;
 };
-
