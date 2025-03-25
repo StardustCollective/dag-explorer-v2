@@ -49,7 +49,7 @@ export const formatNumberWithDecimals = (
     value,
     new Intl.NumberFormat("en-US", {
       minimumFractionDigits: decimals?.min,
-      maximumFractionDigits: decimals?.max,
+      maximumFractionDigits: decimals?.max ?? 8,
     })
   );
 
@@ -61,3 +61,4 @@ export const formatCurrencyWithDecimals = (
 
 export const parseNumberOrDefault = (number: any, defaultNumber: number) =>
   Number(number ?? "invalid") || defaultNumber;
+
