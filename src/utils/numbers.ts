@@ -62,3 +62,16 @@ export const formatCurrencyWithDecimals = (
 export const parseNumberOrDefault = (number: any, defaultNumber: number) =>
   Number(number ?? "invalid") || defaultNumber;
 
+export const isHexNumber = (value: string, length?: number) => {
+  return [
+    /^[0-9a-fA-F]+$/.test(value),
+    length ? value.length === length : true,
+  ].every((b) => b);
+};
+
+export const isDecNumber = (value: string, length?: number) => {
+  return [
+    /^[0-9]+$/.test(value),
+    length ? value.length === length : true,
+  ].every((b) => b);
+};
