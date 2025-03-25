@@ -10,8 +10,12 @@ export const getNetworkFromHostname = (hostname: string) => {
   return network;
 };
 
-export const getNetworkFromHeaders = async (headersList: Headers) => {
-  const host = headersList.get("host");
+export const getNetworkFromHeaders = async (
+  headers: Headers | Promise<Headers>
+) => {
+  headers = await headers;
+
+  const host = headers.get("host");
 
   if (!host) {
     return null;
@@ -27,6 +31,30 @@ export const getNetworkFromParams = async (
 
   if (!isHgtpNetwork(network)) {
     return null;
+  }
+
+  return network;
+};
+
+export const getNetworkFromHeadersOrFail = async (
+  headers: Headers | Promise<Headers>
+) => {
+  const network = await getNetworkFromHeaders(headers);
+
+  if (!network) {
+    throw new Error("Network not found");
+  }
+
+  return network;
+};
+
+export const getNetworkFromParamsOrFail = async (
+  params: Promise<{ network: string }>
+) => {
+  const network = await getNetworkFromParams(params);
+
+  if (!network) {
+    throw new Error("Network not found");
   }
 
   return network;

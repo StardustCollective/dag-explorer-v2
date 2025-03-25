@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { HgtpNetwork } from "@/common/consts/network";
-import { getNetworkFromParams } from "@/common/network";
+import { getNetworkFromParamsOrFail } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { RouterRefresh } from "@/components/RouterRefresh";
 import { Section } from "@/components/Section";
@@ -27,7 +27,7 @@ import {
   stringFormat,
 } from "@/utils";
 
-import ConstellationGrayIcon from "@/assets/logos/constellation-gray.svg";
+import ConstellationCircleGrayIcon from "@/assets/logos/constellation-circle-gray.svg";
 
 export const revalidate = 15;
 
@@ -44,11 +44,7 @@ export default async function DashboardPage({
 }: {
   params: Promise<{ network: string }>;
 }) {
-  const network = await getNetworkFromParams(params);
-
-  if (!network) {
-    throw new Error("Network not found");
-  }
+  const network = await getNetworkFromParamsOrFail(params);
 
   const metagraphs = getMetagraphs(network, { pagination: { limit: 5 } });
 

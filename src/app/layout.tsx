@@ -4,13 +4,14 @@ import { headers } from "next/headers";
 
 import { initDayJsLibrary } from "@/common/dayjs";
 import { fontVariables } from "@/common/fonts";
-import { getNetworkFromHeaders } from "@/common/network";
+import {
+  getNetworkFromHeadersOrFail,
+} from "@/common/network";
 import { Header } from "@/components/Header";
 import { NetworkHeader } from "@/components/NetworkHeader";
 import { NetworkProvider } from "@/providers/NetworkProvider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { WalletProvider } from "@/providers/WalletProvider";
-
 
 import "@/styles/globals.css";
 
@@ -26,11 +27,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const network = await getNetworkFromHeaders(await headers());
-
-  if (!network) {
-    throw new Error("Network not found");
-  }
+  const network = await getNetworkFromHeadersOrFail(headers());
 
   return (
     <html lang="en">

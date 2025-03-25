@@ -1,7 +1,7 @@
 import Decimal from "decimal.js";
 
 import { HgtpNetwork } from "@/common/consts/network";
-import { getNetworkFromParams } from "@/common/network";
+import { getNetworkFromParamsOrFail } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { PageTitle } from "@/components/PageTitle";
 import { Section } from "@/components/Section";
@@ -25,11 +25,8 @@ export default async function DelegatedStakingPage({
 }: {
   params: Promise<{ network: string }>;
 }) {
-  const network = await getNetworkFromParams(params);
-
-  if (!network) {
-    throw new Error("Network not found");
-  }
+  const network = await getNetworkFromParamsOrFail(params);
+  const validators = await getStakingDelegators(network);
 
   return (
     <>
