@@ -1,4 +1,5 @@
 export * from "./pagination";
+export * from "./search";
 export * from "./apis";
 export * from "./metagraphs";
 export * from "./snapshots";
