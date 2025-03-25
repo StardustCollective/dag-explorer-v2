@@ -47,3 +47,18 @@ export const getMetagraph = async (
     throw e;
   }
 };
+
+export const getMetagraphCurrencySymbol = async (
+  network: HgtpNetwork,
+  metagraphId?: string,
+  isDatum?: boolean
+): Promise<string> => {
+  let symbol = "DAG";
+
+  if (metagraphId) {
+    const metagraph = await getMetagraph(network, metagraphId);
+    symbol = metagraph?.metagraphSymbol ?? "--";
+  }
+
+  return (isDatum ? "d" : "") + symbol;
+};
