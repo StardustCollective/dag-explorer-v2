@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import MagnifyingGlass2Icon from "@/assets/icons/magnifying-glass-2.svg";
@@ -9,19 +9,45 @@ export type ISearchBarProps = Omit<
   React.JSX.IntrinsicElements["input"],
   "className"
 > & {
+  onSearch?: () => void;
   className?: string | { wrapper?: string; input?: string };
 };
 
 export const SearchBar = ({
   className,
   ref,
+  onSearch,
   onFocus,
   onBlur,
   ...props
 }: ISearchBarProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [focus, setFocus] = useState(false);
+
   className =
     typeof className === "object" ? className : { wrapper: className };
+
+  useImperativeHandle(ref, () => inputRef.current as any);
+
+  useEffect(() => {
+    const inputElement = inputRef.current;
+
+    if (!inputElement) {
+      return;
+    }
+
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && focus) {
+        onSearch?.();
+      }
+    };
+
+    inputElement.addEventListener("keydown", onKeyUp);
+
+    return () => {
+      inputElement.removeEventListener("keydown", onKeyUp);
+    };
+  }, [focus, onSearch, inputRef]);
 
   return (
     <div
@@ -47,11 +73,12 @@ export const SearchBar = ({
             setFocus(false);
             onBlur?.(e);
           }}
-          ref={ref}
+          ref={inputRef}
           {...props}
         />
       </div>
       <div
+        onClick={onSearch}
         className={clsx(
           "flex justify-center items-center size-8 bg-hgtp-blue-600 border border-white/25 rounded-full",
           !focus && "opacity-50"
