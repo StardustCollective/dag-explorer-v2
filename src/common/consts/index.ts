@@ -1,2 +1,2 @@
 export * from "./network";
-export * from "./prices";
+export * from "./currencies";

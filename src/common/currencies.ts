@@ -1,8 +1,10 @@
 import { ConstellationEcosystemAPI } from "./apis";
 import { KnownCoinIds } from "./consts";
+import { DagBaseFactor } from "./consts/currencies";
 import { HgtpNetwork } from "./consts/network";
 
-import { ITokenPriceData , IAPIResponse } from "@/types";
+import { ITokenPriceData, IAPIResponse } from "@/types";
+import { decodeDecimal, encodeDecimal } from "@/utils";
 
 export const getKnownUsdPrice = async (
   network: HgtpNetwork,
@@ -28,3 +30,9 @@ export const getKnownUsdPrice = async (
 
   return response.data.data[KnownCoinIds[currencyId ?? "native"]]?.usd ?? null;
 };
+
+export const datumToDag = (datum: IDecimal) =>
+  encodeDecimal(decodeDecimal(datum).div(DagBaseFactor));
+
+export const dagToDatum = (dag: IDecimal) =>
+  encodeDecimal(decodeDecimal(dag).mul(DagBaseFactor));
