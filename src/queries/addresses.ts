@@ -7,6 +7,7 @@ import {
 } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
+  IAPIAction,
   IAPIMetagraphBalance,
   IAPIResponse,
   IAPIResponseArray,
@@ -105,8 +106,10 @@ export const getAddressTransactions = async (
 
 export const getAddressActions = async (
   network: HgtpNetwork,
-  addressId: string
-): Promise<IBEAddressAction[]> => {
+  addressId: string,
+  metagraphId?: string,
+  options?: INextTokenPaginationOptions
+): Promise<IAPIAction[]> => {
   if (network === HgtpNetwork.MAINNET_1) {
     return [];
   }
@@ -114,12 +117,26 @@ export const getAddressActions = async (
   try {
     const response = await BlockExplorerAPI_Exp[network].get<
       IAPIResponse<IBEAddressAction[]>
-    >(`/addresses/${addressId}/actions`);
+    >(
+      metagraphId
+        ? `/currency/${metagraphId}/addresses/${addressId}/actions`
+        : `/addresses/${addressId}/actions`,
+      {
+        params: { ...options?.tokenPagination },
+      }
+    );
 
-    return response.data.data;
+    return buildAPIResponseArray(
+      response.data.data.map((action) => ({
+        ...action,
+        metagraphId,
+      })),
+      response.data.meta?.total ?? 0,
+      response.data.meta?.next
+    );
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
-      return [];
+      return buildAPIResponseArray([], 0);
     }
 
     throw e;

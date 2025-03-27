@@ -13,7 +13,12 @@ export type IAPIMetagraphBalance = {
 };
 
 export type IBEAddressAction = {
-  type: "SpendTransaction" | "AllowSpend";
+  type:
+    | "FeeTransaction"
+    | "AllowSpend"
+    | "SpendTransaction"    
+    | "TokenLock"
+    | "TokenUnlock";
   currencyId: string | null;
   hash: string;
   amount: number;
@@ -21,4 +26,8 @@ export type IBEAddressAction = {
   parentHash?: string;
   unlockEpoch?: number;
   timestamp: string;
+};
+
+export type IAPIAction = IBEAddressAction & {
+  metagraphId?: string;
 };

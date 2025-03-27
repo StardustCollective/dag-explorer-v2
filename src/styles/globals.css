@@ -17,13 +17,15 @@
   --text-4\.5xl--line-height: 48px;
 
   --color-hgtp-blue-50: #ebefff;
-  --color-hgtp-blue-100: #D9E0FD;
-  --color-hgtp-blue-200: #BCCBFB;
+  --color-hgtp-blue-100: #d9e0fd;
+  --color-hgtp-blue-200: #bccbfb;
   --color-hgtp-blue-400: #798ef6;
   --color-hgtp-blue-600: #3e4fea;
   --color-hgtp-blue-700: #363bd3;
   --color-hgtp-blue-900: #20275b;
   --color-hgtp-blue-950: #151832;
+
+  --color-ltx-gold-700: #b47504;
 
   --color-stgz-purple-700: #662cc9;
 
