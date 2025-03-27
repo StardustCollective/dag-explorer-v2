@@ -25,6 +25,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'icons-metagraph.s3.us-east-1.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'stargazer-assets.s3.us-east-2.amazonaws.com',
         port: '',
         pathname: '/**',
