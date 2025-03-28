@@ -5,11 +5,15 @@ export type IDetailsTableCardProps = {
     | { label?: React.ReactNode; value?: React.ReactNode }
     | null
     | undefined
+    | false
   )[];
   className?: string;
 };
 
-export const DetailsTableCard = ({ rows, className }: IDetailsTableCardProps) => {
+export const DetailsTableCard = ({
+  rows,
+  className,
+}: IDetailsTableCardProps) => {
   return (
     <table
       className={clsx(
