@@ -83,8 +83,8 @@ const TableBase = <R extends Record<string, any>>({
             <th
               className={clsx(
                 "whitespace-nowrap",
-                "py-5.5 px-4 uppercase bg-c1f5",
-                "first:pl-6 last:pr-6",
+                "uppercase bg-c1f5",
+                "first:pl-2 last:pr-2",
                 header && "border-t border-gray-200",
                 !header && "first:rounded-tl-xl last:rounded-tr-xl",
                 [
@@ -97,7 +97,13 @@ const TableBase = <R extends Record<string, any>>({
               }}
               key={key}
             >
-              <div className="flex flex-row flex-nowrap w-full items-center gap-1.5 text-xs font-semibold text-gray-600">
+              <div
+                className={clsx(
+                  "flex flex-nowrap w-full items-center gap-1.5",
+                  "text-xs font-semibold text-gray-600",
+                  "min-h-16 px-4"
+                )}
+              >
                 {value}
               </div>
             </th>
@@ -115,8 +121,7 @@ const TableBase = <R extends Record<string, any>>({
                     className={clsx(
                       "whitespace-nowrap",
                       "border-t border-gray-200",
-                      "py-5.5 px-4",
-                      "first:pl-6 last:pr-6",
+                      "first:pl-2 last:pr-2",
                       idx % 2 === 0 && "bg-cafa",
                       idx === data.length - 1 &&
                         "first:rounded-bl-xl last:rounded-br-xl"
@@ -124,7 +129,14 @@ const TableBase = <R extends Record<string, any>>({
                     style={{ width: `${100 / getEntries(titles).length}%` }}
                     key={`${record[primaryKey]}:${key}`}
                   >
-                    <div>{format?.[key]?.(value, record) ?? value}</div>
+                    <div
+                      className={clsx(
+                        "flex flex-nowrap items-center",
+                        "min-h-16 px-4"
+                      )}
+                    >
+                      {format?.[key]?.(value, record) ?? value}
+                    </div>
                   </td>
                 );
               })}
@@ -146,8 +158,7 @@ const TableBase = <R extends Record<string, any>>({
                     className={clsx(
                       "whitespace-nowrap",
                       "border-t border-gray-200",
-                      "py-5.5 px-4",
-                      "first:pl-6 last:pr-6",
+                      "first:pl-2 last:pr-2",
                       idx % 2 === 0 && "bg-cafa",
                       idx === loadingData.length - 1 &&
                         "first:rounded-bl-xl last:rounded-br-xl"
@@ -155,7 +166,14 @@ const TableBase = <R extends Record<string, any>>({
                     style={{ width: `${100 / getEntries(titles).length}%` }}
                     key={`loading:${idx}:${key}`}
                   >
-                    <div>{value}</div>
+                    <div
+                      className={clsx(
+                        "flex flex-nowrap items-center",
+                        "min-h-16 px-4"
+                      )}
+                    >
+                      {value}
+                    </div>
                   </td>
                 );
               })}
