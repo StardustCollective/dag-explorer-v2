@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getNetworkFromParamsOrFail } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { PageTitle } from "@/components/PageTitle";
-import { TransactionDetail } from "@/components/TransactionDetail/TransactionDetail";
+import { TransactionDetail } from "@/components/TransactionDetail";
 import { getTransaction } from "@/queries";
 
 

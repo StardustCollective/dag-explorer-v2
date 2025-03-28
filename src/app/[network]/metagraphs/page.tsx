@@ -74,7 +74,7 @@ export default async function MetagraphsPage({
                   className="flex flex-row gap-3 items-center text-hgtp-blue-600 font-medium"
                   href={
                     record.metagraphId !== null
-                      ? `/metagraph/${record.metagraphId}`
+                      ? `/metagraphs/${record.metagraphId}`
                       : "#"
                   }
                 >

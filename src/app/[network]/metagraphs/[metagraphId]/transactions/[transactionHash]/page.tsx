@@ -3,12 +3,12 @@ import { notFound } from "next/navigation";
 import { getNetworkFromParamsOrFail } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { PageTitle } from "@/components/PageTitle";
-import { TransactionDetail } from "@/components/TransactionDetail/TransactionDetail";
+import { TransactionDetail } from "@/components/TransactionDetail";
 import { getMetagraphTransaction } from "@/queries";
 
 export const revalidate = 86_400; // 24 hours - These should not change, almost immutable
 
-export default async function MetagrapgTransactionPage({
+export default async function MetagraphTransactionPage({
   params,
 }: {
   params: Promise<{

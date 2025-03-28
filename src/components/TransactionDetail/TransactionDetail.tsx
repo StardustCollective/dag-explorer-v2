@@ -75,7 +75,11 @@ export const TransactionDetail = async ({
             value: (
               <Link
                 className="text-hgtp-blue-600"
-                href={`/snapshots/${transaction.snapshotOrdinal}`}
+                href={
+                  metagraphId
+                    ? `/metagraphs/${metagraphId}/snapshots/${transaction.snapshotOrdinal}`
+                    : `/snapshots/${transaction.snapshotOrdinal}`
+                }
               >
                 {transaction.snapshotOrdinal}
               </Link>
@@ -100,7 +104,7 @@ export const TransactionDetail = async ({
                   "bg-green-50 border border-green-400 rounded-4xl"
                 )}
               >
-                <CheckCircleOutlineIcon className="size-5" /> Success
+                <CheckCircleOutlineIcon className="size-5" /> Confirmed
               </span>
             ),
           },
