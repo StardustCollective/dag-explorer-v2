@@ -80,3 +80,31 @@ export const getSnapshots = async (
     throw e;
   }
 };
+
+export const getSnapshot = async (
+  network: HgtpNetwork,
+  ordinal: number,
+  metagraphId?: string
+): Promise<IAPISnapshot | null> => {
+  if (network === HgtpNetwork.MAINNET_1) {
+    return null;
+  } 
+
+  try {
+    const response = await BlockExplorerAPI[network].get<
+      IAPIResponse<IBESnapshot>
+    >(
+      metagraphId
+        ? `/currency/${metagraphId}/snapshots/${ordinal}`
+        : `/global-snapshots/${ordinal}`
+    );
+
+    return Object.assign(response.data.data, { metagraphId });
+  } catch (e) {
+    if (isAxiosError(e) && e.status === 404) {
+      return null;
+    }
+
+    throw e;
+  }
+};
