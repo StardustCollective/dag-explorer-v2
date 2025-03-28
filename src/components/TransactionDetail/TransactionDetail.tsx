@@ -5,13 +5,14 @@ import Link from "next/link";
 import { CopyAction } from "../CopyAction";
 import { DetailsTableCard } from "../DetailsTableCard";
 import { FormatCurrency } from "../FormatCurrency";
+import { FormatCurrencyPrice } from "../FormatCurrencyPrice";
 import { Section } from "../Section";
 
 import { HgtpNetwork } from "@/common/consts";
-import { datumToDag, getKnownUsdPrice } from "@/common/currencies";
+import { datumToDag } from "@/common/currencies";
 import { getMetagraph, getMetagraphCurrencySymbol } from "@/queries";
 import { IBETransaction } from "@/types";
-import { formatCurrencyWithDecimals, shortenString } from "@/utils";
+import { shortenString } from "@/utils";
 
 import CalendarClock4Icon from "@/assets/icons/calendar-clock-4.svg";
 import CheckCircleOutlineIcon from "@/assets/icons/circle-check-outline.svg";
@@ -30,8 +31,6 @@ export const TransactionDetail = async ({
   const metagraph = metagraphId
     ? await getMetagraph(network, metagraphId)
     : null;
-
-  const price = await getKnownUsdPrice(network, metagraphId);
 
   return (
     <Section className="flex flex-col gap-4">
@@ -151,17 +150,12 @@ export const TransactionDetail = async ({
                   value={datumToDag(transaction.amount)}
                   currency={getMetagraphCurrencySymbol(network, metagraphId)}
                 />
-
-                {price && (
-                  <span className="text-gray-500">
-                    ($
-                    {formatCurrencyWithDecimals(
-                      "USD",
-                      (price * transaction.amount) / 1e8
-                    )}
-                    )
-                  </span>
-                )}
+                <FormatCurrencyPrice
+                  className="text-gray-500"
+                  network={network}
+                  currencyId={metagraphId}
+                  value={datumToDag(transaction.amount)}
+                />
               </span>
             ),
           },
@@ -173,16 +167,12 @@ export const TransactionDetail = async ({
                   value={datumToDag(transaction.fee)}
                   currency={getMetagraphCurrencySymbol(network, metagraphId)}
                 />
-                {price && (
-                  <span className="text-gray-500">
-                    ($
-                    {formatCurrencyWithDecimals(
-                      "USD",
-                      (price * transaction.fee) / 1e8
-                    )}
-                    )
-                  </span>
-                )}
+                <FormatCurrencyPrice
+                  className="text-gray-500"
+                  network={network}
+                  currencyId={metagraphId}
+                  value={datumToDag(transaction.fee)}
+                />
               </span>
             ),
           },
