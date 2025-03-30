@@ -3,32 +3,42 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { isPromiseLike } from "@/utils";
 
-export type ISuspenseValueProps = {
+export type ISuspenseValueProps<E extends React.ElementType = any> = Omit<
+  React.ComponentPropsWithoutRef<E extends React.ElementType ? E : "span">,
+  "value" | "fallback" | "as"
+> & {
   value: Promise<React.ReactNode> | React.ReactNode;
   fallback?: React.ReactNode;
-  className?: string;
+  as?: E;
 };
 
-export const SuspenseValueBase = ({
+export const SuspenseValueBase = <E extends React.ElementType = any>({
   value,
-  className,
-}: ISuspenseValueProps) => {
+  fallback,
+  as,
+  ...props
+}: ISuspenseValueProps<E>) => {
   const awaitedValue = use(
     isPromiseLike(value) ? value : Promise.resolve(value)
   );
 
-  return <span className={className}>{awaitedValue}</span>;
+  const Rendered = as ?? "span";
+
+  return <Rendered {...props}>{awaitedValue}</Rendered>;
 };
 
-export const SuspenseValue = ({
+export const SuspenseValue = <E extends React.ElementType = any>({
   value,
   fallback,
-  className,
-}: ISuspenseValueProps) => {
+  as,
+  ...props
+}: ISuspenseValueProps<E>) => {
+  const Rendered = as ?? "span";
+
   return (
-    <ErrorBoundary fallback={fallback}>
-      <React.Suspense fallback={fallback}>
-        <SuspenseValueBase className={className} value={value} />
+    <ErrorBoundary fallback={<Rendered {...props}>{fallback}</Rendered>}>
+      <React.Suspense fallback={<Rendered {...props}>{fallback}</Rendered>}>
+        <SuspenseValueBase {...({ value, as, ...props } as any)} />
       </React.Suspense>
     </ErrorBoundary>
   );
