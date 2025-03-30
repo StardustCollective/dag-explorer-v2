@@ -131,7 +131,7 @@ export const Header = ({}: IHeaderProps) => {
             </MenuCard.Option>
             <MenuCard.Option
               renderAs={Link}
-              href={`/address/${wallet.account}/delegations`}
+              href={`/address/${wallet.account}/staking`}
             >
               <CoinsRemoveIcon className="size-6" />
               My delegations
