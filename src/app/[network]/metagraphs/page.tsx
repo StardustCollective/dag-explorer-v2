@@ -1,17 +1,15 @@
 import clsx from "clsx";
-import Image from "next/image";
 import Link from "next/link";
 
 import { HgtpNetwork } from "@/common/consts/network";
 import { getNetworkFromParamsOrFail } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { PageTitle } from "@/components/PageTitle";
+import { RoundedIcon } from "@/components/RoundedIcon";
 import { Section } from "@/components/Section";
 import { SkeletonSpan } from "@/components/SkeletonSpan";
 import { Table } from "@/components/Table";
-import {
-  getMetagraphs,
-} from "@/queries";
+import { getMetagraphs } from "@/queries";
 import {
   formatCurrencyWithDecimals,
   formatNumberWithDecimals,
@@ -20,7 +18,6 @@ import {
 
 import Brain2Icon from "@/assets/icons/brain-2.svg";
 import ConstellationCircleGrayIcon from "@/assets/logos/constellation-circle-gray.svg";
-
 
 export const revalidate = 15;
 
@@ -43,9 +40,7 @@ export default async function MetagraphsPage({
 
   return (
     <>
-    <PageTitle icon={<Brain2Icon className="size-8" />}>
-        Metagraphs
-      </PageTitle>
+      <PageTitle icon={<Brain2Icon className="size-8" />}>Metagraphs</PageTitle>
       <PageLayout className="flex flex-col gap-10 px-20 py-8" renderAs={"main"}>
         <Section title="Top projects">
           <Table.Suspense
@@ -78,20 +73,13 @@ export default async function MetagraphsPage({
                       : "#"
                   }
                 >
-                  <div className="size-8 rounded-full">
-                    {record.icon_url && (
-                      <Image
-                        className="object-contain size-8"
-                        src={record.icon_url}
-                        alt={value}
-                        width={32}
-                        height={32}
-                      />
-                    )}
-                    {!record.icon_url && (
+                  <RoundedIcon
+                    iconUrl={record.icon_url}
+                    fallback={
                       <ConstellationCircleGrayIcon className="size-8" />
-                    )}
-                  </div>
+                    }
+                    size={8}
+                  />
                   {value}
                 </Link>
               ),

@@ -1,18 +1,20 @@
 import { dag4 } from "@stardust-collective/dag4";
 import clsx from "clsx";
 import dayjs from "dayjs";
-import Image from "next/image";
 import Link from "next/link";
 
 import { HgtpNetwork } from "@/common/consts/network";
 import { datumToDag } from "@/common/currencies";
 import { getNetworkFromParamsOrFail } from "@/common/network";
 import { FormatCurrency } from "@/components/FormatCurrency";
+import { FormatCurrencyPrice } from "@/components/FormatCurrencyPrice";
 import { PageLayout } from "@/components/PageLayout";
+import { RoundedIcon } from "@/components/RoundedIcon";
 import { RouterRefresh } from "@/components/RouterRefresh";
 import { Section } from "@/components/Section";
 import { SkeletonSpan } from "@/components/SkeletonSpan";
 import { StatCard } from "@/components/StatCard";
+import { SuspenseValue } from "@/components/SuspenseValue";
 import { Table } from "@/components/Table";
 import { ValidatorCard } from "@/components/ValidatorCard";
 import {
@@ -25,7 +27,6 @@ import {
   getStakingDelegators,
 } from "@/queries";
 import {
-  encodeDecimal,
   formatCurrencyWithDecimals,
   formatNumberWithDecimals,
   shortenString,
@@ -89,15 +90,15 @@ export default async function DashboardPage({
       <Section title="Top validators" className="flex flex-nowrap gap-6">
         {validators.slice(0, 3).map((validator) => (
           <ValidatorCard
-            key={validator.node}
-            nodeId={validator.node}
+            key={validator.node.id}
+            nodeId={validator.node.id}
             type={"validator"}
             subtitle={validator.nodeMetadataParameters.name}
             title={shortenString(
-              dag4.keyStore.getDagAddressFromPublicKey(validator.node)
+              dag4.keyStore.getDagAddressFromPublicKey(validator.node.id)
             )}
             logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
-            delegatedAmountInDAG={encodeDecimal(validator.totalStaked / 1e8)}
+            delegatedAmountInDAG={datumToDag(validator.totalAmountDelegated)}
             commissionPercentage={
               validator.delegatedStakeRewardParameters.rewardFraction / 1000
             }
@@ -132,24 +133,15 @@ export default async function DashboardPage({
                 className="flex flex-row gap-3 items-center text-hgtp-blue-600 font-medium"
                 href={
                   record.metagraphId !== null
-                    ? `/metagraph/${record.metagraphId}`
+                    ? `/metagraphs/${record.metagraphId}`
                     : "#"
                 }
               >
-                <div className="size-8 rounded-full">
-                  {record.icon_url && (
-                    <Image
-                      className="object-contain size-8"
-                      src={record.icon_url}
-                      alt={value}
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  {!record.icon_url && (
-                    <ConstellationCircleGrayIcon className="size-8" />
-                  )}
-                </div>
+                <RoundedIcon
+                  iconUrl={record.icon_url}
+                  fallback={<ConstellationCircleGrayIcon className="size-8" />}
+                  size={8}
+                />
                 {value}
               </Link>
             ),
@@ -254,13 +246,21 @@ export default async function DashboardPage({
               ),
               timestamp: (value) => <span>{dayjs(value).fromNow()}</span>,
               amount: (value, record) => (
-                <FormatCurrency
-                  value={datumToDag(value)}
-                  currency={getMetagraphCurrencySymbol(
-                    network,
-                    record.metagraphId
-                  )}
-                />
+                <span className="flex flex-col gap-1">
+                  <FormatCurrency
+                    value={datumToDag(value)}
+                    currency={getMetagraphCurrencySymbol(
+                      network,
+                      record.metagraphId
+                    )}
+                  />
+                  <FormatCurrencyPrice
+                    className="text-gray-600"
+                    network={network}
+                    currencyId={record.metagraphId}
+                    value={datumToDag(value)}
+                  />
+                </span>
               ),
             }}
           />
@@ -299,7 +299,12 @@ export default async function DashboardPage({
                   className="text-hgtp-blue-600"
                   href={`/metagraphs/${record.metagraphId}`}
                 >
-                  {record.symbol}
+                  <SuspenseValue
+                    value={getMetagraphCurrencySymbol(
+                      network,
+                      record.metagraphId
+                    )}
+                  />
                 </Link>
               ),
               ordinal: (value, record) => (
@@ -347,13 +352,21 @@ export default async function DashboardPage({
               ),
               timestamp: (value) => <span>{dayjs(value).fromNow()}</span>,
               amount: (value, record) => (
-                <FormatCurrency
-                  value={datumToDag(value)}
-                  currency={getMetagraphCurrencySymbol(
-                    network,
-                    record.metagraphId
-                  )}
-                />
+                <span className="flex flex-col gap-1">
+                  <FormatCurrency
+                    value={datumToDag(value)}
+                    currency={getMetagraphCurrencySymbol(
+                      network,
+                      record.metagraphId
+                    )}
+                  />
+                  <FormatCurrencyPrice
+                    className="text-gray-600"
+                    network={network}
+                    currencyId={record.metagraphId}
+                    value={datumToDag(value)}
+                  />
+                </span>
               ),
             }}
           />
