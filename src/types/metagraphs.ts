@@ -11,23 +11,27 @@ export type IMetagraphProject = {
   feesTotal: number | null;
 };
 
-export type IMetagraphNodeLayer = {
+export type IAPIMetagraph = {
+  id: string;
+  name: string;
+  description: string;
+  symbol: string;
+  iconUrl: string;
+  siteUrl: string | null;
+  stakingWalletAddress: string | null;
+  feesWalletAddress: string | null;
+};
+
+export type IAPIMetagraphNodeLayerInfo = {
   url: string | null;
   nodes: number;
 };
 
-export type IMetagraph = {
-  metagraphId: string;
-  metagraphName: string;
-  metagraphDescription: string;
-  metagraphSymbol: string;
-  metagraphIcon: string;
-  metagraphSiteUrl: string | null;
-  metagraphStakingWalletAddress: string | null;
-  metagraphFeesWalletAddress: string | null;
-  metagraphNodes?: {
-    l0: IMetagraphNodeLayer;
-    cl1: IMetagraphNodeLayer;
-    dl1: IMetagraphNodeLayer;
+export type IAPIMetagraphNodes = {
+  id: string;
+  nodes: {
+    l0: IAPIMetagraphNodeLayerInfo;
+    cl1: IAPIMetagraphNodeLayerInfo;
+    dl1: IAPIMetagraphNodeLayerInfo;
   };
 };

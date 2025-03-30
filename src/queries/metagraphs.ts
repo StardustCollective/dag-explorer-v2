@@ -5,9 +5,10 @@ import { HgtpNetwork } from "@/common/consts";
 import {
   IAPIResponse,
   IAPIResponseArray,
-  IMetagraph,
+  IAPIMetagraph,
   IMetagraphProject,
   IPaginationOptions,
+  IAPIMetagraphNodes,
 } from "@/types";
 import { buildAPIResponseArray } from "@/utils";
 
@@ -32,13 +33,33 @@ export const getMetagraphs = async (
 export const getMetagraph = async (
   network: HgtpNetwork,
   metagraphId: string
-): Promise<IMetagraph | null> => {
+): Promise<IAPIMetagraph | null> => {
   try {
-    const response = await DagExplorerAPI.get<IAPIResponse<IMetagraph>>(
-      `/${network}/metagraphs/${metagraphId}`
+    const response = await DagExplorerAPI.get<IAPIResponse<IAPIMetagraph>>(
+      `/${network}/metagraphs/${metagraphId}`,
+      { params: { v: "v2" } }
     );
 
     return response.data.data;
+  } catch (e) {
+    if (isAxiosError(e) && e.status === 404) {
+      return null;
+    }
+
+    throw e;
+  }
+};
+
+export const getMetagraphNodes = async (
+  network: HgtpNetwork,
+  metagraphId: string
+): Promise<IAPIMetagraphNodes["nodes"] | null> => {
+  try {
+    const response = await DagExplorerAPI.get<IAPIResponse<IAPIMetagraphNodes>>(
+      `/${network}/metagraphs/${metagraphId}/nodes`
+    );
+
+    return response.data.data.nodes;
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
       return null;
@@ -57,8 +78,25 @@ export const getMetagraphCurrencySymbol = async (
 
   if (metagraphId) {
     const metagraph = await getMetagraph(network, metagraphId);
-    symbol = metagraph?.metagraphSymbol ?? "--";
+    symbol = metagraph?.symbol ?? "--";
   }
 
   return (isDatum ? "d" : "") + symbol;
+};
+
+export const getMetagraphIconUrl = async (
+  network: HgtpNetwork,
+  metagraphId?: string
+): Promise<string | null> => {
+  if (!metagraphId) {
+    return null;
+  }
+
+  const metagraph = await getMetagraph(network, metagraphId);
+
+  if (!metagraph || !metagraph.iconUrl) {
+    return null;
+  }
+
+  return metagraph.iconUrl;
 };
