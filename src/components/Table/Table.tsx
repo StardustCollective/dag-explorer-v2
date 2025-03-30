@@ -30,6 +30,9 @@ export type ITableProps<R extends Record<string, any>> = {
   colWidths?: {
     [P in R extends Record<infer K, any> ? K : never]?: number;
   };
+  colClassNames?: {
+    [P in R extends Record<infer K, any> ? K : never]?: string;
+  };
   loading?: boolean;
   loadingData?: Record<keyof R, any>[];
   loadingState?: React.ReactNode;
@@ -46,6 +49,7 @@ const TableBase = <R extends Record<string, any>>({
   titles,
   format,
   colWidths,
+  colClassNames,
   loading,
   loadingData,
   loadingState,
@@ -132,7 +136,8 @@ const TableBase = <R extends Record<string, any>>({
                     <div
                       className={clsx(
                         "flex flex-nowrap items-center",
-                        "min-h-16 px-4"
+                        "min-h-16 px-4",
+                        colClassNames?.[key]
                       )}
                     >
                       {format?.[key]?.(value, record) ?? value}
@@ -168,7 +173,7 @@ const TableBase = <R extends Record<string, any>>({
                   >
                     <div
                       className={clsx(
-                        "flex flex-nowrap items-center",
+                        "flex flex-nowrap items-center w-full",
                         "min-h-16 px-4"
                       )}
                     >
