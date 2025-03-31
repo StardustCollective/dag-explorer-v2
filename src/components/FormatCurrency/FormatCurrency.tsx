@@ -21,7 +21,11 @@ export const FormatCurrency = ({
   return (
     <SuspenseValue
       className={className}
-      fallback={""}
+      fallback={
+        <>
+          -- <SuspenseValue fallback={<SkeletonSpan />} value={currency} />
+        </>
+      }
       value={(isPromiseLike(value) ? value : Promise.resolve(value)).then(
         (value) => (
           <>
