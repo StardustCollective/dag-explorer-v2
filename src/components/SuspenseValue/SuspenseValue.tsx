@@ -9,20 +9,20 @@ export type ISuspenseValueProps<E extends React.ElementType = any> = Omit<
 > & {
   value: Promise<React.ReactNode> | React.ReactNode;
   fallback?: React.ReactNode;
-  as?: E;
+  renderAs?: E;
 };
 
 export const SuspenseValueBase = <E extends React.ElementType = any>({
   value,
   fallback,
-  as,
+  renderAs,
   ...props
 }: ISuspenseValueProps<E>) => {
   const awaitedValue = use(
     isPromiseLike(value) ? value : Promise.resolve(value)
   );
 
-  const Rendered = as ?? "span";
+  const Rendered = renderAs ?? "span";
 
   return <Rendered {...props}>{awaitedValue}</Rendered>;
 };
@@ -30,15 +30,15 @@ export const SuspenseValueBase = <E extends React.ElementType = any>({
 export const SuspenseValue = <E extends React.ElementType = any>({
   value,
   fallback,
-  as,
+  renderAs,
   ...props
 }: ISuspenseValueProps<E>) => {
-  const Rendered = as ?? "span";
+  const Rendered = renderAs ?? "span";
 
   return (
     <ErrorBoundary fallback={<Rendered {...props}>{fallback}</Rendered>}>
       <React.Suspense fallback={<Rendered {...props}>{fallback}</Rendered>}>
-        <SuspenseValueBase {...({ value, as, ...props } as any)} />
+        <SuspenseValueBase {...({ value, as: renderAs, ...props } as any)} />
       </React.Suspense>
     </ErrorBoundary>
   );
