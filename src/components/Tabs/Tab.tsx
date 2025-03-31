@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "next/link";
 import React, { useContext } from "react";
 
 import { TabsContext } from "./TabsContext";
@@ -19,7 +18,7 @@ export const Tab = ({ id, href, children }: ITabProps) => {
     throw new Error("<Tabs.Tab/> must be rendered inside a <Tabs/> component");
   }
 
-  const RenderComponent = href ? Link : "div";
+  const RenderComponent = href ? "a" : "div";
 
   return (
     <RenderComponent
