@@ -6,6 +6,7 @@ import { CopyAction } from "../CopyAction";
 import { DetailsTableCard } from "../DetailsTableCard";
 import { FormatCurrency } from "../FormatCurrency";
 import { FormatCurrencyPrice } from "../FormatCurrencyPrice";
+import { MetagraphIcon } from "../MetagraphIcon";
 import { Section } from "../Section";
 import { SkeletonSpan } from "../SkeletonSpan";
 import { Table } from "../Table";
@@ -56,12 +57,19 @@ export const SnapshotDetail = async ({
             {
               label: "Metagraph name",
               value: (
-                <Link
-                  className="text-hgtp-blue-600"
-                  href={`/metagraphs/${metagraph.metagraphId}`}
-                >
-                  {metagraph.metagraphName}
-                </Link>
+                <div className="flex items-center gap-2">
+                  <MetagraphIcon
+                    network={network}
+                    metagraphId={metagraph.id}
+                    size={5}
+                  />
+                  <Link
+                    className="text-hgtp-blue-600"
+                    href={`/metagraphs/${metagraph.id}`}
+                  >
+                    {metagraph.name}
+                  </Link>
+                </div>
               ),
             },
             {
@@ -70,11 +78,11 @@ export const SnapshotDetail = async ({
                 <span className="flex items-center gap-2">
                   <Link
                     className="text-hgtp-blue-600"
-                    href={`/metagraphs/${metagraph.metagraphId}`}
+                    href={`/metagraphs/${metagraph.id}`}
                   >
-                    {shortenString(metagraph.metagraphId, 8, 8)}
+                    {shortenString(metagraph.id, 8, 8)}
                   </Link>
-                  <CopyAction value={metagraph.metagraphId} />
+                  <CopyAction value={metagraph.id} />
                 </span>
               ),
             },

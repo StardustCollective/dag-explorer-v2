@@ -6,6 +6,7 @@ import { CopyAction } from "../CopyAction";
 import { DetailsTableCard } from "../DetailsTableCard";
 import { FormatCurrency } from "../FormatCurrency";
 import { FormatCurrencyPrice } from "../FormatCurrencyPrice";
+import { MetagraphIcon } from "../MetagraphIcon";
 import { Section } from "../Section";
 
 import { HgtpNetwork } from "@/common/consts";
@@ -43,9 +44,19 @@ export const TransactionDetail = async ({
         </div>
         <div className="card flex flex-col gap-4 p-6">
           <span className="text-black/65 font-semibold">Metagraph</span>
-          <span className="text-hgtp-blue-600 font-medium text-xl">
+          <span
+            className={clsx(
+              "flex items-center gap-2",
+              "text-hgtp-blue-600 font-medium text-xl"
+            )}
+          >
+            <MetagraphIcon
+              network={network}
+              metagraphId={metagraphId}
+              size={6}
+            />
             {metagraphId
-              ? metagraph?.metagraphName ?? shortenString(metagraphId, 6, 6)
+              ? metagraph?.name ?? shortenString(metagraphId, 6, 6)
               : "Constellation"}
           </span>
         </div>
