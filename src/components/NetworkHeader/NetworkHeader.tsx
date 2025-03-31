@@ -22,20 +22,23 @@ export const NetworkHeader = ({ network }: INetworkHeaderProps) => {
 
     if (dag4.keyStore.validateDagAddress(_search)) {
       router.push(`/address/${_search}`);
+      setSearch("");
       return;
     }
 
     if (isHexNumber(_search, 64)) {
-      router.push(`/transaction/${_search}`);
+      router.push(`/transactions/${_search}`);
+      setSearch("");
       return;
     }
 
     if (isDecNumber(_search)) {
       router.push(`/snapshots/${_search}`);
+      setSearch("");
       return;
     }
 
-    router.push(`/not-found/${_search}`);
+    router.push(`/search/${_search}`);
   };
 
   return (
