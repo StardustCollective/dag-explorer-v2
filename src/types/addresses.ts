@@ -4,19 +4,18 @@ export type IBEAddressBalance = {
   address: string;
 };
 
-export type IAPIMetagraphBalance = {
+export type IAPIAddressMetagraph = {
   metagraphId: string;
-  metagraphName: string;
-  metagraphSymbol: string;
-  metagraphIcon: string;
-  balance: number;
+  name: string;
+  symbol: string;
+  iconUrl?: string | null;
 };
 
 export type IBEAddressAction = {
   type:
     | "FeeTransaction"
     | "AllowSpend"
-    | "SpendTransaction"    
+    | "SpendTransaction"
     | "TokenLock"
     | "TokenUnlock";
   currencyId: string | null;
@@ -28,6 +27,15 @@ export type IBEAddressAction = {
   timestamp: string;
 };
 
-export type IAPIAction = IBEAddressAction & {
+export type IAPIAddressAction = IBEAddressAction & {
+  metagraphId?: string;
+};
+
+export type IAPIAddressReward = {
+  address: string;
+  amount: number;
+  accruedAt: string;
+  ordinal: number;
+  rewardsCount?: number;
   metagraphId?: string;
 };

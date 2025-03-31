@@ -7,8 +7,8 @@ import {
 } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
-  IAPIAction,
-  IAPIMetagraphBalance,
+  IAPIAddressAction as IAPIAddressAction,
+  IAPIAddressMetagraph,
   IAPIResponse,
   IAPIResponseArray,
   IAPITransaction,
@@ -16,12 +16,15 @@ import {
   IBEAddressBalance,
   IBETransaction,
   INextTokenPaginationOptions,
+  IPaginationOptions,
 } from "@/types";
 import { buildAPIResponseArray } from "@/utils";
+import { IAPIAddressReward } from "@/types";
 
 export const getAddressBalance = async (
   network: HgtpNetwork,
-  addressId: string
+  addressId: string,
+  metagraphId?: string
 ): Promise<number> => {
   if (network === HgtpNetwork.MAINNET_1) {
     network = HgtpNetwork.MAINNET;
@@ -30,7 +33,17 @@ export const getAddressBalance = async (
   try {
     const response = await BlockExplorerAPI[network].get<
       IAPIResponse<IBEAddressBalance>
-    >(`/addresses/${addressId}/balance`);
+    >(
+      metagraphId
+        ? `/currency/${metagraphId}/addresses/${addressId}/balance`
+        : `/addresses/${addressId}/balance`
+    );
+
+    console.log({
+      balance: response.data.data.balance,
+      metagraphId,
+      addressId,
+    });
 
     return response.data.data.balance;
   } catch (e) {
@@ -42,18 +55,18 @@ export const getAddressBalance = async (
   }
 };
 
-export const getAddressMetagraphBalances = async (
+export const getAddressMetagraphs = async (
   network: HgtpNetwork,
   addressId: string
-): Promise<IAPIMetagraphBalance[]> => {
+): Promise<IAPIAddressMetagraph[]> => {
   if (network === HgtpNetwork.MAINNET_1) {
     return [];
   }
 
   try {
     const response = await DagExplorerAPI.get<
-      IAPIResponse<IAPIMetagraphBalance[]>
-    >(`/${network}/addresses/${addressId}/metagraphs`);
+      IAPIResponse<IAPIAddressMetagraph[]>
+    >(`/${network}/addresses/${addressId}/metagraphs`, { params: { v: "v2" } });
 
     return response.data.data;
   } catch (e) {
@@ -104,12 +117,51 @@ export const getAddressTransactions = async (
   }
 };
 
+export const getAddressRewards = async (
+  network: HgtpNetwork,
+  addressId: string,
+  metagraphId?: string,
+  options?: IPaginationOptions
+): Promise<IAPIAddressReward[]> => {
+  if (network === HgtpNetwork.MAINNET_1) {
+    return [];
+  }
+
+  try {
+    const response = await DagExplorerAPI.get<
+      IAPIResponse<IAPIAddressReward[]>
+    >(
+      metagraphId
+        ? `/${network}/addresses/${addressId}/metagraphs/${metagraphId}/rewards`
+        : `/${network}/addresses/${addressId}/rewards`,
+      {
+        params: { groupingMode: "day", ...options?.pagination },
+      }
+    );
+
+    return buildAPIResponseArray(
+      response.data.data.map((action) => ({
+        ...action,
+        metagraphId,
+      })),
+      response.data.meta?.total ?? 0,
+      response.data.meta?.next
+    );
+  } catch (e) {
+    if (isAxiosError(e) && e.status === 404) {
+      return buildAPIResponseArray([], 0);
+    }
+
+    throw e;
+  }
+};
+
 export const getAddressActions = async (
   network: HgtpNetwork,
   addressId: string,
   metagraphId?: string,
   options?: INextTokenPaginationOptions
-): Promise<IAPIAction[]> => {
+): Promise<IAPIAddressAction[]> => {
   if (network === HgtpNetwork.MAINNET_1) {
     return [];
   }
