@@ -1,4 +1,4 @@
-import { RoundedIcon } from "../RoundedIcon";
+import { IRoundedIconProps, RoundedIcon } from "../RoundedIcon";
 
 import { HgtpNetwork } from "@/common/consts";
 import { getMetagraphIconUrl } from "@/queries";
@@ -7,6 +7,7 @@ import ConstellationCircleBlueIcon from "@/assets/logos/constellation-circle-blu
 
 export type IMetagraphIconProps = {
   network: HgtpNetwork;
+  iconUrl?: IRoundedIconProps["iconUrl"];
   metagraphId?: string;
   size?: number;
   className?: string;
@@ -14,13 +15,14 @@ export type IMetagraphIconProps = {
 
 export const MetagraphIcon = ({
   network,
+  iconUrl,
   metagraphId,
   className,
   size = 10,
 }: IMetagraphIconProps) => {
   return (
     <RoundedIcon
-      iconUrl={getMetagraphIconUrl(network, metagraphId)}
+      iconUrl={iconUrl ?? getMetagraphIconUrl(network, metagraphId)}
       className={className}
       size={size}
       fallback={
