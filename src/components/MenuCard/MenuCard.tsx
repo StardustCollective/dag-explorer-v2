@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useRef } from "react";
 
-import { MenuCardOption } from "./MenuCardOption";
 
 import { useClickOutside } from "@/hooks";
 
@@ -10,12 +9,10 @@ export type IMenuCardProps = {
   afterContent?: React.ReactNode;
   onClickOutside?: () => void;
   className?: string;
-  children?:
-    | React.ReactElement<typeof MenuCardOption>
-    | React.ReactElement<typeof MenuCardOption>[];
+  children?: React.ReactNode;
 };
 
-export const MenuCardBase = ({
+export const MenuCard = ({
   beforeContent,
   afterContent,
   className,
@@ -37,8 +34,3 @@ export const MenuCardBase = ({
     </div>
   );
 };
-
-export const MenuCard = Object.assign(MenuCardBase, {
-  displayName: "MenuCard",
-  Option: MenuCardOption,
-});

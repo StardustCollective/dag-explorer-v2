@@ -20,7 +20,7 @@ export const RoundedIcon = ({
 }: IRoundedIconProps) => {
   return (
     <SuspenseValue
-      as="div"
+      renderAs="div"
       className={clsx(
         "border border-gray-300 rounded-full",
         `size-${size}`,

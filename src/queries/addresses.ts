@@ -18,8 +18,8 @@ import {
   INextTokenPaginationOptions,
   IPaginationOptions,
 } from "@/types";
-import { buildAPIResponseArray } from "@/utils";
 import { IAPIAddressReward } from "@/types";
+import { buildAPIResponseArray } from "@/utils";
 
 export const getAddressBalance = async (
   network: HgtpNetwork,
@@ -38,12 +38,6 @@ export const getAddressBalance = async (
         ? `/currency/${metagraphId}/addresses/${addressId}/balance`
         : `/addresses/${addressId}/balance`
     );
-
-    console.log({
-      balance: response.data.data.balance,
-      metagraphId,
-      addressId,
-    });
 
     return response.data.data.balance;
   } catch (e) {

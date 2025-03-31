@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { MenuCard } from "../MenuCard";
+import { MenuCard, MenuCardOption } from "../MenuCard";
 import { PageLayout } from "../PageLayout";
 
 import { HgtpNetwork, NetworkNames } from "@/common/consts/network";
@@ -73,7 +73,7 @@ export const Header = ({}: IHeaderProps) => {
             onClickOutside={() => setNetworkDropdownOpen(false)}
           >
             {Object.entries(NetworkNames).map(([network, name]) => (
-              <MenuCard.Option
+              <MenuCardOption
                 key={network}
                 renderAs={Link}
                 href={getNetworkUrl(
@@ -82,7 +82,7 @@ export const Header = ({}: IHeaderProps) => {
                 )}
               >
                 {name}
-              </MenuCard.Option>
+              </MenuCardOption>
             ))}
           </MenuCard>
         )}
@@ -122,20 +122,17 @@ export const Header = ({}: IHeaderProps) => {
               </button>
             }
           >
-            <MenuCard.Option
-              renderAs={Link}
-              href={`/address/${wallet.account}`}
-            >
+            <MenuCardOption renderAs={Link} href={`/address/${wallet.account}`}>
               <PeopleCircleIcon className="size-6" />
               Address details
-            </MenuCard.Option>
-            <MenuCard.Option
+            </MenuCardOption>
+            <MenuCardOption
               renderAs={Link}
               href={`/address/${wallet.account}/staking`}
             >
               <CoinsRemoveIcon className="size-6" />
               My delegations
-            </MenuCard.Option>
+            </MenuCardOption>
           </MenuCard>
         )}
       </div>
