@@ -1,17 +1,23 @@
-import { mock_getAddressStakingDelegations, mock_getStakingDelegators } from "./_mocks/staking";
+import {
+  mock_getAddressStakingDelegations,
+  mock_getStakingDelegators,
+} from "./_mocks/staking";
 
 import { L0NodesAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import { ISearchOptions } from "@/types";
-import { IStakingAddress, IStakingDelegator } from "@/types/staking";
+import {
+  IL0StakingDelegation,
+  IL0StakingDelegator,
+} from "@/types/staking";
 
 export const getStakingDelegators = async (
   network: HgtpNetwork,
   options?: ISearchOptions
-): Promise<IStakingDelegator[]> => {
+): Promise<IL0StakingDelegator[]> => {
   return mock_getStakingDelegators(network, options); // @todo remove mock
 
-  const response = await L0NodesAPI[network].get<IStakingDelegator[]>(
+  const response = await L0NodesAPI[network].get<IL0StakingDelegator[]>(
     `/node-params`,
     {
       params: { ...options?.search },
@@ -24,12 +30,14 @@ export const getStakingDelegators = async (
 export const getAddressStakingDelegations = async (
   network: HgtpNetwork,
   address: string
-): Promise<IStakingAddress> => {
-  return mock_getAddressStakingDelegations(network, address); // @todo remove mock
+): Promise<IL0StakingDelegation[]> => {
+  const response = await mock_getAddressStakingDelegations(network, address); // @todo remove mock
 
-  const response = await L0NodesAPI[network].get<IStakingAddress>(
-    `/delegated-stake/${address}/info`
-  );
+  return [...response.activeDelegatedStakes, ...response.pendingWithdrawals];
 
-  return response.data;
+  // const response = await L0NodesAPI[network].get<IL0StakingAddress>(
+  //   `/delegated-stake/${address}/info`
+  // );
+
+  // return response.data;
 };

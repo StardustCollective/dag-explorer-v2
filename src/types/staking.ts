@@ -1,22 +1,40 @@
-export type IStakingDelegator = {
-  node: string;
-  totalStaked: number; // @todo doesnt exist in the schema
-  delegatedStakeRewardParameters: { rewardFraction: number };
-  nodeMetadataParameters: { name: string; description: string };
+export type IL0StakingNode = {
+  id: string;
+  ip: string;
+  publicPort: number;
+  p2pPort: number;
+  clusterSession: string;
+  session: string;
+  state: "Ready";
+  jar: string;
 };
 
-export type IStakingDelegation = {
-  node: string; // @todo doesnt exist in the schema
+export type IL0StakingDelegator = {
+  node: IL0StakingNode;
+  delegatedStakeRewardParameters: {
+    rewardFraction: number;
+  };
+  nodeMetadataParameters: {
+    name: string;
+    description: string;
+  };
+  totalAmountDelegated: number;
+  totalAddressesAssigned: number;
+};
+
+export type IL0StakingDelegation = {
+  nodeId: string;
   acceptedOrdinal: number;
   tokenLockRef: string;
   amount: number;
   fee: number;
-  withdrawalStarted: number | null;
-  withdrawalFinishes: number | null;
+  hash: string;
+  withdrawalStartEpoch: number | null;
+  withdrawalEndEpoch: number | null;
 };
 
-export type IStakingAddress = {
+export type IL0StakingAddress = {
   address: string;
-  activeDelegatedStakes: IStakingDelegation[];
-  pendingWithdrawals: IStakingDelegation[];
+  activeDelegatedStakes: IL0StakingDelegation[];
+  pendingWithdrawals: IL0StakingDelegation[];
 };
