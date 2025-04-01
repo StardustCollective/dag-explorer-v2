@@ -6,7 +6,10 @@
     "build": "next build",
     "dev": "next dev -p 1014",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "fresh": "pnpm clean && pnpm load-dependencies",
+    "clean": "pnpm dlx rimraf .sst .open-next .next node_modules",
+    "load-dependencies": "pnpm i && pnpm sst install"
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
@@ -23,11 +26,12 @@
     "react-error-boundary": "^5.0.0",
     "react-number-format": "^5.4.3",
     "react-tooltip": "^5.28.0",
-    "sst": "3.11.11"
+    "sst": "3.11.21"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@noble/secp256k1": "^2.2.3",
+    "@opennextjs/aws": "3.5.3",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
