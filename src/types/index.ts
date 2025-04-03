@@ -6,3 +6,4 @@ export * from "./snapshots";
 export * from "./transactions";
 export * from "./prices";
 export * from "./addresses";
+export * from "./stats";
