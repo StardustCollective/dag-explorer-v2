@@ -87,6 +87,10 @@ export default async function DashboardPage({
           {formatCurrencyWithDecimals("DAG", 3_350_132)}
         </StatCard>
       </Section>
+      <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET]}>
+        <SuspenseValue
+          renderAs={"div"}
+          value={validators.then((validators) => (
       <Section title="Top validators" className="flex flex-nowrap gap-6">
         {validators.slice(0, 3).map((validator) => (
           <ValidatorCard
@@ -98,14 +102,23 @@ export default async function DashboardPage({
               dag4.keyStore.getDagAddressFromPublicKey(validator.node.id)
             )}
             logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
-            delegatedAmountInDAG={datumToDag(validator.totalAmountDelegated)}
-            commissionPercentage={
-              validator.delegatedStakeRewardParameters.rewardFraction / 1000
-            }
+                  delegatedAmountInDAG={datumToDag(
+                    validator.totalAmountDelegated
+                  )}
+                  commissionPercentage={decodeDecimal(
+                    datumToDag(
+                      validator.delegatedStakeRewardParameters.rewardFraction
+                    )
+                  )
+                    .mul(100)
+                    .toNumber()}
             description={validator.nodeMetadataParameters.description}
           />
         ))}
       </Section>
+          ))}
+        />
+      </NetworksOnly>
       <Section title="Top projects">
         <Table.Suspense
           className="w-full [&_td]:text-sm"

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { MenuCard, MenuCardOption } from "../MenuCard";
+import { NetworksOnly } from "../NetworksOnly";
 import { PageLayout } from "../PageLayout";
 
 import { HgtpNetwork, NetworkNames } from "@/common/consts/network";
@@ -46,14 +47,24 @@ export const Header = ({}: IHeaderProps) => {
         DAG Explorer
       </Link>
       <div className="flex gap-4">
-        <Link className="flex gap-2 items-center h-9 px-4.5" href="/metagraphs">
-          Metagraphs
-          <Brain2Icon className="size-5" />
-        </Link>
-        <Link className="flex gap-2 items-center h-9 px-4.5" href="/staking">
-          Delegated staking
-          <Server1Icon className="size-5" />
-        </Link>
+        <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
+          <Link
+            className="flex gap-2 items-center h-9 px-4.5"
+            href="/metagraphs"
+          >
+            Metagraphs
+            <Brain2Icon className="size-5" />
+          </Link>
+        </NetworksOnly>
+        <NetworksOnly
+          network={network}
+          exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
+        >
+          <Link className="flex gap-2 items-center h-9 px-4.5" href="/staking">
+            Delegated staking
+            <Server1Icon className="size-5" />
+          </Link>
+        </NetworksOnly>
       </div>
       <div className="flex gap-4 relative">
         <button
