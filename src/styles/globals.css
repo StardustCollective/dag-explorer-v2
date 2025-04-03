@@ -20,15 +20,15 @@
   --color-hgtp-blue-100: #d9e0fd;
   --color-hgtp-blue-200: #bccbfb;
   --color-hgtp-blue-400: #798ef6;
-  --color-hgtp-blue-500: #516AEC;
+  --color-hgtp-blue-500: #516aec;
   --color-hgtp-blue-600: #3e4fea;
   --color-hgtp-blue-700: #363bd3;
   --color-hgtp-blue-900: #20275b;
   --color-hgtp-blue-950: #151832;
 
-  --color-ltx-gold-300: #F0D856;
+  --color-ltx-gold-300: #f0d856;
   --color-ltx-gold-700: #b47504;
-  --color-ltx-gold-950: #331C0A;
+  --color-ltx-gold-950: #331c0a;
 
   --color-stgz-purple-700: #662cc9;
 
@@ -39,6 +39,7 @@
   --color-cafa: #fafafa;
   --color-cef6: #798ef6;
   --color-cfff: #ebefff;
+  --color-cdf5: #ecfdf5;
 
   --spacing-4\.5: calc(var(--spacing) * 4.5);
   --spacing-5\.5: calc(var(--spacing) * 5.5);
