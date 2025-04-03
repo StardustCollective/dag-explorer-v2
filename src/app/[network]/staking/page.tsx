@@ -12,7 +12,7 @@ import { PageTitle } from "@/components/PageTitle";
 import { Section } from "@/components/Section";
 import { StatCard } from "@/components/StatCard";
 import { getStakingDelegators } from "@/queries";
-import { shortenString } from "@/utils";
+import { decodeDecimal, shortenString } from "@/utils";
 
 import Server1Icon from "@/assets/icons/server-1.svg";
 
@@ -63,9 +63,13 @@ export default async function DelegatedStakingPage({
               )}
               logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
               delegatedAmountInDAG={datumToDag(validator.totalAmountDelegated)}
-              commissionPercentage={
-                validator.delegatedStakeRewardParameters.rewardFraction / 1000
-              }
+              commissionPercentage={decodeDecimal(
+                datumToDag(
+                  validator.delegatedStakeRewardParameters.rewardFraction
+                )
+              )
+                .mul(100)
+                .toNumber()}
               description={validator.nodeMetadataParameters.description}
             />
           ))}

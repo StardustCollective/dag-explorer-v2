@@ -36,7 +36,7 @@ export const ValidatorCard = ({
       <div className="header flex px-5 py-4 justify-between">
         <div className="flex gap-3">
           <div className="size-10 rounded-full border border-black/25"></div>
-          <div className="flex flex-col font-semibold">
+          <div className="flex flex-col font-medium">
             <span className="text-hgtp-blue-600">{title}</span>
             <span className="text-hgtp-blue-950 text-sm">
               {subtitle ?? "--"}
@@ -46,7 +46,7 @@ export const ValidatorCard = ({
         <div
           className={clsx(
             "flex items-center px-2.5 gap-1 h-7 border-[0.5px] rounded-5xl",
-            "font-semibold text-xs",
+            "font-medium text-xs",
             type === "metagraph" &&
               "border-green-600 bg-green-600/5 text-green-600",
             type === "validator" &&
@@ -61,7 +61,7 @@ export const ValidatorCard = ({
       </div>
       <div className="flex flex-col gap-4 p-5 grow">
         <div className="flex gap-6">
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full gap-1">
             <span className="text-gray-600 text-xs font-semibold">
               Total delegated <InfoTooltip />
             </span>
@@ -69,7 +69,7 @@ export const ValidatorCard = ({
               {formatCurrencyWithDecimals("DAG", delegatedAmountInDAG)}
             </span>
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full gap-1">
             <span className="text-gray-600 text-xs font-semibold">
               Validator commission <InfoTooltip />
             </span>

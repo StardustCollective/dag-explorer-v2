@@ -8,6 +8,7 @@ import { datumToDag } from "@/common/currencies";
 import { getNetworkFromParamsOrFail } from "@/common/network";
 import { FormatCurrency } from "@/components/FormatCurrency";
 import { FormatCurrencyPrice } from "@/components/FormatCurrencyPrice";
+import { NetworksOnly } from "@/components/NetworksOnly";
 import { PageLayout } from "@/components/PageLayout";
 import { RoundedIcon } from "@/components/RoundedIcon";
 import { RouterRefresh } from "@/components/RouterRefresh";
@@ -25,8 +26,10 @@ import {
   getMetagraphCurrencySymbol,
   getMetagraphs,
   getStakingDelegators,
+  getNetworkStats,
 } from "@/queries";
 import {
+  decodeDecimal,
   formatCurrencyWithDecimals,
   formatNumberWithDecimals,
   shortenString,
@@ -68,40 +71,58 @@ export default async function DashboardPage({
     pagination: { limit: 5 },
   });
 
-  const validators = await getStakingDelegators(network);
+  const validators = getStakingDelegators(network);
+
+  const stats = getNetworkStats(network);
 
   return (
     <PageLayout className="flex flex-col gap-10 px-20 py-8" renderAs={"main"}>
       <RouterRefresh interval={1000 * 15} />
       <Section title="Explorer stats" className="flex flex-nowrap gap-6">
         <StatCard label="Total Snapshots">
-          {formatNumberWithDecimals(Date.now() / 1000, { max: 0 })}
+          <SuspenseValue
+            value={stats.then((stats) =>
+              formatNumberWithDecimals(stats?.snapshotsTotal, { max: 0 })
+            )}
+            fallback="--"
+          />
         </StatCard>
         <StatCard label="Total Dag Locked">
-          {formatCurrencyWithDecimals("DAG", 100 * 1e6)}
+          <FormatCurrency
+            currency="DAG"
+            value={stats.then((stats) =>
+              datumToDag(stats?.totalLockedInDatum ?? 0)
+            )}
+          />
         </StatCard>
         <StatCard label="Total Snapshots Fees (90D)">
-          {formatCurrencyWithDecimals("DAG", 350_132)}
+          <FormatCurrency
+            currency="DAG"
+            value={stats.then((stats) => datumToDag(stats?.snapshots90d ?? 0))}
+          />
         </StatCard>
         <StatCard label="Total Snapshots Fees">
-          {formatCurrencyWithDecimals("DAG", 3_350_132)}
+          <FormatCurrency
+            currency="DAG"
+            value={stats.then((stats) => datumToDag(stats?.feesTotal ?? 0))}
+          />
         </StatCard>
       </Section>
       <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET]}>
         <SuspenseValue
           renderAs={"div"}
           value={validators.then((validators) => (
-      <Section title="Top validators" className="flex flex-nowrap gap-6">
-        {validators.slice(0, 3).map((validator) => (
-          <ValidatorCard
-            key={validator.node.id}
-            nodeId={validator.node.id}
-            type={"validator"}
-            subtitle={validator.nodeMetadataParameters.name}
-            title={shortenString(
-              dag4.keyStore.getDagAddressFromPublicKey(validator.node.id)
-            )}
-            logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
+            <Section title="Top validators" className="flex flex-nowrap gap-6">
+              {validators.slice(0, 3).map((validator) => (
+                <ValidatorCard
+                  key={validator.node.id}
+                  nodeId={validator.node.id}
+                  type={"validator"}
+                  subtitle={validator.nodeMetadataParameters.name}
+                  title={shortenString(
+                    dag4.keyStore.getDagAddressFromPublicKey(validator.node.id)
+                  )}
+                  logoUrl="https://icons-metagraph.s3.amazonaws.com/DOR/dortoken_red.svg"
                   delegatedAmountInDAG={datumToDag(
                     validator.totalAmountDelegated
                   )}
@@ -112,10 +133,10 @@ export default async function DashboardPage({
                   )
                     .mul(100)
                     .toNumber()}
-            description={validator.nodeMetadataParameters.description}
-          />
-        ))}
-      </Section>
+                  description={validator.nodeMetadataParameters.description}
+                />
+              ))}
+            </Section>
           ))}
         />
       </NetworksOnly>

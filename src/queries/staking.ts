@@ -1,6 +1,6 @@
 import {
   mock_getAddressStakingDelegations,
-  mock_getStakingDelegators,
+  // mock_getStakingDelegators,
 } from "./_mocks/staking";
 
 import { L0NodesAPI } from "@/common/apis";
@@ -15,7 +15,7 @@ export const getStakingDelegators = async (
   network: HgtpNetwork,
   options?: ISearchOptions
 ): Promise<IL0StakingDelegator[]> => {
-  return mock_getStakingDelegators(network, options); // @todo remove mock
+  // return mock_getStakingDelegators(network, options); // @todo remove mock
 
   const response = await L0NodesAPI[network].get<IL0StakingDelegator[]>(
     `/node-params`,
