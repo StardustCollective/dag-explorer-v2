@@ -1,10 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 
 import { HgtpNetwork } from "@/common/consts";
-import { getNetworkFromHostname } from "@/common/network";
 
 type INetworkProviderContext = {
   network: HgtpNetwork;
@@ -19,25 +17,12 @@ const NetworkProviderContext = createContext<INetworkProviderContext | null>(
  * on server-side, use the @/common/network functions.
  */
 export const NetworkProvider = ({
+  network,
   children,
 }: {
+  network: HgtpNetwork;
   children?: React.ReactNode;
 }) => {
-  const [network, setNetwork] = useState<HgtpNetwork>(HgtpNetwork.MAINNET);
-  const pathname = usePathname();
-
-  const setNetworkFromHostname = () => {
-    const network = getNetworkFromHostname(
-      globalThis?.window?.location?.hostname ?? ""
-    );
-
-    network && setNetwork(network);
-  };
-
-  useEffect(() => {
-    setNetworkFromHostname();
-  }, [pathname]);
-
   return (
     <NetworkProviderContext.Provider value={{ network }}>
       {children}

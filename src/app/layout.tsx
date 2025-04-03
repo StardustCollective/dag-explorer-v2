@@ -50,7 +50,7 @@ export default async function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={clsx(fontVariables, "font-inter bg-cafb")}>
-        <NetworkProvider>
+        <NetworkProvider network={network}>
           <QueryProvider>
             <WalletProvider>
               <Toaster />
