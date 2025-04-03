@@ -26,6 +26,7 @@
     "react-error-boundary": "^5.0.0",
     "react-number-format": "^5.4.3",
     "react-tooltip": "^5.28.0",
+    "sonner": "^2.0.3",
     "sst": "3.11.21"
   },
   "devDependencies": {

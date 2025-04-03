@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { Toaster } from "sonner";
 
 import { initDayJsLibrary } from "@/common/dayjs";
 import { fontVariables } from "@/common/fonts";
@@ -52,6 +53,7 @@ export default async function RootLayout({
         <NetworkProvider>
           <QueryProvider>
             <WalletProvider>
+              <Toaster />
               <Header />
               <NetworkHeader network={network} />
               {children}
