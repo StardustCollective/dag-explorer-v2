@@ -88,7 +88,7 @@ export const getSnapshot = async (
 ): Promise<IAPISnapshot | null> => {
   if (network === HgtpNetwork.MAINNET_1) {
     return null;
-  } 
+  }
 
   try {
     const response = await BlockExplorerAPI[network].get<
@@ -100,6 +100,28 @@ export const getSnapshot = async (
     );
 
     return Object.assign(response.data.data, { metagraphId });
+  } catch (e) {
+    if (isAxiosError(e) && e.status === 404) {
+      return null;
+    }
+
+    throw e;
+  }
+};
+
+export const getCurrentEpochProgress = async (
+  network: HgtpNetwork
+): Promise<number | null> => {
+  if (network === HgtpNetwork.MAINNET_1) {
+    return null;
+  }
+
+  try {
+    const response = await BlockExplorerAPI[network].get<
+      IAPIResponse<IBESnapshot>
+    >("/global-snapshots/latest");
+
+    return response.data.data.epochProgress ?? null;
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
       return null;

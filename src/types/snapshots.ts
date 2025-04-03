@@ -1,3 +1,9 @@
+export type IL0Snapshot = {
+  //@todo add missing types
+  ordinal: number;
+  epochProgress: number;
+};
+
 export type IBESnapshot = {
   hash: string;
   ordinal: number;
@@ -10,6 +16,7 @@ export type IBESnapshot = {
     amount: number;
   }[];
   timestamp: string;
+  epochProgress?: number;
   fee?: number;
   ownerAddress?: string | null;
   stakingAddress?: string | null;
