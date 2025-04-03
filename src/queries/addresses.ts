@@ -2,7 +2,6 @@ import { isAxiosError } from "axios";
 
 import {
   BlockExplorerAPI,
-  BlockExplorerAPI_Exp,
   DagExplorerAPI,
 } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
@@ -156,12 +155,12 @@ export const getAddressActions = async (
   metagraphId?: string,
   options?: INextTokenPaginationOptions
 ): Promise<IAPIAddressAction[]> => {
-  if (network === HgtpNetwork.MAINNET_1) {
+  if (network !== HgtpNetwork.TESTNET) {
     return [];
   }
 
   try {
-    const response = await BlockExplorerAPI_Exp[network].get<
+    const response = await BlockExplorerAPI[network].get<
       IAPIResponse<IBEAddressAction[]>
     >(
       metagraphId

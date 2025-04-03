@@ -35,21 +35,6 @@ export const BlockExplorerAPI: Record<HgtpNetwork, AxiosInstance> = {
   }),
 };
 
-export const BlockExplorerAPI_Exp: Record<HgtpNetwork, AxiosInstance> = {
-  [HgtpNetwork.MAINNET]: axios.create({
-    baseURL: `https://8kiu9tfle8.execute-api.us-west-1.amazonaws.com`,
-  }),
-  [HgtpNetwork.INTEGRATIONNET]: axios.create({
-    baseURL: `https://8kiu9tfle8.execute-api.us-west-1.amazonaws.com`,
-  }),
-  [HgtpNetwork.TESTNET]: axios.create({
-    baseURL: `https://8kiu9tfle8.execute-api.us-west-1.amazonaws.com`,
-  }),
-  [HgtpNetwork.MAINNET_1]: axios.create({
-    baseURL: `https://8kiu9tfle8.execute-api.us-west-1.amazonaws.com`,
-  }),
-};
-
 export const L0NodesAPI: Record<HgtpNetwork, AxiosInstance> = {
   [HgtpNetwork.MAINNET]: axios.create({
     baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
