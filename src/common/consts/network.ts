@@ -1,15 +1,15 @@
 export enum HgtpNetwork {
-  MAINNET_1 = "mainnet1",
   MAINNET = "mainnet",
   INTEGRATIONNET = "integrationnet",
   TESTNET = "testnet",
+  MAINNET_1 = "mainnet1",
 }
 
 export const NetworkNames: Record<HgtpNetwork, string> = {
-  [HgtpNetwork.MAINNET_1]: "Mainnet 1.0",
-  [HgtpNetwork.MAINNET]: "Mainnet 2.0",
-  [HgtpNetwork.INTEGRATIONNET]: "Integrationnet 2.0",
-  [HgtpNetwork.TESTNET]: "Testnet 2.0",
+  [HgtpNetwork.MAINNET]: "Mainnet",
+  [HgtpNetwork.INTEGRATIONNET]: "Integrationnet",
+  [HgtpNetwork.TESTNET]: "Testnet",
+  [HgtpNetwork.MAINNET_1]: "Mainnet (Old)",
 };
 
 export const isHgtpNetwork = (network: any): network is HgtpNetwork =>

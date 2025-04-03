@@ -3,6 +3,7 @@ import { dag4 } from "@stardust-collective/dag4";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { NetworksOnly } from "../NetworksOnly";
 import { PageLayout } from "../PageLayout";
 import { SearchBar } from "../SearchBar";
 
@@ -52,10 +53,16 @@ export const NetworkHeader = ({ network }: INetworkHeaderProps) => {
         <span className="font-semibold text-xs text-gray-600 uppercase">
           Constellation Network
         </span>
-        <span className="font-semibold text-4.5xl text-hgtp-blue-600">
-          {stringFormat(network, "TITLE_CASE")}{" "}
-          {network === HgtpNetwork.MAINNET_1 ? "1.0" : "2.0"}
-        </span>
+        <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
+          <span className="font-semibold text-4.5xl text-hgtp-blue-600">
+            {stringFormat(network, "TITLE_CASE")}
+          </span>
+        </NetworksOnly>
+        <NetworksOnly network={network} onlyOn={[HgtpNetwork.MAINNET_1]}>
+          <span className="font-semibold text-4.5xl text-hgtp-blue-600">
+            Mainnet (Old)
+          </span>
+        </NetworksOnly>
       </div>
       <SearchBar
         className="w-[629px]"
