@@ -23,8 +23,8 @@ export const MetagraphsView = () => {
   });
 
   useEffect(() => {
-    metagraphs.isFetched && metagraphsPagination.setTotalItems(metagraphs.data.meta.total);
-  }, [metagraphs.isFetched && metagraphs.data.meta.total]);
+    metagraphs.isFetched && metagraphsPagination.setTotalItems(metagraphs.data.meta?.total);
+  }, [metagraphs.isFetched && metagraphs.data.meta?.total]);
 
   if (network === 'mainnet1') {
     return <Navigate to="/" />;

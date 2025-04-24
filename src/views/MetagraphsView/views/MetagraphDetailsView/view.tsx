@@ -49,17 +49,17 @@ export const MetagraphDetailsView = () => {
 
   useEffect(() => {
     snapshotsPagination.setTotalItems(null);
-    if (snapshots.isFetched && snapshots.data?.meta.next) {
-      snapshotsPagination.setNextPageToken(snapshots.data.meta.next);
+    if (snapshots.isFetched && snapshots.data?.meta?.next) {
+      snapshotsPagination.setNextPageToken(snapshots.data.meta?.next);
     }
-  }, [snapshots.isFetched && snapshots.data?.meta.next]);
+  }, [snapshots.isFetched && snapshots.data?.meta?.next]);
 
   useEffect(() => {
     transactionsPagination.setTotalItems(null);
-    if (transactions.isFetched && transactions.data?.meta.next) {
-      transactionsPagination.setNextPageToken(transactions.data.meta.next);
+    if (transactions.isFetched && transactions.data?.meta?.next) {
+      transactionsPagination.setNextPageToken(transactions.data.meta?.next);
     }
-  }, [transactions.isFetched && transactions.data?.meta.next]);
+  }, [transactions.isFetched && transactions.data?.meta?.next]);
 
   if (metagraph.isError && isAxiosError(metagraph.error) && metagraph.error.response.status === 404) {
     return (

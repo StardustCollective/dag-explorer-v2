@@ -188,8 +188,8 @@ export const AddressDetails = ({ network }: { network: Exclude<HgtpNetwork, 'mai
   }, [offsetAddressMetagraphs, allMetagraphTokens]);
 
   useEffect(() => {
-    addressSnapshots.isFetched && addressSnapshotsPagination.setTotalItems(addressSnapshots.data.meta.total);
-  }, [addressSnapshots.isFetched && addressSnapshots.data.meta.total]);
+    addressSnapshots.isFetched && addressSnapshotsPagination.setTotalItems(addressSnapshots.data.meta?.total);
+  }, [addressSnapshots.isFetched && addressSnapshots.data.meta?.total]);
 
   useEffect(() => {
     addressTransactionsPagination.setTotalItems(null);
