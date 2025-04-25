@@ -11,26 +11,6 @@ export type IAPIAddressMetagraph = {
   iconUrl?: string | null;
 };
 
-export type IBEAddressAction = {
-  type:
-    | "FeeTransaction"
-    | "AllowSpend"
-    | "SpendTransaction"
-    | "TokenLock"
-    | "TokenUnlock";
-  currencyId: string | null;
-  hash: string;
-  amount: number;
-  source: string;
-  parentHash?: string;
-  unlockEpoch?: number;
-  timestamp: string;
-};
-
-export type IAPIAddressAction = IBEAddressAction & {
-  metagraphId?: string;
-};
-
 export type IAPIAddressReward = {
   address: string;
   amount: number;
