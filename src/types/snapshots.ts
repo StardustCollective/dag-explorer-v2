@@ -11,7 +11,7 @@ export type IBESnapshot = {
   subHeight: number;
   lastSnapshotHash: string;
   blocks: any[];
-  rewards: {
+  rewards?: {
     destination: string;
     amount: number;
   }[];
@@ -20,7 +20,7 @@ export type IBESnapshot = {
   fee?: number;
   ownerAddress?: string | null;
   stakingAddress?: string | null;
-  sizeInKB?: number;
+  sizeInKb?: number;
 };
 
 export type IAPISnapshot = IBESnapshot & {
