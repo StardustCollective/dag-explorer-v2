@@ -1,3 +1,4 @@
+
 import { HgtpNetwork, isHgtpNetwork } from "./consts/network";
 
 export const getNetworkFromHostname = (hostname: string) => {
