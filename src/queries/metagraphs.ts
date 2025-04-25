@@ -4,18 +4,17 @@ import { DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
   IAPIResponse,
-  IAPIResponseArray,
+  IAPIResponseData,
   IAPIMetagraph,
   IMetagraphProject,
   IPaginationOptions,
   IAPIMetagraphNodes,
 } from "@/types";
-import { buildAPIResponseArray } from "@/utils";
 
 export const getMetagraphs = async (
   network: HgtpNetwork,
   options?: IPaginationOptions
-): Promise<IAPIResponseArray<IMetagraphProject>> => {
+): Promise<IAPIResponseData<IMetagraphProject>> => {
   const response = await DagExplorerAPI.get<IAPIResponse<IMetagraphProject[]>>(
     `/${network}/metagraph-projects`,
     {
@@ -23,11 +22,11 @@ export const getMetagraphs = async (
     }
   );
 
-  return buildAPIResponseArray(
-    response.data.data,
-    response.data.meta?.total ?? -1,
-    response.data.meta?.next
-  );
+  return {
+    records: response.data.data,
+    total: response.data.meta?.total ?? -1,
+    next: response.data.meta?.next,
+  };
 };
 
 export const getMetagraph = async (

@@ -9,7 +9,7 @@ import {
   IAPIAddressAction as IAPIAddressAction,
   IAPIAddressMetagraph,
   IAPIResponse,
-  IAPIResponseArray,
+  IAPIResponseData,
   IAPITransaction,
   IBEAddressAction,
   IBEAddressBalance,
@@ -18,7 +18,6 @@ import {
   IPaginationOptions,
 } from "@/types";
 import { IAPIAddressReward } from "@/types";
-import { buildAPIResponseArray } from "@/utils";
 
 export const getAddressBalance = async (
   network: HgtpNetwork,
@@ -76,9 +75,9 @@ export const getAddressTransactions = async (
   addressId: string,
   metagraphId?: string,
   options?: INextTokenPaginationOptions
-): Promise<IAPIResponseArray<IAPITransaction>> => {
+): Promise<IAPIResponseData<IAPITransaction>> => {
   if (network === HgtpNetwork.MAINNET_1) {
-    return buildAPIResponseArray([], 0);
+    return { records: [], total: 0 };
   }
 
   try {
@@ -93,17 +92,17 @@ export const getAddressTransactions = async (
       }
     );
 
-    return buildAPIResponseArray(
-      response.data.data.map((trx) => ({
+    return {
+      records: response.data.data.map((trx) => ({
         ...trx,
         metagraphId,
       })),
-      response.data.meta?.total ?? 0,
-      response.data.meta?.next
-    );
+      total: response.data.meta?.total ?? 0,
+      next: response.data.meta?.next,
+    };
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
-      return buildAPIResponseArray([], 0);
+      return { records: [], total: 0 };
     }
 
     throw e;
@@ -115,9 +114,9 @@ export const getAddressRewards = async (
   addressId: string,
   metagraphId?: string,
   options?: IPaginationOptions
-): Promise<IAPIAddressReward[]> => {
+): Promise<IAPIResponseData<IAPIAddressReward>> => {
   if (network === HgtpNetwork.MAINNET_1) {
-    return [];
+    return { records: [], total: 0 };
   }
 
   try {
@@ -132,17 +131,17 @@ export const getAddressRewards = async (
       }
     );
 
-    return buildAPIResponseArray(
-      response.data.data.map((action) => ({
+    return {
+      records: response.data.data.map((action) => ({
         ...action,
         metagraphId,
       })),
-      response.data.meta?.total ?? 0,
-      response.data.meta?.next
-    );
+      total: response.data.meta?.total ?? 0,
+      next: response.data.meta?.next,
+    };
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
-      return buildAPIResponseArray([], 0);
+      return { records: [], total: 0 };
     }
 
     throw e;
@@ -154,14 +153,14 @@ export const getAddressActions = async (
   addressId: string,
   metagraphId?: string,
   options?: INextTokenPaginationOptions
-): Promise<IAPIAddressAction[]> => {
-  if (network !== HgtpNetwork.TESTNET) {
-    return [];
+): Promise<IAPIResponseData<IAPIActionTransaction>> => {
+  if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
+    return { records: [], total: 0 };
   }
 
   try {
     const response = await BlockExplorerAPI[network].get<
-      IAPIResponse<IBEAddressAction[]>
+      IAPIResponse<IBEActionTransaction[]>
     >(
       metagraphId
         ? `/currency/${metagraphId}/addresses/${addressId}/actions`
@@ -171,14 +170,22 @@ export const getAddressActions = async (
       }
     );
 
-    return buildAPIResponseArray(
-      response.data.data.map((action) => ({
+    return {
+      records: response.data.data.map((action) => ({
         ...action,
         metagraphId,
       })),
-      response.data.meta?.total ?? 0,
-      response.data.meta?.next
-    );
+      total: response.data.meta?.total ?? 0,
+      next: response.data.meta?.next,
+    };
+  } catch (e) {
+    if (isAxiosError(e) && e.status === 404) {
+      return { records: [], total: 0 };
+    }
+
+    throw e;
+  }
+};
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
       return buildAPIResponseArray([], 0);

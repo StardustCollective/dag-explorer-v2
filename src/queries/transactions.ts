@@ -4,19 +4,18 @@ import { BlockExplorerAPI, DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
   IAPIResponse,
-  IAPIResponseArray,
+  IAPIResponseData,
   IBETransaction,
   IBETransaction_V1,
   IPaginationOptions,
   IAPITransaction,
   INextTokenPaginationOptions,
 } from "@/types";
-import { buildAPIResponseArray } from "@/utils";
 
 export const getLatestTransactions = async (
   network: HgtpNetwork,
   options?: IPaginationOptions
-): Promise<IAPIResponseArray<IAPITransaction>> => {
+): Promise<IAPIResponseData<IAPITransaction>> => {
   const response = await DagExplorerAPI.get<IAPIResponse<IAPITransaction[]>>(
     `/${network}/dag/latest-transactions`,
     {
@@ -24,17 +23,17 @@ export const getLatestTransactions = async (
     }
   );
 
-  return buildAPIResponseArray(
-    response.data.data,
-    response.data.meta?.total ?? -1,
-    response.data.meta?.next
-  );
+  return {
+    records: response.data.data,
+    total: response.data.meta?.total ?? -1,
+    next: response.data.meta?.next,
+  };
 };
 
 export const getLatestMetagraphTransactions = async (
   network: HgtpNetwork,
   options?: IPaginationOptions
-): Promise<IAPIResponseArray<IAPITransaction>> => {
+): Promise<IAPIResponseData<IAPITransaction>> => {
   const response = await DagExplorerAPI.get<IAPIResponse<IAPITransaction[]>>(
     `/${network}/metagraph/latest-transactions`,
     {
@@ -42,11 +41,11 @@ export const getLatestMetagraphTransactions = async (
     }
   );
 
-  return buildAPIResponseArray(
-    response.data.data,
-    response.data.meta?.total ?? -1,
-    response.data.meta?.next
-  );
+  return {
+    records: response.data.data,
+    total: response.data.meta?.total ?? -1,
+    next: response.data.meta?.next,
+  };
 };
 
 export const getTransaction = async (
@@ -123,9 +122,9 @@ export const getTransactions = async (
   network: HgtpNetwork,
   metagraphId?: string,
   options?: INextTokenPaginationOptions
-): Promise<IAPIResponseArray<IAPITransaction>> => {
+): Promise<IAPIResponseData<IAPITransaction>> => {
   if (network === HgtpNetwork.MAINNET_1) {
-    return buildAPIResponseArray([], 0);
+    return { records: [], total: 0 };
   }
 
   try {
@@ -135,17 +134,17 @@ export const getTransactions = async (
       params: { ...options?.tokenPagination },
     });
 
-    return buildAPIResponseArray(
-      response.data.data.map((trx) => ({
+    return {
+      records: response.data.data.map((trx) => ({
         ...trx,
         metagraphId,
       })),
-      response.data.meta?.total ?? 0,
-      response.data.meta?.next
-    );
+      total: response.data.meta?.total ?? 0,
+      next: response.data.meta?.next,
+    };
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
-      return buildAPIResponseArray([], 0);
+      return { records: [], total: 0 };
     }
 
     throw e;
@@ -157,9 +156,9 @@ export const getTransactionsBySnapshot = async (
   ordinal: number,
   metagraphId?: string,
   options?: INextTokenPaginationOptions
-): Promise<IAPIResponseArray<IAPITransaction>> => {
+): Promise<IAPIResponseData<IAPITransaction>> => {
   if (network === HgtpNetwork.MAINNET_1) {
-    return buildAPIResponseArray([], 0);
+    return { records: [], total: 0 };
   }
 
   try {
@@ -174,17 +173,17 @@ export const getTransactionsBySnapshot = async (
       }
     );
 
-    return buildAPIResponseArray(
-      response.data.data.map((trx) => ({
+    return {
+      records: response.data.data.map((trx) => ({
         ...trx,
         metagraphId,
       })),
-      response.data.meta?.total ?? 0,
-      response.data.meta?.next
-    );
+      total: response.data.meta?.total ?? 0,
+      next: response.data.meta?.next,
+    };
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
-      return buildAPIResponseArray([], 0);
+      return { records: [], total: 0 };
     }
 
     throw e;
