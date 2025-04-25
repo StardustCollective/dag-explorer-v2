@@ -5,7 +5,7 @@ import { HgtpNetwork } from "@/common/consts";
 import {
   IAPIResponse,
   IAPIResponseData,
-  IPaginationOptions,
+  ILimitOffsetPaginationOptions,
   IAPISnapshot,
   IBESnapshot,
   INextTokenPaginationOptions,
@@ -13,12 +13,12 @@ import {
 
 export const getLatestSnapshots = async (
   network: HgtpNetwork,
-  options?: IPaginationOptions
+  options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IAPISnapshot>> => {
   const response = await DagExplorerAPI.get<IAPIResponse<IAPISnapshot[]>>(
     `/${network}/dag/latest-snapshots`,
     {
-      params: { ...options?.pagination },
+      params: { ...options?.limitPagination },
     }
   );
 
@@ -34,12 +34,12 @@ export const getLatestSnapshots = async (
 
 export const getLatestMetagraphSnapshots = async (
   network: HgtpNetwork,
-  options?: IPaginationOptions
+  options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IAPISnapshot>> => {
   const response = await DagExplorerAPI.get<IAPIResponse<IAPISnapshot[]>>(
     `/${network}/metagraph/latest-snapshots`,
     {
-      params: { ...options?.pagination },
+      params: { ...options?.limitPagination },
     }
   );
 
@@ -105,7 +105,11 @@ export const getSnapshot = async (
         : `/global-snapshots/${ordinal}`
     );
 
-    return Object.assign(response.data.data, { metagraphId });
+    return Object.assign(response.data.data, {
+      metagraphId,
+      sizeInKb:
+        response.data.data.sizeInKb ?? (response.data.data as any).sizeInKB,
+    });
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
       return null;
