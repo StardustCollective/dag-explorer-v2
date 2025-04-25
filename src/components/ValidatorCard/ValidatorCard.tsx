@@ -43,20 +43,8 @@ export const ValidatorCard = ({
             </span>
           </div>
         </div>
-        <div
-          className={clsx(
-            "flex items-center px-2.5 gap-1 h-7 border-[0.5px] rounded-5xl",
-            "font-medium text-xs",
-            type === "metagraph" &&
-              "border-green-600 bg-green-600/5 text-green-600",
-            type === "validator" &&
-              "border-stgz-purple-700 bg-stgz-purple-700/5 text-stgz-purple-700"
-          )}
-        >
-          {type === "metagraph" && <Brain2Icon className="size-4" />}
-          {type === "metagraph" && "Metagraph"}
-          {type === "validator" && <FileLockIcon className="size-4" />}
-          {type === "validator" && "Validator"}
+        <div className="hidden md:inline-block">
+          <ValidatorTypeChip type={type} />
         </div>
       </div>
       <div className="flex flex-col gap-4 p-5 grow">
@@ -79,7 +67,11 @@ export const ValidatorCard = ({
           </div>
         </div>
         <div className="text-sm text-gray-600">{description}</div>
+        <div className="md:hidden">
+          <ValidatorTypeChip type={type} />
+        </div>
       </div>
+
       {onStake && (
         <div className="footer flex items-center justify-between py-3.5 px-5">
           <div className="flex flex-col">

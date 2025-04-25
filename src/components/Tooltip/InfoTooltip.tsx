@@ -35,7 +35,7 @@ export const InfoTooltip = ({
       {renderIcon === "information-icon" && (
         <InformationIcon
           className={clsx(
-            "inline-flex",
+            "inline-flex shrink-0",
             "cursor-pointer mb-[2.2px]",
             "text-gray-500",
             "outline-none border-none",

@@ -2,9 +2,8 @@ import clsx from "clsx";
 import React, { use } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
+import { EmptyState } from "../EmptyState";
 import { RouterRefreshButton } from "../RouterRefresh";
-
-import { ITablePaginationProps, TablePagination } from "./TablePagination";
 
 import { isPromiseLike } from "@/utils";
 
@@ -39,7 +38,7 @@ export type ITableProps<R extends Record<string, any>> = {
   noCardStyle?: boolean;
   header?: React.ReactNode;
   emptyState?: React.ReactNode;
-  pagination?: ITablePaginationProps;
+  pagination?: React.ReactNode;
   className?: string;
 };
 
@@ -64,19 +63,18 @@ const TableBase = <R extends Record<string, any>>({
     0
   );
 
-  const data = use(
-    isPromiseLike(promisedData) ? promisedData : Promise.resolve(promisedData)
-  );
+  const data = isPromiseLike(promisedData) ? use(promisedData) : promisedData;
 
   return (
     <table
       className={clsx(
-        !noCardStyle && "card",
+        !noCardStyle &&
+          "md:border md:border-gray-300 md:rounded-lg md:bg-white md:shadow-sm",
         "border-separate border-spacing-0",
         className
       )}
     >
-      <thead>
+      <thead className="hidden md:table-header-group">
         {header && (
           <tr>
             <td colSpan={getEntries(titles).length}>{header}</td>
@@ -87,14 +85,12 @@ const TableBase = <R extends Record<string, any>>({
             <th
               className={clsx(
                 "whitespace-nowrap",
-                "uppercase bg-c1f5",
+                "bg-gray-100",
                 "first:pl-2 last:pr-2",
                 header && "border-t border-gray-200",
-                !header && "first:rounded-tl-xl last:rounded-tr-xl",
-                [
-                  !loading && data.length === 0 && !emptyState,
-                  loading && (loadingData?.length ?? 0) === 0,
-                ].some((v) => v) && "first:rounded-bl-xl last:rounded-br-xl"
+                !header && "first:rounded-tl-lg last:rounded-tr-lg",
+                [loading && (loadingData?.length ?? 0) === 0].some((v) => v) &&
+                  "first:rounded-bl-lg last:rounded-br-lg"
               )}
               style={{
                 width: `${((colWidths?.[key] ?? 1) / totalWidth) * 100}%`,
@@ -104,8 +100,8 @@ const TableBase = <R extends Record<string, any>>({
               <div
                 className={clsx(
                   "flex flex-nowrap w-full items-center gap-1.5",
-                  "text-xs font-semibold text-gray-600",
-                  "min-h-16 px-4"
+                  "text-sm font-semibold text-gray-700",
+                  "min-h-12 px-4"
                 )}
               >
                 {value}
@@ -114,32 +110,42 @@ const TableBase = <R extends Record<string, any>>({
           ))}
         </tr>
       </thead>
-      <tbody>
+      <tbody className="flex flex-col gap-3 md:table-row-group">
         {!loading &&
           data.map((record, idx) => (
-            <tr key={String(record[primaryKey])}>
+            <tr
+              key={String(record[primaryKey])}
+              className={clsx(
+                "flex flex-col gap-3 md:table-row px-4 py-5",
+                "border border-gray-300 rounded-lg bg-white shadow-sm",
+                "md:border-none md:rounded-none md:bg-transparent md:shadow-none"
+              )}
+            >
               {getEntries(titles).map(([key]) => {
                 const value = record[key];
                 return (
                   <td
                     className={clsx(
                       "whitespace-nowrap",
-                      "border-t border-gray-200",
-                      "first:pl-2 last:pr-2",
-                      idx % 2 === 0 && "bg-cafa",
+                      "md:border-t md:border-gray-200",
+                      "md:first:pl-2 md:last:pr-2",
+                      idx % 2 === 0 && "md:bg-gray-25",
                       idx === data.length - 1 &&
-                        "first:rounded-bl-xl last:rounded-br-xl"
+                        !pagination &&
+                        "md:first:rounded-bl-lg md:last:rounded-br-lg"
                     )}
-                    style={{ width: `${100 / getEntries(titles).length}%` }}
                     key={`${record[primaryKey]}:${key}`}
                   >
                     <div
                       className={clsx(
-                        "flex flex-nowrap items-center",
-                        "min-h-16 px-4",
+                        "flex flex-nowrap items-center justify-between w-full",
+                        "md:min-h-16 md:px-4",
                         colClassNames?.[key]
                       )}
                     >
+                      <span className="inline-block md:hidden text-gray-600 uppercase font-medium">
+                        {titles[key]}
+                      </span>
                       {format?.[key]?.(value, record) ?? value}
                     </div>
                   </td>
@@ -148,35 +154,50 @@ const TableBase = <R extends Record<string, any>>({
             </tr>
           ))}
         {!loading && data.length === 0 && (
-          <tr>
-            <td colSpan={getEntries(titles).length}>{emptyState}</td>
+          <tr className="flex md:table-row">
+            <td
+              className="w-full md:w-auto"
+              colSpan={getEntries(titles).length}
+            >
+              {emptyState ?? <EmptyState />}
+            </td>
           </tr>
         )}
         {loading &&
           loadingData &&
           loadingData.map((record, idx) => (
-            <tr key={`loading:${idx}`}>
+            <tr
+              key={`loading:${idx}`}
+              className={clsx(
+                "flex flex-col gap-3 md:table-row px-4 py-5",
+                "border border-gray-300 rounded-lg bg-white shadow-sm",
+                "md:border-none md:rounded-none md:bg-transparent md:shadow-none"
+              )}
+            >
               {getEntries(titles).map(([key]) => {
                 const value = record[key];
                 return (
                   <td
                     className={clsx(
                       "whitespace-nowrap",
-                      "border-t border-gray-200",
-                      "first:pl-2 last:pr-2",
-                      idx % 2 === 0 && "bg-cafa",
+                      "md:border-t md:border-gray-200",
+                      "md:first:pl-2 md:last:pr-2",
+                      idx % 2 === 0 && "md:bg-cafa",
                       idx === loadingData.length - 1 &&
-                        "first:rounded-bl-xl last:rounded-br-xl"
+                        !pagination &&
+                        "first:rounded-bl-lg last:rounded-br-lg"
                     )}
-                    style={{ width: `${100 / getEntries(titles).length}%` }}
                     key={`loading:${idx}:${key}`}
                   >
                     <div
                       className={clsx(
-                        "flex flex-nowrap items-center w-full",
-                        "min-h-16 px-4"
+                        "flex flex-nowrap items-center justify-between w-full",
+                        "md:min-h-16 md:px-4"
                       )}
                     >
+                      <span className="inline-block md:hidden text-gray-600 uppercase font-medium">
+                        {titles[key]}
+                      </span>
                       {value}
                     </div>
                   </td>
@@ -190,12 +211,16 @@ const TableBase = <R extends Record<string, any>>({
           </tr>
         )}
         {pagination && (
-          <tr className="border-t-0.5 border-gray-600">
+          <tr className="flex md:table-row">
             <td
-              className="first:rounded-bl-xl last:rounded-br-xl"
+              className={clsx(
+                "md:border-t md:border-gray-200",
+                "md:first:rounded-bl-lg md:last:rounded-br-lg",
+                "w-full md:w-auto"
+              )}
               colSpan={getEntries(titles).length}
             >
-              <TablePagination {...pagination} />
+              {pagination}
             </td>
           </tr>
         )}
@@ -233,7 +258,7 @@ const TableSuspense = <R extends Record<string, any>>(
       <React.Suspense
         fallback={<TableBase {...props} loading={true} data={[]} />}
       >
-        <TableBase {...props} loading={false} />
+        <TableBase {...props} />
       </React.Suspense>
     </ErrorBoundary>
   );

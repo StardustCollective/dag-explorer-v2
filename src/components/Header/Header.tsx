@@ -2,58 +2,66 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useStore } from "zustand";
 
 import { MenuCard, MenuCardOption } from "../MenuCard";
 import { NetworksOnly } from "../NetworksOnly";
 import { PageLayout } from "../PageLayout";
 
+import { MobileMenu } from "./components/MobileMenu";
+
 import { HgtpNetwork, NetworkNames } from "@/common/consts/network";
 import { getNetworkUrl } from "@/common/network";
 import { useNetworkContext } from "@/providers/NetworkProvider";
-import { useWalletProvider } from "@/providers/WalletProvider";
+import { useWalletStore } from "@/providers/WalletProvider";
 import { shortenString } from "@/utils";
 
-import Brain2Icon from "@/assets/icons/brain-2.svg";
+import Brain2OutlineIcon from "@/assets/icons/brain-2-outline.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import CoinsRemoveIcon from "@/assets/icons/coins-remove.svg";
-import PeopleCircleIcon from "@/assets/icons/people-circle.svg";
-import Server1Icon from "@/assets/icons/server-1.svg";
+import PeopleCircleOutlineIcon from "@/assets/icons/people-circle-outline.svg";
+import ServerOutline1Icon from "@/assets/icons/server-1-outline.svg";
 import WalletIcon from "@/assets/icons/wallet.svg";
 import ConstellationIcon from "@/assets/logos/constellation.svg";
 
 export type IHeaderProps = Record<string, never>;
 
 export const Header = ({}: IHeaderProps) => {
-  const { wallet } = useWalletProvider();
+  const { status, address, connect, disconnect } = useStore(
+    useWalletStore(),
+    (state) => state
+  );
   const network = useNetworkContext();
 
   const [walletDropdownOpen, setWalletDropdownOpen] = useState(false);
   const [networkDropdownOpen, setNetworkDropdownOpen] = useState(false);
+  
 
   return (
     <PageLayout
       className={{
         wrapper: "bg-hgtp-blue-600",
         children:
-          "flex justify-between items-center h-20 px-20 text-white font-medium",
+          "flex justify-between items-center h-20 px-4 md:px-20 text-white font-medium",
       }}
     >
       <Link
         className="flex gap-2.5 font-twk-laus font-medium text-2xl"
         href="/"
       >
-        <ConstellationIcon className="size-7.5" />
+        <ConstellationIcon className="size-7.5 shrink-0" />
         DAG Explorer
       </Link>
-      <div className="flex gap-4">
+      <MobileMenu className="md:hidden" />
+      <div className="hidden md:flex gap-4">
         <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
           <Link
             className="flex gap-2 items-center h-9 px-4.5"
             href="/metagraphs"
           >
             Metagraphs
-            <Brain2Icon className="size-5" />
+            <Brain2OutlineIcon className="size-5 shrink-0" />
           </Link>
         </NetworksOnly>
         <NetworksOnly
@@ -62,20 +70,20 @@ export const Header = ({}: IHeaderProps) => {
         >
           <Link className="flex gap-2 items-center h-9 px-4.5" href="/staking">
             Delegated staking
-            <Server1Icon className="size-5" />
+            <ServerOutline1Icon className="size-5 shrink-0" />
           </Link>
         </NetworksOnly>
       </div>
-      <div className="flex gap-4 relative">
+      <div className="hidden md:flex gap-4 relative">
         <button
           className="button secondary outlined sm font-medium bg-transparent flex gap-1.5 items-center"
           onClick={() => setNetworkDropdownOpen((s) => !s)}
         >
           {NetworkNames[network ?? HgtpNetwork.MAINNET]}
           {networkDropdownOpen ? (
-            <ChevronUpIcon className="size-4" />
+            <ChevronUpIcon className="size-4 shrink-0" />
           ) : (
-            <ChevronDownIcon className="size-4" />
+            <ChevronDownIcon className="size-4 shrink-0" />
           )}
         </button>
         {networkDropdownOpen && (
@@ -91,57 +99,63 @@ export const Header = ({}: IHeaderProps) => {
                   network as HgtpNetwork,
                   window.location.href
                 )}
+                onClick={() => setNetworkDropdownOpen(false)}
               >
                 {name}
               </MenuCardOption>
             ))}
           </MenuCard>
         )}
-        {!wallet.active && (
+        {status === "disconnected" && (
           <button
             className="button primary sm flex gap-1.5 items-center"
-            onClick={() => wallet.activate()}
+            onClick={connect}
           >
-            <WalletIcon className="size-4" />
+            <WalletIcon className="size-4 shrink-0" />
             Connect wallet
           </button>
         )}
-        {wallet.active && (
+        {status === "connected" && (
           <button
             className="button secondary outlined sm font-medium bg-transparent flex gap-1.5 items-center"
             onClick={() => setWalletDropdownOpen((s) => !s)}
           >
-            <WalletIcon className="size-4" />
-            {shortenString(wallet.account)}
+            <WalletIcon className="size-4 shrink-0" />
+            {shortenString(address ?? "")}
             {walletDropdownOpen ? (
-              <ChevronUpIcon className="size-4" />
+              <ChevronUpIcon className="size-4 shrink-0" />
             ) : (
-              <ChevronDownIcon className="size-4" />
+              <ChevronDownIcon className="size-4 shrink-0" />
             )}
           </button>
         )}
-        {wallet.active && walletDropdownOpen && (
+        {status === "connected" && walletDropdownOpen && (
           <MenuCard
             className="absolute top-full right-0 mt-2.5 w-[244px] z-10"
             onClickOutside={() => setWalletDropdownOpen(false)}
             afterContent={
               <button
                 className="button primary outlined sm font-medium bg-transparent"
-                onClick={() => wallet.deactivate()}
+                onClick={disconnect}
               >
                 Disconnect wallet
               </button>
             }
           >
-            <MenuCardOption renderAs={Link} href={`/address/${wallet.account}`}>
-              <PeopleCircleIcon className="size-6" />
+            <MenuCardOption
+              renderAs={Link}
+              href={`/address/${address}`}
+              onClick={() => setWalletDropdownOpen(false)}
+            >
+              <PeopleCircleOutlineIcon className="size-6 shrink-0" />
               Address details
             </MenuCardOption>
             <MenuCardOption
               renderAs={Link}
-              href={`/address/${wallet.account}/staking`}
+              href={`/address/${address}/staking`}
+              onClick={() => setWalletDropdownOpen(false)}
             >
-              <CoinsRemoveIcon className="size-6" />
+              <CoinsRemoveIcon className="size-6 shrink-0" />
               My delegations
             </MenuCardOption>
           </MenuCard>

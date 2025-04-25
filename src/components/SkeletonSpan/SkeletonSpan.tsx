@@ -36,7 +36,7 @@ export const SkeletonSpan = Object.assign(SkeletonSpanBase, {
       const record = {} as Record<K, React.ReactNode>;
 
       for (const key of keys) {
-        record[key] = <SkeletonSpanBase key={idx} />;
+        record[key] = <SkeletonSpanBase key={idx} className="w-8 md:w-full" />;
       }
 
       return record;

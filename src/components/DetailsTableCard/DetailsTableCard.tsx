@@ -28,10 +28,15 @@ export const DetailsTableCard = ({
               <tr
                 key={idx}
                 className={clsx(
-                  "[&_td]:py-5",
+                  "[&_td]:py-2.5",
                   "[&_td]:px-2",
-                  "[&_td:first-child]:pl-6",
-                  "[&_td:last-child]:pr-6",
+                  "[&_td:first-child]:pl-3",
+                  "[&_td:last-child]:pr-3",
+
+                  "md:[&_td]:py-5",
+                  "md:[&_td]:px-2",
+                  "md:[&_td:first-child]:pl-6",
+                  "md:[&_td:last-child]:pr-6",
                   "[&_td]:border-b-gray-200 [&_td]:border-b"
                 )}
               >

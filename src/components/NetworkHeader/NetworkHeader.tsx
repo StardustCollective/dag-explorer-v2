@@ -46,27 +46,35 @@ export const NetworkHeader = ({ network }: INetworkHeaderProps) => {
     <PageLayout
       className={{
         wrapper: "bg-c2fc border-b border-gray-300",
-        children: "flex justify-between items-end px-20 py-7.5",
+        children:
+          "flex flex-col md:flex-row justify-between md:items-end gap-8 px-4 md:px-20 py-7.5",
       }}
     >
       <div className="flex flex-col gap-1">
-        <span className="font-semibold text-xs text-gray-600 uppercase">
+        <span className="font-semibold text-sm tracking-wide text-gray-600 uppercase">
           Constellation Network
         </span>
         <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
-          <span className="font-semibold text-4.5xl text-hgtp-blue-600">
+          <span className="font-semibold text-5xl tracking-tighter text-hgtp-blue-600">
             {stringFormat(network, "TITLE_CASE")}
           </span>
         </NetworksOnly>
         <NetworksOnly network={network} onlyOn={[HgtpNetwork.MAINNET_1]}>
-          <span className="font-semibold text-4.5xl text-hgtp-blue-600">
+          <span className="font-semibold text-5xl tracking-tighter text-hgtp-blue-600">
             Mainnet (Old)
           </span>
         </NetworksOnly>
       </div>
       <SearchBar
-        className="w-[629px]"
+        className="w-[629px] hidden md:flex"
         placeholder="Search by address, transaction hash..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        onSearch={onSearch}
+      />
+      <SearchBar
+        className="w-full md:hidden"
+        placeholder="Search"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onSearch={onSearch}

@@ -28,7 +28,7 @@ export const CopyAction = ({ value, className }: ICopyAction) => {
     <SquareBehindSquareIcon
       onClick={doCopy}
       className={clsx(
-        "inline-flex text-hgtp-blue-400 cursor-pointer",
+        "inline-flex text-hgtp-blue-400 cursor-pointer shrink-0",
         !className?.includes("size-") && "size-5",
         className
       )}

@@ -27,6 +27,7 @@ export const MetagraphIcon = ({
       size={size}
       fallback={
         <ConstellationCircleBlueIcon
+          className="shrink-0"
           style={{ width: size * 4, height: size * 4 }}
         />
       }
