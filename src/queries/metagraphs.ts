@@ -1,4 +1,5 @@
 import { isAxiosError } from "axios";
+import { cache } from "react";
 
 import { DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
@@ -7,18 +8,18 @@ import {
   IAPIResponseData,
   IAPIMetagraph,
   IMetagraphProject,
-  IPaginationOptions,
+  ILimitOffsetPaginationOptions,
   IAPIMetagraphNodes,
 } from "@/types";
 
 export const getMetagraphs = async (
   network: HgtpNetwork,
-  options?: IPaginationOptions
+  options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IMetagraphProject>> => {
   const response = await DagExplorerAPI.get<IAPIResponse<IMetagraphProject[]>>(
     `/${network}/metagraph-projects`,
     {
-      params: { ...options?.pagination },
+      params: { ...options?.limitPagination },
     }
   );
 
@@ -31,8 +32,12 @@ export const getMetagraphs = async (
 
 export const getMetagraph = async (
   network: HgtpNetwork,
-  metagraphId: string
+  metagraphId?: string
 ): Promise<IAPIMetagraph | null> => {
+  if (!metagraphId) {
+    return null;
+  }
+
   try {
     const response = await DagExplorerAPI.get<IAPIResponse<IAPIMetagraph>>(
       `/${network}/metagraphs/${metagraphId}`,
@@ -68,34 +73,38 @@ export const getMetagraphNodes = async (
   }
 };
 
-export const getMetagraphCurrencySymbol = async (
-  network: HgtpNetwork,
-  metagraphId?: string,
-  isDatum?: boolean
-): Promise<string> => {
-  let symbol = "DAG";
+export const getMetagraphCurrencySymbol = cache(
+  async (
+    network: HgtpNetwork,
+    metagraphId?: string,
+    isDatum?: boolean
+  ): Promise<string> => {
+    let symbol = "DAG";
 
-  if (metagraphId) {
+    if (metagraphId) {
+      const metagraph = await getMetagraph(network, metagraphId);
+      symbol = metagraph?.symbol ?? "--";
+    }
+
+    return (isDatum ? "d" : "") + symbol;
+  }
+);
+
+export const getMetagraphIconUrl = cache(
+  async (
+    network: HgtpNetwork,
+    metagraphId?: string
+  ): Promise<string | null> => {
+    if (!metagraphId) {
+      return null;
+    }
+
     const metagraph = await getMetagraph(network, metagraphId);
-    symbol = metagraph?.symbol ?? "--";
+
+    if (!metagraph || !metagraph.iconUrl) {
+      return null;
+    }
+
+    return metagraph.iconUrl;
   }
-
-  return (isDatum ? "d" : "") + symbol;
-};
-
-export const getMetagraphIconUrl = async (
-  network: HgtpNetwork,
-  metagraphId?: string
-): Promise<string | null> => {
-  if (!metagraphId) {
-    return null;
-  }
-
-  const metagraph = await getMetagraph(network, metagraphId);
-
-  if (!metagraph || !metagraph.iconUrl) {
-    return null;
-  }
-
-  return metagraph.iconUrl;
-};
+);
