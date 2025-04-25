@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { useRef } from "react";
 
-
 import { useClickOutside } from "@/hooks";
 
 export type IMenuCardProps = {
+  variant?: "default" | "compact";
   beforeContent?: React.ReactNode;
   afterContent?: React.ReactNode;
   onClickOutside?: () => void;
@@ -13,6 +13,7 @@ export type IMenuCardProps = {
 };
 
 export const MenuCard = ({
+  variant = "default",
   beforeContent,
   afterContent,
   className,
@@ -25,7 +26,12 @@ export const MenuCard = ({
 
   return (
     <div
-      className={clsx("card flex flex-col gap-3 px-2 py-3", className)}
+      className={clsx(
+        "card flex flex-col cursor-pointer",
+        variant === "default" && "gap-3 px-2 py-3",
+        variant === "compact" && "px-1 py-1",
+        className
+      )}
       ref={ref}
     >
       {beforeContent}
