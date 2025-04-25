@@ -7,19 +7,19 @@ import {
   IAPIResponseData,
   IBETransaction,
   IBETransaction_V1,
-  IPaginationOptions,
+  ILimitOffsetPaginationOptions,
   IAPITransaction,
   INextTokenPaginationOptions,
 } from "@/types";
 
 export const getLatestTransactions = async (
   network: HgtpNetwork,
-  options?: IPaginationOptions
+  options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IAPITransaction>> => {
   const response = await DagExplorerAPI.get<IAPIResponse<IAPITransaction[]>>(
     `/${network}/dag/latest-transactions`,
     {
-      params: { ...options?.pagination },
+      params: { ...options?.limitPagination },
     }
   );
 
@@ -32,12 +32,12 @@ export const getLatestTransactions = async (
 
 export const getLatestMetagraphTransactions = async (
   network: HgtpNetwork,
-  options?: IPaginationOptions
+  options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IAPITransaction>> => {
   const response = await DagExplorerAPI.get<IAPIResponse<IAPITransaction[]>>(
     `/${network}/metagraph/latest-transactions`,
     {
-      params: { ...options?.pagination },
+      params: { ...options?.limitPagination },
     }
   );
 
