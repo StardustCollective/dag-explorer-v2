@@ -1,6 +1,5 @@
-import React from "react";
+import React, { use } from "react";
 
-import { SuspenseValue } from "../SuspenseValue";
 
 import { HgtpNetwork } from "@/common/consts";
 import { getKnownUsdPrice } from "@/common/currencies";
@@ -9,6 +8,7 @@ import {
   encodeDecimal,
   formatNumberWithDecimals,
   isPromiseLike,
+  withSuspense,
 } from "@/utils";
 
 export type IFormatCurrencyPriceProps = {
@@ -19,34 +19,33 @@ export type IFormatCurrencyPriceProps = {
   className?: string;
 };
 
-export const FormatCurrencyPrice = async ({
-  network,
-  currencyId,
-  value,
-  decimals = { max: 2 },
-  className,
-}: IFormatCurrencyPriceProps) => {
-  const price = getKnownUsdPrice(network, currencyId);
+export const FormatCurrencyPrice = withSuspense(
+  function FormatCurrencyPrice({
+    network,
+    currencyId,
+    value: valuePromise,
+    decimals = { max: 2 },
+    className,
+  }: IFormatCurrencyPriceProps) {
+    const price = use(getKnownUsdPrice(network, currencyId));
+    const value = isPromiseLike(valuePromise)
+      ? use(valuePromise)
+      : valuePromise;
 
-  return (
-    <SuspenseValue
-      className={className}
-      fallback={""}
-      value={Promise.all([
-        price,
-        isPromiseLike(value) ? value : Promise.resolve(value),
-      ]).then(([price, value]) =>
-        price === null ? null : (
-          <>
-            ($
-            {formatNumberWithDecimals(
-              encodeDecimal(decodeDecimal(value).mul(price)),
-              decimals
-            )}{" "}
-            USD)
-          </>
-        )
-      )}
-    />
-  );
-};
+    if (price === null || value === null) {
+      return null;
+    }
+
+    return (
+      <span className={className}>
+        ($
+        {formatNumberWithDecimals(
+          encodeDecimal(decodeDecimal(value).mul(price)),
+          decimals
+        )}{" "}
+        USD)
+      </span>
+    );
+  },
+  () => <></>
+);

@@ -1,9 +1,14 @@
-import React from "react";
+import clsx from "clsx";
+import React, { use } from "react";
 
-import { SkeletonSpan } from "../SkeletonSpan";
-import { SuspenseValue } from "../SuspenseValue";
 
-import { formatNumberWithDecimals, isPromiseLike } from "@/utils";
+import { FormatCurrencySymbol } from "./FormatCurrencySymbol";
+
+import {
+  formatNumberWithDecimals,
+  isPromiseLike,
+  withSuspense,
+} from "@/utils";
 
 export type IFormatCurrencyProps = {
   value: Promise<IDecimal> | IDecimal;
@@ -12,28 +17,32 @@ export type IFormatCurrencyProps = {
   className?: string;
 };
 
-export const FormatCurrency = ({
-  value,
-  currency,
-  decimals,
-  className,
-}: IFormatCurrencyProps) => {
-  return (
-    <SuspenseValue
-      className={className}
-      fallback={
-        <>
-          -- <SuspenseValue fallback={<SkeletonSpan />} value={currency} />
-        </>
-      }
-      value={(isPromiseLike(value) ? value : Promise.resolve(value)).then(
-        (value) => (
-          <>
-            {formatNumberWithDecimals(value, decimals)}{" "}
-            <SuspenseValue fallback={<SkeletonSpan />} value={currency} />
-          </>
-        )
-      )}
-    />
-  );
-};
+export const FormatCurrency = withSuspense(
+  function FormatCurrency({
+    value: valuePromise,
+    currency,
+    decimals,
+    className,
+  }: IFormatCurrencyProps) {
+    const value = isPromiseLike(valuePromise)
+      ? use(valuePromise)
+      : valuePromise;
+
+    return (
+      <span
+        className={clsx(
+          "inline-flex flex-nowrap items-center gap-1",
+          className
+        )}
+      >
+        {formatNumberWithDecimals(value, decimals)}{" "}
+        <FormatCurrencySymbol currency={currency} />
+      </span>
+    );
+  },
+  ({ currency }) => (
+    <>
+      -- <FormatCurrencySymbol currency={currency} />
+    </>
+  )
+);

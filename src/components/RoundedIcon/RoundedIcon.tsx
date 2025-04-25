@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import Image from "next/image";
+import { use } from "react";
 
-import { SuspenseValue } from "../SuspenseValue";
 
-import { isPromiseLike } from "@/utils";
+import { isPromiseLike, withSuspense } from "@/utils";
 
 export type IRoundedIconProps = {
   iconUrl?: Promise<string | null | undefined> | string | null;
@@ -12,39 +12,50 @@ export type IRoundedIconProps = {
   className?: string;
 };
 
-export const RoundedIcon = ({
-  iconUrl,
-  fallback,
-  className,
-  size = 10,
-}: IRoundedIconProps) => {
-  return (
-    <SuspenseValue
-      renderAs="div"
+export const RoundedIcon = withSuspense(
+  function RoundedIcon({
+    iconUrl: iconUrlPromise,
+    fallback,
+    className,
+    size = 10,
+  }: IRoundedIconProps) {
+    const iconUrl = isPromiseLike(iconUrlPromise)
+      ? use(iconUrlPromise)
+      : iconUrlPromise;
+
+    return (
+      <div
+        className={clsx(
+          "inline-flex items-center justify-center",
+          "border border-gray-300 rounded-full",
+          className
+        )}
+        style={{ width: size * 4, height: size * 4 }}
+      >
+        {iconUrl ? (
+          <Image
+            src={iconUrl}
+            className="object-contain rounded-full"
+            alt="rounded-icon"
+            width={size * 4}
+            height={size * 4}
+          />
+        ) : (
+          fallback
+        )}
+      </div>
+    );
+  },
+  ({ fallback, size = 10, className }) => (
+    <div
       className={clsx(
+        "inline-flex items-center justify-center",
         "border border-gray-300 rounded-full",
-        `size-${size}`,
         className
       )}
-      value={
-        iconUrl
-          ? (isPromiseLike(iconUrl) ? iconUrl : Promise.resolve(iconUrl)).then(
-              (iconUrl) =>
-                iconUrl ? (
-                  <Image
-                    src={iconUrl}
-                    className="object-contain"
-                    alt="rounded-icon"
-                    width={size * 4}
-                    height={size * 4}
-                  />
-                ) : (
-                  fallback
-                )
-            )
-          : fallback
-      }
-      fallback={fallback}
-    />
-  );
-};
+      style={{ width: size * 4, height: size * 4 }}
+    >
+      {fallback}
+    </div>
+  )
+);
