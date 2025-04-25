@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 .card {
-  @apply border-[0.5px] border-gray-300 rounded-lg;
+  @apply border border-gray-300 rounded-lg;
   @apply shadow-sm;
   @apply bg-white;
 }
 
 .card > .header{
   @apply min-h-4;
-  @apply border-b-[0.5px] border-gray-300;
+  @apply border-b border-gray-300;
 }
 
 .card > .footer{
   @apply min-h-4;
-  @apply border-t-[0.5px] border-gray-300;
+  @apply border-t border-gray-300;
 }
