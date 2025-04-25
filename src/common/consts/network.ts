@@ -14,3 +14,5 @@ export const NetworkNames: Record<HgtpNetwork, string> = {
 
 export const isHgtpNetwork = (network: any): network is HgtpNetwork =>
   Object.values(HgtpNetwork).includes(network);
+
+export const NetworkEpochInSeconds = 65;
