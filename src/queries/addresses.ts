@@ -1,21 +1,18 @@
 import { isAxiosError } from "axios";
 
-import {
-  BlockExplorerAPI,
-  DagExplorerAPI,
-} from "@/common/apis";
+import { BlockExplorerAPI, DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
-  IAPIAddressAction as IAPIAddressAction,
+  IAPIActionTransaction,
   IAPIAddressMetagraph,
   IAPIResponse,
   IAPIResponseData,
   IAPITransaction,
-  IBEAddressAction,
+  IBEActionTransaction,
   IBEAddressBalance,
   IBETransaction,
   INextTokenPaginationOptions,
-  IPaginationOptions,
+  ILimitOffsetPaginationOptions,
 } from "@/types";
 import { IAPIAddressReward } from "@/types";
 
@@ -45,6 +42,34 @@ export const getAddressBalance = async (
 
     throw e;
   }
+};
+
+export const getAddressLockedBalance = async (
+  network: HgtpNetwork,
+  addressId: string,
+  metagraphId?: string
+): Promise<number> => {
+  if (network === HgtpNetwork.MAINNET_1) {
+    network = HgtpNetwork.MAINNET;
+  }
+
+  const { records: actions } = await getAddressActions(
+    network,
+    addressId,
+    metagraphId
+  );
+
+  return actions.reduce((pv, action) => {
+    if (action.type === "TokenLock" && !action.unlockEpoch) {
+      return pv + action.amount;
+    }
+
+    if (action.type === "AllowSpend" && !action.unlockEpoch) {
+      return pv + action.amount;
+    }
+
+    return pv;
+  }, 0);
 };
 
 export const getAddressMetagraphs = async (
@@ -113,7 +138,7 @@ export const getAddressRewards = async (
   network: HgtpNetwork,
   addressId: string,
   metagraphId?: string,
-  options?: IPaginationOptions
+  options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IAPIAddressReward>> => {
   if (network === HgtpNetwork.MAINNET_1) {
     return { records: [], total: 0 };
@@ -127,7 +152,7 @@ export const getAddressRewards = async (
         ? `/${network}/addresses/${addressId}/metagraphs/${metagraphId}/rewards`
         : `/${network}/addresses/${addressId}/rewards`,
       {
-        params: { groupingMode: "day", ...options?.pagination },
+        params: { groupingMode: "day", ...options?.limitPagination },
       }
     );
 
@@ -186,9 +211,43 @@ export const getAddressActions = async (
     throw e;
   }
 };
+
+export const getAddressActiveTokenLocks = async (
+  network: HgtpNetwork,
+  addressId: string,
+  metagraphId?: string,
+  options?: INextTokenPaginationOptions
+): Promise<IAPIResponseData<IAPIActionTransaction>> => {
+  if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
+    return { records: [], total: 0 };
+  }
+
+  try {
+    const response = await BlockExplorerAPI[network].get<
+      IAPIResponse<IBEActionTransaction[]>
+    >(
+      metagraphId
+        ? `/currency/${metagraphId}/addresses/${addressId}/token-locks`
+        : `/addresses/${addressId}/token-locks`,
+      {
+        params: { ...options?.tokenPagination, active: true },
+      }
+    );
+
+    return {
+      records: response.data.data
+        .map((action) => ({
+          ...action,
+          type: "TokenLock" as any,
+          metagraphId,
+        }))
+        .filter((action) => action.unlockEpoch === null),
+      total: response.data.meta?.total ?? 0,
+      next: response.data.meta?.next,
+    };
   } catch (e) {
     if (isAxiosError(e) && e.status === 404) {
-      return buildAPIResponseArray([], 0);
+      return { records: [], total: 0 };
     }
 
     throw e;
