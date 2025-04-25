@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
+@import "./shadcn.css";
 @import "./scrollbar.css" layer(components);
 @import "./card.css" layer(components);
 @import "./button.css" layer(components);
 @import "./modal.css" layer(components);
 @import "./chip.css" layer(components);
+
 @theme inline {
   --font-inter: var(--font-inter);
   --font-ibm-mono: var(--font-ibm-plex-mono);
@@ -16,9 +18,13 @@
   --text-4\.5xl: 2.5rem;
   --text-4\.5xl--line-height: 48px;
 
+  --color-gray-25: #fcfcfd;
+
+  --color-hgtp-blue-25: #f0f3ff;
   --color-hgtp-blue-50: #ebefff;
   --color-hgtp-blue-100: #d9e0fd;
   --color-hgtp-blue-200: #bccbfb;
+  --color-hgtp-blue-300: #9faef9;
   --color-hgtp-blue-400: #798ef6;
   --color-hgtp-blue-500: #516aec;
   --color-hgtp-blue-600: #3e4fea;
@@ -27,6 +33,7 @@
   --color-hgtp-blue-950: #151832;
 
   --color-ltx-gold-300: #f0d856;
+  --color-ltx-gold-600: #e09000;
   --color-ltx-gold-700: #b47504;
   --color-ltx-gold-950: #331c0a;
 
