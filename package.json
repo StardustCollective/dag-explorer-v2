@@ -9,7 +9,8 @@
     "start": "next start",
     "fresh": "pnpm clean && pnpm load-dependencies",
     "clean": "pnpm dlx rimraf .sst .open-next .next node_modules",
-    "load-dependencies": "pnpm i && pnpm sst install"
+    "load-dependencies": "pnpm i && pnpm sst install",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
@@ -33,6 +34,7 @@
     "react-error-boundary": "^5.0.0",
     "react-number-format": "^5.4.3",
     "react-tooltip": "^5.28.0",
+    "semver": "^7.7.1",
     "sonner": "^2.0.3",
     "sst": "3.11.21",
     "tailwind-merge": "^3.2.0",
@@ -48,11 +50,13 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/semver": "^7.7.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "webpack": "^5.99.3"
   }
 }

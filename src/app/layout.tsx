@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import dayjs from "dayjs";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Toaster } from "sonner";
@@ -49,7 +50,18 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="DAG Explorer" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body className={clsx(fontVariables, "font-inter bg-cafb")}>
+        {process.env.NEXT_PUBLIC_DEPLOY_TIME &&
+          dayjs().isBefore(
+            dayjs(process.env.NEXT_PUBLIC_DEPLOY_TIME).add(3, "days")
+          ) && (
+            <span className="fixed bottom-4 right-4 text-xs text-[#F00]">
+              DevOnly :: LastDeployTime
+              <br />
+              {process.env.NEXT_PUBLIC_DEPLOY_TIME}
+              <br />
+              {dayjs(process.env.NEXT_PUBLIC_DEPLOY_TIME).fromNow()}
+            </span>
+          )}
         <NetworkProvider network={network}>
           <QueryProvider>
             <WalletProvider>
