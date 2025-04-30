@@ -1,23 +1,14 @@
-import clsx from "clsx";
-import Link from "next/link";
+import { MetagraphsTable } from "./components/MetagraphsTable";
 
 import { HgtpNetwork } from "@/common/consts/network";
 import { getNetworkFromParamsOrFail } from "@/common/network";
 import { PageLayout } from "@/components/PageLayout";
 import { PageTitle } from "@/components/PageTitle";
-import { RoundedIcon } from "@/components/RoundedIcon";
 import { Section } from "@/components/Section";
-import { SkeletonSpan } from "@/components/SkeletonSpan";
-import { Table } from "@/components/Table";
-import { getMetagraphs } from "@/queries";
-import {
-  formatCurrencyWithDecimals,
-  formatNumberWithDecimals,
-  stringFormat,
-} from "@/utils";
+import { INextTokenPaginationSearchParams } from "@/types";
+import { getPageSearchParamsOrDefaults, parseNumberOrDefault } from "@/utils";
 
-import Brain2Icon from "@/assets/icons/brain-2.svg";
-import ConstellationCircleGrayIcon from "@/assets/logos/constellation-circle-gray.svg";
+import Brain2FilledIcon from "@/assets/icons/brain-2-filled.svg";
 
 export const revalidate = 15;
 
@@ -31,90 +22,28 @@ export const generateStaticParams = async () => {
 
 export default async function MetagraphsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ network: string }>;
+  searchParams: Promise<INextTokenPaginationSearchParams>;
 }) {
   const network = await getNetworkFromParamsOrFail(params);
 
-  const metagraphs = getMetagraphs(network, { pagination: { limit: 10 } });
+  const [{ limit }] = await getPageSearchParamsOrDefaults(searchParams, {
+    limit: "10",
+  });
 
   return (
     <>
-      <PageTitle icon={<Brain2Icon className="size-8" />}>Metagraphs</PageTitle>
-      <PageLayout className="flex flex-col gap-10 px-20 py-8" renderAs={"main"}>
+      <PageTitle icon={<Brain2FilledIcon className="size-8 shrink-0" />}>
+        Metagraphs
+      </PageTitle>
+      <PageLayout
+        className="flex flex-col gap-10 px-4 lg:px-20 py-8"
+        renderAs={"main"}
+      >
         <Section title="Top projects">
-          <Table.Suspense
-            className="w-full [&_td]:text-sm"
-            data={metagraphs.then((data) =>
-              data.sort((a, b) => a.type.localeCompare(b.type))
-            )}
-            primaryKey="id"
-            titles={{
-              name: "Projects",
-              type: "Type",
-              snapshots90d: "Snapshots (90D)",
-              fees90d: "Fees (90D)",
-              feesTotal: "Total Fees",
-            }}
-            loadingData={SkeletonSpan.generateTableRecords(5, [
-              "name",
-              "type",
-              "snapshots90d",
-              "fees90d",
-              "feesTotal",
-            ])}
-            format={{
-              name: (value, record) => (
-                <Link
-                  className="flex flex-row gap-3 items-center text-hgtp-blue-600 font-medium"
-                  href={
-                    record.metagraphId !== null
-                      ? `/metagraphs/${record.metagraphId}`
-                      : "#"
-                  }
-                >
-                  <RoundedIcon
-                    iconUrl={record.icon_url}
-                    fallback={
-                      <ConstellationCircleGrayIcon className="size-8" />
-                    }
-                    size={8}
-                  />
-                  {value}
-                </Link>
-              ),
-              type: (value) => (
-                <span
-                  className={clsx(
-                    "flex items-center px-3 py-1 rounded-3xl w-fit text-xs font-medium",
-                    value === "public" && "bg-hgtp-blue-50",
-                    value === "private" && "bg-gray-100"
-                  )}
-                >
-                  {stringFormat(value, "TITLE_CASE")}
-                </span>
-              ),
-              snapshots90d: (value) => (
-                <span>
-                  {value === null ? "Hidden" : formatNumberWithDecimals(value)}
-                </span>
-              ),
-              fees90d: (value) => (
-                <span>
-                  {value === null
-                    ? "Hidden"
-                    : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8)}
-                </span>
-              ),
-              feesTotal: (value) => (
-                <span>
-                  {value === null
-                    ? "Hidden"
-                    : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8)}
-                </span>
-              ),
-            }}
-          />
+          <MetagraphsTable network={network} limit={parseNumberOrDefault(limit, 10)} />
         </Section>
       </PageLayout>
     </>
