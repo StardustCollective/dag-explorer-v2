@@ -55,7 +55,7 @@ export default function GlobalErrorLayout({
           <WalletProvider>
             <Header />
             <PageLayout
-              className="flex flex-col gap-10 px-20 py-8"
+              className="flex flex-col gap-10 px-4 lg:px-20 py-8"
               renderAs={"main"}
             >
               <Section className="flex flex-col pt-20 justify-center items-center gap-6">
