@@ -43,7 +43,7 @@ export const Header = ({}: IHeaderProps) => {
       className={{
         wrapper: "bg-hgtp-blue-600",
         children:
-          "flex justify-between items-center h-20 px-4 md:px-20 text-white font-medium",
+          "flex justify-between items-center h-20 px-4 lg:px-20 text-white font-medium",
       }}
     >
       <Link
@@ -53,8 +53,8 @@ export const Header = ({}: IHeaderProps) => {
         <ConstellationIcon className="size-7.5 shrink-0" />
         DAG Explorer
       </Link>
-      <MobileMenu className="md:hidden" />
-      <div className="hidden md:flex gap-4">
+      <MobileMenu className="lg:hidden" />
+      <div className="hidden lg:flex gap-4">
         <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
           <Link
             className="flex gap-2 items-center h-9 px-4.5"
@@ -69,12 +69,12 @@ export const Header = ({}: IHeaderProps) => {
           exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
         >
           <Link className="flex gap-2 items-center h-9 px-4.5" href="/staking">
-            Delegated staking
+            Delegated Staking
             <ServerOutline1Icon className="size-5 shrink-0" />
           </Link>
         </NetworksOnly>
       </div>
-      <div className="hidden md:flex gap-4 relative">
+      <div className="hidden lg:flex gap-4 relative">
         <button
           className="button secondary outlined sm font-medium bg-transparent flex gap-1.5 items-center"
           onClick={() => setNetworkDropdownOpen((s) => !s)}

@@ -12,7 +12,7 @@ export const Footer = ({}: IFooterProps) => {
       <PageLayout
         className={{
           children:
-            "flex flex-col md:flex-row justify-between items-center h-20 px-4 md:px-20 text-hgtp-blue-900 text-xs",
+            "flex flex-col lg:flex-row justify-between items-center h-20 px-4 lg:px-20 text-hgtp-blue-900 text-xs",
         }}
       >
         <div>© {new Date().getFullYear()} Constellation Network</div>

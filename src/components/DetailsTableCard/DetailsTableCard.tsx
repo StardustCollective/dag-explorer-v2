@@ -33,10 +33,10 @@ export const DetailsTableCard = ({
                   "[&_td:first-child]:pl-3",
                   "[&_td:last-child]:pr-3",
 
-                  "md:[&_td]:py-5",
-                  "md:[&_td]:px-2",
-                  "md:[&_td:first-child]:pl-6",
-                  "md:[&_td:last-child]:pr-6",
+                  "lg:[&_td]:py-5",
+                  "lg:[&_td]:px-2",
+                  "lg:[&_td:first-child]:pl-6",
+                  "lg:[&_td:last-child]:pr-6",
                   "[&_td]:border-b-gray-200 [&_td]:border-b"
                 )}
               >

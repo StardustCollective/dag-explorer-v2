@@ -38,7 +38,7 @@ export const ActionDetail = async ({
 
   return (
     <Section className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="card flex flex-col gap-4 p-6">
           <span className="text-black/65 font-semibold">Transaction Type</span>
           <span className="text-hgtp-blue-900 font-medium text-xl">
@@ -70,12 +70,12 @@ export const ActionDetail = async ({
           {
             label: "Timestamp",
             value: (
-              <span className="flex flex-col md:flex-row items-center gap-2">
+              <span className="flex flex-col lg:flex-row items-center gap-2">
                 <span className="flex items-center gap-2">
                   <CalendarClock4Icon className="size-5 shrink-0" />
                   {dayjs(action.timestamp).fromNow()}
                 </span>
-                <span className="text-gray-500 md:block hidden">
+                <span className="text-gray-500 lg:block hidden">
                   (
                   {dayjs(action.timestamp).format("YYYY-MM-DD hh:mm:ss A +UTC")}
                   )
@@ -102,10 +102,10 @@ export const ActionDetail = async ({
             label: "Txn Hash",
             value: (
               <span className="flex items-center gap-1">
-                <span className="md:block hidden">
+                <span className="lg:block hidden">
                   {shortenString(action.hash, 8, 8)}
                 </span>
-                <span className="md:hidden block">
+                <span className="lg:hidden block">
                   {shortenString(action.hash, 6, 6)}
                 </span>
                 <CopyAction value={action.hash} />
@@ -188,10 +188,10 @@ export const ActionDetail = async ({
                   className="flex items-center gap-2 text-hgtp-blue-600"
                   href={`/address/${action.source}`}
                 >
-                  <span className="md:block hidden">
+                  <span className="lg:block hidden">
                     {shortenString(action.source, 8, 8)}
                   </span>
-                  <span className="md:hidden block">
+                  <span className="lg:hidden block">
                     {shortenString(action.source, 6, 6)}
                   </span>
                 </Link>
@@ -207,10 +207,10 @@ export const ActionDetail = async ({
                   className="flex items-center gap-2 text-hgtp-blue-600"
                   href={`/address/${action.destination}`}
                 >
-                  <span className="md:block hidden">
+                  <span className="lg:block hidden">
                     {shortenString(action.destination, 8, 8)}
                   </span>
-                  <span className="md:hidden block">
+                  <span className="lg:hidden block">
                     {shortenString(action.destination, 6, 6)}
                   </span>
                 </Link>
