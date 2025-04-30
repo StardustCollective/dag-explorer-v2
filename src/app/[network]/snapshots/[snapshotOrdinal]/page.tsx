@@ -5,7 +5,8 @@ import { PageLayout } from "@/components/PageLayout";
 import { PageTitle } from "@/components/PageTitle";
 import { SnapshotDetail } from "@/components/SnapshotDetail";
 import { getSnapshot } from "@/queries";
-import { parseNumberOrDefault } from "@/utils";
+import { INextTokenPaginationSearchParams } from "@/types";
+import { getPageSearchParamsOrDefaults, parseNumberOrDefault } from "@/utils";
 
 export const revalidate = 86_400; // 24 hours - These should not change, almost immutable
 
@@ -14,7 +15,7 @@ export default async function SnapshotPage({
   searchParams,
 }: {
   params: Promise<{ network: string; snapshotOrdinal: string }>;
-  searchParams: Promise<{ section?: string }>;
+  searchParams: Promise<{ section?: string } & INextTokenPaginationSearchParams>;
 }) {
   const { snapshotOrdinal } = await params;
   const { section } = await searchParams;
@@ -30,14 +31,19 @@ export default async function SnapshotPage({
     throw notFound();
   }
 
+  const [{ limit }] = await getPageSearchParamsOrDefaults(searchParams, {
+    limit: "10",
+  });
+
   return (
     <>
       <PageTitle>Snapshot details</PageTitle>
-      <PageLayout className="flex flex-col gap-4 px-20 py-8" renderAs={"main"}>
+      <PageLayout className="flex flex-col gap-4 px-4 lg:px-20 py-8" renderAs={"main"}>
         <SnapshotDetail
           section={section ?? 'transactions'}
           network={network}
           snapshot={snapshot}
+          tokenPagination={{ limit: parseNumberOrDefault(limit, 10) }}
         />
       </PageLayout>
     </>
