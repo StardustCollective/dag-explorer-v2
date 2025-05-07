@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useStore } from "zustand";
 
 import { MenuCard, MenuCardOption } from "../MenuCard";
+import { NavLink } from "../NavLink";
 import { NetworksOnly } from "../NetworksOnly";
 import { PageLayout } from "../PageLayout";
 
@@ -16,11 +17,13 @@ import { useNetworkContext } from "@/providers/NetworkProvider";
 import { useWalletStore } from "@/providers/WalletProvider";
 import { shortenString } from "@/utils";
 
+import Brain2FilledIcon from "@/assets/icons/brain-2-filled.svg";
 import Brain2OutlineIcon from "@/assets/icons/brain-2-outline.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import CoinsRemoveIcon from "@/assets/icons/coins-remove.svg";
 import PeopleCircleOutlineIcon from "@/assets/icons/people-circle-outline.svg";
+import ServerFilled1Icon from "@/assets/icons/server-1-filled.svg";
 import ServerOutline1Icon from "@/assets/icons/server-1-outline.svg";
 import WalletIcon from "@/assets/icons/wallet.svg";
 import ConstellationIcon from "@/assets/logos/constellation.svg";
@@ -36,7 +39,6 @@ export const Header = ({}: IHeaderProps) => {
 
   const [walletDropdownOpen, setWalletDropdownOpen] = useState(false);
   const [networkDropdownOpen, setNetworkDropdownOpen] = useState(false);
-  
 
   return (
     <PageLayout
@@ -56,22 +58,37 @@ export const Header = ({}: IHeaderProps) => {
       <MobileMenu className="lg:hidden" />
       <div className="hidden lg:flex gap-4">
         <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
-          <Link
+          <NavLink
             className="flex gap-2 items-center h-9 px-4.5"
+            activeClassName="font-semibold"
             href="/metagraphs"
           >
             Metagraphs
-            <Brain2OutlineIcon className="size-5 shrink-0" />
-          </Link>
+            <NavLink.Content renderCondition={false}>
+              <Brain2OutlineIcon className="size-5 shrink-0" />
+            </NavLink.Content>
+            <NavLink.Content renderCondition={true}>
+              <Brain2FilledIcon className="size-5 shrink-0" />
+            </NavLink.Content>
+          </NavLink>
         </NetworksOnly>
         <NetworksOnly
           network={network}
           exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
         >
-          <Link className="flex gap-2 items-center h-9 px-4.5" href="/staking">
+          <NavLink
+            className="flex gap-2 items-center h-9 px-4.5"
+            activeClassName="font-semibold"
+            href="/staking"
+          >
             Delegated Staking
-            <ServerOutline1Icon className="size-5 shrink-0" />
-          </Link>
+            <NavLink.Content renderCondition={false}>
+              <ServerOutline1Icon className="size-5 shrink-0" />
+            </NavLink.Content>
+            <NavLink.Content renderCondition={true}>
+              <ServerFilled1Icon className="size-5 shrink-0" />
+            </NavLink.Content>
+          </NavLink>
         </NetworksOnly>
       </div>
       <div className="hidden lg:flex gap-4 relative">
