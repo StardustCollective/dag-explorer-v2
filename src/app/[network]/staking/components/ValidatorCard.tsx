@@ -1,34 +1,42 @@
 "use client";
 
-import Decimal from "decimal.js";
+import { datumToDag } from "@/common/currencies";
+import { ValidatorCard as ValidatorCardBase } from "@/components/ValidatorCard";
+import { useDelegatedStakeProvider } from "@/features/delegated-stake/DelegatedStakeProvider";
+import { IAPIMetagraphStakingNode, IL0StakingDelegator } from "@/types/staking";
+import { decodeDecimal } from "@/utils";
 
-import { useStakingActionsProvider } from "./StakingActionsProvider";
+export type IValidatorCardProps = {
+  delegator: IL0StakingDelegator;
+  delegatorMetagraph?: IAPIMetagraphStakingNode;
+};
 
-import {
-  ValidatorCard as ValidatorCardBase,
-  IValidatorCardProps,
-} from "@/components/ValidatorCard";
-import { decodeDecimal, encodeDecimal } from "@/utils";
+export const ValidatorCard = ({
+  delegator,
+  delegatorMetagraph,
+}: IValidatorCardProps) => {
+  const { userDelegationsMap, requestAction_stake } =
+    useDelegatedStakeProvider();
 
-export const ValidatorCard = (props: IValidatorCardProps) => {
-  const stakingActions = useStakingActionsProvider();
-
-  const userDelegatedAmount = decodeDecimal(
-    stakingActions.userDelegatedAmounts?.[props.nodeId] ?? new Decimal(0)
-  );
+  const userDelegation = userDelegationsMap?.[delegator.peerId];
 
   return (
     <ValidatorCardBase
-      {...props}
-      userDelegatedAmountInDAG={encodeDecimal(userDelegatedAmount.div(1e8))}
+      nodeId={delegator.peerId}
+      type={delegatorMetagraph ? "metagraph" : "validator"}
+      title={delegator.nodeMetadataParameters.name}
+      subtitle={delegatorMetagraph?.name}
+      iconUrl={delegatorMetagraph?.iconUrl ?? undefined}
+      delegatedAmountInDAG={datumToDag(delegator.totalAmountDelegated)}
+      commissionPercentage={decodeDecimal(
+        datumToDag(delegator.delegatedStakeRewardParameters.rewardFraction)
+      )
+        .mul(100)
+        .toNumber()}
+      description={delegator.nodeMetadataParameters.description}
+      userDelegation={userDelegation}
       onStake={
-        stakingActions.userDelegatedAmounts !== undefined
-          ? () =>
-              stakingActions.requestStaking(
-                props.nodeId,
-                props.commissionPercentage
-              )
-          : undefined
+        userDelegationsMap ? () => requestAction_stake(delegator) : undefined
       }
     />
   );
