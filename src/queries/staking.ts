@@ -1,11 +1,12 @@
 import { dag4 } from "@stardust-collective/dag4";
 import { cache } from "react";
 
-import { getAddressActions } from "./addresses";
+
+import { getActionTransaction } from "./actions";
 
 import { DagExplorerAPI, L0NodesAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
-import { IAPIResponse, ISearchOptions } from "@/types";
+import { ActionTransactionType, IAPIResponse, ISearchOptions } from "@/types";
 import {
   IAPIMetagraphStakingNode,
   IAPIStakingDelegator,
@@ -15,6 +16,7 @@ import {
 } from "@/types/staking";
 import { IWaitForPredicate, waitForPredicate } from "@/utils";
 import { isClusterUpgradeError } from "@/utils/errors";
+
 
 export const getDelegatorsMetagraphs = cache(
   async (
@@ -95,29 +97,49 @@ export const getAddressStakingDelegations = async (
   ];
 };
 
-export const confirmAddressTokenLock = async (
+export const confirmTokenLock = async (
   network: HgtpNetwork,
-  address: string,
   hash: string,
   metagraphId?: string,
   options?: IWaitForPredicate
 ) => {
   return waitForPredicate(async () => {
-    const actions = await getAddressActions(network, address, metagraphId);
-    return actions.records.some(
-      (d) => d.type === "TokenLock" && d.hash === hash
+    const transaction = await getActionTransaction(
+      network,
+      hash,
+      ActionTransactionType.TokenLock,
+      metagraphId
     );
+    return transaction !== null;
   }, options);
 };
 
-export const confirmAddressDelegatedStake = async (
+export const confirmDelegatedStake = async (
   network: HgtpNetwork,
-  address: string,
   hash: string,
   options?: IWaitForPredicate
 ) => {
   return waitForPredicate(async () => {
-    const delegations = await getAddressStakingDelegations(network, address);
-    return delegations.some((d) => d.hash === hash);
+    const transaction = await getActionTransaction(
+      network,
+      hash,
+      ActionTransactionType.DelegatedStake
+    );
+    return transaction !== null;
+  }, options);
+};
+
+export const confirmWithdrawDelegatedStake = async (
+  network: HgtpNetwork,
+  hash: string,
+  options?: IWaitForPredicate
+) => {
+  return waitForPredicate(async () => {
+    const transaction = await getActionTransaction(
+      network,
+      hash,
+      ActionTransactionType.DelegatedStakeWithdrawal
+    );
+    return transaction !== null;
   }, options);
 };
