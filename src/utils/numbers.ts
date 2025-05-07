@@ -1,4 +1,5 @@
 import Decimal from "decimal.js";
+import { millify } from "millify";
 
 export const encodeDecimal = <T extends IDecimal | undefined | null>(
   value: T
@@ -43,21 +44,32 @@ export const formatNumber = (
 
 export const formatNumberWithDecimals = (
   value?: IDecimal | null,
-  decimals?: { min?: number; max?: number }
-) =>
-  formatNumber(
+  options?: { minD?: number; maxD?: number; millifyFrom?: number }
+) => {
+  if (
+    typeof options?.millifyFrom === "number" &&
+    new Decimal(value ?? 0).gte(options.millifyFrom)
+  ) {
+    return millify(new Decimal(value ?? 0).toNumber(), {
+      locales: "en-US",
+      precision: options?.maxD,
+    });
+  }
+
+  return formatNumber(
     value,
     new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: decimals?.min,
-      maximumFractionDigits: decimals?.max ?? 8,
+      minimumFractionDigits: options?.minD,
+      maximumFractionDigits: options?.maxD ?? 8,
     })
   );
+};
 
 export const formatCurrencyWithDecimals = (
   currencyName: string,
   value?: IDecimal | null,
-  decimals?: { min?: number; max?: number }
-) => `${formatNumberWithDecimals(value, decimals)} ${currencyName}`;
+  options?: { minD?: number; maxD?: number; millifyFrom?: number }
+) => `${formatNumberWithDecimals(value, options)} ${currencyName}`;
 
 export const parseNumberOrDefault = (number: any, defaultNumber: number) =>
   Number(number ?? "invalid") || defaultNumber;

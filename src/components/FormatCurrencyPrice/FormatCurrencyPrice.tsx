@@ -16,6 +16,7 @@ export type IFormatCurrencyPriceProps = {
   currencyId?: string;
   value: Promise<IDecimal> | IDecimal;
   decimals?: { min?: number; max?: number };
+  millifyFrom?: number;
   className?: string;
 };
 
@@ -25,6 +26,7 @@ export const FormatCurrencyPrice = withSuspense(
     currencyId,
     value: valuePromise,
     decimals = { max: 2 },
+    millifyFrom,
     className,
   }: IFormatCurrencyPriceProps) {
     const price = use(getKnownUsdPrice(network, currencyId));
@@ -41,7 +43,11 @@ export const FormatCurrencyPrice = withSuspense(
         ($
         {formatNumberWithDecimals(
           encodeDecimal(decodeDecimal(value).mul(price)),
-          decimals
+          {
+            minD: decimals?.min,
+            maxD: decimals?.max,
+            millifyFrom: millifyFrom,
+          }
         )}{" "}
         USD)
       </span>

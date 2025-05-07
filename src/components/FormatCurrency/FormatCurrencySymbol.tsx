@@ -7,6 +7,7 @@ import { isPromiseLike, withSuspense } from "@/utils";
 
 export type IFormatCurrencySymbolProps = {
   currency: Promise<React.ReactNode> | React.ReactNode;
+  isDatum?: boolean;
   className?: string;
 };
 
@@ -14,6 +15,7 @@ export const FormatCurrencySymbol = withSuspense(
   function FormatCurrencySymbol({
     currency: currencyPromise,
     className,
+    isDatum,
   }: IFormatCurrencySymbolProps) {
     const currency = isPromiseLike(currencyPromise)
       ? use(currencyPromise)
@@ -26,6 +28,7 @@ export const FormatCurrencySymbol = withSuspense(
           className
         )}
       >
+        {isDatum ? "d" : ""}
         {currency}
       </span>
     );
