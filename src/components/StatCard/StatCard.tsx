@@ -17,10 +17,7 @@ export const StatCard = ({
 }: IStatCardProps) => {
   return (
     <div
-      className={clsx(
-        "card flex flex-col gap-3 p-5 w-full border-0.5",
-        className
-      )}
+      className={clsx("card shadow-sm flex flex-col gap-3 p-5 w-full border", className)}
     >
       <span className="flex items-center text-xs text-gray-500 font-semibold uppercase">
         {label}

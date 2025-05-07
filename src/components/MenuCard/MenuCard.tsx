@@ -27,7 +27,7 @@ export const MenuCard = ({
   return (
     <div
       className={clsx(
-        "card flex flex-col cursor-pointer",
+        "card shadow-sm flex flex-col cursor-pointer",
         variant === "default" && "gap-3 px-2 py-3",
         variant === "compact" && "px-1 py-1",
         className

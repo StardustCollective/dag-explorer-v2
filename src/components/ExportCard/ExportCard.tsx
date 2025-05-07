@@ -131,7 +131,7 @@ export const ExportCard = ({
     endDate.isBefore(startDate.add(1, "year"));
 
   return (
-    <div className={clsx("card w-11/12 max-w-[490px]", className)} ref={ref}>
+    <div className={clsx("card shadow-sm w-11/12 max-w-[490px]", className)} ref={ref}>
       <div className="header flex items-center justify-between px-5 py-4.5 text-xl font-semibold text-hgtp-blue-900">
         <div className="flex items-center gap-2">
           <FileDownloadIcon className="size-8 shrink-0" />
@@ -161,7 +161,7 @@ export const ExportCard = ({
             />
             {calendarState === "start" && (
               <div
-                className="absolute card top-full left-0 mt-2.5 w-fit z-10"
+                className="absolute card shadow-sm top-full left-0 mt-2.5 w-fit z-10"
                 ref={calendarStartRef}
               >
                 <Calendar
@@ -187,7 +187,7 @@ export const ExportCard = ({
             />
             {calendarState === "end" && (
               <div
-                className="absolute card top-full left-0 mt-2.5 w-fit z-10"
+                className="absolute card shadow-sm top-full left-0 mt-2.5 w-fit z-10"
                 ref={calendarEndRef}
               >
                 <Calendar

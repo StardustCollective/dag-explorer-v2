@@ -34,7 +34,7 @@ export const Toast = ({ type = "success", content }: IToastProps) => {
   return (
     <div
       className={clsx(
-        "card flex gap-2 justify-center items-center p-4",
+        "card shadow-sm flex gap-2 justify-center items-center p-4",
         type === "success" && "border-green-600 bg-green-50 text-green-800",
         type === "failure" && "border-red-600 bg-red-50 text-red-800",
         type === "info" && "border-blue-600 bg-blue-50 text-blue-800",

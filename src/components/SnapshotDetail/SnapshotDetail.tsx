@@ -52,7 +52,7 @@ export const SnapshotDetail = async ({
     <Section title="Overview" className="flex flex-col gap-4">
       {metagraph && (
         <DetailsTableCard
-          className="w-full"
+          className="w-full shadow-sm"
           rows={[
             {
               label: "Metagraph name",
@@ -90,7 +90,7 @@ export const SnapshotDetail = async ({
         />
       )}
       <DetailsTableCard
-        className="w-full"
+        className="w-full shadow-sm"
         rows={[
           {
             label: "Timestamp",
@@ -185,7 +185,7 @@ export const SnapshotDetail = async ({
           },
         ]}
       />
-      <div className="card flex flex-col w-full">
+      <div className="card shadow-sm flex flex-col w-full">
         <Tabs value={section}>
           <Tab
             id="transactions"

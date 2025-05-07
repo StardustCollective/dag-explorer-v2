@@ -39,13 +39,13 @@ export const ActionDetail = async ({
   return (
     <Section className="flex flex-col gap-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="card flex flex-col gap-4 p-6">
+        <div className="card shadow-sm flex flex-col gap-4 p-6">
           <span className="text-black/65 font-semibold">Transaction Type</span>
           <span className="text-hgtp-blue-900 font-medium text-xl">
             {action.type}
           </span>
         </div>
-        <div className="card flex flex-col gap-4 p-6">
+        <div className="card shadow-sm flex flex-col gap-4 p-6">
           <span className="text-black/65 font-semibold">Metagraph</span>
           <span
             className={clsx(
@@ -65,7 +65,7 @@ export const ActionDetail = async ({
         </div>
       </div>
       <DetailsTableCard
-        className="w-full"
+        className="w-full shadow-sm"
         rows={[
           {
             label: "Timestamp",
@@ -128,9 +128,8 @@ export const ActionDetail = async ({
           },
         ]}
       />
-
       <DetailsTableCard
-        className="w-full"
+        className="w-full shadow-sm"
         rows={[
           {
             label: "Amount",
@@ -176,9 +175,8 @@ export const ActionDetail = async ({
           },
         ]}
       />
-
       <DetailsTableCard
-        className="w-full"
+        className="w-full shadow-sm"
         rows={[
           {
             label: "Source",

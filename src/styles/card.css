@@ -2,7 +2,6 @@
 
 .card {
   @apply border border-gray-300 rounded-lg;
-  @apply shadow-sm;
   @apply bg-white;
 }
 
