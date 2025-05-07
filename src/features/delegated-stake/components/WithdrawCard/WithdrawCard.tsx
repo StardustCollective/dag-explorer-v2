@@ -15,6 +15,7 @@ export type IDelegatedStakeWithdrawCard_WithdrawCardProps = {
   network: HgtpNetwork;
   validatorName: React.ReactNode;
   amountStaked: React.ReactNode;
+  totalRewards: React.ReactNode;
   unwindingPeriod: React.ReactNode;
   unlockEpoch: React.ReactNode;
   unlockTime: React.ReactNode;
@@ -30,6 +31,7 @@ export const DelegatedStakeWithdrawCard_WithdrawCard = ({
   network,
   validatorName,
   amountStaked,
+  totalRewards,
   unwindingPeriod,
   unlockEpoch,
   unlockTime,
@@ -71,7 +73,7 @@ export const DelegatedStakeWithdrawCard_WithdrawCard = ({
                 },
                 {
                   label: <>Total rewards</>,
-                  value: '',
+                  value: totalRewards,
                 },
                 {
                   label: <>Unwinding period</>,

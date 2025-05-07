@@ -37,7 +37,7 @@ export type IDelegatedStake_Stake_Machine = IStateMachine<
   | "confirmedDelegation"
 >;
 
-export const createDelegatedStake_Stake_MachineContext = (
+export const createDelegatedStake_Stake_Machine = (
   context: IDelegatedStake_Stake_MachineContext
 ) => {
   return createStateMachineStore<IDelegatedStake_Stake_Machine>(
