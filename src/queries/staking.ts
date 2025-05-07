@@ -89,7 +89,10 @@ export const getAddressStakingDelegations = async (
     `/delegated-stakes/${address}/info`
   );
 
-  return response.data.activeDelegatedStakes;
+  return [
+    ...response.data.activeDelegatedStakes,
+    ...response.data.pendingWithdrawals,
+  ];
 };
 
 export const confirmAddressTokenLock = async (
