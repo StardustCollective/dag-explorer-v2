@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 import { NumericFormat } from "react-number-format";
 
-import { encodeDecimal } from "@/utils";
+import { decodeDecimal, encodeDecimal } from "@/utils";
 
 export type IAmountInputProps = {
   title?: React.ReactNode;
@@ -12,7 +12,9 @@ export type IAmountInputProps = {
   valueChildren?: React.ReactNode;
   error?: boolean;
   currency?: string;
-  value?: IDecimal | number;
+  value?: IDecimal;
+  maxValue?: IDecimal;
+  minValue?: IDecimal;
   onValueChange?: (amount: IDecimal) => void;
 };
 
@@ -23,6 +25,8 @@ export const AmountInput = ({
   error,
   currency = "DAG",
   value,
+  maxValue = Infinity,
+  minValue = -Infinity,
   onValueChange,
 }: IAmountInputProps) => {
   return (
@@ -44,17 +48,34 @@ export const AmountInput = ({
               error && "text-red-500"
             )}
             suffix={" " + currency}
-            decimalScale={2}
+            decimalScale={8}
             allowNegative={false}
             decimalSeparator="."
             thousandSeparator=","
             value={encodeDecimal(value)}
-            onValueChange={(values, source) =>
-              source.source === "event" &&
-              onValueChange &&
-              typeof values.floatValue === "number" &&
-              onValueChange(encodeDecimal(values.floatValue))
-            }
+            onValueChange={(values, source) => {
+              if (
+                !(
+                  source.source === "event" &&
+                  onValueChange &&
+                  typeof values.floatValue === "number"
+                )
+              ) {
+                return;
+              }
+
+              if (values.floatValue > decodeDecimal(maxValue).toNumber()) {
+                onValueChange(encodeDecimal(maxValue));
+                return;
+              }
+
+              if (values.floatValue < decodeDecimal(minValue).toNumber()) {
+                onValueChange(encodeDecimal(minValue));
+                return;
+              }
+
+              onValueChange(encodeDecimal(values.floatValue));
+            }}
           />
         </div>
         {valueChildren && (
