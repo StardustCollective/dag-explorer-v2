@@ -1,49 +1,69 @@
+import { MiddleTruncate } from "@re-dev/react-truncate";
+import { dag4 } from "@stardust-collective/dag4";
 import clsx from "clsx";
+import Link from "next/link";
+import { memo } from "react";
 
-import { InfoTooltip } from "../Tooltip";
+import { Tooltip } from "../Tooltip";
+import { ValidatorIcon } from "../ValidatorIcon";
 
-import { formatCurrencyWithDecimals } from "@/utils";
+import {
+  IValidatorTypeChipProps,
+  ValidatorTypeChip,
+} from "./ValidatorTypeChip";
 
-import Brain2Icon from "@/assets/icons/brain-2.svg";
-import FileLockIcon from "@/assets/icons/file-lock.svg";
+import { datumToDag } from "@/common/currencies";
+import { IL0StakingDelegation } from "@/types/staking";
+import { decodeDecimal, formatCurrencyWithDecimals } from "@/utils";
 
 export type IValidatorCardProps = {
   nodeId: string;
   commissionPercentage: number;
-  type?: "metagraph" | "validator";
+  type?: IValidatorTypeChipProps["type"];
   title?: string;
   subtitle?: string;
-  logoUrl?: string;
+  iconUrl?: string;
   delegatedAmountInDAG?: IDecimal;
-  userDelegatedAmountInDAG?: IDecimal;
   description?: string;
+  userDelegation?: IL0StakingDelegation;
   onStake?: () => void;
 };
 
-export const ValidatorCard = ({
+export const ValidatorCard = memo(function ValidatorCard({
+  nodeId,
   type,
   title,
   subtitle,
-  logoUrl,
+  iconUrl,
   delegatedAmountInDAG,
-  userDelegatedAmountInDAG,
   commissionPercentage,
   description,
+  userDelegation,
   onStake,
-}: IValidatorCardProps) => {
+}: IValidatorCardProps) {
   return (
-    <div className="card flex flex-col w-full">
-      <div className="header flex px-5 py-4 justify-between">
-        <div className="flex gap-3">
-          <div className="size-10 rounded-full border border-black/25"></div>
-          <div className="flex flex-col font-medium">
-            <span className="text-hgtp-blue-600">{title}</span>
+    <div className="card shadow-sm flex flex-col w-full">
+      <div className="header flex px-5 py-4 justify-between gap-1">
+        <div className="flex gap-3 grow">
+          <ValidatorIcon iconUrl={iconUrl} size={10} hideType />
+          <div className="flex flex-col font-medium grow">
+            <Tooltip
+              renderAs={Link}
+              className={clsx("flex grow", "text-hgtp-blue-600")}
+              href={`/address/${dag4.keyStore.getDagAddressFromPublicKey(
+                nodeId
+              )}`}
+              tooltip={{ place: "bottom" }}
+              content={title ?? nodeId}
+            >
+              <MiddleTruncate>{title ?? nodeId}</MiddleTruncate>
+            </Tooltip>
             <span className="text-hgtp-blue-950 text-sm">
               {subtitle ?? "--"}
             </span>
           </div>
         </div>
-        <div className="hidden md:inline-block">
+        <div className="hidden lg:inline-block">
           <ValidatorTypeChip type={type} />
         </div>
       </div>
@@ -51,15 +71,18 @@ export const ValidatorCard = ({
         <div className="flex gap-6">
           <div className="flex flex-col w-full gap-1">
             <span className="text-gray-600 text-xs font-semibold">
-              Total delegated <InfoTooltip />
+              Total delegated
             </span>
             <span className="text-hgtp-blue-900 text-lg">
-              {formatCurrencyWithDecimals("DAG", delegatedAmountInDAG)}
+              {formatCurrencyWithDecimals("DAG", delegatedAmountInDAG, {
+                maxD: 2,
+                millifyFrom: 1e3,
+              })}
             </span>
           </div>
           <div className="flex flex-col w-full gap-1">
             <span className="text-gray-600 text-xs font-semibold">
-              Validator commission <InfoTooltip />
+              Validator commission
             </span>
             <span className="text-hgtp-blue-900 text-lg">
               {commissionPercentage}%
@@ -67,7 +90,7 @@ export const ValidatorCard = ({
           </div>
         </div>
         <div className="text-sm text-gray-600">{description}</div>
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <ValidatorTypeChip type={type} />
         </div>
       </div>
@@ -76,17 +99,32 @@ export const ValidatorCard = ({
         <div className="footer flex items-center justify-between py-3.5 px-5">
           <div className="flex flex-col">
             <span className="text-gray-600 text-xs font-semibold">
-              Your total delegation <InfoTooltip />
+              Your total delegation
             </span>
             <span className="text-hgtp-blue-900 text-xl">
-              {formatCurrencyWithDecimals("DAG", userDelegatedAmountInDAG)}
+              {formatCurrencyWithDecimals(
+                "DAG",
+                datumToDag(userDelegation?.amount ?? 0),
+                { maxD: 0, millifyFrom: 1e3 }
+              )}
             </span>
           </div>
-          <button className="button secondary sm font-medium" onClick={onStake}>
-            Stake
+          <button
+            className="button secondary sm font-medium"
+            onClick={onStake}
+            disabled={!!userDelegation}
+          >
+            {userDelegation &&
+              userDelegation.withdrawalEndEpoch !== null &&
+              "Unwind Period"}
+            {userDelegation &&
+              userDelegation.withdrawalEndEpoch === null &&
+              decodeDecimal(userDelegation.amount).gt(0) &&
+              "Staked"}
+            {!userDelegation && "Stake DAG"}
           </button>
         </div>
       )}
     </div>
   );
-};
+});

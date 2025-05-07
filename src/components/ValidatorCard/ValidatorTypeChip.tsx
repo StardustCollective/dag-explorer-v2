@@ -3,9 +3,6 @@ import { use } from "react";
 
 import { isPromiseLike, withSuspense } from "@/utils";
 
-import Brain2OutlineIcon from "@/assets/icons/brain-2-outline.svg";
-import FileLockIcon from "@/assets/icons/file-lock.svg";
-
 export type IValidatorTypeChipProps = {
   type?:
     | Promise<"metagraph" | "validator" | null | undefined>
@@ -31,11 +28,8 @@ export const ValidatorTypeChip = withSuspense(
             "border-stgz-purple-700 bg-stgz-purple-700/5 text-stgz-purple-700"
         )}
       >
-        {type === "metagraph" && (
-          <Brain2OutlineIcon className="size-4 shrink-0" />
-        )}
         {type === "metagraph" && "Metagraph"}
-        {type === "validator" && <FileLockIcon className="size-4 shrink-0" />}
+
         {type === "validator" && "Validator"}
       </div>
     );
@@ -48,8 +42,7 @@ export const ValidatorTypeChip = withSuspense(
         "border-stgz-purple-700 bg-stgz-purple-700/5 text-stgz-purple-700"
       )}
     >
-      {<FileLockIcon className="size-4 shrink-0" />}
-      {"Validator"}
+      Validator
     </div>
   )
 );
