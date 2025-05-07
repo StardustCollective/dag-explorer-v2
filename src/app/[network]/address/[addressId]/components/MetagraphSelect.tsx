@@ -1,7 +1,7 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -10,7 +10,6 @@ import { MenuCard, MenuCardOption } from "@/components/MenuCard";
 import { MetagraphIcon } from "@/components/MetagraphIcon";
 import { SkeletonSpan } from "@/components/SkeletonSpan";
 import { SuspenseValue } from "@/components/SuspenseValue";
-import { getMetagraphCurrencySymbol } from "@/queries";
 import { IAPIAddressMetagraph } from "@/types";
 import { buildSearchParams } from "@/utils";
 
@@ -21,7 +20,7 @@ export type IMetagraphSelectProps = {
   address: string;
   network: HgtpNetwork;
   metagraphId?: string;
-  metagraphs?: Promise<IAPIAddressMetagraph[]> | IAPIAddressMetagraph[];
+  metagraphs?: IAPIAddressMetagraph[];
   className?: string;
 };
 
@@ -35,10 +34,7 @@ export const MetagraphSelect = ({
   const [open, setOpen] = useState(false);
   const nextSearchParams = buildSearchParams(useSearchParams());
 
-  const _metagraphs = useQuery({
-    queryKey: ["metagraphs", address],
-    queryFn: () => metagraphs,
-  });
+  const metagraph = metagraphs?.find((m) => m.metagraphId === metagraphId);
 
   return (
     <div className="relative">
@@ -52,50 +48,58 @@ export const MetagraphSelect = ({
         onClick={() => setOpen((s) => !s)}
       >
         <div className="flex items-center gap-2">
-          <MetagraphIcon network={network} metagraphId={metagraphId} size={6} />
+          <MetagraphIcon
+            network={network}
+            iconUrl={metagraph?.iconUrl}
+            size={6}
+          />
           <SuspenseValue
-            value={getMetagraphCurrencySymbol(network, metagraphId)}
+            value={metagraph?.symbol ?? "DAG"}
             fallback={<SkeletonSpan className="w-8" />}
           />
         </div>
         {open ? (
-          <ChevronUpIcon className="size-5" />
+          <ChevronUpIcon className="size-5 shrink-0" />
         ) : (
-          <ChevronDownIcon className="size-5" />
+          <ChevronDownIcon className="size-5 shrink-0" />
         )}
       </div>
-      {open && (
-        <MenuCard
-          className="absolute top-full mt-2 w-[200px]"
-          onClickOutside={() => setOpen(false)}
+      <MenuCard
+        className={clsx("absolute top-full mt-2 w-[200px]", !open && "hidden")}
+        onClickOutside={() => setOpen(false)}
+      >
+        <MenuCardOption
+          renderAs={Link}
+          href={`/address/${address}?${nextSearchParams({
+            metagraphId: "",
+          })}`}
+          onClick={() => {
+            setOpen(false);
+          }}
         >
+          <MetagraphIcon network={network} size={5} />
+          DAG
+        </MenuCardOption>
+        {metagraphs?.map((metagraph) => (
           <MenuCardOption
-            renderAs={"a"}
+            key={metagraph.metagraphId}
+            renderAs={Link}
             href={`/address/${address}?${nextSearchParams({
-              metagraphId: "",
+              metagraphId: metagraph.metagraphId,
             })}`}
+            onClick={() => {
+              setOpen(false);
+            }}
           >
-            <MetagraphIcon network={network} size={5} />
-            DAG
+            <MetagraphIcon
+              network={network}
+              iconUrl={metagraph.iconUrl}
+              size={5}
+            />
+            {metagraph.symbol}
           </MenuCardOption>
-          {_metagraphs.data?.map((metagraph) => (
-            <MenuCardOption
-              key={metagraph.metagraphId}
-              renderAs={"a"}
-              href={`/address/${address}?${nextSearchParams({
-                metagraphId: metagraph.metagraphId,
-              })}`}
-            >
-              <MetagraphIcon
-                network={network}
-                iconUrl={metagraph.iconUrl}
-                size={5}
-              />
-              {metagraph.symbol}
-            </MenuCardOption>
-          ))}
-        </MenuCard>
-      )}
+        ))}
+      </MenuCard>
     </div>
   );
 };
