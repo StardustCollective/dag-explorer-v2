@@ -53,23 +53,24 @@ export const getAddressLockedBalance = async (
     network = HgtpNetwork.MAINNET;
   }
 
-  const { records: actions } = await getAddressActions(
+  const { records: allowSpends } = await getAddressActions(
     network,
     addressId,
     metagraphId
   );
 
-  return actions.reduce((pv, action) => {
-    if (action.type === "TokenLock" && !action.unlockEpoch) {
-      return pv + action.amount;
-    }
+  const { records: tokenLocks } = await getAddressActiveTokenLocks(
+    network,
+    addressId,
+    metagraphId
+  );
 
-    if (action.type === "AllowSpend" && !action.unlockEpoch) {
-      return pv + action.amount;
-    }
+  const actions = [
+    ...allowSpends.filter((action) => action.type === "AllowSpend"),
+    ...tokenLocks,
+  ];
 
-    return pv;
-  }, 0);
+  return actions.reduce((pv, action) =>  pv + action.amount, 0);
 };
 
 export const getAddressMetagraphs = async (
