@@ -1,3 +1,5 @@
+import React from "react";
+
 export type IPageSearchParams = Record<string, string | string[] | undefined>;
 
 export const buildSearchParams = (
@@ -30,9 +32,39 @@ export const getPageSearchParamsOrDefaults = async <
   const _searchParams = await searchParams;
   const _defaultParams = await defaultParams;
 
-  const mergedParams = Object.assign({}, _searchParams, _defaultParams);
+  const keys = new Set([
+    ...Object.keys(_searchParams),
+    ...Object.keys(_defaultParams),
+  ]);
+  const mergedParams: Record<string, string | undefined> = {};
+
+  for (const key of keys) {
+    const value = _searchParams[key] ?? _defaultParams[key];
+    mergedParams[key] = Array.isArray(value) ? value[0] : value;
+  }
 
   const nextSearchParams = buildSearchParams(mergedParams as any);
 
   return [mergedParams, nextSearchParams] as const;
+};
+
+export const withSearchParamsAsyncBoundary = <C extends React.ElementType>(
+  Component: C
+) => {
+  return Object.assign(
+    async (props: React.ComponentProps<C>) => {
+      const key = new URLSearchParams(
+        (await props?.searchParams) ?? {}
+      ).toString();
+
+      const nextProps = { ...props, key } as any;
+
+      return <Component {...nextProps} />;
+    },
+    {
+      displayName: `withSearchParamsAsyncBoundary(${
+        (Component as any).displayName ?? (Component as any).name ?? "Anonymous"
+      })`,
+    }
+  );
 };
