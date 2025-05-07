@@ -11,7 +11,7 @@ import { Section } from "../Section";
 
 import { HgtpNetwork } from "@/common/consts";
 import { datumToDag } from "@/common/currencies";
-import { getMetagraph, getMetagraphCurrencySymbol } from "@/queries";
+import { getMetagraph } from "@/queries";
 import { IBETransaction } from "@/types";
 import { shortenString } from "@/utils";
 
@@ -35,7 +35,7 @@ export const TransactionDetail = async ({
 
   return (
     <Section className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="card shadow-sm flex flex-col gap-4 p-6">
           <span className="text-black/65 font-semibold">Transaction Type</span>
           <span className="text-hgtp-blue-900 font-medium text-xl">
@@ -44,7 +44,8 @@ export const TransactionDetail = async ({
         </div>
         <div className="card shadow-sm flex flex-col gap-4 p-6">
           <span className="text-black/65 font-semibold">Metagraph</span>
-          <span
+          <Link
+            href={metagraphId ? `/metagraphs/${metagraphId}` : ``}
             className={clsx(
               "flex items-center gap-2",
               "text-hgtp-blue-600 font-medium text-xl"
@@ -58,7 +59,7 @@ export const TransactionDetail = async ({
             {metagraphId
               ? metagraph?.name ?? shortenString(metagraphId, 6, 6)
               : "Constellation"}
-          </span>
+          </Link>
         </div>
       </div>
       <DetailsTableCard
@@ -67,10 +68,12 @@ export const TransactionDetail = async ({
           {
             label: "Timestamp",
             value: (
-              <span className="flex items-center gap-2">
-                <CalendarClock4Icon className="size-5" />
-                {dayjs(transaction.timestamp).fromNow()}
-                <span className="text-gray-500">
+              <span className="flex flex-col lg:flex-row items-center gap-2">
+                <span className="flex items-center gap-2">
+                  <CalendarClock4Icon className="size-5 shrink-0" />
+                  {dayjs(transaction.timestamp).fromNow()}
+                </span>
+                <span className="text-gray-500 lg:block hidden">
                   (
                   {dayjs(transaction.timestamp).format(
                     "YYYY-MM-DD hh:mm:ss A +UTC"
@@ -98,8 +101,13 @@ export const TransactionDetail = async ({
           {
             label: "Txn Hash",
             value: (
-              <span className="flex items-center gap-2">
-                {shortenString(transaction.hash, 8, 8)}
+              <span className="flex items-center gap-1">
+                <span className="lg:block hidden">
+                  {shortenString(transaction.hash, 8, 8)}
+                </span>
+                <span className="lg:hidden block">
+                  {shortenString(transaction.hash, 6, 6)}
+                </span>
                 <CopyAction value={transaction.hash} />
               </span>
             ),
@@ -114,7 +122,7 @@ export const TransactionDetail = async ({
                   "bg-green-50 border border-green-400 rounded-4xl"
                 )}
               >
-                <CheckCircleOutlineIcon className="size-5" /> Confirmed
+                <CheckCircleOutlineIcon className="size-5 shrink-0" /> Confirmed
               </span>
             ),
           },
@@ -126,25 +134,39 @@ export const TransactionDetail = async ({
           {
             label: "Source",
             value: (
-              <Link
-                className="flex items-center gap-2 text-hgtp-blue-600"
-                href={`/address/${transaction.source}`}
-              >
-                {shortenString(transaction.source, 8, 8)}
+              <span className="flex items-center gap-1">
+                <Link
+                  className="flex items-center gap-2 text-hgtp-blue-600"
+                  href={`/address/${transaction.source}`}
+                >
+                  <span className="lg:block hidden">
+                    {shortenString(transaction.source, 8, 8)}
+                  </span>
+                  <span className="lg:hidden block">
+                    {shortenString(transaction.source, 6, 6)}
+                  </span>
+                </Link>
                 <CopyAction value={transaction.source} />
-              </Link>
+              </span>
             ),
           },
           {
             label: "Destination",
             value: (
-              <Link
-                className="flex items-center gap-2 text-hgtp-blue-600"
-                href={`/address/${transaction.destination}`}
-              >
-                {shortenString(transaction.destination, 8, 8)}
+              <span className="flex items-center gap-1">
+                <Link
+                  className="flex items-center gap-2 text-hgtp-blue-600"
+                  href={`/address/${transaction.destination}`}
+                >
+                  <span className="lg:block hidden">
+                    {shortenString(transaction.destination, 8, 8)}
+                  </span>
+                  <span className="lg:hidden block">
+                    {shortenString(transaction.destination, 6, 6)}
+                  </span>
+                </Link>
                 <CopyAction value={transaction.destination} />
-              </Link>
+              </span>
             ),
           },
         ]}
@@ -158,7 +180,7 @@ export const TransactionDetail = async ({
               <span className="flex gap-2">
                 <FormatCurrency
                   value={datumToDag(transaction.amount)}
-                  currency={getMetagraphCurrencySymbol(network, metagraphId)}
+                  currency={metagraph?.symbol ?? "DAG"}
                 />
                 <FormatCurrencyPrice
                   className="text-gray-500"
@@ -175,7 +197,7 @@ export const TransactionDetail = async ({
               <span className="flex gap-2">
                 <FormatCurrency
                   value={datumToDag(transaction.fee)}
-                  currency={getMetagraphCurrencySymbol(network, metagraphId)}
+                  currency={metagraph?.symbol ?? "DAG"}
                 />
                 <FormatCurrencyPrice
                   className="text-gray-500"
