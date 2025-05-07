@@ -16,3 +16,10 @@ export const isHgtpNetwork = (network: any): network is HgtpNetwork =>
   Object.values(HgtpNetwork).includes(network);
 
 export const NetworkEpochInSeconds = 65;
+
+export const DelegatedStakeNetworkLockHours: Record<HgtpNetwork, number> = {
+  [HgtpNetwork.MAINNET]: 21 * 24, // 21 Days
+  [HgtpNetwork.INTEGRATIONNET]: 1 * 24, // 1 Day
+  [HgtpNetwork.TESTNET]: 1, // 1 Hour
+  [HgtpNetwork.MAINNET_1]: 21 * 24, // 21 Days
+};

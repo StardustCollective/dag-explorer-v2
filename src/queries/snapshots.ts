@@ -36,6 +36,10 @@ export const getLatestMetagraphSnapshots = async (
   network: HgtpNetwork,
   options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IAPISnapshot>> => {
+  if (network === HgtpNetwork.MAINNET_1) {
+    return { records: [], total: 0 };
+  }
+
   const response = await DagExplorerAPI.get<IAPIResponse<IAPISnapshot[]>>(
     `/${network}/metagraph/latest-snapshots`,
     {

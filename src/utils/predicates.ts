@@ -29,7 +29,7 @@ export const waitForPredicate = async (
 
   if (throwOnTimeout) {
     throw new Error(
-      `Unable to confirm action in ${dayjs.duration(timeoutMs).humanize()}`
+      `Unable to confirm action after ${dayjs.duration(timeoutMs).humanize()}`
     );
   }
 

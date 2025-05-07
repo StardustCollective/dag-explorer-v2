@@ -2,7 +2,6 @@ import clsx from "clsx";
 import Image from "next/image";
 import { use } from "react";
 
-
 import { isPromiseLike, withSuspense } from "@/utils";
 
 export type IRoundedIconProps = {
@@ -27,7 +26,8 @@ export const RoundedIcon = withSuspense(
       <div
         className={clsx(
           "inline-flex items-center justify-center",
-          "border border-gray-300 rounded-full",
+          "border rounded-full",
+          !className?.includes("border-") && "border-gray-300",
           className
         )}
         style={{ width: size * 4, height: size * 4 }}

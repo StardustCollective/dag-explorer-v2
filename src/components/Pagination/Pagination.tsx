@@ -1,5 +1,6 @@
 "use client";
 import clsx from "clsx";
+import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -65,7 +66,7 @@ export const Pagination = ({
               {pageSizes?.map((size) => (
                 <MenuCardOption
                   key={size}
-                  renderAs="a"
+                  renderAs={Link}
                   href={`${pathname}?${nextSearchParams({
                     limit: String(size),
                   })}`}

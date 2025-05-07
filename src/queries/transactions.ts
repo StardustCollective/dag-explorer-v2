@@ -34,6 +34,10 @@ export const getLatestMetagraphTransactions = async (
   network: HgtpNetwork,
   options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IAPITransaction>> => {
+  if (network === HgtpNetwork.MAINNET_1) {
+    return { records: [], total: 0 };
+  }
+
   const response = await DagExplorerAPI.get<IAPIResponse<IAPITransaction[]>>(
     `/${network}/metagraph/latest-transactions`,
     {

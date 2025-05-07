@@ -12,6 +12,8 @@ const TypeParamMap: Record<ActionTransactionType, string> = {
   SpendExpiration: "allow-spend-expirations",
   TokenLock: "token-locks",
   TokenUnlock: "token-unlocks",
+  DelegatedStake: "delegated-stakes",
+  DelegatedStakeWithdrawal: "delegated-stake-withdrawals",
 };
 
 export const getActionTransaction = async (
@@ -21,6 +23,20 @@ export const getActionTransaction = async (
   metagraphId?: string
 ): Promise<IAPIActionTransaction | null> => {
   if (network === HgtpNetwork.MAINNET_1) {
+    return null;
+  }
+
+  if (
+    type === ActionTransactionType.DelegatedStake &&
+    !!metagraphId
+  ) {
+    return null;
+  }
+
+  if (
+    type === ActionTransactionType.DelegatedStakeWithdrawal &&
+    !!metagraphId
+  ) {
     return null;
   }
 
