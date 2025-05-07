@@ -16,11 +16,8 @@ import { Tab, Tabs } from "@/components/Tabs";
 import { getMetagraph, getMetagraphNodes } from "@/queries";
 import { INextTokenPaginationSearchParams } from "@/types";
 import {
-  
   getPageSearchParamsOrDefaults,
-  
   parseNumberOrDefault,
-  
   shortenString,
 } from "@/utils";
 
@@ -34,15 +31,17 @@ export default async function MetagraphPage({
   searchParams,
 }: {
   params: Promise<{ network: string; metagraphId: string }>;
-  searchParams: Promise<{ section?: string } & INextTokenPaginationSearchParams>;
+  searchParams: Promise<
+    { section?: string } & INextTokenPaginationSearchParams
+  >;
 }) {
   const { metagraphId } = await params;
 
-  const [{section, limit}, nextSearchParams] = await getPageSearchParamsOrDefaults(searchParams, {
-    section: "snapshots",
-    limit: "10",
-  });
-
+  const [{ section, limit }, nextSearchParams] =
+    await getPageSearchParamsOrDefaults(searchParams, {
+      section: "snapshots",
+      limit: "10",
+    });
 
   const network = await getNetworkFromParamsOrFail(params);
 
@@ -56,7 +55,6 @@ export default async function MetagraphPage({
   if (!metagraph) {
     throw notFound();
   }
-
 
   return (
     <PageLayout
@@ -76,10 +74,13 @@ export default async function MetagraphPage({
                   />{" "}
                   {metagraph.name}
                 </h3>
-                <p className="max-w-[700px] text-center lg:text-left">{metagraph.description}</p>
+                <p className="max-w-[700px] text-center lg:text-left">
+                  {metagraph.description}
+                </p>
               </div>
             </div>
             <PropertiesCard
+              className="shadow-sm"
               rows={[
                 {
                   label: (
@@ -161,7 +162,7 @@ export default async function MetagraphPage({
             />
           </div>
         </div>
-        <div className="card flex flex-col w-full">
+        <div className="card shadow-sm flex flex-col w-full">
           <Tabs value={section ?? "transactions"}>
             <Tab
               id="snapshots"

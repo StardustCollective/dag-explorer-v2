@@ -27,7 +27,7 @@ export const NodeLayerInfo = withSuspense(
       : layerInfoPromise;
 
     return (
-      <div className="card flex flex-col gap-6 p-5">
+      <div className="card shadow-sm flex flex-col gap-6 p-5">
         <div className="flex flex-col gap-4 items-center">
           <div
             className={clsx(
@@ -68,7 +68,7 @@ export const NodeLayerInfo = withSuspense(
     );
   },
   ({ type }) => (
-    <div className="card flex flex-col gap-6 p-5">
+    <div className="card shadow-sm flex flex-col gap-6 p-5">
       <div className="flex flex-col gap-4 items-center">
         <div
           className={clsx(
