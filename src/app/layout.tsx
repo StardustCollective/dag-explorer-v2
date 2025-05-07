@@ -6,9 +6,8 @@ import { Toaster } from "sonner";
 
 import { initDayJsLibrary } from "@/common/dayjs";
 import { fontVariables } from "@/common/fonts";
-import {
-  getNetworkFromHeadersOrFail,
-} from "@/common/network";
+import { getNetworkFromHeadersOrFail } from "@/common/network";
+import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { NetworkHeader } from "@/components/NetworkHeader";
 import { NetworkProvider } from "@/providers/NetworkProvider";
@@ -50,11 +49,18 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="DAG Explorer" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
+      <body
+        className={clsx(
+          "flex flex-col min-h-dvh",
+          fontVariables,
+          "font-inter bg-cafb antialiased"
+        )}
+      >
         {process.env.NEXT_PUBLIC_DEPLOY_TIME &&
           dayjs().isBefore(
             dayjs(process.env.NEXT_PUBLIC_DEPLOY_TIME).add(3, "days")
           ) && (
-            <span className="fixed bottom-4 right-4 text-xs text-[#F00]">
+            <span className="fixed bottom-4 right-4 text-xs text-[#F00] hidden">
               DevOnly :: LastDeployTime
               <br />
               {process.env.NEXT_PUBLIC_DEPLOY_TIME}
@@ -69,6 +75,7 @@ export default async function RootLayout({
               <Header />
               <NetworkHeader network={network} />
               {children}
+              <Footer />
             </WalletProvider>
           </QueryProvider>
         </NetworkProvider>
