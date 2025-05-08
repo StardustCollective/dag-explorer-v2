@@ -1,4 +1,6 @@
 "use client";
+
+import * as Sentry from "@sentry/nextjs";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -7,11 +9,12 @@ import { useEffect } from "react";
 import { initDayJsLibrary } from "@/common/dayjs";
 import { fontVariables } from "@/common/fonts";
 import { Header } from "@/components/Header";
-import "@/styles/globals.css";
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { WalletProvider } from "@/providers/WalletProvider";
+
+import "@/styles/globals.css";
 
 initDayJsLibrary();
 
@@ -29,6 +32,10 @@ export default function GlobalErrorLayout({
   useEffect(() => {
     console.error("Global Error Log");
     console.error(error);
+  }, [error]);
+
+  useEffect(() => {
+    Sentry.captureException(error);
   }, [error]);
 
   return (
