@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DAG Explorer Project (v2)
 
-## Getting Started
+DAG Explorer is an open-source tool designed for the Constellation Network to monitor transaction statuses and other important network information. This project is built with TypeScript, SST, and Next.js. You can find the live project at [dagexplorer.io](https://dagexplorer.io/).
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Monitor transaction statuses
+- View network snapshots
+- Access wallet addresses
+- Supports MainNet, TestNet, and IntegrationNet networks
+- Built with TypeScript, SST, and Next.js for a robust and scalable application (deployed in AWS)
+
+## Installation
+
+To get a local copy up and running, follow these simple steps:
+
+1. **Clone the repository**
+
+```sh
+git clone https://github.com/StardustCollective/dag-explorer-v2
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Navigate to the project directory**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+cd dag-explorer-v2
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Install dependencies**
 
-## Learn More
+```sh
+pnpm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Dependencies
+This repository relies on several private APIs to function effectively. Below are the details of these dependencies and their respective uses:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
++ Firebase DAG Explorer Specialized Private API: This API is crucial for collecting data on MainNet 1.0, which is now deprecated. It provides detailed information about snapshots and transactions on this older network version.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
++ Constellation Ecosystem Private API: This API is utilized to fetch information regarding token prices. It acts as a relay, connecting to the CoinGecko API to ensure accurate and up-to-date pricing data.
 
-## Deploy on Vercel
++ DAG Explorer Specialized Private API: This API is essential for obtaining comprehensive data about snapshots, transactions, metagraphs, rewards, node validators, and their rewards. It aggregates and processes information from the Constellation Block Explorer API, providing a optimized view of the network's activity.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+These dependencies are integral to the functionality of the DAG Explorer, ensuring it can provide detailed and accurate network information.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Usage
+
+To start the development server, run:
+
+```sh
+pnpm dev
+```
+
+This will run the app in the development mode.
+Open http://localhost:1014 to view it in the browser.
+
+To build the app for production, run:
+
+```sh
+pnpm build
+```
+
+This will create a build directory with the production build of the app.
+
+## Contributing
+
+Stardust Collective welcomes developers interested in contributing to our open-source projects. We follow the GitFlow methodology, and we encourage you to start by creating a GitHub issue detailing your proposed feature or contribution. After an initial discussion, you can begin working on your own branch and later submit a Pull Request to the repository.
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE)
