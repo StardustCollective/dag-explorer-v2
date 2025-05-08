@@ -1,23 +1,41 @@
-import React, { useContext } from 'react';
+"use client";
 
-import styles from './Tab.module.scss';
-import { TabsContext } from './TabsContext';
-import clsx from 'clsx';
+import clsx from "clsx";
+import React, { useContext } from "react";
 
-export const Tab = ({ id, children }: { id: string; children: React.ReactNode }) => {
+import { TabsContext } from "./TabsContext";
+
+export type ITabProps<T extends React.ElementType = "div"> = {
+  renderAs?: T;
+  id: string;
+  children?: React.ReactNode;
+} & Omit<React.ComponentPropsWithoutRef<T>, "className" | "children">;
+
+export const Tab = <T extends React.ElementType = "div">({
+  renderAs,
+  id,
+  children,
+  ...props
+}: ITabProps<T>) => {
   const tabsContext = useContext(TabsContext);
 
   if (!tabsContext) {
-    throw new Error('<Tabs.Tab/> must be rendered inside a <Tabs/> component');
+    throw new Error("<Tabs.Tab/> must be rendered inside a <Tabs/> component");
   }
 
+  const RenderComponent = renderAs ?? "div";
+
   return (
-    <div
-      className={clsx(styles.main, tabsContext.value === id && styles.selected)}
-      onClick={() => tabsContext.onValue(id)}
-      ref={(element) => tabsContext.onRef(id, element)}
+    <RenderComponent
+      className={clsx(
+        "pt-5 pb-4 text-black/65 font-semibold cursor-pointer transition-all duration-200 ease-out",
+        tabsContext.value === id && "text-hgtp-blue-600"
+      )}
+      onClick={() => tabsContext.onValue?.(id)}
+      ref={(element: any) => tabsContext.onRef(id, element)}
+      {...props}
     >
       {children}
-    </div>
+    </RenderComponent>
   );
 };

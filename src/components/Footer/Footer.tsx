@@ -1,24 +1,31 @@
-import dayjs from 'dayjs';
-import FooterText from '../../assets/icons/FooterConstellation.svg';
-import { URL_SUBMIT_METAGRAPH_FORM } from '../../utils/consts';
+import Link from "next/link";
 
-import styles from './Footer.module.scss';
+import { PageLayout } from "../PageLayout";
 
-export const Footer = () => {
-  const handleOpenForm = () => {
-    window.open(URL_SUBMIT_METAGRAPH_FORM, '_blank');
-  };
+import ConstellationIcon from "@/assets/logos/constellation.svg";
 
+export type IFooterProps = Record<string, never>;
+
+export const Footer = ({}: IFooterProps) => {
   return (
-    <>
-      <footer className={`${styles.fullWidth2} background`}>
-        <div className={`${styles.footer}`}>
-          <div className={styles.footerText}>© {dayjs().year()} CONSTELLATION NETWORK</div>
-          <img className={styles.poweredBy} src={FooterText} />
-          <button onClick={handleOpenForm}>Submit a Metagraph</button>
+    <div className="flex flex-col justify-end grow-1">
+      <PageLayout
+        className={{
+          children:
+            "flex flex-col lg:flex-row justify-between items-center h-20 px-4 lg:px-20 text-hgtp-blue-900 text-xs",
+        }}
+      >
+        <div>© {new Date().getFullYear()} Constellation Network</div>
+        <div className="flex items-center gap-2">
+          Powered by <ConstellationIcon className="size-7.5" /> Constellation
         </div>
-      </footer>
-      <div></div>
-    </>
+        <Link
+          className="underline text-hgtp-blue-600"
+          href="https://forms.gle/NPP68a3NUeSD9YVb6"
+        >
+          Submit a Metagraph
+        </Link>
+      </PageLayout>
+    </div>
   );
 };

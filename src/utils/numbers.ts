@@ -1,139 +1,89 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import utc from 'dayjs/plugin/utc';
-import Decimal from 'decimal.js';
-import millify from 'millify';
+import Decimal from "decimal.js";
+import { millify } from "millify";
 
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
-
-export enum NumberFormat {
-  MILLIFY,
-  WHOLE,
-  DECIMALS,
-  DECIMALS_TRIMMED,
-  DECIMALS_TRIMMED_EXPAND,
-  MILLIFY_WHOLE,
-  MILLIFY_EXPANDED,
-}
-
-const formater = new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 });
-
-export const formatDagPrice = (dagInfo, btcInfo) => {
-  const rounded = Math.round((dagInfo.usd + Number.EPSILON) * 100) / 100;
-  const btcEquiv = (dagInfo.usd / btcInfo.usd).toFixed(8);
-  return '$' + rounded + ' USD - ' + btcEquiv + ' BTC';
-};
-
-export const formatMarketVol = (formater, dagInfo) => '24h Trading Vol: $' + formater.format(dagInfo.usd_24h_vol);
-
-export const formatPrice = (amount: number, dagInfo: any, toFixed: number) => {
-  const formatedValue = (amount / Math.pow(10, 8)).toFixed(8);
-  return formater.format(parseFloat((parseFloat(formatedValue) * dagInfo.usd).toFixed(toFixed)));
-};
-
-export const formatPriceWithSymbol = (
-  amount: number,
-  dagInfo: any,
-  toFixed: number,
-  prefixSymbol: string,
-  suffixSymbol: string
+export const encodeDecimal = <T extends IDecimal | undefined | null>(
+  value: T
 ) => {
-  return `${prefixSymbol || ''}${formatPrice(amount, dagInfo, toFixed)} ${suffixSymbol || ''}`;
+  if (value === undefined || value === null) {
+    return value as T extends IDecimal ? Exclude<IDecimal, Decimal> : T;
+  }
+
+  return new Decimal(value).toFixed() as T extends IDecimal
+    ? Exclude<IDecimal, Decimal>
+    : T;
 };
 
-export const formatAmount = (amount: number, toFixed: number, forExport?: boolean, suffix = 'DAG', isFee = false) => {
-  const formatedValue = (amount / Math.pow(10, 8)).toFixed(toFixed);
-  const regex = formatedValue.match('^(\\d+\\.\\d*?)(0+)$');
-  let toReturn: string;
-  if (regex) {
-    const subString = regex[1].split('.')[1];
-    if (subString && subString.length >= 2) {
-      return forExport ? regex[1] : formater.format(parseFloat(regex[1])) + ' ' + suffix;
-    } else {
-      toReturn = subString.length === 1 ? regex[1].concat('0') : regex[1].concat('00');
-    }
+export const decodeDecimal = <T extends IDecimal | undefined | null>(
+  value: T
+): T extends IDecimal ? Decimal : T => {
+  if (value === undefined || value === null) {
+    return value as T extends IDecimal ? Decimal : T;
   }
-  return forExport
-    ? toReturn
-      ? toReturn
-      : formater.format(parseFloat(formatedValue))
-    : (toReturn ? formater.format(parseFloat(toReturn)) : formater.format(parseFloat(formatedValue))) + ' ' + suffix;
+
+  return new Decimal(value) as T extends IDecimal ? Decimal : T;
 };
 
-export const fitStringInCell = (value: string, size: number = null, ignoreSuffix = false) =>
-  value.slice(0, size ?? 5) + '...' + (ignoreSuffix ? '' : value.slice(value.length - (size ?? 5)));
-
-export const formatTotalSupply = () => 'Max Supply: 3,693,588,685';
-
-const formatRelativeString = (date: string) => {
-  let formatedDate = date;
-  if (date.indexOf('minutes') !== -1) {
-    formatedDate = date.replace('minutes', 'mins');
-  }
-  if (date.indexOf('seconds') !== -1) {
-    formatedDate = date.replace('seconds', 'secs');
-  }
-  return formatedDate;
-};
-
-export const formatTime = (timestamp: string | number, format: 'full' | 'relative' | 'date') => {
-  return format === 'full'
-    ? dayjs(timestamp).utc().toISOString()
-    : format === 'date'
-    ? dayjs(timestamp).utc().format('YYYY-MM-DD')
-    : formatRelativeString(dayjs().to(dayjs(timestamp)));
-};
-
-export const formatNumber = (number: number | Decimal | string | undefined | null, format: NumberFormat): string => {
-  if (number === '' || number === undefined || number === null || isNaN(<number>number)) {
-    return '';
-  }
-
-  if (number instanceof Decimal) {
-    number = number.toNumber();
-  }
-
-  if (format === NumberFormat.MILLIFY) {
-    return millify(<number>number);
-  }
-
-  if (format === NumberFormat.WHOLE) {
-    return new Intl.NumberFormat('en-US', {
-      maximumFractionDigits: 0,
-    }).format(<number>number);
-  }
-
-  if (format === NumberFormat.DECIMALS) {
-    return new Intl.NumberFormat('en-US', {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 2,
-    }).format(<number>number);
-  }
-
-  if (format === NumberFormat.DECIMALS_TRIMMED) {
-    return new Intl.NumberFormat('en-US', {
-      maximumFractionDigits: 2,
+export const formatNumber = (
+  value?: IDecimal | null,
+  formatter?: Intl.NumberFormat
+) => {
+  formatter =
+    formatter ??
+    new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 0,
-    }).format(<number>number);
+      maximumFractionDigits: 4,
+    });
+
+  value = value ?? 0;
+  value = typeof value === "string" ? new Decimal(value) : value;
+  value = Decimal.isDecimal(value) ? value : new Decimal(value);
+
+  const fixedValue = value.toFixed() as Intl.StringNumericLiteral;
+  return formatter.format(fixedValue);
+};
+
+export const formatNumberWithDecimals = (
+  value?: IDecimal | null,
+  options?: { minD?: number; maxD?: number; millifyFrom?: number }
+) => {
+  if (
+    typeof options?.millifyFrom === "number" &&
+    new Decimal(value ?? 0).gte(options.millifyFrom)
+  ) {
+    return millify(new Decimal(value ?? 0).toNumber(), {
+      locales: "en-US",
+      precision: options?.maxD,
+    });
   }
 
-  if (format === NumberFormat.DECIMALS_TRIMMED_EXPAND) {
-    return new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 20,
-    }).format(<number>number);
-  }
+  return formatNumber(
+    value,
+    new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: options?.minD,
+      maximumFractionDigits: options?.maxD ?? 8,
+    })
+  );
+};
 
-  if (format === NumberFormat.MILLIFY_WHOLE) {
-    return millify(<number>number, { precision: 0 });
-  }
+export const formatCurrencyWithDecimals = (
+  currencyName: string,
+  value?: IDecimal | null,
+  options?: { minD?: number; maxD?: number; millifyFrom?: number }
+) => `${formatNumberWithDecimals(value, options)} ${currencyName}`;
 
-  if (format === NumberFormat.MILLIFY_EXPANDED) {
-    const exponent = Math.floor(Math.log10(<number>number));
-    const precision = Math.min(Math.max(Math.floor(exponent / 3 /* 3 Zeros */) - 1, 0), 3);
-    return millify(<number>number, { precision });
-  }
+export const parseNumberOrDefault = (number: any, defaultNumber: number) =>
+  Number(number ?? "invalid") || defaultNumber;
 
-  return '--';
+export const isHexNumber = (value: string, length?: number) => {
+  return [
+    /^[0-9a-fA-F]+$/.test(value),
+    length ? value.length === length : true,
+  ].every((b) => b);
+};
+
+export const isDecNumber = (value: string, length?: number) => {
+  return [
+    /^[0-9]+$/.test(value),
+    length ? value.length === length : true,
+  ].every((b) => b);
 };

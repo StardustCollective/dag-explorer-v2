@@ -1,0 +1,27 @@
+.chip {
+  @apply flex flex-nowrap gap-1.5;
+  @apply justify-center items-center;
+  @apply text-hgtp-blue-700 font-semibold;
+  @apply cursor-pointer;
+  @apply bg-hgtp-blue-100;
+  @apply rounded-5xl;
+  
+
+  box-shadow: 0px 1px 2px 0px #0000000a;
+
+  &:hover:not(.disabled, :disabled),
+  .hover:not(.disabled, :disabled) {
+    @apply bg-hgtp-blue-400/30;
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.6;
+  }
+}
+
+.chip.sm {
+  @apply px-2.5;
+  @apply h-6;
+  @apply text-xs;
+}

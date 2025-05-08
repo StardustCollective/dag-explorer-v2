@@ -1,73 +1,183 @@
-import { useLocation } from 'react-router-dom';
-import { AVAILABLE_NETWORKS } from '../../constants';
-import { useNetwork } from '../../context/NetworkContext';
-import { SearchBar } from '../SearchBar/SearchBar';
-import styles from './Header.module.scss';
-import { AddressShape } from '../Shapes/AddressShape';
-import { SnapshotShape } from '../Shapes/SnapshotShape';
-import { TransactionShape } from '../Shapes/TransactionShape';
-import { Warning } from 'phosphor-react';
+"use client";
 
-export const Header = () => {
-  const { pathname } = useLocation();
-  const { network, networkVersion } = useNetwork();
+import Link from "next/link";
+import { useState } from "react";
+import { useStore } from "zustand";
+
+import { MenuCard, MenuCardOption } from "../MenuCard";
+import { NavLink } from "../NavLink";
+import { NetworksOnly } from "../NetworksOnly";
+import { PageLayout } from "../PageLayout";
+
+import { MobileMenu } from "./components/MobileMenu";
+
+import { HgtpNetwork, NetworkNames } from "@/common/consts/network";
+import { getNetworkUrl } from "@/common/network";
+import { useNetworkContext } from "@/providers/NetworkProvider";
+import { useWalletStore } from "@/providers/WalletProvider";
+import { shortenString } from "@/utils";
+
+import Brain2FilledIcon from "@/assets/icons/brain-2-filled.svg";
+import Brain2OutlineIcon from "@/assets/icons/brain-2-outline.svg";
+import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
+import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
+import CoinsRemoveIcon from "@/assets/icons/coins-remove.svg";
+import PeopleCircleOutlineIcon from "@/assets/icons/people-circle-outline.svg";
+import ServerFilled1Icon from "@/assets/icons/server-1-filled.svg";
+import ServerOutline1Icon from "@/assets/icons/server-1-outline.svg";
+import WalletIcon from "@/assets/icons/wallet.svg";
+import ConstellationIcon from "@/assets/logos/constellation.svg";
+
+export type IHeaderProps = Record<string, never>;
+
+export const Header = ({}: IHeaderProps) => {
+  const { status, address, connect, disconnect } = useStore(
+    useWalletStore(),
+    (state) => state
+  );
+  const network = useNetworkContext();
+
+  const [walletDropdownOpen, setWalletDropdownOpen] = useState(false);
+  const [networkDropdownOpen, setNetworkDropdownOpen] = useState(false);
 
   return (
-    <header className={`${styles.fullWidth} ${styles.bgGray}`}>
-      <div className={styles.testnetWarningContainer}>
-        {network === 'testnet' && (
-          <div className={styles.testnetWarning}>
-            <Warning className={styles.iconWidth} color={'#f79009'} weight="fill" size={'1.5rem'} />
-            <div className={styles.testnetWarningText}>
-              Note: Constellation Testnet is an experimental environment and should be considered unstable.{' '}
-            </div>
-          </div>
-        )}
-        {(network === 'mainnet1') && (
-          <div className={styles.testnetWarning}>
-            <Warning className={styles.iconWidth} color={'#f79009'} weight="fill" size={'1.5rem'} />
-            <div className={styles.testnetWarningText}>
-              Attention: The Mainnet 1.0 network transitioned to Mainnet 2.0 on 2022-09-28. Switch to Mainnet 2.0 to view current activity.
-            </div>
-          </div>
-        )}
+    <PageLayout
+      className={{
+        wrapper: "bg-hgtp-blue-600",
+        children:
+          "flex justify-between items-center h-20 px-4 lg:px-20 text-white font-medium",
+      }}
+    >
+      <Link
+        className="flex gap-2.5 font-twk-laus font-medium text-2xl"
+        href="/"
+      >
+        <ConstellationIcon className="size-7.5 shrink-0" />
+        DAG Explorer
+      </Link>
+      <MobileMenu className="lg:hidden" />
+      <div className="hidden lg:flex gap-4">
+        <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
+          <NavLink
+            className="flex gap-2 items-center h-9 px-4.5"
+            activeClassName="font-semibold"
+            href="/metagraphs"
+          >
+            Metagraphs
+            <NavLink.Content renderCondition={false}>
+              <Brain2OutlineIcon className="size-5 shrink-0" />
+            </NavLink.Content>
+            <NavLink.Content renderCondition={true}>
+              <Brain2FilledIcon className="size-5 shrink-0" />
+            </NavLink.Content>
+          </NavLink>
+        </NetworksOnly>
+        <NetworksOnly
+          network={network}
+          exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
+        >
+          <NavLink
+            className="flex gap-2 items-center h-9 px-4.5"
+            activeClassName="font-semibold"
+            href="/staking"
+          >
+            Delegated Staking
+            <NavLink.Content renderCondition={false}>
+              <ServerOutline1Icon className="size-5 shrink-0" />
+            </NavLink.Content>
+            <NavLink.Content renderCondition={true}>
+              <ServerFilled1Icon className="size-5 shrink-0" />
+            </NavLink.Content>
+          </NavLink>
+        </NetworksOnly>
       </div>
-      <div className={styles.header}>
-        <div className={`${styles.maxWidth} ${styles.center}`}>
-          <div className={styles.networkHeader}>
-            <p className={'headerSubtitle'}>CONSTELLATION NETWORK</p>
-            <div className={styles.networkHeaderGroup}>
-              <p className={'networkName'}>{AVAILABLE_NETWORKS[network]}</p>
-              {networkVersion === '2.0' && <p className={styles.badge}>2.0</p>}
-              {network === 'mainnet1' && <div className={styles.badge}>1.0</div>}
-            </div>
-          </div>
-
-          {pathname !== '/' ? (
-            <div className={`${styles.searchbar} ${styles.headerSearchMobile}`}>
-              <SearchBar />
-            </div>
+      <div className="hidden lg:flex gap-4 relative">
+        <button
+          className="button secondary outlined sm font-medium bg-transparent flex gap-1.5 items-center"
+          onClick={() => setNetworkDropdownOpen((s) => !s)}
+        >
+          {NetworkNames[network ?? HgtpNetwork.MAINNET]}
+          {networkDropdownOpen ? (
+            <ChevronUpIcon className="size-4 shrink-0" />
           ) : (
-            <div className={styles.rightSide}>
-              <p className={`${styles.text} headerExamples`}>Search examples:</p>
-              <div className={styles.examples}>
-                <div className={styles.example}>
-                  <AddressShape classname={styles.shape} />
-                  <p className={`${styles.text} headerExamples`}> address</p>
-                </div>
-                <div className={styles.example}>
-                  <SnapshotShape classname={styles.shape} />
-                  <p className={`${styles.text} headerExamples`}> snapshot</p>
-                </div>
-                <div className={styles.example}>
-                  <TransactionShape classname={styles.shape} />
-                  <p className={`${styles.text} headerExamples`}> transaction</p>
-                </div>
-              </div>
-            </div>
+            <ChevronDownIcon className="size-4 shrink-0" />
           )}
-        </div>
+        </button>
+        {networkDropdownOpen && (
+          <MenuCard
+            className="absolute top-full left-0 mt-2.5 w-fit z-10"
+            onClickOutside={() => setNetworkDropdownOpen(false)}
+          >
+            {Object.entries(NetworkNames).map(([network, name]) => (
+              <MenuCardOption
+                key={network}
+                renderAs={Link}
+                href={getNetworkUrl(
+                  network as HgtpNetwork,
+                  window.location.href
+                )}
+                onClick={() => setNetworkDropdownOpen(false)}
+              >
+                {name}
+              </MenuCardOption>
+            ))}
+          </MenuCard>
+        )}
+        {status === "disconnected" && (
+          <button
+            className="button primary sm flex gap-1.5 items-center"
+            onClick={connect}
+          >
+            <WalletIcon className="size-4 shrink-0" />
+            Connect wallet
+          </button>
+        )}
+        {status === "connected" && (
+          <button
+            className="button secondary outlined sm font-medium bg-transparent flex gap-1.5 items-center"
+            onClick={() => setWalletDropdownOpen((s) => !s)}
+          >
+            <WalletIcon className="size-4 shrink-0" />
+            {shortenString(address ?? "")}
+            {walletDropdownOpen ? (
+              <ChevronUpIcon className="size-4 shrink-0" />
+            ) : (
+              <ChevronDownIcon className="size-4 shrink-0" />
+            )}
+          </button>
+        )}
+        {status === "connected" && walletDropdownOpen && (
+          <MenuCard
+            className="absolute top-full right-0 mt-2.5 w-[244px] z-10"
+            onClickOutside={() => setWalletDropdownOpen(false)}
+            afterContent={
+              <button
+                className="button primary outlined sm font-medium bg-transparent"
+                onClick={disconnect}
+              >
+                Disconnect wallet
+              </button>
+            }
+          >
+            <MenuCardOption
+              renderAs={Link}
+              href={`/address/${address}`}
+              onClick={() => setWalletDropdownOpen(false)}
+            >
+              <PeopleCircleOutlineIcon className="size-6 shrink-0" />
+              Address details
+            </MenuCardOption>
+            <MenuCardOption
+              renderAs={Link}
+              href={`/address/${address}/staking`}
+              onClick={() => setWalletDropdownOpen(false)}
+            >
+              <CoinsRemoveIcon className="size-6 shrink-0" />
+              My delegations
+            </MenuCardOption>
+          </MenuCard>
+        )}
       </div>
-    </header>
+    </PageLayout>
   );
 };

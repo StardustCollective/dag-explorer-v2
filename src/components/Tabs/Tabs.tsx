@@ -1,38 +1,46 @@
-import React, { Children, isValidElement, ComponentProps, useRef, useEffect, useState } from 'react';
+"use client";
 
-import { Tab } from './Tab';
-import { TabsContext } from './TabsContext';
+import clsx from "clsx";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 
-import styles from './Tabs.module.scss';
+import { TabsContext } from "./TabsContext";
 
-const TabsBase = ({
-  value,
-  onValue,
-  children,
-}: {
+export type ITabsProps = {
   value: string;
-  onValue: (value: string) => void;
-  children: React.ReactNode;
-}) => {
-  const tabsRef = useRef<Record<string, HTMLDivElement>>({});
+  onValue?: (value: string) => void;
+  children?: React.ReactNode;
+  className?: string;
+};
+
+export const Tabs = ({ value, onValue, children, className }: ITabsProps) => {
+  const tabsRef = useRef<
+    Record<string, HTMLDivElement | HTMLAnchorElement | null>
+  >({});
   const [gliderStyle, setGliderStyle] = useState<React.CSSProperties>({});
 
-  const tabs = Children.toArray(children).filter(
-    (child): child is React.ReactElement<ComponentProps<typeof Tab>, typeof Tab> =>
-      isValidElement(child) && Object.is(child.type, Tab)
-  );
-
-  const updateGliderStyle = () => {
+  const updateGliderStyle = useCallback(() => {
     const tab = tabsRef.current[value];
+
     if (!tab) {
       return;
     }
-    setGliderStyle({ width: tab.offsetWidth, transform: `translateX(${tab.offsetLeft}px)` });
-  };
+
+    setGliderStyle({
+      width: tab.offsetWidth,
+      transform: `translateX(${tab.offsetLeft}px)`,
+    });
+  }, [value]);
 
   useEffect(() => {
     updateGliderStyle();
   }, [value, children]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateGliderStyle);
+    return () => {
+      window.removeEventListener("resize", updateGliderStyle);
+    };
+  }, [updateGliderStyle]);
 
   return (
     <TabsContext.Provider
@@ -44,14 +52,18 @@ const TabsBase = ({
         },
       }}
     >
-      <div className={styles.main}>
-        <div className={styles.tabs}>{tabs}</div>
-        <div className={styles.glider} style={gliderStyle}></div>
+      <div
+        className={clsx(
+          "relative flex grow overflow-x-auto overflow-y-hidden",
+          className
+        )}
+      >
+        <div className="w-full flex flex-nowrap mx-6 gap-6">{children}</div>
+        <div
+          className="flex h-0.5 absolute bg-hgtp-blue-600 bottom-0 transition-all duration-200 ease-out"
+          style={gliderStyle}
+        ></div>
       </div>
     </TabsContext.Provider>
   );
 };
-
-const Tabs = Object.assign(TabsBase, { displayName: 'Tabs', Tab });
-
-export { Tabs };

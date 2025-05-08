@@ -1,102 +1,102 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { HgtpNetwork, SearchableItem } from '../../constants';
-import { checkIfBEUrlExists, getSearchInputType } from '../../utils/search';
+"use client";
+import clsx from "clsx";
+import { useEffect, useImperativeHandle, useRef, useState } from "react";
 
-import styles from './SearchBar.module.scss';
-import { useNetwork } from '../../context/NetworkContext';
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
+import MagnifyingGlass2Icon from "@/assets/icons/magnifying-glass-2.svg";
 
-
-export const handleSearch = async (searchText: string, performAction: (url: string) => void, network: HgtpNetwork) => {
-  const inputType = getSearchInputType(searchText);
-
-  switch (inputType) {
-    case SearchableItem.Address: {
-      const url = '/address/' + searchText;
-      performAction(url);
-      break;
-    }
-    case SearchableItem.Snapshot: {
-      const url = '/snapshots/' + searchText;
-      performAction(url);
-      break;
-    }
-    case SearchableItem.Hash: {
-      const snapshotUrl = `/global-snapshots/${searchText}`
-      const snapshotExists = await checkIfBEUrlExists(snapshotUrl, network)
-      if(snapshotExists){
-        const url = '/snapshots/' + searchText;
-        performAction(url);
-        break;
-      }
-
-      const url = '/transactions/' + searchText;
-      performAction(url);
-
-      break;
-    }
-    default: {
-      const url = '/404';
-      performAction(url);
-      break;
-    }
-  }
+export type ISearchBarProps = Omit<
+  React.JSX.IntrinsicElements["input"],
+  "className"
+> & {
+  variant?: "default" | "minik";
+  onSearch?: () => void;
+  className?: string | { wrapper?: string; input?: string };
 };
 
-export const SearchBar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { network } = useNetwork();
+export const SearchBar = ({
+  className,
+  ref,
+  onSearch,
+  onFocus,
+  onBlur,
+  variant = "default",
+  ...props
+}: ISearchBarProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [focus, setFocus] = useState(false);
 
-  const [searchText, setSearchText] = useState<string>('');
+  className =
+    typeof className === "object" ? className : { wrapper: className };
 
-  const isSameLocation = (url: string) => url === location.pathname;
+  useImperativeHandle(ref, () => inputRef.current as any);
 
-  const performAction = (url: string) => {
-    isSameLocation(url) ? window.location.reload() : navigate(url);
-  };
+  useEffect(() => {
+    const inputElement = inputRef.current;
 
-  const handleKey = async (e) => {
-    if (e.code === 'Enter' && searchText !== '') {
-      await handleSearch(searchText, performAction, network);
+    if (!inputElement) {
+      return;
     }
-  };
+
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && focus) {
+        onSearch?.();
+      }
+    };
+
+    inputElement.addEventListener("keydown", onKeyUp);
+
+    return () => {
+      inputElement.removeEventListener("keydown", onKeyUp);
+    };
+  }, [focus, onSearch, inputRef]);
 
   return (
-    <>
-      <div className={styles.searchBar} onKeyDown={(e) => handleKey(e)}>
+    <div
+      className={clsx(
+        "flex flex-nowrap",
+        variant === "default" &&
+          "py-2.5 px-4 bg-white border rounded-5xl items-center",
+        variant === "minik" && "p-3 bg-white border rounded-lg items-center",
+        !focus && "border-gray-300",
+        focus && "border-hgtp-blue-600",
+        className.wrapper
+      )}
+    >
+      <div className="flex gap-3 grow">
+        <MagnifyingGlass2Icon className="size-6 shrink-0" />
         <input
-          onChange={(e) => setSearchText(e.target.value)}
-          className={styles.searchInput}
-          placeholder="Search by address, snapshot, or transaction..."
-        />
-        <input
-          onChange={(e) => setSearchText(e.target.value)}
-          className={styles.shortSearchInput}
-          placeholder="Search network"
-        />
-        <div className={styles.searchBlock}>
-          <div className={styles.searchLeft}>
-            <div className={styles.searchIcon} />
-          </div>
-        </div>
-        <div
-          className={`${styles.searchButton} ${styles.normal}`}
-          onClick={() => {
-            handleSearch(searchText, performAction, network);
+          className={clsx(
+            "h-fit outline-none border-none grow",
+            variant === "default" && "placeholder:text-gray-600 text-black",
+            variant === "minik" && "placeholder:text-black/65 text-black",
+            className.input
+          )}
+          onFocus={(e) => {
+            setFocus(true);
+            onFocus?.(e);
           }}
+          onBlur={(e) => {
+            setFocus(false);
+            onBlur?.(e);
+          }}
+          ref={inputRef}
+          {...props}
+        />
+      </div>
+      {variant === "default" && (
+        <div
+          onClick={onSearch}
+          className={clsx(
+            "flex justify-center items-center size-8 bg-hgtp-blue-600 border border-white/25 rounded-full",
+            !focus && "opacity-50"
+          )}
         >
-          <p> Search </p>
+          <span className="text-white text-center align-middle">
+            <ArrowRightIcon className="size-6 shrink-0" />
+          </span>
         </div>
-      </div>
-      <div
-        className={`${styles.searchButton} ${styles.oldIos}`}
-        onClick={() => {
-          handleSearch(searchText, performAction, network);
-        }}
-      >
-        <p> Search </p>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
