@@ -15,7 +15,7 @@ import {
   IL0StakingDelegator,
 } from "@/types/staking";
 import { IWaitForPredicate, waitForPredicate } from "@/utils";
-import { isClusterUpgradeError } from "@/utils/errors";
+import { ClusterUpgradeError, isClusterUpgradeError } from "@/utils/errors";
 
 
 export const getDelegatorsMetagraphs = cache(
@@ -71,7 +71,7 @@ export const getStakingDelegators = cache(
         .sort((a, b) => b.totalAmountDelegated - a.totalAmountDelegated);
     } catch (e) {
       if (isClusterUpgradeError(e)) {
-        throw new Error("ClusterUpgradeError");
+        throw new ClusterUpgradeError();
       }
 
       throw e;

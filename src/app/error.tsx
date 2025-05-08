@@ -1,11 +1,17 @@
 "use client";
 
+import { Metadata } from "next";
 import Link from "next/link";
 import { useEffect } from "react";
 
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
 import { isClusterUpgradeError } from "@/utils/errors";
+
+export const metadata: Metadata = {
+  title: "DAG Explorer",
+  description: "DAG Explorer",
+};
 
 export default function ClientErrorPage({
   error,

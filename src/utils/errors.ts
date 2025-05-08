@@ -1,7 +1,26 @@
 import { isAxiosError } from "axios";
 
+export class ClusterUpgradeError extends Error {
+  digest: string;
+
+  constructor() {
+    super();
+    this.name = "ClusterUpgradeError";
+    this.digest = this.name;
+  }
+}
+
 export const isClusterUpgradeError = (error: unknown) => {
   if (String(error).includes("ClusterUpgradeError")) {
+    return true;
+  }
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    String(error.digest).includes("ClusterUpgradeError")
+  ) {
     return true;
   }
 
