@@ -140,8 +140,8 @@ export default withSearchParamsAsyncBoundary(async function AddressPage({
             </div>
             <div className="card shadow-sm flex flex-col gap-4 p-6">
               <span className="text-hgtp-blue-900 font-medium text-xl">
-                Total <SuspenseValue value={currencySymbol} fallback="--" />{" "}
-                Balance
+                Available <SuspenseValue value={currencySymbol} fallback="--" />{" "}
+                balance
               </span>
               <span className="text-hgtp-blue-950 text-lg">
                 <FormatCurrency
@@ -190,9 +190,9 @@ export default withSearchParamsAsyncBoundary(async function AddressPage({
             titles={{
               name: "Token",
               symbol: "Symbol",
-              lockedAmount: "Locked Amount",
-              balance: "Available Amount",
-              totalAmount: "Total Amount",
+              lockedAmount: "Locked balance",
+              balance: "Available balance",
+              totalAmount: "Total balance",
             }}
             loadingData={SkeletonSpan.generateTableRecords(3, [
               "name",
