@@ -174,6 +174,14 @@ export const SnapshotDetail = async ({
               </span>
             ),
           },
+          snapshot.metagraphSnashotCount !== undefined && {
+            label: "Metagraph snapshots",
+            value: (
+              <span className="flex items-center gap-2">
+                {snapshot.metagraphSnashotCount}
+              </span>
+            ),
+          },
           snapshot.fee !== undefined && {
             label: "Snapshot Fee",
             value: (

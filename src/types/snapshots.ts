@@ -21,6 +21,7 @@ export type IBESnapshot = {
   ownerAddress?: string | null;
   stakingAddress?: string | null;
   sizeInKb?: number;
+  metagraphSnashotCount?: number;
 };
 
 export type IAPISnapshot = IBESnapshot & {
