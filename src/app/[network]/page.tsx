@@ -130,7 +130,7 @@ export default async function DashboardPage({
               decimals={{ max: 2 }}
               millifyFrom={1e6}
               value={stats.then((stats) =>
-                datumToDag(stats?.snapshots90d ?? 0)
+                datumToDag(stats?.fees90d ?? 0)
               )}
             />
           </StatCard>
