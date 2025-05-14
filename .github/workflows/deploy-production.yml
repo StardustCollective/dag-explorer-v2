@@ -1,0 +1,36 @@
+name: Production Build
+on:
+  push:
+    branches:
+      - deploy/production
+      - development/juan/add-deploy-workflows
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.20.8]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::910952868879:role/dagexplorer-gh-actions-role
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: pnpm Install
+        run: |
+          pnpm install
+      - name: Deploy
+        run: |
+          pnpm sst deploy --stage production
