@@ -13,11 +13,15 @@ import { Section } from "@/components/Section";
 import { SkeletonSpan } from "@/components/SkeletonSpan";
 import { SuspenseValue } from "@/components/SuspenseValue";
 import { Table } from "@/components/Table";
-import { Tooltip } from "@/components/Tooltip";
+import { InfoTooltip, Tooltip } from "@/components/Tooltip";
 import { ValidatorIcon } from "@/components/ValidatorIcon";
 import { useDelegatedStakeProvider } from "@/features/delegated-stake/DelegatedStakeProvider";
 import { IAddressDelegation } from "@/features/delegated-stake/utils/address";
-import { decodeDecimal, shortenString } from "@/utils";
+import {
+  decodeDecimal,
+  formatNumberWithDecimals,
+  shortenString,
+} from "@/utils";
 
 import Coin1Icon from "@/assets/icons/coin-1.svg";
 
@@ -52,7 +56,15 @@ export const DelegationsTable = () => {
           fee: "Est. APR",
           snapshot: "Delegate Start Date",
           withdrawalStartEpoch: "Status",
-          rewardAmount: "Rewards",
+          rewardAmount: (
+            <span className="flex items-center gap-2">
+              Rewards
+              <InfoTooltip
+                content="Rewards are auto-compounded, so the more you earn, the faster your position grows"
+                place="bottom"
+              />
+            </span>
+          ),
           withdrawalEndEpoch: "Actions",
         }}
         colWidths={{ withdrawalEndEpoch: 0.5 }}
@@ -118,7 +130,9 @@ export const DelegationsTable = () => {
                   .mul(100)
                   .toNumber() + "%"
               : "--",
-          fee: (_, record) => <>{getAPRForDelegation(record)}%</>,
+          fee: (_, record) => (
+            <>{formatNumberWithDecimals(getAPRForDelegation(record))}%</>
+          ),
           snapshot: (value) => (
             <SuspenseValue
               value={value ? dayjs(value.timestamp).format("MM/DD/YYYY") : "--"}
