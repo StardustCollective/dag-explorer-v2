@@ -3,12 +3,11 @@ import clsx from "clsx";
 import Fuse from "fuse.js";
 import React from "react";
 
-
-
+import { datumToDag } from "@/common/currencies";
 import { SearchBar } from "@/components/SearchBar";
 import { ValidatorIcon } from "@/components/ValidatorIcon";
 import { IAPIStakingDelegator } from "@/types/staking";
-import { shortenString } from "@/utils";
+import { decodeDecimal, shortenString } from "@/utils";
 
 import CircleCheckOutlineIcon from "@/assets/icons/circle-check-outline.svg";
 import CloseIcon from "@/assets/icons/close.svg";
@@ -24,23 +23,36 @@ const ValidatorInfo = ({
   onSelect?: (validator: IAPIStakingDelegator) => void;
 }) => {
   return (
-    <div key={validator.peerId} className="flex justify-between gap-1">
+    <div
+      key={validator.peerId}
+      className="flex justify-between items-center gap-1"
+    >
       <div className="flex gap-3 items-center grow">
-        <ValidatorIcon iconUrl={validator.metagraphNode?.iconUrl} size={7} />
+        <ValidatorIcon iconUrl={validator.metagraphNode?.iconUrl} size={11} />
         <div className="flex flex-col grow">
-          <span className="text-sm">
-            {shortenString(validator.nodeIdAddress)}
-          </span>
-          <span className="text-xs font-medium text-gray-600 grow">
+          <span className="text-sm grow">
             <MiddleTruncate>
               {validator.nodeMetadataParameters.name ?? "--"}
             </MiddleTruncate>
+          </span>
+          <span className="text-xs font-medium text-gray-600 grow">
+            {validator.metagraphNode?.name ??
+              shortenString(validator.nodeIdAddress)}
+          </span>
+          <span className="text-xs font-medium text-gray-600 grow">
+            {decodeDecimal(
+              datumToDag(
+                validator?.delegatedStakeRewardParameters.rewardFraction ?? 0
+              )
+            )
+              .mul(100)
+              .toNumber() + "%"}
           </span>
         </div>
       </div>
       {!selected && onSelect && (
         <button
-          className="button primary outlined xs"
+          className="button primary outlined xs h-fit"
           onClick={() => onSelect(validator)}
         >
           Select
@@ -48,7 +60,7 @@ const ValidatorInfo = ({
       )}
       {selected && onSelect && (
         <button
-          className="button primary outlined xs"
+          className="button primary outlined xs h-fit"
           onClick={() => onSelect(validator)}
         >
           Selected
@@ -99,7 +111,10 @@ export const DelegatedStakeChangeValidatorCard_ChangeCard = ({
     : validators;
 
   return (
-    <div className={clsx("card shadow-sm w-11/12 max-w-[490px]", className)} ref={ref}>
+    <div
+      className={clsx("card shadow-sm w-11/12 max-w-[490px]", className)}
+      ref={ref}
+    >
       <div className="header flex items-center justify-between px-5 py-4.5 text-xl font-semibold text-hgtp-blue-900">
         <div className="flex items-center gap-2">
           <MoneyHandIcon className="size-8 shrink-0" />

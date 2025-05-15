@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { DelegatedPositionActions } from "./DelegatedPositionActions";
 
+import { NetworkEpochInSeconds } from "@/common/consts";
 import { datumToDag } from "@/common/currencies";
 import { EmptyState } from "@/components/EmptyState";
 import { FormatCurrency } from "@/components/FormatCurrency";
@@ -23,10 +24,13 @@ import {
   shortenString,
 } from "@/utils";
 
+import CalendarClock4Icon from "@/assets/icons/calendar-clock-4.svg";
 import Coin1Icon from "@/assets/icons/coin-1.svg";
+import HourglassIcon from "@/assets/icons/hourglass.svg";
 
 export const DelegationsTable = () => {
-  const { userDelegationsQuery, userDelegations } = useDelegatedStakeProvider();
+  const { epochProgress, userDelegationsQuery, userDelegations } =
+    useDelegatedStakeProvider();
 
   const getAPRForDelegation = (delegation: IAddressDelegation) => {
     if (!delegation.snapshot) {
@@ -139,7 +143,7 @@ export const DelegationsTable = () => {
               fallback={<SkeletonSpan className="w-10" />}
             />
           ),
-          withdrawalStartEpoch: (value) =>
+          withdrawalStartEpoch: (value, record) =>
             value === null ? (
               <span
                 className={clsx(
@@ -153,7 +157,8 @@ export const DelegationsTable = () => {
                 Locked
               </span>
             ) : (
-              <span
+              <Tooltip
+                renderAs="span"
                 className={clsx(
                   "flex gap-1 items-center justify-center",
                   "text-ltx-gold-950 font-medium text-xs",
@@ -161,9 +166,51 @@ export const DelegationsTable = () => {
                   "rounded-3xl",
                   "h-6 px-3"
                 )}
+                tooltip={{
+                  place: "left",
+                }}
+                renderTooltip={
+                  <div
+                    className={clsx(
+                      "card flex flex-col gap-3 p-4 min-w-[168px]",
+                      "text-sm"
+                    )}
+                  >
+                    <div className="flex flex-col gap-2">
+                      <span className=" font-medium text-gray-700">
+                        Epochs remaining
+                      </span>
+                      <span className="flex gap-2 items-center">
+                        <HourglassIcon className="size-4 shrink-0 text-gray-600" />
+                        {epochProgress !== null &&
+                        record.withdrawalEndEpoch !== null
+                          ? record.withdrawalEndEpoch - epochProgress
+                          : "--"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <span className="font-medium text-gray-700">
+                        Est. time remaining
+                      </span>
+                      <span className="flex gap-2 items-center">
+                        <CalendarClock4Icon className="size-4 shrink-0 text-gray-600" />
+                        {epochProgress !== null &&
+                        record.withdrawalEndEpoch !== null
+                          ? dayjs
+                              .duration(
+                                (record.withdrawalEndEpoch - epochProgress) *
+                                  NetworkEpochInSeconds,
+                                "seconds"
+                              )
+                              .humanize()
+                          : "--"}
+                      </span>
+                    </div>
+                  </div>
+                }
               >
                 Unlocking
-              </span>
+              </Tooltip>
             ),
           rewardAmount: (value) => (
             <FormatCurrency

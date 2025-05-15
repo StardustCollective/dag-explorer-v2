@@ -10,6 +10,7 @@ export type ITooltipPropsCore<E extends React.ElementType = any> = Omit<
   "value" | "fallback" | "renderAs"
 > & {
   renderAs?: E;
+  renderTooltip?: React.ReactNode;
   tooltip?: Omit<React.ComponentProps<typeof ReactTooltip>, "content">;
 };
 
@@ -22,6 +23,7 @@ export const Tooltip = <E extends React.ElementType = any>({
   extraContent,
   tooltip,
   renderAs,
+  renderTooltip,
   ...props
 }: ITooltipProps<E>) => {
   const [id, setId] = useState<string | null>(null);
@@ -44,7 +46,7 @@ export const Tooltip = <E extends React.ElementType = any>({
           opacity={100}
           className="z-10"
         >
-          <TooltipBase {...{ title, content, extraContent }} />
+          {renderTooltip ?? <TooltipBase {...{ title, content, extraContent }} />}
         </ReactTooltip>
       )}
     </>
