@@ -22,7 +22,8 @@ export const ConstellationEcosystemAPI = axios.create({
 
 export const BlockExplorerAPI: Record<HgtpNetwork, AxiosInstance> = {
   [HgtpNetwork.MAINNET]: axios.create({
-    baseURL: `https://be-mainnet.constellationnetwork.io`,
+    // baseURL: `https://be-mainnet.constellationnetwork.io`,
+    baseURL: `https://q5z4v3dv58.execute-api.us-west-1.amazonaws.com`, // TODO: Update on delegated stake release
   }),
   [HgtpNetwork.INTEGRATIONNET]: axios.create({
     baseURL: `https://be-integrationnet.constellationnetwork.io`,

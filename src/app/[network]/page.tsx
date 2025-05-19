@@ -160,7 +160,7 @@ export default async function DashboardPage({
             >
               {validators.length === 0 ? (
                 <EmptyState
-                  className="h-[100px]"
+                  className="h-[100px] col-span-full"
                   variant="dark"
                   label="No validators detected"
                   renderIcon={Server1FilledIcon}
