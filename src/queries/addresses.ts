@@ -13,6 +13,9 @@ import {
   IBETransaction,
   INextTokenPaginationOptions,
   ILimitOffsetPaginationOptions,
+  IAPIGeneralActionTransaction,
+  IBEGeneralActionTransaction,
+  ActionTransactionType,
 } from "@/types";
 import { IAPIAddressReward } from "@/types";
 
@@ -70,7 +73,7 @@ export const getAddressLockedBalance = async (
     ...tokenLocks,
   ];
 
-  return actions.reduce((pv, action) =>  pv + action.amount, 0);
+  return actions.reduce((pv, action) => pv + action.amount, 0);
 };
 
 export const getAddressMetagraphs = async (
@@ -179,14 +182,14 @@ export const getAddressActions = async (
   addressId: string,
   metagraphId?: string,
   options?: INextTokenPaginationOptions
-): Promise<IAPIResponseData<IAPIActionTransaction>> => {
+): Promise<IAPIResponseData<IAPIGeneralActionTransaction>> => {
   if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
     return { records: [], total: 0 };
   }
 
   try {
     const response = await BlockExplorerAPI[network].get<
-      IAPIResponse<IBEActionTransaction[]>
+      IAPIResponse<IBEGeneralActionTransaction[]>
     >(
       metagraphId
         ? `/currency/${metagraphId}/addresses/${addressId}/actions`
@@ -218,14 +221,16 @@ export const getAddressActiveTokenLocks = async (
   addressId: string,
   metagraphId?: string,
   options?: INextTokenPaginationOptions
-): Promise<IAPIResponseData<IAPIActionTransaction>> => {
+): Promise<
+  IAPIResponseData<IAPIActionTransaction<ActionTransactionType.TokenLock>>
+> => {
   if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
     return { records: [], total: 0 };
   }
 
   try {
     const response = await BlockExplorerAPI[network].get<
-      IAPIResponse<IBEActionTransaction[]>
+      IAPIResponse<IBEActionTransaction<ActionTransactionType.TokenLock>[]>
     >(
       metagraphId
         ? `/currency/${metagraphId}/addresses/${addressId}/token-locks`

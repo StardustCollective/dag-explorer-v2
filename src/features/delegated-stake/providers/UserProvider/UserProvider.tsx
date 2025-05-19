@@ -12,7 +12,7 @@ import {
 import { datumToDag } from "@/common/currencies";
 import { useNetworkContext } from "@/providers/NetworkProvider";
 import { getAddressBalance } from "@/queries";
-import { IAPIActionTransaction } from "@/types";
+import { ActionTransactionType, IAPIActionTransaction } from "@/types";
 
 export type IUserContext = {
   userBalanceQuery: UseQueryResult<number, Error>;
@@ -20,8 +20,8 @@ export type IUserContext = {
   userDelegationsQuery: UseQueryResult<IAddressDelegation[], Error>;
   userDelegations: IAddressDelegation[] | null;
   userDelegationsMap: Record<string, IAddressDelegation> | null;
-  userPendingLocksQuery: UseQueryResult<IAPIActionTransaction[], Error>;
-  userPendingLocks: IAPIActionTransaction[] | null;
+  userPendingLocksQuery: UseQueryResult<IAPIActionTransaction<ActionTransactionType.TokenLock>[], Error>;
+  userPendingLocks: IAPIActionTransaction<ActionTransactionType.TokenLock>[] | null;
 };
 
 const UserContext = createContext<IUserContext | null>(null);

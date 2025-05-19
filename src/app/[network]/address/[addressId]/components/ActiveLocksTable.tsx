@@ -20,7 +20,7 @@ import {
   getCurrentEpochProgress,
   getMetagraphCurrencySymbol,
 } from "@/queries";
-import { IAPIActionTransaction } from "@/types";
+import { ActionTransactionType, IAPIActionTransaction } from "@/types";
 import { decodeDecimal, shortenString } from "@/utils";
 
 import CalendarClock4Icon from "@/assets/icons/calendar-clock-4.svg";
@@ -74,7 +74,10 @@ export const ActiveLocksTable = ({
       noCardStyle
       className="w-full [&_td]:text-sm"
       header={<span></span>}
-      data={query.data?.records ?? ([] as IAPIActionTransaction[])}
+      data={
+        query.data?.records ??
+        ([] as IAPIActionTransaction<ActionTransactionType.TokenLock>[])
+      }
       primaryKey="hash"
       titles={{
         hash: "Txn Hash",
@@ -124,31 +127,9 @@ export const ActiveLocksTable = ({
         ),
         type: (value) => (
           <span className="flex items-center w-full lg:justify-start justify-end">
-            {value === "FeeTransaction" ? (
-              <TypeChip className="text-purple-700 border-purple-400">
-                {value}
-              </TypeChip>
-            ) : value === "TokenLock" ? (
-              <TypeChip className="text-ltx-gold-700 border-yellow-400">
-                {value}
-              </TypeChip>
-            ) : value === "TokenUnlock" ? (
-              <TypeChip className="text-green-700 border-green-400">
-                {value}
-              </TypeChip>
-            ) : value === "AllowSpend" ? (
-              <TypeChip className="text-black/65 border-gray-400">
-                {value}
-              </TypeChip>
-            ) : value === "SpendTransaction" ? (
-              <TypeChip className="text-hgtp-blue-600 border-hgtp-blue-400">
-                {value}
-              </TypeChip>
-            ) : (
-              <TypeChip className="text-hgtp-blue-700 border-hgtp-blue-400">
-                {value}
-              </TypeChip>
-            )}
+            <TypeChip className="text-ltx-gold-700 border-yellow-400">
+              {value}
+            </TypeChip>
           </span>
         ),
         amount: (value, record) => (

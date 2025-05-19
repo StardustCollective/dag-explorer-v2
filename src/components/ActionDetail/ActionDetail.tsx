@@ -12,7 +12,7 @@ import { Section } from "../Section";
 import { HgtpNetwork, NetworkEpochInSeconds } from "@/common/consts";
 import { datumToDag } from "@/common/currencies";
 import { getCurrentEpochProgress, getMetagraph } from "@/queries";
-import { IAPIActionTransaction } from "@/types";
+import { ActionTransactionType, IAPIActionTransaction } from "@/types";
 import { shortenString } from "@/utils";
 
 import CalendarClock4Icon from "@/assets/icons/calendar-clock-4.svg";
@@ -21,7 +21,7 @@ import HourglassIcon from "@/assets/icons/hourglass.svg";
 
 export type IActionDetailProps = {
   network: HgtpNetwork;
-  action: IAPIActionTransaction;
+  action: IAPIActionTransaction<ActionTransactionType>;
   metagraphId?: string;
 };
 
@@ -83,21 +83,21 @@ export const ActionDetail = async ({
               </span>
             ),
           },
-          typeof action.ordinal === "number" && {
-            label: "Snapshot",
-            value: (
-              <Link
-                className="text-hgtp-blue-600"
-                href={
-                  metagraphId
-                    ? `/metagraphs/${metagraphId}/snapshots/${action.ordinal}`
-                    : `/snapshots/${action.ordinal}`
-                }
-              >
-                {action.ordinal}
-              </Link>
-            ),
-          },
+          // typeof action.ordinal === "number" && {
+          //   label: "Snapshot",
+          //   value: (
+          //     <Link
+          //       className="text-hgtp-blue-600"
+          //       href={
+          //         metagraphId
+          //           ? `/metagraphs/${metagraphId}/snapshots/${action.ordinal}`
+          //           : `/snapshots/${action.ordinal}`
+          //       }
+          //     >
+          //       {action.ordinal}
+          //     </Link>
+          //   ),
+          // },
           {
             label: "Txn Hash",
             value: (
@@ -131,7 +131,7 @@ export const ActionDetail = async ({
       <DetailsTableCard
         className="w-full shadow-sm"
         rows={[
-          {
+          "amount" in action && {
             label: "Amount",
             value: (
               <span className="flex gap-2">
@@ -148,37 +148,38 @@ export const ActionDetail = async ({
               </span>
             ),
           },
-          typeof action.unlockEpoch === "number" && {
-            label: "Unlock Epoch",
-            value: (
-              <span className="flex items-center gap-4">
-                <span className="flex items-center gap-1">
-                  <HourglassIcon className="size-4 shrink-0 text-black/60" />
-                  {action.unlockEpoch}
-                </span>
-                {typeof epochProgress === "number" && (
-                  <span className="flex items-center gap-1 text-black/60">
-                    <CalendarClock4Icon className="size-4 shrink-0 text-black/60" />
-                    ~
-                    {dayjs()
-                      .add(
-                        (action.unlockEpoch - epochProgress) /
-                          NetworkEpochInSeconds,
-                        "seconds"
-                      )
-                      .format("MMM.DD YYYY")}{" "}
-                    +UTC
+          "unlockEpoch" in action &&
+            typeof action.unlockEpoch === "number" && {
+              label: "Unlock Epoch",
+              value: (
+                <span className="flex items-center gap-4">
+                  <span className="flex items-center gap-1">
+                    <HourglassIcon className="size-4 shrink-0 text-black/60" />
+                    {action.unlockEpoch}
                   </span>
-                )}
-              </span>
-            ),
-          },
+                  {typeof epochProgress === "number" && (
+                    <span className="flex items-center gap-1 text-black/60">
+                      <CalendarClock4Icon className="size-4 shrink-0 text-black/60" />
+                      ~
+                      {dayjs()
+                        .add(
+                          (action.unlockEpoch - epochProgress) /
+                            NetworkEpochInSeconds,
+                          "seconds"
+                        )
+                        .format("MMM.DD YYYY")}{" "}
+                      +UTC
+                    </span>
+                  )}
+                </span>
+              ),
+            },
         ]}
       />
       <DetailsTableCard
         className="w-full shadow-sm"
         rows={[
-          {
+          "source" in action && {
             label: "Source",
             value: (
               <span className="flex items-center gap-1">
@@ -197,7 +198,7 @@ export const ActionDetail = async ({
               </span>
             ),
           },
-          !!action.destination && {
+          "destination" in action && {
             label: "Destination",
             value: (
               <span className="flex items-center gap-1">

@@ -16,7 +16,7 @@ import { Pagination } from "@/components/Pagination";
 import { SkeletonSpan } from "@/components/SkeletonSpan";
 import { Table } from "@/components/Table";
 import { getAddressActions, getMetagraphCurrencySymbol } from "@/queries";
-import { IAPIActionTransaction } from "@/types";
+import { IAPIGeneralActionTransaction } from "@/types";
 import { shortenString } from "@/utils";
 
 import CryptoIcon from "@/assets/icons/crypto.svg";
@@ -54,7 +54,7 @@ export const ActionsTable = ({
       noCardStyle
       className="w-full [&_td]:text-sm"
       header={<span></span>}
-      data={query.data?.records ?? ([] as IAPIActionTransaction[])}
+      data={query.data?.records ?? ([] as IAPIGeneralActionTransaction[])}
       primaryKey="hash"
       titles={{
         hash: "Txn Hash",

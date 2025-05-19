@@ -9,19 +9,19 @@ const TypeParamMap: Record<ActionTransactionType, string> = {
   FeeTransaction: "fee-transactions",
   AllowSpend: "allow-spends",
   SpendTransaction: "spend-transactions",
-  SpendExpiration: "allow-spend-expirations",
+  ExpiredSpendTransaction: "allow-spend-expirations",
   TokenLock: "token-locks",
   TokenUnlock: "token-unlocks",
-  DelegatedStake: "delegated-stakes",
+  DelegatedStake: "delegated-stake-events",
   DelegatedStakeWithdrawal: "delegated-stake-withdrawals",
 };
 
-export const getActionTransaction = async (
+export const getActionTransaction = async <T extends ActionTransactionType>(
   network: HgtpNetwork,
   actionHash: string,
-  type: ActionTransactionType,
+  type: T,
   metagraphId?: string
-): Promise<IAPIActionTransaction | null> => {
+): Promise<IAPIActionTransaction<T> | null> => {
   if (network === HgtpNetwork.MAINNET_1) {
     return null;
   }
@@ -48,7 +48,7 @@ export const getActionTransaction = async (
 
   try {
     const response = await BlockExplorerAPI[network].get<
-      IAPIResponse<IBEActionTransaction>
+      IAPIResponse<IBEActionTransaction<T>>
     >(
       metagraphId
         ? `/currency/${metagraphId}/${typeParam}/${actionHash}`
