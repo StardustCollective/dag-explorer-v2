@@ -269,7 +269,7 @@ export default withSearchParamsAsyncBoundary(async function AddressPage({
                 </Tab>
                 <NetworksOnly
                   network={network}
-                  exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
+                  exceptOn={[HgtpNetwork.MAINNET_1]}
                 >
                   <Tab
                     id="actions"
@@ -317,7 +317,7 @@ export default withSearchParamsAsyncBoundary(async function AddressPage({
               )}
               <NetworksOnly
                 network={network}
-                exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
+                exceptOn={[HgtpNetwork.MAINNET_1]}
               >
                 {section === "actions" && (
                   <ActionsTable
@@ -330,7 +330,7 @@ export default withSearchParamsAsyncBoundary(async function AddressPage({
               </NetworksOnly>
               <NetworksOnly
                 network={network}
-                exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
+                exceptOn={[HgtpNetwork.MAINNET_1]}
               >
                 {section === "locks" && (
                   <ActiveLocksTable

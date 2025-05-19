@@ -72,10 +72,7 @@ export const Header = ({}: IHeaderProps) => {
             </NavLink.Content>
           </NavLink>
         </NetworksOnly>
-        <NetworksOnly
-          network={network}
-          exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
-        >
+        <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
           <NavLink
             className="flex gap-2 items-center h-9 px-4.5"
             activeClassName="font-semibold"

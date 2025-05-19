@@ -129,9 +129,7 @@ export default async function DashboardPage({
               currency="DAG"
               decimals={{ max: 2 }}
               millifyFrom={1e6}
-              value={stats.then((stats) =>
-                datumToDag(stats?.fees90d ?? 0)
-              )}
+              value={stats.then((stats) => datumToDag(stats?.fees90d ?? 0))}
             />
           </StatCard>
           <StatCard
@@ -147,10 +145,7 @@ export default async function DashboardPage({
           </StatCard>
         </Section>
       </NetworksOnly>
-      <NetworksOnly
-        network={network}
-        exceptOn={[HgtpNetwork.MAINNET, HgtpNetwork.MAINNET_1]}
-      >
+      <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
         <SuspenseValue
           renderAs={"div"}
           value={validators.then((validators) => (

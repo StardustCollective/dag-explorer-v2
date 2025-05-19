@@ -100,10 +100,7 @@ export const MobileMenu = ({ className }: IMobileMenuProps) => {
                 <Brain2OutlineIcon className="size-5 shrink-0" />
               </Link>
             </NetworksOnly>
-            <NetworksOnly
-              network={network}
-              exceptOn={[HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET]}
-            >
+            <NetworksOnly network={network} exceptOn={[HgtpNetwork.MAINNET_1]}>
               <Link
                 className="flex gap-2 justify-between items-center h-9 px-4.5 w-full"
                 href="/staking"
