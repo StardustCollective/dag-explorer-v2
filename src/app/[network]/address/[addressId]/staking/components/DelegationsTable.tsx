@@ -57,7 +57,21 @@ export const DelegationsTable = () => {
           nodeId: "Validator",
           amount: "Total Delegated",
           validator: "Commission",
-          fee: "Est. APR",
+          fee: (
+            <span className="flex items-center gap-2">
+              Est. APR
+              <InfoTooltip
+                content={
+                  <>
+                    This estimated APR is based on your earned rewards and
+                    staking duration. It’s dynamic and will adjust as incentives
+                    or total delegation levels change.
+                  </>
+                }
+                place="bottom"
+              />
+            </span>
+          ),
           snapshot: "Delegate Start Date",
           withdrawalStartEpoch: "Status",
           rewardAmount: (
