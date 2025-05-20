@@ -6,6 +6,7 @@ export type IPropertiesCardProps = {
     | { label?: React.ReactNode; value?: React.ReactNode }
     | null
     | undefined
+    | false
   )[];
   className?: string;
 };

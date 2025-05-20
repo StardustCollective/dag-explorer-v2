@@ -94,11 +94,43 @@ export const useWalletActions = (store: ReturnType<typeof useWalletStore>) => {
     (error) => `WalletError: ${error}`
   );
 
+  const requestSignMessage = withErrorToast(
+    async (message: string) => {
+      const wallet = store.getState();
+      if (!wallet.provider) {
+        throw new Error("Wallet is not active, cannot sign messages");
+      }
+
+      const signatureRequest = {
+        content: message,
+        metadata: {},
+      };
+
+      const signatureRequestEncoded = window.btoa(
+        JSON.stringify(signatureRequest)
+      );
+
+      const signature = await wallet.provider.request({
+        method: "dag_signMessage",
+        params: [wallet.address, signatureRequestEncoded],
+      });
+
+      const pubKey = await wallet.provider.request({
+        method: "dag_getPublicKey",
+        params: [wallet.address],
+      });
+
+      return { signature, pubKey };
+    },
+    (error) => `WalletError: ${error}`
+  );
+
   return {
     assertWalletVersion,
     isWalletOnNetwork,
     requestTokenLock,
     requestDelegatedStake,
     requestWithdrawDelegatedStake,
+    requestSignMessage,
   };
 };

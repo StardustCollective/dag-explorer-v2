@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@2toad/profanity": "^3.1.1",
     "@faker-js/faker": "^9.6.0",
     "@radix-ui/react-slot": "^1.2.0",
     "@re-dev/react-truncate": "^0.5.1",

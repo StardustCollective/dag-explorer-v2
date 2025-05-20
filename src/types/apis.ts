@@ -5,6 +5,6 @@ export type IAPIResponse<T> = {
 
 export type IAPIResponseData<T> = {
   records: T[];
-  total: number;
+  total?: number;
   next?: string;
 };
