@@ -2,15 +2,13 @@ import { dag4 } from "@stardust-collective/dag4";
 import dayjs from "dayjs";
 
 import { doCloseToast, doToast } from "@/components/Toast";
-import { useWalletStore } from "@/providers/WalletProvider";
 import { shortenString } from "@/utils";
 import { createStateMachineStore, IStateMachine } from "@/utils/state_machines";
 
 export type IVerifiedSignatures_Verify_MachineContext = {
-  wallet: ReturnType<typeof useWalletStore>;
   message: string;
-  pubKey: string | null;
-  signature: string | null;
+  pubKey: string;
+  signature: string;
   assesmentAt: string | null;
   toastId: string | number | null;
 };
@@ -31,12 +29,6 @@ export const createVerifiedSignatures_Verify_Machine = (
           verify: {
             target: "verifying",
             guard: async ({ context }) => {
-              const { status, address } = context.wallet.getState();
-
-              if (status !== "connected" || !address) {
-                throw new Error("Wallet is not connected");
-              }
-
               if (!context.pubKey || !context.signature) {
                 throw new Error("Invalid state for verification");
               }
@@ -64,9 +56,9 @@ export const createVerifiedSignatures_Verify_Machine = (
             metadata: {},
           };
 
-          const signatureRequestEncoded = window.btoa(
+          const signatureRequestEncoded = Buffer.from(
             JSON.stringify(signatureRequest)
-          );
+          ).toString("base64");
 
           const rawMessage = `\u0019Constellation Signed Message:\n${signatureRequestEncoded.length}\n${signatureRequestEncoded}`;
 

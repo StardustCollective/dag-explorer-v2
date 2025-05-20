@@ -6,10 +6,7 @@ import {
   Sign_ActionsProvider,
   useSign_ActionsProvider,
 } from "./Sign_ActionsProvider";
-// import {
-//   useWithdraw_ActionsProvider,
-//   Withdraw_ActionsProvider,
-// } from "./Withdraw_ActionsProvider";
+import { useVerify_ActionsProvider, Verify_ActionsProvider } from "./Verify_ActionsProvider";
 
 const ActionsContextSymbol = Symbol("ActionsContext");
 
@@ -24,7 +21,9 @@ export const ActionsProvider = ({
 }) => {
   return (
     <ActionsProviderContext.Provider value={ActionsContextSymbol}>
-      <Sign_ActionsProvider>{children}</Sign_ActionsProvider>
+      <Sign_ActionsProvider>
+        <Verify_ActionsProvider>{children}</Verify_ActionsProvider>
+      </Sign_ActionsProvider>
     </ActionsProviderContext.Provider>
   );
 };
@@ -39,8 +38,7 @@ export const useActionsProvider = () => {
   }
 
   return Object.assign(
-    {},
-    useSign_ActionsProvider()
-    // useWithdraw_ActionsProvider()
+    useSign_ActionsProvider(),
+    useVerify_ActionsProvider()
   );
 };
