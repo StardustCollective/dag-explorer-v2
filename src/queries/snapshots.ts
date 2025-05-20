@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 
-import { BlockExplorerAPI, DagExplorerAPI } from "@/common/apis";
+import { BlockExplorerAPI, DagExplorerAPI, L0NodesAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
   IAPIResponse,
@@ -9,6 +9,8 @@ import {
   IAPISnapshot,
   IBESnapshot,
   INextTokenPaginationOptions,
+  ISignedL0Value,
+  IL0Snapshot,
 } from "@/types";
 
 export const getLatestSnapshots = async (
@@ -128,6 +130,22 @@ export const getCurrentEpochProgress = async (
 ): Promise<number | null> => {
   if (network === HgtpNetwork.MAINNET_1) {
     return null;
+  }
+
+  if( network === HgtpNetwork.MAINNET){
+    try {
+      const response = await L0NodesAPI[network].get<
+        ISignedL0Value<IL0Snapshot>
+      >("/global-snapshots/latest");
+  
+      return response.data.value.epochProgress ?? null;
+    } catch (e) {
+      if (isAxiosError(e) && e.status === 404) {
+        return null;
+      }
+  
+      throw e;
+    }
   }
 
   try {
