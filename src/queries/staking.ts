@@ -1,4 +1,5 @@
 import { dag4 } from "@stardust-collective/dag4";
+import { isAxiosError } from "axios";
 import { cache } from "react";
 
 
@@ -23,7 +24,7 @@ export const getDelegatorsMetagraphs = cache(
     network: HgtpNetwork,
     nodeIds: string[]
   ): Promise<IAPIMetagraphStakingNode[]> => {
-    if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
+    if ([HgtpNetwork.MAINNET_1].includes(network)) {
       return [];
     }
 
@@ -42,7 +43,7 @@ export const getStakingDelegators = cache(
     network: HgtpNetwork,
     options?: ISearchOptions
   ): Promise<IAPIStakingDelegator[]> => {
-    if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
+    if ([HgtpNetwork.MAINNET_1].includes(network)) {
       return [];
     }
 
@@ -74,6 +75,10 @@ export const getStakingDelegators = cache(
         throw new ClusterUpgradeError();
       }
 
+      if (isAxiosError(e) && e.status === 503) {
+        return [];
+      }
+
       throw e;
     }
   }
@@ -83,7 +88,7 @@ export const getAddressStakingDelegations = async (
   network: HgtpNetwork,
   address: string
 ): Promise<IL0StakingDelegation[]> => {
-  if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
+  if ([HgtpNetwork.MAINNET_1].includes(network)) {
     return [];
   }
 

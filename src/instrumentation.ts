@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
+import { Instrumentation } from "next";
 
 export async function register() {
   if (
@@ -16,4 +17,13 @@ export async function register() {
   }
 }
 
-export const onRequestError = Sentry.captureRequestError;
+export const onRequestError: Instrumentation.onRequestError = (
+  error,
+  errorRequest,
+  errorContext
+) => {
+  console.log("Inst Error");
+  console.dir(error, { depth: 5 });
+
+  return Sentry.captureRequestError(error, errorRequest, errorContext);
+};

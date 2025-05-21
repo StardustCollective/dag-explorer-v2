@@ -183,7 +183,7 @@ export const getAddressActions = async (
   metagraphId?: string,
   options?: INextTokenPaginationOptions
 ): Promise<IAPIResponseData<IAPIGeneralActionTransaction>> => {
-  if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
+  if ([HgtpNetwork.MAINNET_1].includes(network)) {
     return { records: [], total: 0 };
   }
 
@@ -224,7 +224,7 @@ export const getAddressActiveTokenLocks = async (
 ): Promise<
   IAPIResponseData<IAPIActionTransaction<ActionTransactionType.TokenLock>>
 > => {
-  if ([HgtpNetwork.MAINNET_1, HgtpNetwork.MAINNET].includes(network)) {
+  if ([HgtpNetwork.MAINNET_1].includes(network)) {
     return { records: [], total: 0 };
   }
 

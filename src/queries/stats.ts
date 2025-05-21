@@ -23,6 +23,11 @@ export const getNetworkStats = async (
       return null;
     }
 
+    if (isAxiosError(e) && e.status === 500) {
+      console.log('Stats 500 Error')
+      return null;
+    }
+
     throw e;
   }
 };
