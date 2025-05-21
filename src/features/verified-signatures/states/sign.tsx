@@ -5,7 +5,7 @@ import { CopyAction } from "@/components/CopyAction";
 import { doCloseToast, doToast } from "@/components/Toast";
 import { useWalletActions, useWalletStore } from "@/providers/WalletProvider";
 import { publishSignature } from "@/queries/actions/signatures";
-import { shortenString } from "@/utils";
+import { shortenString, UserError } from "@/utils";
 import { createStateMachineStore, IStateMachine } from "@/utils/state_machines";
 
 export type IVerifiedSignatures_Sign_MachineContext = {
@@ -39,11 +39,11 @@ export const createVerifiedSignatures_Sign_Machine = (
               const { isWalletOnNetwork } = context.actions;
 
               if (status !== "connected" || !address) {
-                throw new Error("Wallet is not connected");
+                throw new UserError("Wallet is not connected");
               }
 
               if (!(await isWalletOnNetwork(context.network))) {
-                throw new Error(
+                throw new UserError(
                   "Wallet is not on the correct network, please switch to the correct network, and connect again"
                 );
               }

@@ -12,7 +12,7 @@ import {
   confirmTokenLock,
 } from "@/queries";
 import { IL0StakingDelegator } from "@/types/staking";
-import { decodeDecimal, shortenString } from "@/utils";
+import { decodeDecimal, shortenString, UserError } from "@/utils";
 import { createStateMachineStore, IStateMachine } from "@/utils/state_machines";
 
 export type IDelegatedStake_Stake_MachineContext = {
@@ -51,11 +51,11 @@ export const createDelegatedStake_Stake_Machine = (
               const { isWalletOnNetwork } = context.actions;
 
               if (status !== "connected" || !address) {
-                throw new Error("Wallet is not connected");
+                throw new UserError("Wallet is not connected");
               }
 
               if (!(await isWalletOnNetwork(context.network))) {
-                throw new Error(
+                throw new UserError(
                   "Wallet is not on the correct network, please switch to the correct network, and connect again"
                 );
               }
@@ -133,7 +133,7 @@ export const createDelegatedStake_Stake_Machine = (
               }
 
               if (!(await isWalletOnNetwork(context.network))) {
-                throw new Error("Wallet is not on the correct network");
+                throw new UserError("Wallet is not on the correct network");
               }
             },
           },

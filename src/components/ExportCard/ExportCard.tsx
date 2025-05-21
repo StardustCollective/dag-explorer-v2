@@ -14,7 +14,7 @@ import { datumToDag } from "@/common/currencies";
 import { useClickOutside } from "@/hooks";
 import { useNetworkContext } from "@/providers/NetworkProvider";
 import { getAddressTransactions } from "@/queries";
-import { formatNumber } from "@/utils";
+import { formatNumber, UserError } from "@/utils";
 import { downloadFile } from "@/utils/download";
 
 import CalendarClock4Icon from "@/assets/icons/calendar-clock-4.svg";
@@ -56,7 +56,7 @@ export const ExportCard = ({
   const downloadMutation = useMutation({
     mutationFn: withErrorToast(async () => {
       if (!startDate || !endDate) {
-        throw new Error("Start and end dates are required");
+        throw new UserError("Start and end dates are required");
       }
 
       const transactions = await getAddressTransactions(

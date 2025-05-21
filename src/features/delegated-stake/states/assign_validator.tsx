@@ -10,7 +10,7 @@ import { useWalletActions, useWalletStore } from "@/providers/WalletProvider";
 import { confirmDelegatedStake } from "@/queries";
 import { IBEActionTransaction_TokenLock } from "@/types";
 import { IAPIStakingDelegator } from "@/types/staking";
-import { shortenString } from "@/utils";
+import { shortenString, UserError } from "@/utils";
 import { createStateMachineStore, IStateMachine } from "@/utils/state_machines";
 
 export type IDelegatedStake_AssignValidator_MachineContext = {
@@ -43,11 +43,11 @@ export const createDelegatedStake_AssignValidator_Machine = (
               const { isWalletOnNetwork } = context.actions;
 
               if (status !== "connected" || !address) {
-                throw new Error("Wallet is not connected");
+                throw new UserError("Wallet is not connected");
               }
 
               if (!(await isWalletOnNetwork(context.network))) {
-                throw new Error(
+                throw new UserError(
                   "Wallet is not on the correct network, please switch to the correct network, and connect again"
                 );
               }
@@ -75,11 +75,11 @@ export const createDelegatedStake_AssignValidator_Machine = (
                 !context.tokenLock ||
                 !context.nextDelegator
               ) {
-                throw new Error("Invalid state for delegation");
+                throw new UserError("Invalid state for delegation");
               }
 
               if (!(await isWalletOnNetwork(context.network))) {
-                throw new Error("Wallet is not on the correct network");
+                throw new UserError("Wallet is not on the correct network");
               }
             },
           },

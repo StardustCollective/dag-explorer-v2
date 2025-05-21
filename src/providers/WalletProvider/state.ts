@@ -6,10 +6,11 @@ import { immer } from "zustand/middleware/immer";
 import { StargazerNetworkIds } from "./consts";
 
 import { HgtpNetwork } from "@/common/consts";
+import { UserError } from "@/utils";
 
 type IErrorListener = (error: Error) => void;
 
-export class WalletProviderError extends Error {
+export class WalletProviderError extends UserError {
   constructor(message: string) {
     super("Stargazer Connection: " + message);
   }

@@ -21,6 +21,7 @@ import {
   decodeDecimal,
   formatCurrencyWithDecimals,
   shortenString,
+  UserError,
 } from "@/utils";
 
 import CircleCheckFilledIcon from "@/assets/icons/circle-check-filled.svg";
@@ -104,7 +105,7 @@ export const Stake_ActionsProvider = ({
           }
 
           if (userDelegations?.length === 10) {
-            throw new Error(
+            throw new UserError(
               "You have reached the maximum number of delegations for this address"
             );
           }

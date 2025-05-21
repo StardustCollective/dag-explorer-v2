@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import { HgtpNetwork } from "@/common/consts";
 import { getRedis } from "@/common/redis";
 import { IAPIResponseData, INextTokenPaginationOptions } from "@/types";
-import { safeJsonParse } from "@/utils";
+import { safeJsonParse, UserError } from "@/utils";
 
 export type IVerifiedSignature = {
   hash: string;
@@ -84,7 +84,7 @@ export const publishSignature = async (
   const isProfanity = checkProfanity(message);
 
   if (isProfanity) {
-    throw new Error("Unable to publish signature with profane content");
+    throw new UserError("Unable to publish signature with profane content");
   }
 
   const timestamp = dayjs();
@@ -97,7 +97,7 @@ export const publishSignature = async (
   );
 
   if (!verifiedSignature) {
-    throw new Error("Signature verification failed");
+    throw new UserError("Signature verification failed");
   }
 
   const redis = await getRedis();

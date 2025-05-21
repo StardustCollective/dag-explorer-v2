@@ -24,6 +24,20 @@ process.env.NODE_ENV === "production" &&
 
     // Setting this option to true will print useful information to the console while you're setting up Sentry.
     debug: false,
+
+    beforeSend: (event, hint) => {
+      const error = hint.originalException;
+
+      if (
+        error &&
+        typeof error === "object" &&
+        (error as any).skipSentryReporting === true
+      ) {
+        return null;
+      }
+
+      return event;
+    },
   });
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

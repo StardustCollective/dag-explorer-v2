@@ -5,17 +5,18 @@ import { useWalletStore } from "./provider";
 
 import { HgtpNetwork } from "@/common/consts";
 import { withErrorToast } from "@/components/Toast";
+import { UserError } from "@/utils";
 
 export const useWalletActions = (store: ReturnType<typeof useWalletStore>) => {
   const assertWalletVersion = (comparison: "gte", version: string) => {
     const wallet = store.getState();
 
     if (!wallet.version) {
-      throw new Error("Wallet version is not available");
+      throw new UserError("Wallet version is not available");
     }
 
     if (comparison === "gte" && !gte(wallet.version, version)) {
-      throw new Error(
+      throw new UserError(
         `Invalid wallet version ${wallet.version}, delegating staking is` +
           ` available from version ${version}, please update to a newer ` +
           `version of the wallet`
@@ -41,7 +42,7 @@ export const useWalletActions = (store: ReturnType<typeof useWalletStore>) => {
     ) => {
       const wallet = store.getState();
       if (!wallet.provider) {
-        throw new Error("Wallet is not active, cannot sign messages");
+        throw new UserError("Wallet is not active, cannot sign messages");
       }
 
       assertWalletVersion("gte", DelegatedStakingMinVersion);
@@ -60,7 +61,7 @@ export const useWalletActions = (store: ReturnType<typeof useWalletStore>) => {
     async (amount: number, nodeId: string, tokenLockRef: string) => {
       const wallet = store.getState();
       if (!wallet.provider) {
-        throw new Error("Wallet is not active, cannot sign messages");
+        throw new UserError("Wallet is not active, cannot sign messages");
       }
 
       assertWalletVersion("gte", DelegatedStakingMinVersion);
@@ -79,7 +80,7 @@ export const useWalletActions = (store: ReturnType<typeof useWalletStore>) => {
     async (delegatedStakeRef: string) => {
       const wallet = store.getState();
       if (!wallet.provider) {
-        throw new Error("Wallet is not active, cannot sign messages");
+        throw new UserError("Wallet is not active, cannot sign messages");
       }
 
       assertWalletVersion("gte", DelegatedStakingMinVersion);
@@ -98,7 +99,7 @@ export const useWalletActions = (store: ReturnType<typeof useWalletStore>) => {
     async (message: string) => {
       const wallet = store.getState();
       if (!wallet.provider) {
-        throw new Error("Wallet is not active, cannot sign messages");
+        throw new UserError("Wallet is not active, cannot sign messages");
       }
 
       const signatureRequest = {
