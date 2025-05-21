@@ -5,6 +5,9 @@
 
 declare module "sst" {
   export interface Resource {
+    "ConstellationEcosystemVpc": {
+      "type": "sst.aws.Vpc"
+    }
     "DagExplorerApp": {
       "type": "sst.aws.Nextjs"
       "url": string

@@ -11,8 +11,14 @@ export default $config({
     };
   },
   async run() {
+    /**
+     * Constellation Ecosystem VPC
+     */
+    const vpc = sst.aws.Vpc.get("ConstellationEcosystemVpc", "vpc-0d9b9fd415cfc0448");
+
     new sst.aws.Nextjs("DagExplorerApp", {
       buildCommand: "pnpm open-next build",
+      vpc,
     });
   },
 });
