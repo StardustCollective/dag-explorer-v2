@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
-import { isClusterUpgradeError } from "@/utils/errors";
+import { isClusterUpgradeError, isMaintenanceError } from "@/utils/errors";
 
 export const metadata: Metadata = {
   title: "DAG Explorer",
@@ -26,8 +26,24 @@ export default function ClientErrorPage({
   }, [error]);
 
   return (
-    <PageLayout className="flex flex-col gap-10 px-4 lg:px-20 py-8" renderAs={"main"}>
-      {isClusterUpgradeError(error) ? (
+    <PageLayout
+      className="flex flex-col gap-10 justify-center items-center px-4 lg:px-20 py-8"
+      renderAs={"main"}
+    >
+      {isMaintenanceError(error) ? (
+        <Section className="flex flex-col pt-20 justify-center items-center gap-8 max-w-[700px]">
+          <h1 className="text-7xl font-medium text-hgtp-blue-600 text-center">
+            🛠️ <br />
+            DAG Explorer will be back soon
+          </h1>
+          <p className="text-xl font-medium max-w-180 text-center">
+            We’re currently upgrading the Explorer and adding more resources.
+            Don’t worry your delegated staking and all on-chain activity remain
+            fully secure during this update. Thanks for your patience we’ll be
+            back online shortly!
+          </p>
+        </Section>
+      ) : isClusterUpgradeError(error) ? (
         <Section className="flex flex-col pt-20 justify-center items-center gap-6">
           <h1 className="text-8xl font-medium text-hgtp-blue-600">
             Cluster Upgrade
