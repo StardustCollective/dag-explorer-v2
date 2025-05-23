@@ -151,7 +151,7 @@ export default withSearchParamsAsyncBoundary(async function AddressPage({
                 <FormatCurrencyPrice
                   className="text-gray-500"
                   network={network}
-                  currencyId={metagraphId}
+                  currencyId={metagraphId || undefined}
                   value={balance.then((balance) => datumToDag(balance))}
                 />
               </span>

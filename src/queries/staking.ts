@@ -1,7 +1,6 @@
 import { dag4 } from "@stardust-collective/dag4";
-import { isAxiosError } from "axios";
+import { AxiosInstance, isAxiosError } from "axios";
 import { cache } from "react";
-
 
 import { getActionTransaction } from "./actions";
 
@@ -16,8 +15,8 @@ import {
   IL0StakingDelegator,
 } from "@/types/staking";
 import { IWaitForPredicate, waitForPredicate } from "@/utils";
+import { addCacheBehavior } from "@/utils/axios";
 import { ClusterUpgradeError, isClusterUpgradeError } from "@/utils/errors";
-
 
 export const getDelegatorsMetagraphs = cache(
   async (
@@ -38,6 +37,15 @@ export const getDelegatorsMetagraphs = cache(
   }
 );
 
+const CachedStakingDelegators: Record<HgtpNetwork, AxiosInstance> = {
+  [HgtpNetwork.MAINNET]: addCacheBehavior(L0NodesAPI[HgtpNetwork.MAINNET]),
+  [HgtpNetwork.INTEGRATIONNET]: addCacheBehavior(
+    L0NodesAPI[HgtpNetwork.INTEGRATIONNET]
+  ),
+  [HgtpNetwork.TESTNET]: addCacheBehavior(L0NodesAPI[HgtpNetwork.TESTNET]),
+  [HgtpNetwork.MAINNET_1]: addCacheBehavior(L0NodesAPI[HgtpNetwork.MAINNET_1]),
+};
+
 export const getStakingDelegators = cache(
   async (
     network: HgtpNetwork,
@@ -48,7 +56,7 @@ export const getStakingDelegators = cache(
     }
 
     try {
-      const { data: validators } = await L0NodesAPI[network].get<
+      const { data: validators } = await CachedStakingDelegators[network].get<
         IL0StakingDelegator[]
       >(`/node-params`, {
         params: { ...options?.search },

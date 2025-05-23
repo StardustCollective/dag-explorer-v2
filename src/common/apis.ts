@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from "axios";
 import { HgtpNetwork } from "./consts";
 
 import { DeploymentStage, EnvironmentContext } from "@/runtime";
+import { addRetryBehavior } from "@/utils/axios";
 
 export const DagExplorerAPI = axios.create({
   baseURL: `https://${
@@ -36,16 +37,28 @@ export const BlockExplorerAPI: Record<HgtpNetwork, AxiosInstance> = {
 };
 
 export const L0NodesAPI: Record<HgtpNetwork, AxiosInstance> = {
-  [HgtpNetwork.MAINNET]: axios.create({
-    baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
-  }),
-  [HgtpNetwork.INTEGRATIONNET]: axios.create({
-    baseURL: `https://l0-lb-integrationnet.constellationnetwork.io`,
-  }),
-  [HgtpNetwork.TESTNET]: axios.create({
-    baseURL: `https://l0-lb-testnet.constellationnetwork.io`,
-  }),
-  [HgtpNetwork.MAINNET_1]: axios.create({
-    baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
-  }),
+  [HgtpNetwork.MAINNET]: addRetryBehavior(
+    axios.create({
+      baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
+      timeout: 3 * 1000,
+    })
+  ),
+  [HgtpNetwork.INTEGRATIONNET]: addRetryBehavior(
+    axios.create({
+      baseURL: `https://l0-lb-integrationnet.constellationnetwork.io`,
+      timeout: 3 * 1000,
+    })
+  ),
+  [HgtpNetwork.TESTNET]: addRetryBehavior(
+    axios.create({
+      baseURL: `https://l0-lb-testnet.constellationnetwork.io`,
+      timeout: 3 * 1000,
+    })
+  ),
+  [HgtpNetwork.MAINNET_1]: addRetryBehavior(
+    axios.create({
+      baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
+      timeout: 3 * 1000,
+    })
+  ),
 };

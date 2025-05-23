@@ -33,14 +33,14 @@ export const DelegationsTable = () => {
     useDelegatedStakeProvider();
 
   const getAPRForDelegation = (delegation: IAddressDelegation) => {
-    if (!delegation.snapshot) {
+    if (!delegation.tokenLock) {
       return "--";
     }
 
     const rewardPerStakeRt = delegation.rewardAmount / delegation.amount;
     const rewardPerStakePerSecRt =
       rewardPerStakeRt /
-      dayjs().diff(dayjs(delegation.snapshot.timestamp), "seconds");
+      dayjs().diff(dayjs(delegation.tokenLock.timestamp), "seconds");
 
     const apr = rewardPerStakePerSecRt * (365 * 24 * 60 * 60) * 100;
 
@@ -72,7 +72,7 @@ export const DelegationsTable = () => {
               />
             </span>
           ),
-          snapshot: "Delegate Start Date",
+          tokenLock: "Delegate Start Date",
           withdrawalStartEpoch: "Status",
           rewardAmount: (
             <span className="flex items-center gap-2">
@@ -151,7 +151,7 @@ export const DelegationsTable = () => {
           fee: (_, record) => (
             <>{formatNumberWithDecimals(getAPRForDelegation(record))}%</>
           ),
-          snapshot: (value) => (
+          tokenLock: (value) => (
             <SuspenseValue
               value={value ? dayjs(value.timestamp).format("MM/DD/YYYY") : "--"}
               fallback={<SkeletonSpan className="w-10" />}

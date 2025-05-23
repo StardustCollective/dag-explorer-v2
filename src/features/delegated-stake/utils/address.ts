@@ -1,11 +1,13 @@
 import { dag4 } from "@stardust-collective/dag4";
 
 import { HgtpNetwork } from "@/common/consts";
-import { getAddressActiveTokenLocks, getSnapshot } from "@/queries";
+import { getAddressActiveTokenLocks } from "@/queries";
+import { getActionTransaction } from "@/queries/actions";
 import {
   getAddressStakingDelegations,
   getStakingDelegators,
 } from "@/queries/staking";
+import { ActionTransactionType } from "@/types";
 import { getNextTokenCallFullResults } from "@/utils";
 
 export type IAddressDelegation = Awaited<
@@ -25,7 +27,11 @@ export const getAddressDelegations = async (
         ...d,
         validator: validators.find((v) => v.peerId === d.nodeId),
         nodeIdAddress: dag4.keyStore.getDagAddressFromPublicKey(d.nodeId),
-        snapshot: await getSnapshot(network, d.acceptedOrdinal),
+        tokenLock: await getActionTransaction(
+          network,
+          d.tokenLockRef,
+          ActionTransactionType.TokenLock
+        ),
       }))
     )
   ).sort((a, b) => b.acceptedOrdinal - a.acceptedOrdinal);
