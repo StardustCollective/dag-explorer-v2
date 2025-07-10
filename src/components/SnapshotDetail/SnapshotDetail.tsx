@@ -4,24 +4,21 @@ import Link from "next/link";
 
 import { CopyAction } from "../CopyAction";
 import { DetailsTableCard } from "../DetailsTableCard";
-import { EmptyState } from "../EmptyState";
 import { FormatCurrency } from "../FormatCurrency";
 import { FormatCurrencyPrice } from "../FormatCurrencyPrice";
 import { MetagraphIcon } from "../MetagraphIcon";
 import { Section } from "../Section";
-import { SkeletonSpan } from "../SkeletonSpan";
-import { Table } from "../Table";
 import { Tab, Tabs } from "../Tabs";
+
+import { TransactionsTable } from "./components/TransactionsTable";
 
 import { HgtpNetwork } from "@/common/consts";
 import { datumToDag } from "@/common/currencies";
 import {
   getMetagraph,
-  getMetagraphCurrencySymbol,
-  getTransactionsBySnapshot,
 } from "@/queries";
-import { IBESnapshot, INextTokenPaginationTarget } from "@/types";
-import { formatNumberWithDecimals, shortenString } from "@/utils";
+import { IBESnapshot } from "@/types";
+import { formatNumberWithDecimals, parseNumberOrDefault, shortenString } from "@/utils";
 
 import CalendarClock4Icon from "@/assets/icons/calendar-clock-4.svg";
 import CheckCircleOutlineIcon from "@/assets/icons/circle-check-outline.svg";
@@ -31,7 +28,7 @@ export type ISnapshotDetailProps = {
   snapshot: IBESnapshot;
   metagraphId?: string;
   section: string;
-  tokenPagination?: INextTokenPaginationTarget;
+  limit?: number;
 };
 
 export const SnapshotDetail = async ({
@@ -39,20 +36,11 @@ export const SnapshotDetail = async ({
   metagraphId,
   snapshot,
   section,
-  tokenPagination = {},
+  limit = 10,
 }: ISnapshotDetailProps) => {
   const metagraph = metagraphId
     ? await getMetagraph(network, metagraphId)
     : null;
-
-  const transactions = getTransactionsBySnapshot(
-    network,
-    snapshot.ordinal,
-    metagraphId,
-    {
-      tokenPagination,
-    }
-  );
 
   return (
     <Section title="Overview" className="flex flex-col gap-4">
@@ -248,114 +236,11 @@ export const SnapshotDetail = async ({
         </Tabs>
         <div className="flex lg:p-0 px-4 pt-4">
           {section === "transactions" && (
-            <Table.Suspense
-              noCardStyle
-              className="w-full [&_td]:text-sm"
-              header={<span></span>}
-              data={transactions.then((data) => data.records)}
-              primaryKey="hash"
-              titles={{
-                hash: "Txn Hash",
-                timestamp: "Timestamp",
-                snapshotOrdinal: "Snapshot",
-                fee: "Fee",
-                source: "From",
-                destination: "To",
-                amount: "Amount",
-              }}
-              loadingData={SkeletonSpan.generateTableRecords(3, [
-                "hash",
-                "timestamp",
-                "snapshotOrdinal",
-                "fee",
-                "source",
-                "destination",
-                "amount",
-              ])}
-              // pagination={buildPaginationForAPIResponseArray(
-              //   transactions,
-              //   tokenPagination.limit ?? 10
-              // )}
-              emptyState={<EmptyState label="No transactions detected" />}
-              format={{
-                hash: (value, record) => (
-                  <span className="flex items-center gap-1">
-                    <Link
-                      className="text-hgtp-blue-600"
-                      href={
-                        record.metagraphId
-                          ? `/metagraphs/${record.metagraphId}/transactions/${value}`
-                          : `/transactions/${value}`
-                      }
-                    >
-                      {shortenString(value)}
-                    </Link>
-                    <CopyAction value={value} />
-                  </span>
-                ),
-                timestamp: (value) => <span>{dayjs(value).fromNow()}</span>,
-                snapshotOrdinal: (value, record) => (
-                  <Link
-                    className="text-hgtp-blue-600"
-                    href={
-                      record.metagraphId
-                        ? `/metagraphs/${record.metagraphId}/snapshots/${value}`
-                        : `/snapshots/${value}`
-                    }
-                  >
-                    {value}
-                  </Link>
-                ),
-                fee: (value, record) => (
-                  <FormatCurrency
-                    value={value}
-                    currency={getMetagraphCurrencySymbol(
-                      network,
-                      record.metagraphId,
-                      true
-                    )}
-                  />
-                ),
-                source: (value) => (
-                  <span className="flex items-center gap-1">
-                    <Link
-                      className="text-hgtp-blue-600"
-                      href={`/address/${value}`}
-                    >
-                      {shortenString(value)}
-                    </Link>
-                    <CopyAction value={value} />
-                  </span>
-                ),
-                destination: (value) => (
-                  <span className="flex items-center gap-1">
-                    <Link
-                      className="text-hgtp-blue-600"
-                      href={`/address/${value}`}
-                    >
-                      {shortenString(value)}
-                    </Link>
-                    <CopyAction value={value} />
-                  </span>
-                ),
-                amount: (value, record) => (
-                  <span className="flex flex-col gap-1">
-                    <FormatCurrency
-                      value={datumToDag(value)}
-                      currency={getMetagraphCurrencySymbol(
-                        network,
-                        record.metagraphId
-                      )}
-                    />
-                    <FormatCurrencyPrice
-                      className="text-gray-600"
-                      network={network}
-                      value={datumToDag(value)}
-                      currencyId={record.metagraphId}
-                    />
-                  </span>
-                ),
-              }}
+            <TransactionsTable
+              network={network}
+              ordinal={snapshot.ordinal}
+              metagraphId={metagraphId}
+              limit={parseNumberOrDefault(limit, 10)}
             />
           )}
         </div>
