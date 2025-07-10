@@ -43,7 +43,7 @@ export default async function SnapshotPage({
           section={section ?? 'transactions'}
           network={network}
           snapshot={snapshot}
-          tokenPagination={{ limit: parseNumberOrDefault(limit, 10) }}
+          limit={parseNumberOrDefault(limit, 10)}
         />
       </PageLayout>
     </>

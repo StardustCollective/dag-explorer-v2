@@ -48,7 +48,7 @@ export default async function SnapshotPage({
           network={network}
           snapshot={snapshot}
           metagraphId={metagraphId}
-          tokenPagination={{ limit: parseNumberOrDefault(limit, 10) }}
+          limit={parseNumberOrDefault(limit, 10)}
         />
       </PageLayout>
     </>
