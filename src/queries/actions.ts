@@ -12,8 +12,8 @@ const TypeParamMap: Record<ActionTransactionType, string> = {
   ExpiredSpendTransaction: "allow-spend-expirations",
   TokenLock: "token-locks",
   TokenUnlock: "token-unlocks",
-  DelegatedStake: "delegated-stake-events",
-  DelegatedStakeWithdrawal: "delegated-stake-withdrawals",
+  DelegateStakeCreate: "delegated-stake-events",
+  DelegateStakeWithdraw: "delegated-stake-withdrawals",
 };
 
 export const getActionTransaction = async <T extends ActionTransactionType>(
@@ -27,14 +27,14 @@ export const getActionTransaction = async <T extends ActionTransactionType>(
   }
 
   if (
-    type === ActionTransactionType.DelegatedStake &&
+    type === ActionTransactionType.DelegateStakeCreate &&
     !!metagraphId
   ) {
     return null;
   }
 
   if (
-    type === ActionTransactionType.DelegatedStakeWithdrawal &&
+    type === ActionTransactionType.DelegateStakeWithdraw &&
     !!metagraphId
   ) {
     return null;
