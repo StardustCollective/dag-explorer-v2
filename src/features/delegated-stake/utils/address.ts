@@ -1,3 +1,5 @@
+"use server";
+
 import { dag4 } from "@stardust-collective/dag4";
 
 import { HgtpNetwork } from "@/common/consts";
