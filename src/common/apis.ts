@@ -39,26 +39,27 @@ export const BlockExplorerAPI: Record<HgtpNetwork, AxiosInstance> = {
 export const L0NodesAPI: Record<HgtpNetwork, AxiosInstance> = {
   [HgtpNetwork.MAINNET]: addRetryBehavior(
     axios.create({
-      baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
-      timeout: 3 * 1000,
+      // baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
+      baseURL: `http://mintaka-node.constellationnetwork.io:9000`,
+      timeout: 20 * 1000,
     })
   ),
   [HgtpNetwork.INTEGRATIONNET]: addRetryBehavior(
     axios.create({
       baseURL: `https://l0-lb-integrationnet.constellationnetwork.io`,
-      timeout: 3 * 1000,
+      timeout: 20 * 1000,
     })
   ),
   [HgtpNetwork.TESTNET]: addRetryBehavior(
     axios.create({
       baseURL: `https://l0-lb-testnet.constellationnetwork.io`,
-      timeout: 3 * 1000,
+      timeout: 20 * 1000,
     })
   ),
   [HgtpNetwork.MAINNET_1]: addRetryBehavior(
     axios.create({
       baseURL: `https://l0-lb-mainnet.constellationnetwork.io`,
-      timeout: 3 * 1000,
+      timeout: 20 * 1000,
     })
   ),
 };
