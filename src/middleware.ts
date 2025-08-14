@@ -7,7 +7,11 @@ export const middleware = async (req: NextRequest) => {
 
   if (!network) {
     const url = new URL(req.nextUrl);
-    url.hostname = `mainnet.${url.hostname}`;
+    const hostUrl = new URL(`http://${req.headers.get("host") ?? url.host}`);
+    url.host = hostUrl.host;
+    url.hostname = hostUrl.hostname;
+    url.port = hostUrl.port;
+    url.hostname = `mainnet.${url.hostname.replace("www.", "")}`;
     return NextResponse.redirect(url);
   }
 
