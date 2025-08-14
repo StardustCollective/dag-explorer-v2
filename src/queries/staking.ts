@@ -14,7 +14,12 @@ import {
   IL0StakingDelegation,
   IL0StakingDelegator,
 } from "@/types/staking";
-import { IWaitForPredicate, waitForPredicate } from "@/utils";
+import {
+  IWaitForPredicate,
+  ParallelExecution,
+  processBatchedArray,
+  waitForPredicate,
+} from "@/utils";
 import { addCacheBehavior } from "@/utils/axios";
 import { ClusterUpgradeError, isClusterUpgradeError } from "@/utils/errors";
 
@@ -27,13 +32,29 @@ export const getDelegatorsMetagraphs = cache(
       return [];
     }
 
-    const response = await DagExplorerAPI.get<
-      IAPIResponse<IAPIMetagraphStakingNode[]>
-    >(`/${network}/delegators/metagraphs`, {
-      params: { delegators: nodeIds.map((id) => id.slice(0, 10)).join(",") },
+    const parallelExecution = new ParallelExecution<
+      IAPIMetagraphStakingNode[]
+    >();
+
+    await processBatchedArray(nodeIds, 25, async (nodeIds) => {
+      parallelExecution.executeJob(nodeIds.join(","), async () => {
+        const response = await DagExplorerAPI.get<
+          IAPIResponse<IAPIMetagraphStakingNode[]>
+        >(`/${network}/delegators/metagraphs`, {
+          params: {
+            delegators: nodeIds.map((id) => id.slice(0, 10)).join(","),
+          },
+        });
+
+        return response.data.data;
+      });
+
+      return true;
     });
 
-    return response.data.data;
+    const jobs = await parallelExecution.resolveJobs();
+
+    return jobs.map((j) => j.result).flat();
   }
 );
 
@@ -64,7 +85,7 @@ export const getStakingDelegators = cache(
 
       const validatorsMetagraphs = await getDelegatorsMetagraphs(
         network,
-        validators.map((v) => v.peerId)
+        validators.map((v) => v.peerId).sort()
       );
 
       return validators
@@ -136,7 +157,7 @@ export const confirmDelegatedStake = async (
     const transaction = await getActionTransaction(
       network,
       hash,
-      ActionTransactionType.DelegatedStake
+      ActionTransactionType.DelegateStakeCreate
     );
     return transaction !== null;
   }, options);
@@ -151,7 +172,7 @@ export const confirmWithdrawDelegatedStake = async (
     const transaction = await getActionTransaction(
       network,
       hash,
-      ActionTransactionType.DelegatedStakeWithdrawal
+      ActionTransactionType.DelegateStakeWithdraw
     );
     return transaction !== null;
   }, options);
