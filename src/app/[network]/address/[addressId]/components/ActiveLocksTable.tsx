@@ -6,6 +6,7 @@ import Decimal from "decimal.js";
 import Link from "next/link";
 import { useState } from "react";
 
+import { getCurrentEpochProgress_Action } from "./actions";
 import { TypeChip } from "./TypeChip";
 
 import { HgtpNetwork, NetworkEpochInSeconds } from "@/common/consts";
@@ -17,7 +18,6 @@ import { SkeletonSpan } from "@/components/SkeletonSpan";
 import { Table } from "@/components/Table";
 import {
   getAddressActiveTokenLocks,
-  getCurrentEpochProgress,
   getMetagraphCurrencySymbol,
 } from "@/queries";
 import { ActionTransactionType, IAPIActionTransaction } from "@/types";
@@ -46,7 +46,7 @@ export const ActiveLocksTable = ({
 
   const epochProgress = useQuery({
     queryKey: ["epochprogress"],
-    queryFn: () => getCurrentEpochProgress(network),
+    queryFn: () => getCurrentEpochProgress_Action(network),
     refetchInterval: 10 * 1000,
   });
 
@@ -162,7 +162,7 @@ export const ActiveLocksTable = ({
                 ~
                 {dayjs()
                   .add(
-                    (value - epochProgress.data) / NetworkEpochInSeconds,
+                    (value - epochProgress.data) * NetworkEpochInSeconds,
                     "seconds"
                   )
                   .format("MMM.DD YYYY")}{" "}
