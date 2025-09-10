@@ -66,6 +66,13 @@ export type IL0Snapshot = {
   version: string;
 };
 
+export type IBESnapshot_V1 = {
+  hash: string;
+  height: number;
+  checkpointBlocks: string[];
+  timestamp: string;
+};
+
 export type IBESnapshot = {
   hash: string;
   ordinal: number;
