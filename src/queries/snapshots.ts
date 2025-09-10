@@ -1,5 +1,7 @@
 import { isAxiosError } from "axios";
 
+import { getLatestSnapshots_V1, getSnapshot_V1, getSnapshots_V1 } from "./mainnet_v1";
+
 import { BlockExplorerAPI, DagExplorerAPI, L0NodesAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
@@ -17,6 +19,11 @@ export const getLatestSnapshots = async (
   network: HgtpNetwork,
   options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IAPISnapshot>> => {
+
+  if (network === HgtpNetwork.MAINNET_1) {
+    return getLatestSnapshots_V1(network, options);
+  }
+
   const response = await DagExplorerAPI.get<IAPIResponse<IAPISnapshot[]>>(
     `/${network}/dag/latest-snapshots`,
     {
@@ -65,7 +72,7 @@ export const getSnapshots = async (
   options?: INextTokenPaginationOptions
 ): Promise<IAPIResponseData<IAPISnapshot>> => {
   if (network === HgtpNetwork.MAINNET_1) {
-    return { records: [], total: 0 };
+    return getSnapshots_V1(network, metagraphId, options);
   }
 
   const response = await BlockExplorerAPI[network].get<
@@ -99,7 +106,7 @@ export const getSnapshot = async (
   metagraphId?: string
 ): Promise<IAPISnapshot | null> => {
   if (network === HgtpNetwork.MAINNET_1) {
-    return null;
+    return getSnapshot_V1(network, ordinal, metagraphId);
   }
 
   try {
@@ -132,18 +139,18 @@ export const getCurrentEpochProgress = async (
     return null;
   }
 
-  if( network === HgtpNetwork.MAINNET){
+  if (network === HgtpNetwork.MAINNET) {
     try {
       const response = await L0NodesAPI[network].get<
         ISignedL0Value<IL0Snapshot>
       >("/global-snapshots/latest");
-  
+
       return response.data.value.epochProgress ?? null;
     } catch (e) {
       if (isAxiosError(e) && e.status === 404) {
         return null;
       }
-  
+
       throw e;
     }
   }

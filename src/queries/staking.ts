@@ -87,6 +87,12 @@ export const getStakingDelegators = cache(
         return [];
       }
 
+      if (isAxiosError(e) && e.status === 502) {
+        return [];
+      }
+
+      debugger;
+
       throw e;
     }
   }

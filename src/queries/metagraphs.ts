@@ -16,6 +16,13 @@ export const getMetagraphs = async (
   network: HgtpNetwork,
   options?: ILimitOffsetPaginationOptions
 ): Promise<IAPIResponseData<IMetagraphProject>> => {
+  if (network === HgtpNetwork.MAINNET_1) {
+    return {
+      records: [],
+      total: 0,
+    };
+  }
+
   const response = await DagExplorerAPI.get<IAPIResponse<IMetagraphProject[]>>(
     `/${network}/metagraph-projects`,
     {
