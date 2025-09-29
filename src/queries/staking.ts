@@ -20,7 +20,6 @@ import {
   processBatchedArray,
   waitForPredicate,
 } from "@/utils";
-import { addCacheBehavior } from "@/utils/axios";
 import { ClusterUpgradeError, isClusterUpgradeError } from "@/utils/errors";
 
 export const getDelegatorsMetagraphs = cache(
@@ -59,12 +58,12 @@ export const getDelegatorsMetagraphs = cache(
 );
 
 const CachedStakingDelegators: Record<HgtpNetwork, AxiosInstance> = {
-  [HgtpNetwork.MAINNET]: addCacheBehavior(L0NodesAPI[HgtpNetwork.MAINNET]),
-  [HgtpNetwork.INTEGRATIONNET]: addCacheBehavior(
+  [HgtpNetwork.MAINNET]: (L0NodesAPI[HgtpNetwork.MAINNET]),
+  [HgtpNetwork.INTEGRATIONNET]: (
     L0NodesAPI[HgtpNetwork.INTEGRATIONNET]
   ),
-  [HgtpNetwork.TESTNET]: addCacheBehavior(L0NodesAPI[HgtpNetwork.TESTNET]),
-  [HgtpNetwork.MAINNET_1]: addCacheBehavior(L0NodesAPI[HgtpNetwork.MAINNET_1]),
+  [HgtpNetwork.TESTNET]: (L0NodesAPI[HgtpNetwork.TESTNET]),
+  [HgtpNetwork.MAINNET_1]: (L0NodesAPI[HgtpNetwork.MAINNET_1]),
 };
 
 export const getStakingDelegators = cache(
