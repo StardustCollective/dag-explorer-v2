@@ -6,6 +6,7 @@
 declare module "sst" {
   export interface Resource {
     "ConstellationEcosystemVpc": {
+      "bastion": string
       "type": "sst.aws.Vpc"
     }
     "DagExplorerApp": {

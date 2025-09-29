@@ -307,14 +307,19 @@ export default withSearchParamsAsyncBoundary(async function AddressPage({
                   limit={parseNumberOrDefault(limit, 10)}
                 />
               )}
-              {section === "rewards" && (
-                <RewardsTable
-                  network={network}
-                  addressId={addressId}
-                  metagraphId={metagraphId}
-                  limit={parseNumberOrDefault(limit, 10)}
-                />
-              )}
+              <NetworksOnly
+                network={network}
+                exceptOn={[HgtpNetwork.MAINNET_1]}
+              >
+                {section === "rewards" && (
+                  <RewardsTable
+                    network={network}
+                    addressId={addressId}
+                    metagraphId={metagraphId}
+                    limit={parseNumberOrDefault(limit, 10)}
+                  />
+                )}
+              </NetworksOnly>
               <NetworksOnly
                 network={network}
                 exceptOn={[HgtpNetwork.MAINNET_1]}

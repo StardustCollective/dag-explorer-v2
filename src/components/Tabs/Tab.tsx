@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { TabsContext } from "./TabsContext";
 
@@ -24,6 +24,10 @@ export const Tab = <T extends React.ElementType = "div">({
   }
 
   const RenderComponent = renderAs ?? "div";
+
+  useEffect(() => {
+    tabsContext.updateGliderStyle();
+  }, [children]);
 
   return (
     <RenderComponent

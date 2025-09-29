@@ -3,8 +3,12 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { createContext, useContext } from "react";
 
+import {
+  getCurrentEpochProgress_Action,
+  getStakingDelegators_Action,
+} from "./actions";
+
 import { useNetworkContext } from "@/providers/NetworkProvider";
-import { getCurrentEpochProgress, getStakingDelegators } from "@/queries";
 import { IAPIStakingDelegator } from "@/types/staking";
 
 export type IValidatorsContext = {
@@ -25,13 +29,13 @@ export const ValidatorsProvider = ({
 
   const validatorsQuery = useQuery({
     queryKey: ["delegated-staking:validators"],
-    queryFn: () => getStakingDelegators(network),
+    queryFn: () => getStakingDelegators_Action(network),
     refetchInterval: 60 * 1000,
   });
 
   const epochProgressQuery = useQuery({
     queryKey: ["delegated-staking:epochprogress"],
-    queryFn: () => getCurrentEpochProgress(network),
+    queryFn: () => getCurrentEpochProgress_Action(network),
     refetchInterval: 60 * 1000,
   });
 
