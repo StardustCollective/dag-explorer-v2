@@ -9,7 +9,7 @@ const TypeParamMap: Record<ActionTransactionType, string> = {
   FeeTransaction: "fee-transactions",
   AllowSpend: "allow-spends",
   SpendTransaction: "spend-transactions",
-  ExpiredSpendTransaction: "allow-spend-expirations",
+  ExpiredAllowSpend: "allow-spend-expirations",
   TokenLock: "token-locks",
   TokenUnlock: "token-unlocks",
   DelegateStakeCreate: "delegated-stake-events",
