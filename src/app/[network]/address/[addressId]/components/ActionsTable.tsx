@@ -107,23 +107,35 @@ export const ActionsTable = ({
         type: (value) => (
           <span className={"flex items-center w-full"}>
             {value === "FeeTransaction" ? (
-              <TypeChip className="text-purple-700 border-purple-400">
+              <TypeChip className="text-violet-700 border-purple-400">
                 {value}
               </TypeChip>
             ) : value === "TokenLock" ? (
-              <TypeChip className="text-ltx-gold-700 border-yellow-400">
+              <TypeChip className="text-gray-600 border-gray-400">
                 {value}
               </TypeChip>
             ) : value === "TokenUnlock" ? (
-              <TypeChip className="text-green-700 border-green-400">
+              <TypeChip className="text-yellow-700 border-yellow-500">
+                {value}
+              </TypeChip>
+            ): value === "DelegateStakeCreate" ? (
+              <TypeChip className="text-gray-600 border-gray-400">
+                {value}
+              </TypeChip>
+            ) : value === "DelegateStakeWithdraw" ? (
+              <TypeChip className="text-yellow-700 border-yellow-500">
                 {value}
               </TypeChip>
             ) : value === "AllowSpend" ? (
-              <TypeChip className="text-black/65 border-gray-400">
+              <TypeChip className="text-blue-700 border-blue-400">
                 {value}
               </TypeChip>
             ) : value === "SpendTransaction" ? (
-              <TypeChip className="text-hgtp-blue-600 border-hgtp-blue-400">
+              <TypeChip className="text-green-700 border-green-400">
+                {value}
+              </TypeChip>
+            ) : value === "ExpiredAllowSpend" ? (
+              <TypeChip className="text-red-700 border-red-400">
                 {value}
               </TypeChip>
             ) : (

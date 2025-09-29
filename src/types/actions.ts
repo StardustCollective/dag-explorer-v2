@@ -2,7 +2,7 @@ export enum ActionTransactionType {
   FeeTransaction = "FeeTransaction",
   AllowSpend = "AllowSpend",
   SpendTransaction = "SpendTransaction",
-  ExpiredSpendTransaction = "ExpiredSpendTransaction",
+  ExpiredAllowSpend = "ExpiredAllowSpend",
   TokenLock = "TokenLock",
   TokenUnlock = "TokenUnlock",
   DelegateStakeCreate = "DelegateStakeCreate",
@@ -43,7 +43,7 @@ export type IBEActionTransaction_SpendTransaction = {
 };
 
 export type IBEActionTransaction_ExpiredSpendTransaction = {
-  type: ActionTransactionType.ExpiredSpendTransaction;
+  type: ActionTransactionType.ExpiredAllowSpend;
   hash: string;
   amount: number;
   source: string;
@@ -116,7 +116,7 @@ export type IBEActionTransaction<T extends ActionTransactionType> =
     ? IBEActionTransaction_AllowSpend
     : T extends ActionTransactionType.SpendTransaction
     ? IBEActionTransaction_SpendTransaction
-    : T extends ActionTransactionType.ExpiredSpendTransaction
+    : T extends ActionTransactionType.ExpiredAllowSpend
     ? IBEActionTransaction_ExpiredSpendTransaction
     : T extends ActionTransactionType.TokenLock
     ? IBEActionTransaction_TokenLock
