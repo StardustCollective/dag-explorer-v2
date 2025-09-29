@@ -5,8 +5,8 @@ export enum ActionTransactionType {
   ExpiredSpendTransaction = "ExpiredSpendTransaction",
   TokenLock = "TokenLock",
   TokenUnlock = "TokenUnlock",
-  DelegatedStake = "DelegatedStake",
-  DelegatedStakeWithdrawal = "DelegatedStakeWithdrawal",
+  DelegateStakeCreate = "DelegateStakeCreate",
+  DelegateStakeWithdraw = "DelegateStakeWithdraw",
 }
 
 export const isActionTransactionType = (
@@ -72,7 +72,7 @@ export type IBEActionTransaction_TokenUnlock = {
 };
 
 export type IBEActionTransaction_DelegatedStake = {
-  type: ActionTransactionType.DelegatedStake;
+  type: ActionTransactionType.DelegateStakeCreate;
   hash: string;
   ordinal: number;
   source: string;
@@ -86,7 +86,7 @@ export type IBEActionTransaction_DelegatedStake = {
 };
 
 export type IBEActionTransaction_DelegatedStakeWithdrawal = {
-  type: ActionTransactionType.DelegatedStakeWithdrawal;
+  type: ActionTransactionType.DelegateStakeWithdraw;
   hash: string;
   source: string;
   stake: {
@@ -122,9 +122,9 @@ export type IBEActionTransaction<T extends ActionTransactionType> =
     ? IBEActionTransaction_TokenLock
     : T extends ActionTransactionType.TokenUnlock
     ? IBEActionTransaction_TokenUnlock
-    : T extends ActionTransactionType.DelegatedStake
+    : T extends ActionTransactionType.DelegateStakeCreate
     ? IBEActionTransaction_DelegatedStake
-    : T extends ActionTransactionType.DelegatedStakeWithdrawal
+    : T extends ActionTransactionType.DelegateStakeWithdraw
     ? IBEActionTransaction_DelegatedStakeWithdrawal
     : never;
 

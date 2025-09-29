@@ -56,7 +56,7 @@ export const getAddressLockedBalance = async (
     network = HgtpNetwork.MAINNET;
   }
 
-  const { records: allowSpends } = await getAddressActions(
+  const { records: allowSpends } = await getAddressActiveAllowSpends(
     network,
     addressId,
     metagraphId
@@ -69,7 +69,7 @@ export const getAddressLockedBalance = async (
   );
 
   const actions = [
-    ...allowSpends.filter((action) => action.type === "AllowSpend"),
+    ...allowSpends,
     ...tokenLocks,
   ];
 
@@ -216,6 +216,48 @@ export const getAddressActions = async (
   }
 };
 
+export const getAddressActiveAllowSpends = async (
+  network: HgtpNetwork,
+  addressId: string,
+  metagraphId?: string,
+  options?: INextTokenPaginationOptions
+): Promise<
+  IAPIResponseData<IAPIActionTransaction<ActionTransactionType.AllowSpend>>
+> => {
+  if ([HgtpNetwork.MAINNET_1].includes(network)) {
+    return { records: [], total: 0 };
+  }
+
+  try {
+    const response = await BlockExplorerAPI[network].get<
+      IAPIResponse<IBEActionTransaction<ActionTransactionType.AllowSpend>[]>
+    >(
+      metagraphId
+        ? `/currency/${metagraphId}/addresses/${addressId}/allow-spends`
+        : `/addresses/${addressId}/allow-spends`,
+      {
+        params: { ...options?.tokenPagination, active: true },
+      }
+    );
+
+    return {
+      records: response.data.data.map((action) => ({
+        ...action,
+        type: "AllowSpend" as any,
+        metagraphId,
+      })),
+      total: response.data.meta?.total ?? 0,
+      next: response.data.meta?.next,
+    };
+  } catch (e) {
+    if (isAxiosError(e) && e.status === 404) {
+      return { records: [], total: 0 };
+    }
+
+    throw e;
+  }
+};
+
 export const getAddressActiveTokenLocks = async (
   network: HgtpNetwork,
   addressId: string,
@@ -241,13 +283,11 @@ export const getAddressActiveTokenLocks = async (
     );
 
     return {
-      records: response.data.data
-        .map((action) => ({
-          ...action,
-          type: "TokenLock" as any,
-          metagraphId,
-        }))
-        .filter((action) => action.unlockEpoch === null),
+      records: response.data.data.map((action) => ({
+        ...action,
+        type: "TokenLock" as any,
+        metagraphId,
+      })),
       total: response.data.meta?.total ?? 0,
       next: response.data.meta?.next,
     };
