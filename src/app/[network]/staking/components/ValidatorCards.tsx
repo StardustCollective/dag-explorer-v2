@@ -24,7 +24,7 @@ export type IValidatorCardsProps = {
 };
 
 export const ValidatorCards = ({ limit, filter }: IValidatorCardsProps) => {
-  const { validators } = useDelegatedStakeProvider();
+  const { validators, validatorsQuery } = useDelegatedStakeProvider();
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -50,6 +50,16 @@ export const ValidatorCards = ({ limit, filter }: IValidatorCardsProps) => {
       : filter === "validators"
       ? filteredValidators.filter((v) => !v.metagraphNode)
       : filteredValidators;
+
+  if (validatorsQuery.isLoading) {
+    return (
+      <EmptyState
+        variant="dark"
+        label="Loading validators..."
+        renderIcon={Server1FilledIcon}
+      />
+    );
+  }
 
   if ((validators ?? []).length === 0) {
     return (

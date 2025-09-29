@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { useEffect } from "react";
 
+import { MaintenanceSection } from "@/components/MaintenanceSection";
 import { PageLayout } from "@/components/PageLayout";
 import { Section } from "@/components/Section";
 import { isClusterUpgradeError, isMaintenanceError } from "@/utils/errors";
@@ -31,18 +32,7 @@ export default function ClientErrorPage({
       renderAs={"main"}
     >
       {isMaintenanceError(error) ? (
-        <Section className="flex flex-col pt-20 justify-center items-center gap-8 max-w-[700px]">
-          <h1 className="text-7xl font-medium text-hgtp-blue-600 text-center">
-            🛠️ <br />
-            DAG Explorer will be back soon
-          </h1>
-          <p className="text-xl font-medium max-w-180 text-center">
-            We’re currently upgrading the Explorer and adding more resources.
-            Don’t worry your delegated staking and all on-chain activity remain
-            fully secure during this update. Thanks for your patience we’ll be
-            back online shortly!
-          </p>
-        </Section>
+        <MaintenanceSection />
       ) : isClusterUpgradeError(error) ? (
         <Section className="flex flex-col pt-20 justify-center items-center gap-6">
           <h1 className="text-8xl font-medium text-hgtp-blue-600">

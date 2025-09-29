@@ -15,13 +15,13 @@ import { useClickOutside } from "@/hooks";
 import { useNetworkContext } from "@/providers/NetworkProvider";
 import { getAddressTransactions } from "@/queries";
 import { formatNumber, UserError } from "@/utils";
-import { downloadFile } from "@/utils/download";
+import { downloadFile } from "@/utils";
 
 import CalendarClock4Icon from "@/assets/icons/calendar-clock-4.svg";
 import CloseIcon from "@/assets/icons/close.svg";
 import FileDownloadIcon from "@/assets/icons/file-download.svg";
 
-const TransactionLimit = Math.floor(3370 / 2 ** 6);
+const TransactionLimit = 3370;
 
 export type IExportCardProps = {
   addressId: string;
@@ -131,7 +131,10 @@ export const ExportCard = ({
     endDate.isBefore(startDate.add(1, "year"));
 
   return (
-    <div className={clsx("card shadow-sm w-11/12 max-w-[490px]", className)} ref={ref}>
+    <div
+      className={clsx("card shadow-sm w-11/12 max-w-[490px]", className)}
+      ref={ref}
+    >
       <div className="header flex items-center justify-between px-5 py-4.5 text-xl font-semibold text-hgtp-blue-900">
         <div className="flex items-center gap-2">
           <FileDownloadIcon className="size-8 shrink-0" />

@@ -46,6 +46,7 @@ export const Tabs = ({ value, onValue, children, className }: ITabsProps) => {
     <TabsContext.Provider
       value={{
         value,
+        updateGliderStyle,
         onValue,
         onRef: (id, element) => {
           tabsRef.current[id] = element;
