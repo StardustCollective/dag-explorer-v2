@@ -1,5 +1,7 @@
 import { isAxiosError } from "axios";
 
+import { getAddressTransactions_V1 } from "./mainnet_v1";
+
 import { BlockExplorerAPI, DagExplorerAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
 import {
@@ -68,10 +70,7 @@ export const getAddressLockedBalance = async (
     metagraphId
   );
 
-  const actions = [
-    ...allowSpends,
-    ...tokenLocks,
-  ];
+  const actions = [...allowSpends, ...tokenLocks];
 
   return actions.reduce((pv, action) => pv + action.amount, 0);
 };
@@ -95,6 +94,11 @@ export const getAddressMetagraphs = async (
       return [];
     }
 
+    if (isAxiosError(e) && e.message.match(/timeout/i)) {
+      console.log(e);
+      return [];
+    }
+
     throw e;
   }
 };
@@ -106,7 +110,7 @@ export const getAddressTransactions = async (
   options?: INextTokenPaginationOptions
 ): Promise<IAPIResponseData<IAPITransaction>> => {
   if (network === HgtpNetwork.MAINNET_1) {
-    return { records: [], total: 0 };
+    return getAddressTransactions_V1(network, addressId, metagraphId, options);
   }
 
   try {

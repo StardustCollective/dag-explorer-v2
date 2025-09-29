@@ -11,6 +11,7 @@ export const DagExplorerAPI = axios.create({
       ? "production"
       : "staging"
   }.dagexplorer-api.constellationnetwork.net`,
+  timeout: 10 * 1000,
 });
 
 export const ConstellationEcosystemAPI = axios.create({
