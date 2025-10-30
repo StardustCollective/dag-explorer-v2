@@ -102,11 +102,11 @@ export const getSnapshots = async (
 
 export const getSnapshot = async (
   network: HgtpNetwork,
-  ordinal: number,
+  ordinalOrHash: number | string,
   metagraphId?: string
 ): Promise<IAPISnapshot | null> => {
   if (network === HgtpNetwork.MAINNET_1) {
-    return getSnapshot_V1(network, ordinal, metagraphId);
+    return getSnapshot_V1(network, ordinalOrHash, metagraphId);
   }
 
   try {
@@ -114,8 +114,8 @@ export const getSnapshot = async (
       IAPIResponse<IBESnapshot>
     >(
       metagraphId
-        ? `/currency/${metagraphId}/snapshots/${ordinal}`
-        : `/global-snapshots/${ordinal}`
+        ? `/currency/${metagraphId}/snapshots/${ordinalOrHash}`
+        : `/global-snapshots/${ordinalOrHash}`
     );
 
     return Object.assign(response.data.data, {
