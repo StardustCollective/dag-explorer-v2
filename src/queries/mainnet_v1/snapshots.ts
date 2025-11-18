@@ -53,7 +53,7 @@ export const getSnapshots_V1 = async (
 
 export const getSnapshot_V1 = async (
   network: HgtpNetwork,
-  ordinal: number,
+  ordinalOrHash: number | string,
   metagraphId?: string
 ): Promise<IAPISnapshot | null> => {
   if (network !== HgtpNetwork.MAINNET_1) {
@@ -66,7 +66,7 @@ export const getSnapshot_V1 = async (
 
   try {
     const response = await BlockExplorerAPI[network].get<IBESnapshot_V1>(
-      `/snapshot/${ordinal}`
+      `/snapshot/${ordinalOrHash}`
     );
 
     return {
