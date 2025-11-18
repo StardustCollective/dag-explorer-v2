@@ -71,6 +71,11 @@ export const MetagraphsTable = ({ network, limit }: IMetagraphsTableProps) => {
           onPrevPage={() => setPage(page - 1)}
         />
       }
+      colClassNames={{
+        snapshots90d: "justify-end",
+        fees90d: "justify-end",
+        feesTotal: "justify-end",
+      }}
       emptyState={<EmptyState label="No projects detected" />}
       format={{
         name: (value, record) => (
@@ -105,21 +110,27 @@ export const MetagraphsTable = ({ network, limit }: IMetagraphsTableProps) => {
         ),
         snapshots90d: (value) => (
           <span>
-            {value === null ? "Hidden" : formatNumberWithDecimals(value)}
+            {value === null
+              ? "Hidden"
+              : formatNumberWithDecimals(value, { maxD: 0 })}
           </span>
         ),
         fees90d: (value) => (
           <span>
             {value === null
               ? "Hidden"
-              : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8)}
+              : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8, {
+                  maxD: 0,
+                })}
           </span>
         ),
         feesTotal: (value) => (
           <span>
             {value === null
               ? "Hidden"
-              : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8)}
+              : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8, {
+                  maxD: 0,
+                })}
           </span>
         ),
       }}

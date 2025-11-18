@@ -24,7 +24,7 @@ export default async function SnapshotPage({
 
   const snapshot = await getSnapshot(
     network,
-    parseNumberOrDefault(snapshotOrdinal, -1)
+    snapshotOrdinal
   );
 
   if (!snapshot) {
