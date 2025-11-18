@@ -30,7 +30,7 @@ export default async function MetagraphsPage({
   const network = await getNetworkFromParamsOrFail(params);
 
   const [{ limit }] = await getPageSearchParamsOrDefaults(searchParams, {
-    limit: "10",
+    limit: "20",
   });
 
   return (
@@ -43,7 +43,7 @@ export default async function MetagraphsPage({
         renderAs={"main"}
       >
         <Section title="Top projects">
-          <MetagraphsTable network={network} limit={parseNumberOrDefault(limit, 10)} />
+          <MetagraphsTable network={network} limit={parseNumberOrDefault(limit, 20)} />
         </Section>
       </PageLayout>
     </>

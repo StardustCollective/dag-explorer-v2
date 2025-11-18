@@ -225,6 +225,11 @@ export default async function DashboardPage({
               "feesTotal",
             ])}
             emptyState={<EmptyState label="No projects detected" />}
+            colClassNames={{
+              snapshots90d: "justify-end",
+              fees90d: "justify-end",
+              feesTotal: "justify-end",
+            }}
             format={{
               name: (value, record) => (
                 <Link
@@ -258,21 +263,27 @@ export default async function DashboardPage({
               ),
               snapshots90d: (value) => (
                 <span>
-                  {value === null ? "Hidden" : formatNumberWithDecimals(value)}
+                  {value === null
+                    ? "Hidden"
+                    : formatNumberWithDecimals(value, { maxD: 0 })}
                 </span>
               ),
               fees90d: (value) => (
                 <span>
                   {value === null
                     ? "Hidden"
-                    : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8)}
+                    : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8, {
+                        maxD: 0,
+                      })}
                 </span>
               ),
               feesTotal: (value) => (
                 <span>
                   {value === null
                     ? "Hidden"
-                    : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8)}
+                    : formatCurrencyWithDecimals("DAG", (value ?? 0) / 1e8, {
+                        maxD: 0,
+                      })}
                 </span>
               ),
             }}

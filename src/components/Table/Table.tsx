@@ -101,7 +101,8 @@ const TableBase = <R extends Record<string, any>>({
                 className={clsx(
                   "flex flex-nowrap w-full items-center gap-1.5",
                   "text-sm font-semibold text-gray-700",
-                  "min-h-12 px-4"
+                  "min-h-12 px-4",
+                  colClassNames?.[key]
                 )}
               >
                 {value}
