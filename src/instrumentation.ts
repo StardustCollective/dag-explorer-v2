@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/nextjs";
+// import * as Sentry from "@sentry/nextjs";
 import { isAxiosError } from "axios";
 import { Instrumentation } from "next";
 import { configure } from "safe-stable-stringify";
@@ -56,5 +56,5 @@ export const onRequestError: Instrumentation.onRequestError = (
   }
   console.log(`Page Request Error (end)`);
 
-  return Sentry.captureRequestError(error, errorRequest, errorContext);
+  // return Sentry.captureRequestError(error, errorRequest, errorContext);
 };
