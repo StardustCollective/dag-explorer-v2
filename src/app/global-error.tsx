@@ -1,6 +1,6 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
+// import * as Sentry from "@sentry/nextjs";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -34,9 +34,9 @@ export default function GlobalErrorLayout({
     console.error(error);
   }, [error]);
 
-  useEffect(() => {
-    Sentry.captureException(error);
-  }, [error]);
+  // useEffect(() => {
+  //   Sentry.captureException(error);
+  // }, [error]);
 
   return (
     <html lang="en">
