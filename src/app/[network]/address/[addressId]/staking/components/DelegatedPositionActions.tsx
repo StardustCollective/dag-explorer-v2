@@ -7,6 +7,7 @@ import { MenuCard, MenuCardOption } from "@/components/MenuCard";
 import { useDelegatedStakeProvider } from "@/features/delegated-stake/DelegatedStakeProvider";
 import { IAPIStakingDelegator, IL0StakingDelegation } from "@/types/staking";
 
+import CoinsAddIcon from "@/assets/icons/coins-add.svg";
 import CoinsRemoveIcon from "@/assets/icons/coins-remove.svg";
 import DotGrid1x3HorizontalIcon from "@/assets/icons/dot-grid-1x3-horizontal.svg";
 import MoneyHandIcon from "@/assets/icons/money-hand.svg";
@@ -22,7 +23,7 @@ export const DelegatedPositionActions = ({
 }: IDelegatedPositionActionsProps) => {
   const [open, setOpen] = useState(false);
 
-  const { requestAction_changeValidator, requestAction_withdraw } =
+  const { requestAction_changeValidator, requestAction_updateStake, requestAction_withdraw } =
     useDelegatedStakeProvider();
 
   return (
@@ -47,6 +48,19 @@ export const DelegatedPositionActions = ({
           <MenuCardOption
             disabled={delegation?.withdrawalStartEpoch !== null}
             onClick={() => {
+              if (delegation && validator) {
+                requestAction_updateStake(delegation, validator);
+              }
+              setOpen(false);
+            }}
+          >
+            <CoinsAddIcon className="size-6 shrink-0" />
+            Stake DAG
+          </MenuCardOption>
+
+          <MenuCardOption
+            disabled={delegation?.withdrawalStartEpoch !== null}
+            onClick={() => {
               if (delegation) {
                 requestAction_withdraw(delegation);
               }
@@ -56,6 +70,7 @@ export const DelegatedPositionActions = ({
             <CoinsRemoveIcon className="size-6 shrink-0" />
             Unstake DAG
           </MenuCardOption>
+
           <MenuCardOption
             disabled={delegation?.withdrawalStartEpoch !== null}
             onClick={() => {

@@ -77,6 +77,7 @@ export const createDelegatedStake_Stake_Machine = (
           const { hash } = await requestTokenLock(
             decodeDecimal(dagToDatum(context.stakingAmount)).toNumber(),
             null,
+            null,
             null
           );
 
