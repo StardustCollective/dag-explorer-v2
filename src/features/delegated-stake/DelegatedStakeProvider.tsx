@@ -48,9 +48,9 @@ export const useDelegatedStakeProvider = () => {
     );
   }
 
-  return Object.assign(
-    useValidatorsProvider(),
-    useUserProvider(),
-    useActionsProvider()
-  );
+  return {
+    ...useValidatorsProvider(),
+    ...useUserProvider(),
+    ...useActionsProvider(),
+  };
 };
