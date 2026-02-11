@@ -38,7 +38,8 @@ export const useWalletActions = (store: ReturnType<typeof useWalletStore>) => {
     async (
       amount: number,
       currencyId: string | null,
-      unlockEpoch: number | null
+      unlockEpoch: number | null,
+      replaceTokenLockRef: string | null
     ) => {
       const wallet = store.getState();
       if (!wallet.provider) {
@@ -49,7 +50,7 @@ export const useWalletActions = (store: ReturnType<typeof useWalletStore>) => {
 
       const hash = await wallet.provider.request({
         method: "dag_tokenLock",
-        params: [{ source: wallet.address, amount, currencyId, unlockEpoch }],
+        params: [{ source: wallet.address, amount, currencyId, unlockEpoch, replaceTokenLockRef }],
       });
 
       return { hash };
