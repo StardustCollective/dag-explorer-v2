@@ -12,6 +12,10 @@ import {
   useStake_ActionsProvider,
 } from "./Stake_ActionsProvider";
 import {
+  UpdateStake_ActionsProvider,
+  useUpdateStake_ActionsProvider,
+} from "./UpdateStake_ActionsProvider";
+import {
   useWithdraw_ActionsProvider,
   Withdraw_ActionsProvider,
 } from "./Withdraw_ActionsProvider";
@@ -30,13 +34,15 @@ export const ActionsProvider = ({
   return (
     <ActionsProviderContext.Provider value={ActionsContextSymbol}>
       <Stake_ActionsProvider>
-        <Withdraw_ActionsProvider>
-          <AssignValidator_ActionsProvider>
-            <ChangeValidator_ActionsProvider>
-              {children}
-            </ChangeValidator_ActionsProvider>
-          </AssignValidator_ActionsProvider>
-        </Withdraw_ActionsProvider>
+        <UpdateStake_ActionsProvider>
+          <Withdraw_ActionsProvider>
+            <AssignValidator_ActionsProvider>
+              <ChangeValidator_ActionsProvider>
+                {children}
+              </ChangeValidator_ActionsProvider>
+            </AssignValidator_ActionsProvider>
+          </Withdraw_ActionsProvider>
+        </UpdateStake_ActionsProvider>
       </Stake_ActionsProvider>
     </ActionsProviderContext.Provider>
   );
@@ -51,10 +57,11 @@ export const useActionsProvider = () => {
     );
   }
 
-  return Object.assign(
-    useStake_ActionsProvider(),
-    useWithdraw_ActionsProvider(),
-    useAssignValidator_ActionsProvider(),
-    useChangeValidator_ActionsProvider()
-  );
+  return {
+    ...useStake_ActionsProvider(),
+    ...useUpdateStake_ActionsProvider(),
+    ...useWithdraw_ActionsProvider(),
+    ...useAssignValidator_ActionsProvider(),
+    ...useChangeValidator_ActionsProvider()
+  };
 };

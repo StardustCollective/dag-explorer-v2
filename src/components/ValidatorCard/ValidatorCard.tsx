@@ -14,7 +14,7 @@ import {
 
 import { datumToDag } from "@/common/currencies";
 import { IL0StakingDelegation } from "@/types/staking";
-import { decodeDecimal, formatCurrencyWithDecimals } from "@/utils";
+import { formatCurrencyWithDecimals } from "@/utils";
 
 export type IValidatorCardProps = {
   nodeId: string;
@@ -101,7 +101,7 @@ export const ValidatorCard = memo(function ValidatorCard({
             <span className="text-gray-600 text-xs font-semibold">
               Your total delegation
             </span>
-            <span className="text-hgtp-blue-900 text-xl">
+            <span className={clsx("text-hgtp-blue-900 text-xl", !userDelegation?.amount && "opacity-60")}>
               {formatCurrencyWithDecimals(
                 "DAG",
                 datumToDag(userDelegation?.amount ?? 0),
@@ -112,16 +112,8 @@ export const ValidatorCard = memo(function ValidatorCard({
           <button
             className="button secondary sm font-medium"
             onClick={onStake}
-            disabled={!!userDelegation}
           >
-            {userDelegation &&
-              userDelegation.withdrawalEndEpoch !== null &&
-              "Unwind Period"}
-            {userDelegation &&
-              userDelegation.withdrawalEndEpoch === null &&
-              decodeDecimal(userDelegation.amount).gt(0) &&
-              "Staked"}
-            {!userDelegation && "Stake DAG"}
+            {userDelegation?.withdrawalEndEpoch ? "Unwind Period" : "Stake DAG"}
           </button>
         </div>
       )}

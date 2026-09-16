@@ -3,7 +3,7 @@
 import { datumToDag } from "@/common/currencies";
 import { ValidatorCard as ValidatorCardBase } from "@/components/ValidatorCard";
 import { useDelegatedStakeProvider } from "@/features/delegated-stake/DelegatedStakeProvider";
-import { IAPIMetagraphStakingNode, IL0StakingDelegator } from "@/types/staking";
+import { IAPIMetagraphStakingNode, IAPIStakingDelegator, IL0StakingDelegator } from "@/types/staking";
 import { decodeDecimal } from "@/utils";
 
 export type IValidatorCardProps = {
@@ -15,7 +15,7 @@ export const ValidatorCard = ({
   delegator,
   delegatorMetagraph,
 }: IValidatorCardProps) => {
-  const { userDelegationsMap, requestAction_stake } =
+  const { userDelegationsMap, requestAction_stake, requestAction_updateStake } =
     useDelegatedStakeProvider();
 
   const userDelegation = userDelegationsMap?.[delegator.peerId];
@@ -36,7 +36,15 @@ export const ValidatorCard = ({
       description={delegator.nodeMetadataParameters.description}
       userDelegation={userDelegation}
       onStake={
-        userDelegationsMap ? () => requestAction_stake(delegator) : undefined
+        userDelegationsMap
+          ? () => {
+            if (userDelegation && userDelegation.withdrawalEndEpoch === null) {
+              requestAction_updateStake(userDelegation, delegator as IAPIStakingDelegator);
+            } else {
+              requestAction_stake(delegator);
+            }
+          }
+          : undefined
       }
     />
   );
