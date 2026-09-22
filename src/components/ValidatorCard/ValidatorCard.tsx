@@ -14,7 +14,7 @@ import {
 
 import { datumToDag } from "@/common/currencies";
 import { IL0StakingDelegation } from "@/types/staking";
-import { formatCurrencyWithDecimals } from "@/utils";
+import { decodeDecimal, formatCurrencyWithDecimals } from "@/utils";
 
 export type IValidatorCardProps = {
   nodeId: string;
@@ -26,6 +26,7 @@ export type IValidatorCardProps = {
   delegatedAmountInDAG?: IDecimal;
   description?: string;
   userDelegation?: IL0StakingDelegation;
+  canIncreaseStake?: boolean;
   onStake?: () => void;
 };
 
@@ -39,8 +40,17 @@ export const ValidatorCard = memo(function ValidatorCard({
   commissionPercentage,
   description,
   userDelegation,
+  canIncreaseStake = false,
   onStake,
 }: IValidatorCardProps) {
+  const isUnwinding =
+    !!userDelegation && userDelegation.withdrawalEndEpoch !== null;
+
+  const isStaked =
+    !!userDelegation &&
+    userDelegation.withdrawalEndEpoch === null &&
+    decodeDecimal(userDelegation.amount).gt(0);
+
   return (
     <div className="card shadow-sm flex flex-col w-full">
       <div className="header flex px-5 py-4 justify-between gap-1">
@@ -111,9 +121,12 @@ export const ValidatorCard = memo(function ValidatorCard({
           </div>
           <button
             className="button secondary sm font-medium"
+            disabled={!canIncreaseStake && !!userDelegation}
             onClick={onStake}
           >
-            {userDelegation?.withdrawalEndEpoch ? "Unwind Period" : "Stake DAG"}
+            {isUnwinding && "Unwind Period"}
+            {!isUnwinding && !canIncreaseStake && isStaked && "Staked"}
+            {!isUnwinding && (canIncreaseStake || !isStaked) && "Stake DAG"}
           </button>
         </div>
       )}
