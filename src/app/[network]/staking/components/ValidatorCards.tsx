@@ -12,18 +12,31 @@ import { MenuCard, MenuCardOption } from "@/components/MenuCard";
 import { Pagination } from "@/components/Pagination";
 import { SearchBar } from "@/components/SearchBar";
 import { useDelegatedStakeProvider } from "@/features/delegated-stake/DelegatedStakeProvider";
-import { buildSearchParams, stringFormat } from "@/utils";
+import { buildSearchParams } from "@/utils";
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import Server1FilledIcon from "@/assets/icons/server-1-filled.svg";
 
-export type IValidatorCardsProps = {
-  limit?: number;
-  filter?: "metagraphs" | "validators";
+export type IValidatorCardsFilter = "metagraphs" | "validators" | "top30";
+
+const FilterLabels: Record<IValidatorCardsFilter, string> = {
+  metagraphs: "Metagraphs",
+  validators: "Validators",
+  top30: "Top 30",
 };
 
-export const ValidatorCards = ({ limit, filter }: IValidatorCardsProps) => {
+export type IValidatorCardsProps = {
+  limit?: number;
+  filter?: IValidatorCardsFilter;
+  topPeerIds?: string[];
+};
+
+export const ValidatorCards = ({
+  limit,
+  filter,
+  topPeerIds,
+}: IValidatorCardsProps) => {
   const { validators, validatorsQuery } = useDelegatedStakeProvider();
 
   const pathname = usePathname();
@@ -49,6 +62,10 @@ export const ValidatorCards = ({ limit, filter }: IValidatorCardsProps) => {
       ? filteredValidators.filter((v) => v.metagraphNode)
       : filter === "validators"
       ? filteredValidators.filter((v) => !v.metagraphNode)
+      : filter === "top30"
+      ? (topPeerIds ?? []).flatMap((peerId) =>
+          filteredValidators.filter((v) => v.peerId === peerId)
+        )
       : filteredValidators;
 
   if (validatorsQuery.isLoading) {
@@ -102,7 +119,7 @@ export const ValidatorCards = ({ limit, filter }: IValidatorCardsProps) => {
             onClick={() => setFilterOpen((s) => !s)}
           >
             <span>
-              Filter by: {stringFormat(filter ?? "All nodes", "TITLE_CASE")}
+              Filter by: {filter ? FilterLabels[filter] : "All nodes"}
             </span>
             {filterOpen ? (
               <ChevronUpIcon className="size-4 shrink-0" />
@@ -142,9 +159,26 @@ export const ValidatorCards = ({ limit, filter }: IValidatorCardsProps) => {
               >
                 Validators
               </MenuCardOption>
+              <MenuCardOption
+                renderAs={Link}
+                href={`${pathname}?${nextSearchParams({
+                  filter: "top30",
+                })}`}
+                onClick={() => setFilterOpen(false)}
+              >
+                Top 30
+              </MenuCardOption>
             </MenuCard>
           )}
         </div>
+        {filteredValidators.length === 0 && (
+          <EmptyState
+            className="w-full lg:col-span-3"
+            variant="dark"
+            label="No validators detected"
+            renderIcon={Server1FilledIcon}
+          />
+        )}
         {filteredValidators
           .slice(page * (limit ?? 15), (page + 1) * (limit ?? 15))
           .map((validator) => (
@@ -159,7 +193,7 @@ export const ValidatorCards = ({ limit, filter }: IValidatorCardsProps) => {
         pageSizes={[15, 30, 60]}
         pageSize={limit ?? 15}
         hasPrevPage={page > 0}
-        hasNextPage={page < ((validators ?? []).length ?? 0) / (limit ?? 15)}
+        hasNextPage={(page + 1) * (limit ?? 15) < filteredValidators.length}
         onNextPage={() => {
           setPage(page + 1);
         }}
