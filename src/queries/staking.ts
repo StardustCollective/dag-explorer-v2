@@ -1,8 +1,10 @@
 import { dag4 } from "@stardust-collective/dag4";
 import { AxiosInstance, isAxiosError } from "axios";
+import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
 import { getActionTransaction } from "./actions";
+import { getAddressRewards } from "./addresses";
 
 import { DagExplorerAPI, L0NodesAPI } from "@/common/apis";
 import { HgtpNetwork } from "@/common/consts";
@@ -116,6 +118,71 @@ export const getStakingDelegators = cache(
       throw e;
     }
   }
+);
+
+const TOP_VALIDATORS_BATCH_SIZE = 10;
+
+/**
+ * Validators (non-metagraph nodes) ranked by delegated stake that received
+ * rewards today or yesterday (UTC). Rewards are only available grouped by
+ * UTC day, so this is the closest match to "the last 24 hours".
+ */
+const getTopValidatorPeerIds = async (
+  network: HgtpNetwork,
+  count: number
+): Promise<string[]> => {
+  // Already sorted by delegated stake, highest first
+  const validators = (await getStakingDelegators(network)).filter(
+    (v) => !v.metagraphNode
+  );
+
+  const now = new Date();
+  const startOfYesterdayUTC = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate() - 1
+  );
+
+  const topPeerIds: string[] = [];
+
+  for (
+    let offset = 0;
+    offset < validators.length && topPeerIds.length < count;
+    offset += TOP_VALIDATORS_BATCH_SIZE
+  ) {
+    const batch = validators.slice(offset, offset + TOP_VALIDATORS_BATCH_SIZE);
+
+    const results = await Promise.allSettled(
+      batch.map((v) =>
+        getAddressRewards(network, v.nodeIdAddress, undefined, {
+          limitPagination: { limit: 1 },
+        })
+      )
+    );
+
+    results.forEach((result, index) => {
+      if (result.status !== "fulfilled") {
+        return;
+      }
+
+      const lastReward = result.value.records[0];
+
+      if (
+        lastReward &&
+        new Date(lastReward.accruedAt).getTime() >= startOfYesterdayUTC
+      ) {
+        topPeerIds.push(batch[index].peerId);
+      }
+    });
+  }
+
+  return topPeerIds.slice(0, count);
+};
+
+export const getTopValidators = unstable_cache(
+  getTopValidatorPeerIds,
+  ["staking:top-validators"],
+  { revalidate: 10 * 60 }
 );
 
 export const getAddressStakingDelegations = async (
