@@ -1,8 +1,10 @@
 "use client";
 
+import { isNetworkFeatureEnabled } from "@/common/consts";
 import { datumToDag } from "@/common/currencies";
 import { ValidatorCard as ValidatorCardBase } from "@/components/ValidatorCard";
 import { useDelegatedStakeProvider } from "@/features/delegated-stake/DelegatedStakeProvider";
+import { useNetworkContext } from "@/providers/NetworkProvider";
 import { IAPIMetagraphStakingNode, IAPIStakingDelegator, IL0StakingDelegator } from "@/types/staking";
 import { decodeDecimal } from "@/utils";
 
@@ -17,6 +19,13 @@ export const ValidatorCard = ({
 }: IValidatorCardProps) => {
   const { userDelegationsMap, requestAction_stake, requestAction_updateStake } =
     useDelegatedStakeProvider();
+
+  const network = useNetworkContext();
+
+  const canIncreaseStake = isNetworkFeatureEnabled(
+    network,
+    "increaseDelegatedStake"
+  );
 
   const userDelegation = userDelegationsMap?.[delegator.peerId];
 
@@ -35,10 +44,15 @@ export const ValidatorCard = ({
         .toNumber()}
       description={delegator.nodeMetadataParameters.description}
       userDelegation={userDelegation}
+      canIncreaseStake={canIncreaseStake}
       onStake={
         userDelegationsMap
           ? () => {
-            if (userDelegation && userDelegation.withdrawalEndEpoch === null) {
+            if (
+              canIncreaseStake &&
+              userDelegation &&
+              userDelegation.withdrawalEndEpoch === null
+            ) {
               requestAction_updateStake(userDelegation, delegator as IAPIStakingDelegator);
             } else {
               requestAction_stake(delegator);

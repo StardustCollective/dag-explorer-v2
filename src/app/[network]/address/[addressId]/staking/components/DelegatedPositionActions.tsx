@@ -3,8 +3,10 @@
 import clsx from "clsx";
 import { useState } from "react";
 
+import { isNetworkFeatureEnabled } from "@/common/consts";
 import { MenuCard, MenuCardOption } from "@/components/MenuCard";
 import { useDelegatedStakeProvider } from "@/features/delegated-stake/DelegatedStakeProvider";
+import { useNetworkContext } from "@/providers/NetworkProvider";
 import { IAPIStakingDelegator, IL0StakingDelegation } from "@/types/staking";
 
 import CoinsAddIcon from "@/assets/icons/coins-add.svg";
@@ -26,6 +28,13 @@ export const DelegatedPositionActions = ({
   const { requestAction_changeValidator, requestAction_updateStake, requestAction_withdraw } =
     useDelegatedStakeProvider();
 
+  const network = useNetworkContext();
+
+  const canIncreaseStake = isNetworkFeatureEnabled(
+    network,
+    "increaseDelegatedStake"
+  );
+
   return (
     <span className="flex items-center justify-center w-full relative">
       <span
@@ -45,18 +54,20 @@ export const DelegatedPositionActions = ({
           className="absolute right-full ml-2.5 w-fit z-10"
           onClickOutside={() => setOpen(false)}
         >
-          <MenuCardOption
-            disabled={delegation?.withdrawalStartEpoch !== null}
-            onClick={() => {
-              if (delegation && validator) {
-                requestAction_updateStake(delegation, validator);
-              }
-              setOpen(false);
-            }}
-          >
-            <CoinsAddIcon className="size-6 shrink-0" />
-            Stake DAG
-          </MenuCardOption>
+          {canIncreaseStake && (
+            <MenuCardOption
+              disabled={delegation?.withdrawalStartEpoch !== null}
+              onClick={() => {
+                if (delegation && validator) {
+                  requestAction_updateStake(delegation, validator);
+                }
+                setOpen(false);
+              }}
+            >
+              <CoinsAddIcon className="size-6 shrink-0" />
+              Stake DAG
+            </MenuCardOption>
+          )}
 
           <MenuCardOption
             disabled={delegation?.withdrawalStartEpoch !== null}
