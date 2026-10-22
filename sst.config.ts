@@ -19,6 +19,14 @@ export default $config({
       "vpc-0d9b9fd415cfc0448"
     );
 
+    /**
+     * Nextjs defaults its server Lambda to nodejs20.x and hardcodes it for the
+     * image optimizer and ISR functions. Node 20 no longer gets security fixes.
+     */
+    $transform(sst.aws.Function, (args) => {
+      args.runtime = "nodejs22.x";
+    });
+
     new sst.aws.Nextjs("DagExplorerApp", {
       buildCommand: "pnpm open-next build",
       vpc,
