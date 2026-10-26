@@ -10,7 +10,8 @@
     "fresh": "pnpm clean && pnpm load-dependencies",
     "clean": "pnpm dlx rimraf .sst .open-next .next node_modules",
     "load-dependencies": "pnpm i && pnpm sst install",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:infra": "node --experimental-vm-modules --test tests/infra-retirement.test.mjs"
   },
   "dependencies": {
     "@2toad/profanity": "^3.1.1",
