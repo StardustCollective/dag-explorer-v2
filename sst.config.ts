@@ -11,6 +11,8 @@ export default $config({
     };
   },
   async run() {
+    if ($app.stage === "staging") return {};
+
     /**
      * Constellation Ecosystem VPC
      */
