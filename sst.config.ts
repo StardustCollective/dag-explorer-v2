@@ -8,6 +8,7 @@ export default $config({
       removal: input?.stage === "production" ? "retain" : "remove",
       protect: ["production"].includes(input?.stage),
       home: "aws",
+      providers: { aws: "6.66.2" },
     };
   },
   async run() {
