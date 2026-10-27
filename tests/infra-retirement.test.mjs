@@ -6,12 +6,18 @@ import { SourceTextModule, createContext } from "node:vm";
 async function load(stage) {
   const vpcs = [];
   const apps = [];
+  const transforms = [];
   const vpc = { id: "preserved-vpc" };
+  const Function = class {};
   const context = createContext({
     $config: (value) => value,
     $app: { stage },
+    $transform: (component, transform) => {
+      transforms.push({ component, transform });
+    },
     sst: {
       aws: {
+        Function,
         Vpc: {
           get: (...args) => {
             vpcs.push(args);
@@ -33,7 +39,7 @@ async function load(stage) {
   const module = new SourceTextModule(source, { context });
   await module.link(() => {});
   await module.evaluate();
-  return { config: module.namespace.default, vpcs, apps, vpc };
+  return { config: module.namespace.default, vpcs, apps, vpc, transforms, Function };
 }
 
 test("staging redeploy creates no app or VPC dependency", async () => {
@@ -55,6 +61,16 @@ test("production keeps its app, build command and VPC", async () => {
   assert.equal(apps[0].options.vpc, vpc);
   assert.equal(config.app({ stage: "production" }).protect, true);
   assert.equal(config.app({ stage: "production" }).removal, "retain");
+});
+
+test("production runs every Lambda on nodejs22.x", async () => {
+  const { config, transforms, Function } = await load("production");
+  await config.run();
+  assert.equal(transforms.length, 1);
+  assert.equal(transforms[0].component, Function);
+  const args = { runtime: "nodejs20.x" };
+  transforms[0].transform(args);
+  assert.equal(args.runtime, "nodejs22.x");
 });
 
 test("the staging guard preserves other existing stages", async () => {
