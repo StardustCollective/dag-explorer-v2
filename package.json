@@ -10,7 +10,8 @@
     "fresh": "pnpm clean && pnpm load-dependencies",
     "clean": "pnpm dlx rimraf .sst .open-next .next node_modules",
     "load-dependencies": "pnpm i && pnpm sst install",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:infra": "node --experimental-vm-modules --test tests/infra-retirement.test.mjs"
   },
   "dependencies": {
     "@2toad/profanity": "^3.1.1",
@@ -35,7 +36,7 @@
     "ioredis": "^5.6.0",
     "lucide-react": "^0.488.0",
     "millify": "^6.1.0",
-    "next": "15.5.24",
+    "next": "15.5.28",
     "papaparse": "^5.5.2",
     "react": "^19.0.0",
     "react-day-picker": "8.10.1",
@@ -71,5 +72,10 @@
     "tsx": "^4.20.5",
     "typescript": "^5",
     "webpack": "^5.104.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "sharp": "0.35.5"
+    }
   }
 }
